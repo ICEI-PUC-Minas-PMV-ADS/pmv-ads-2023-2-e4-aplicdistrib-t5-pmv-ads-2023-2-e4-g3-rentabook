@@ -14,8 +14,6 @@ Facilitar a Interação: Criar uma interface de usuário intuitiva que permita a
 
 Promover a Sustentabilidade: Incentivar a cultura de compartilhamento e a redução do desperdício por meio da troca de livros, contribuindo para a diminuição do impacto ambiental.
  
-> **Links Úteis**:
-> - [Objetivo geral e objetivo específico: como fazer e quais verbos utilizar](https://blog.mettzer.com/diferenca-entre-objetivo-geral-e-objetivo-especifico/)
 
 ## Justificativa
 
