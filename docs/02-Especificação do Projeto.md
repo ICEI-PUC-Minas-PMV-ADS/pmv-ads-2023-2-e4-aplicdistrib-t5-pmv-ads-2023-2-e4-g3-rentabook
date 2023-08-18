@@ -16,31 +16,31 @@ Com base na análise das personas forma identificadas as seguintes histórias de
 
 |EU COMO... `PERSONA`| QUERO/PRECISO ... `FUNCIONALIDADE` |PARA ... `MOTIVO/VALOR`                 |
 |--------------------|------------------------------------|----------------------------------------|
-|Ana  | criar minha propria conta           | ter acesso ao aplicativo e meu proprio perfil               |
-|Ana       | cadastrar meu endereço no perfil                 | usar em futuras negociações e facilitar o processo |
-|Ana | entrar no sistema usando meu email e senha |ter acesso ao meu proprio perfil de usuario |
-|Ana | cadastrar uma foto de perfil | customizar minha experiencia de uso |
-|Ana | alterar minha senha de acesso | tornar minha experiencia de uso mais segura |
-|Ana | alterar minhas informações de usuario | tornar minha experiencia de uso mais personalizada |
-|Ana | ter acesso a uma lista com livros que possam ser trocados com outros usuarios | ter acesso a outros livros sem gastar dinheiro |
-|Luíza|ter um chat|me comunicar com outro usuario no momento da negociação|
-|Luíza|ser notificada quando um livro for solicitado para aluguel ou compra|que a negociação seja rapida e satisfatoria|
-|Luíza|solicitar o cancelamento de um processo de venda ou aluguel de um livro|impedir maiores contratempos quando a negociação não for possivel|
-|Luíza|denunciar um usuario | que a comunidade de usuarios possa identificar um usuario mal intencionado |
-|Luíza|a possibilidade de trocar livros com outros usuários |ter acesso a outros livros sem gastar dinheiro |
-|Luíza|ser notificado quando alguma transação que me envolva sofrer atualização |me planejar minha rotina para algum evento que possa surgir |
-|Flávio|pesquisar por um livro especifico|facilitar minha busca por livros do meu interesse|
-|Flávio|ter acesso a uma lista com os livros que estão disponiveis para aluguel ou venda|facilitar minha busca por livros do meu interesse|
-|Flávio|que a lista com livros que estão disponiveis para aluguel ou venda permita filtrar as informações|facilitar minha busca por livros do meu interesse	|
-|Rafael|cadastrar meu livro|poder disponibiliza-los para aluguel ou venda|
-|Rafael|disponibilizar meu livro para aluguel|fazer um dinheiro extra|
-|Rafael|disponibilizar meu livro para venda|fazer um dinheiro extra|
-|Rafael|cadastrar meu livro|poder disponibiliza-los para aluguel ou venda|
-|Rafael|cadastrar fotos do livro que estou disponibilizando para aluguel ou venda|que o comprador veja o estado do produto|
-|Rafael|ter uma lista com os meus produtos que esteja em negociação|me planejar minha rotina para algum evento que possa surgir|
-|Rafael|que a lista com os meus produtos tenha filtros|facilitar meu planejamento|
-|Rafael|ver as informações sobre minha negociação de um livro especifico|me planejar para a conclusão do processo|
-|Rafael|avaliar um processo de compra ou venda de livros|que outros usuarios possam se informar sobre o processo|
+|  Ana  |  criar minha própria conta  |  ter acesso ao aplicativo e meu próprio perfil | 
+|  Ana  |  cadastrar meu endereço no perfil  |  usar em futuras negociações e facilitar o processo | 
+|  Ana  |  entrar no sistema usando meu e-mail e senha  |  ter acesso ao meu próprio perfil de usuário | 
+|  Ana  |  cadastrar uma foto de perfil  |  customizar minha experiencia de uso | 
+|  Ana  |  alterar minha senha de acesso  |  tornar minha experiencia de uso mais segura | 
+|  Ana  |  alterar minhas informações de usuário  |  tornar minha experiencia de uso mais personalizada |
+|  Ana  |  ter acesso a uma lista com livros que possam ser trocados com outros usuários  |  ter acesso a outros livros sem gastar dinheiro | 		
+|  Luíza  |  ter um chat  |  me comunicar com outro usuário no momento da negociação |	 
+|  Luíza  |  ser notificada quando um livro for solicitado para aluguel ou compra  |  que a negociação seja rápida e satisfatória | 
+|  Luíza  |  solicitar o cancelamento de um processo de venda ou aluguel de um livro  |  impedir maiores contratempos quando a negociação não for possível | 
+|  Luíza  |  denunciar um usuário  |  que a comunidade de usuários possa identificar um usuário mal-intencionado |			 
+|  Luíza  |  a possibilidade de trocar livros com outros usuários  |  ter acesso a outros livros sem gastar dinheiro | 
+|  Luíza  |  ser notificado quando alguma transação que me envolva sofrer atualização  |  me planejar minha rotina para algum evento que possa surgir | 
+|  Flávio  |  pesquisar por um livro específico  |  facilitar minha busca por livros do meu interesse | 
+|  Flávio  |  ter acesso a uma lista com os livros que estão disponíveis para aluguel ou venda  |  facilitar minha busca por livros do meu interesse | 
+|  Flávio  |  que a lista com livros que estão disponíveis para aluguel ou venda permita filtrar as informações  |  facilitar minha busca por livros do meu interesse |			 
+|  Rafael  |  cadastrar meu livro  |  poder disponibilizá-los para aluguel ou venda | 
+|  Rafael  |  disponibilizar meu livro para aluguel  |  fazer um dinheiro extra | 
+|  Rafael  |  disponibilizar meu livro para venda  |  fazer um dinheiro extra | 
+|  Rafael  |  cadastrar meu livro  |  poder disponibilizá-los para aluguel ou venda | 
+|  Rafael  |  cadastrar fotos do livro que estou disponibilizando para aluguel ou venda  |  que o comprador veja o estado do produto | 
+|  Rafael  |  ter uma lista com os meus produtos que esteja em negociação  |  me planejar minha rotina para algum evento que possa surgir | 
+|  Rafael  |  que a lista com os meus produtos tenha filtros  |  facilitar meu planejamento | 
+|  Rafael  |  ver as informações sobre minha negociação de um livro específico  |  me planejar para a conclusão do processo | 
+|  Rafael  |  avaliar um processo de compra ou venda de livros  |  que outros usuários possam se informar sobre o processo |
 
 Apresente aqui as histórias de usuário que são relevantes para o projeto de sua solução. As Histórias de Usuário consistem em uma ferramenta poderosa para a compreensão e elicitação dos requisitos funcionais e não funcionais da sua aplicação. Se possível, agrupe as histórias de usuário por contexto, para facilitar consultas recorrentes à essa parte do documento.
 
