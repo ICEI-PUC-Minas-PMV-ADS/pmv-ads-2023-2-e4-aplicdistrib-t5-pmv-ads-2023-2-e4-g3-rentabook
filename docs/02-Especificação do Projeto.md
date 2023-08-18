@@ -23,7 +23,7 @@ Com base na análise das personas forma identificadas as seguintes histórias de
 |  Ana  |  alterar minha senha de acesso  |  tornar minha experiencia de uso mais segura | 
 |  Ana  |  alterar minhas informações de usuário  |  tornar minha experiencia de uso mais personalizada |
 |  Ana  |  ter acesso a uma lista com livros que possam ser trocados com outros usuários  |  ter acesso a outros livros sem gastar dinheiro | 		
-|  Luíza  |  ter um chat  |  me comunicar com outro usuário no momento da negociação |	 
+|  Luíza  |  ter acesso a um chat  |  me comunicar com outro usuário no momento da negociação |	 
 |  Luíza  |  ser notificada quando um livro for solicitado para aluguel ou compra  |  que a negociação seja rápida e satisfatória | 
 |  Luíza  |  solicitar o cancelamento de um processo de venda ou aluguel de um livro  |  impedir maiores contratempos quando a negociação não for possível | 
 |  Luíza  |  denunciar um usuário  |  que a comunidade de usuários possa identificar um usuário mal-intencionado |			 
