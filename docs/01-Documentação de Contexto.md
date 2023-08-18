@@ -5,10 +5,6 @@ A Rentabook é uma plataforma online inovadora que tem como principal objetivo f
 ## Problema
 O cenário tradicional de compra e venda de livros muitas vezes é limitado e pouco acessível para os amantes da leitura. Lojas físicas podem não oferecer variedade suficiente, enquanto as compras online nem sempre são econômicas. Além disso, a falta de opções de troca de livros contribui para o acúmulo de exemplares não utilizados, desperdiçando recursos e impactando o meio ambiente. A Rentabook surge para resolver esses problemas, proporcionando uma plataforma que atende às necessidades dos leitores ao mesmo tempo em que promove uma cultura de compartilhamento e sustentabilidade.
 
-> **Links Úteis**:
-> - [Objetivos, Problema de pesquisa e Justificativa](https://medium.com/@versioparole/objetivos-problema-de-pesquisa-e-justificativa-c98c8233b9c3)
-> - [Matriz Certezas, Suposições e Dúvidas](https://medium.com/educa%C3%A7%C3%A3o-fora-da-caixa/matriz-certezas-suposi%C3%A7%C3%B5es-e-d%C3%BAvidas-fa2263633655)
-> - [Brainstorming](https://www.euax.com.br/2018/09/brainstorming/)
 
 ## Objetivos
 
@@ -25,8 +21,6 @@ Promover a Sustentabilidade: Incentivar a cultura de compartilhamento e a reduç
 
 A importância de desenvolver a Rentabook reside na necessidade de inovar a forma como os leitores acessam e compartilham livros. A aplicação oferece uma solução que não apenas simplifica o processo de transações literárias, mas também abraça a ideia de responsabilidade ambiental. Ao promover a reutilização de livros e a diminuição da produção de novos exemplares, a Rentabook se alinha com os valores contemporâneos de sustentabilidade e colaboração.
 
-> **Links Úteis**:
-> - [Como montar a justificativa](https://guiadamonografia.com.br/como-montar-justificativa-do-tcc/)
 
 ## Público-Alvo
 
@@ -42,10 +36,6 @@ Ambientalmente Conscientes: Usuários que desejam contribuir para a redução do
 
 Comunidades de Leitura: Clubes do livro, grupos de estudo e outras comunidades que podem usar a plataforma para trocar recomendações e realizar transações literárias.
 
-Adicione informações sobre o público-alvo por meio de uma descrição textual, diagramas de personas e mapa de stakeholders.
+Adicione informações sobre o público-alvo por meio de uma descrição textual, diagramas de personas e mapa de stakeholders. <- lembrete (ainda precisa terminar os requisitos dessa linha)
 
-> **Links Úteis**:
-> - [Público-alvo](https://blog.hotmart.com/pt-br/publico-alvo/)
-> - [Como definir o público alvo](https://exame.com/pme/5-dicas-essenciais-para-definir-o-publico-alvo-do-seu-negocio/)
-> - [Público-alvo: o que é, tipos, como definir seu público e exemplos](https://klickpages.com.br/blog/publico-alvo-o-que-e/)
-> - [Qual a diferença entre público-alvo e persona?](https://rockcontent.com/blog/diferenca-publico-alvo-e-persona/)
+
