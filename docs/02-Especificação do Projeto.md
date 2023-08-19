@@ -22,20 +22,17 @@ Com base na análise das personas forma identificadas as seguintes histórias de
 |  Ana  |  cadastrar uma foto de perfil  |  customizar minha experiencia de uso | 
 |  Ana  |  alterar minha senha de acesso  |  tornar minha experiencia de uso mais segura | 
 |  Ana  |  alterar minhas informações de usuário  |  tornar minha experiencia de uso mais personalizada |
-|  Ana  |  ter acesso a uma lista com livros que possam ser trocados com outros usuários  |  ter acesso a outros livros sem gastar dinheiro | 		
+|  Ana  |  ter acesso a uma lista com livros que possam ser negociados com outros usuários  |  ter acesso a outros livros sem gastar dinheiro | 		
 |  Luíza  |  ter acesso a um chat  |  me comunicar com outro usuário no momento da negociação |	 
 |  Luíza  |  ser notificada quando um livro for solicitado para aluguel ou compra  |  que a negociação seja rápida e satisfatória | 
 |  Luíza  |  solicitar o cancelamento de um processo de venda ou aluguel de um livro  |  impedir maiores contratempos quando a negociação não for possível | 
 |  Luíza  |  denunciar um usuário  |  que a comunidade de usuários possa identificar um usuário mal-intencionado |			 
 |  Luíza  |  a possibilidade de trocar livros com outros usuários  |  ter acesso a outros livros sem gastar dinheiro | 
 |  Luíza  |  ser notificado quando alguma transação que me envolva sofrer atualização  |  me planejar minha rotina para algum evento que possa surgir | 
-|  Flávio  |  pesquisar por um livro específico  |  facilitar minha busca por livros do meu interesse | 
-|  Flávio  |  ter acesso a uma lista com os livros que estão disponíveis para aluguel ou venda  |  facilitar minha busca por livros do meu interesse | 
-|  Flávio  |  que a lista com livros que estão disponíveis para aluguel ou venda permita filtrar as informações  |  facilitar minha busca por livros do meu interesse |			 
+|  Flávio  |  pesquisar por um livro específico  |  facilitar minha busca por livros do meu interesse |  
+|  Flávio  |  que a lista com livros que estão disponíveis negociação permita filtrar as informações  |  facilitar minha busca por livros do meu interesse |			 
 |  Rafael  |  cadastrar meu livro  |  poder disponibilizá-los para aluguel ou venda | 
-|  Rafael  |  disponibilizar meu livro para aluguel  |  fazer um dinheiro extra | 
-|  Rafael  |  disponibilizar meu livro para venda  |  fazer um dinheiro extra | 
-|  Rafael  |  cadastrar meu livro  |  poder disponibilizá-los para aluguel ou venda | 
+|  Rafael  |  disponibilizar meu livro para negociação |  fazer um dinheiro extra | 
 |  Rafael  |  cadastrar fotos do livro que estou disponibilizando para aluguel ou venda  |  que o comprador veja o estado do produto | 
 |  Rafael  |  ter uma lista com os meus produtos que esteja em negociação  |  me planejar minha rotina para algum evento que possa surgir | 
 |  Rafael  |  que a lista com os meus produtos tenha filtros  |  facilitar meu planejamento | 
@@ -90,8 +87,27 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 
 |ID    | Descrição do Requisito  | Prioridade |
 |------|-----------------------------------------|----|
-|RF-001| Permitir que o usuário cadastre tarefas | ALTA | 
-|RF-002| Emitir um relatório de tarefas no mês   | MÉDIA |
+|RF-001| Permitir que o usuário se cadastre | ALTA | 
+|RF-002| Permitir que o usuário cadastre seus endereços | ALTA |
+|RF-003| Permitir que o usuário realize login através de seu email e senha | ALTA | 
+|RF-004| Permitir ao usuário adicionar, alterar e excluir sua foto de perfil | BAIXA |
+|RF-005| Permitir que o usuário altere sua senha | ALTA | 
+|RF-006| Permitir ao usuário modificar suas informações pessoais | MÉDIA |
+|RF-007| Exibir ao usuário uma lista de livros disponíveis para troca, venda ou aluguel | ALTA | 
+|RF-008| Permitir aos usuários trocarem mensagens via chat | MÉDIA |
+|RF-009| Notificar ao usuário quando um de seus livros forem solicitados para aluguel, compra ou troca | BAIXA | 
+|RF-010| Permitir ao usuário cancelar uma venda, aluguel ou troca de um livro | ALTA |
+|RF-011| Permitir ao usuário denunciar outro usuário | BAIXA | 
+|RF-012| Permitir aos usuários negociarem livros (trocar, vender e alugar) | ALTA |
+|RF-013| Notificar ao usuário quando suas negociações forem atualizadas | BAIXA | 
+|RF-014| Permitir ao usuário pesquisar por um livro específico | MÉDIA |
+|RF-015| Permitir ao usuário filtrar a lista de livros disponiveis para negociação | MÉDIA |
+|RF-016| Permitir ao usuário cadastrar seus livros | ALTA |
+|RF-017| Permitir ao usuário disponibilizar seus livros para negociação (aluguel, troca e venda) | ALTA |
+|RF-018| Permitir ao usuário anexar fotos do livro ao seu anúncio | MÉDIA |
+|RF-019| Listar ao usuário seus livros em negociação  | ALTA |
+|RF-020| Permitir ao usuário filtrar a lista com seus livros em negociação | MÉDIA |
+|RF-021| Permitir ver detalhes sobre uma negociação em específico | ALTA |
 
 ### Requisitos não Funcionais
 
