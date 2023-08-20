@@ -15,7 +15,8 @@ Plataforma de alugueis, venda e troca de livros para pessoas que querem uma nova
 * Alisson Anderson de Carvalho
 * Henrique Alexandre Gomes Pinto
 * Vitor Alexandre Gomes Pinto
-* João Lucas Pinheiro Torres 
+* João Lucas Pinheiro Torres
+* Carlos Eduardo Favilla Lobo
 
 ## Orientador
 
