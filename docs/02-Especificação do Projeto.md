@@ -104,7 +104,7 @@ Obs.: todas as informações para gerar os indicadores devem estar no diagrama d
 |RF-019| Listar ao usuário seus livros em negociação  | ALTA |
 |RF-020| Permitir ao usuário filtrar a lista com seus livros em negociação | MÉDIA |
 |RF-021| Permitir ver detalhes sobre uma negociação em específico | ALTA |
-|RF-022| Permitir avaliar o livro anunciado pelo cliente | MÉDIA |
+|RF-022| Permitir aos usuários avaliar as negociações de livro realizadas | MÉDIA |
 
 
 ### Requisitos não Funcionais
