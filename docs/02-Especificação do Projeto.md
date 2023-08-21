@@ -150,7 +150,7 @@ Enumere as restrições à sua solução. Lembre-se de que as restrições geral
 
 O diagrama de casos de uso representa a conexão entre o uso do aplicativo (casos de uso) e os usuários (atores), demonstrando de forma abstrata as principais ligações entre as funcionalidades do App.
 
-Segue o diagrama de casos de uso com as principais funcionalidades da apicação RentABook.
+Segue o diagrama de casos de uso com as principais funcionalidades da aplicação RentABook.
 ![Diagrama de casos de uso do app RentABook](img/diagrama_casos_de_uso.png)
 Criado pelo web app LucidChart https://www.lucidchart.com
 
