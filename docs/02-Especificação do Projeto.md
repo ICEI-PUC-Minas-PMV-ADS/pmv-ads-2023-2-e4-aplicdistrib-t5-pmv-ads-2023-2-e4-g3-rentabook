@@ -143,7 +143,8 @@ Criado pelo web app LucidChart https://www.lucidchart.com
 
 A Matriz de Rastreabilidade de Requisitos é uma ferramenta crucial no desenvolvimento de projetos, assegurando a coesão entre requisitos e soluções implementadas. Nesta planilha, destacamos a interligação entre requisitos funcionais e não funcionais. Ao mapear essas conexões, obtemos clareza sobre dependências, impactos e garantimos que o projeto atenda consistentemente às demandas estabelecidas. Acompanhe abaixo para compreender como essa matriz pode aprimorar a gestão do projeto e a entrega de resultados.
 
-![image](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/assets/100442612/9e726d6b-cb6f-4cbf-9de0-9c908df47879)
+![image](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/assets/100442612/7c5d2dc0-a23c-44d0-b3d7-0f67435246e0)
+
 
 
 # Gerenciamento de Projeto
