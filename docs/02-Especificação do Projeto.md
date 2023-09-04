@@ -112,7 +112,7 @@ Obs.: todas as informações para gerar os indicadores devem estar no diagrama d
 |RNF-002| O aplicativo deve estar disponível para acesso a qualquer horário do dia |  BAIXA | 
 |RNF-003| O aplicativo deve responder às ações do usuário em até 10 segundos |  ALTA | 
 |RNF-004| Quando o tempo de resposta às ações do usuário for maior que 0,1 segundos, deve-se haver um feedback |  ALTA |
-|RNF-004| As notificações sobre solicitações e alterações de negociações devem ser enviadas com no máximo 5 minutos |  BAIXA | 
+|RNF-005| As notificações sobre solicitações e alterações de negociações devem ser enviadas com no máximo 5 minutos |  BAIXA | 
 
 ## Restrições
 
