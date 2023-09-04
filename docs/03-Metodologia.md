@@ -74,9 +74,8 @@ O processo consiste nas seguintes etapas: cerimônia de planejamento, dailys e r
 
 As ferramentas empregadas no projeto são:
 
-- Editor de código.
-- Ferramentas de comunicação
-- Ferramentas de desenho de tela (_wireframing_)
+- GitHub para versionamento do projeto e organização/controle das tarefas.
+- Whatsapp para comunicação entre a equipe.
 
 O editor de código foi escolhido porque ele possui uma integração com o sistema de versão. As ferramentas de comunicação utilizadas possuem integração semelhante e por isso foram selecionadas. Por fim, para criar diagramas utilizamos essa ferramenta por melhor captar as necessidades da nossa solução.
 
