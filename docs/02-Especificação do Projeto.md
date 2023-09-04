@@ -108,13 +108,11 @@ Obs.: todas as informações para gerar os indicadores devem estar no diagrama d
 
 |ID     | Descrição do Requisito  |Prioridade |
 |-------|-------------------------|----|
-|RNF-001| O sistema deve ser responsivo para rodar em dispositivos móveis | ALTA | 
-|RNF-002| O aplicativo deve ter bom nível de contraste entre os elementos da tela em conformidade	 |  BAIXA | 
-|RNF-003| O aplicativo deve apresentar as informações de forma visual e acessível, através de uma interface simples	 |  ALTA | 
-|RNF-004| O aplicativo deve estar disponível para acesso a qualquer horário do dia |  BAIXA | 
-|RNF-005| O aplicativo deve responder às ações do usuário de forma rápida |  MÉDIA | 
-|RNF-006| O aplicativo deve impossibilitar que as senhas dos usuários sejam visíveis a atores maliciosos |  ALTA | 
-|RNF-007| As notificações sobre solicitações e alterações de negociações devem ser enviadas com no máximo 5 minutos |  BAIXA | 
+|RNF-001| O sistema deve ser responsivo para rodar em smartphones, tablets e computadores desktop | ALTA |  
+|RNF-002| O aplicativo deve estar disponível para acesso a qualquer horário do dia |  BAIXA | 
+|RNF-003| O aplicativo deve responder às ações do usuário em até 10 segundos |  ALTA | 
+|RNF-004| Quando o tempo de resposta às ações do usuário for maior que 0,1 segundos, deve-se haver um feedback |  ALTA |
+|RNF-004| As notificações sobre solicitações e alterações de negociações devem ser enviadas com no máximo 5 minutos |  BAIXA | 
 
 ## Restrições
 
@@ -122,9 +120,9 @@ O projeto está restrito pelos itens apresentados na tabela a seguir.
 
 |ID| Restrição                                             |
 |--|-------------------------------------------------------|
-|01| O projeto deverá ser entregue até o final do semestre |
+|01| O projeto deverá ser finalizado até o dia 10/12/2023 |
 |02| A equipe não pode subcontratar o desenvolvimento do trabalho |
-|03| O projeto deve usar um único banco de dados |
+
 
 ## Diagrama de Casos de Uso
 
