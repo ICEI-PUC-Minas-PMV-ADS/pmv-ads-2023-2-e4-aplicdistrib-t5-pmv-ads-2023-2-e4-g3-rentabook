@@ -34,6 +34,4 @@ Ambientalmente Conscientes: Usuários que desejam contribuir para a redução do
 
 Comunidades de Leitura: Clubes do livro, grupos de estudo e outras comunidades que podem usar a plataforma para trocar recomendações e realizar transações literárias.
 
-Adicione informações sobre o público-alvo por meio de uma descrição textual, diagramas de personas e mapa de stakeholders. <- lembrete (ainda precisa terminar os requisitos dessa linha)
-
 
