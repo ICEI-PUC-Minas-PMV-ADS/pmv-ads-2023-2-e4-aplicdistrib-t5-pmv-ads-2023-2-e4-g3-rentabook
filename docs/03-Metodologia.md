@@ -60,7 +60,7 @@ Exemplificação: A equipe utiliza metodologias ágeis, tendo escolhido o Scrum 
 
 ### Processo
 
-Coloque  informações sobre detalhes da implementação do Scrum seguido pelo grupo. O grupo deverá fazer uso do recurso de gerenciamento de projeto oferecido pelo GitHub, que permite acompanhar o andamento do projeto, a execução das tarefas e o status de desenvolvimento da solução.
+O processo consiste nas seguintes etapas: cerimônia de planejamento, dailys e retrospectiva. A cerimônia de planejamento é realizada no início da sprint para definir as tarefas a serem executadas. As dailys são realizadas diariamente para acompanhar o andamento das tarefas. A retrospectiva é realizada no final da sprint para analisar o processo e identificar oportunidades de melhoria.
  
 > **Links Úteis**:
 > - [Planejamento e Gestáo Ágil de Projetos](https://pucminas.instructure.com/courses/87878/pages/unidade-2-tema-2-utilizacao-de-ferramentas-para-controle-de-versoes-de-software)
