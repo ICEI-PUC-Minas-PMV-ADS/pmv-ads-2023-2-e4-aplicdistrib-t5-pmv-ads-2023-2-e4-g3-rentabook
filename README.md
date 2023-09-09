@@ -51,3 +51,7 @@ Assim que a primeira versão do sistema estiver disponível, deverá complementa
 # Apresentação
 
 <li><a href="presentation/README.md"> Apresentação da solução</a></li>
+
+# Reuniões salvas
+
+<li><a href="https://drive.google.com/file/d/1Z_lNb1WRMkopc-FjrN-y2Ev10qxVOToQ/view?usp=sharing">1. Daily</li>
