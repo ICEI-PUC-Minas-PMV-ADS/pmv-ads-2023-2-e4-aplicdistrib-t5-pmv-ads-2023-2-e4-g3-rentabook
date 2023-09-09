@@ -127,7 +127,7 @@ A Matriz de Rastreabilidade de Requisitos é uma ferramenta crucial no desenvolv
 
 Para gerenciar as tarefas foi criado um quadro de atividades no proprio github.
 
-![Kambam com as atividades](img/quadro_kambam.jpg)
+![Kambam com as atividades](img/quadro_kambam.png)
 
 ## Gerenciamento de Tempo
 
