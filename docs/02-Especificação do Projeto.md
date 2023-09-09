@@ -9,9 +9,8 @@ Com base na análise das personas forma identificadas as seguintes histórias de
 
 |EU COMO... `PERSONA`| QUERO/PRECISO ... `FUNCIONALIDADE` |PARA ... `MOTIVO/VALOR`                 |
 |--------------------|------------------------------------|----------------------------------------|
-|  Ana  |  criar minha própria conta e cadastrar meu endereço   |  ter acesso ao aplicativo e meu próprio perfil |
+|  Ana  |  criar minha própria conta, podendo cadastrar foto e endereço   |  ter acesso ao aplicativo e meu próprio perfil |
 |  Ana  |  entrar no sistema usando meu e-mail e senha  |  ter acesso ao meu próprio perfil de usuário | 
-|  Ana  |  cadastrar uma foto de perfil  |  customizar minha experiencia de uso | 
 |  Ana  |  alterar minhas informações de usuário  |  tornar minha experiencia de uso mais personalizada |
 |  Ana  |  ter acesso a uma lista com livros que possam ser negociados com outros usuários  |  ter acesso a outros livros sem gastar dinheiro | 		
 |  Luíza  |  ter acesso a um chat  |  me comunicar com outro usuário no momento da negociação |	 
