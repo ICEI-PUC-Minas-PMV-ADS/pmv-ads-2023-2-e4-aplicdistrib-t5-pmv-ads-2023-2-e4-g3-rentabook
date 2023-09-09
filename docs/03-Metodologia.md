@@ -54,14 +54,6 @@ Segue a divisão de  papéis do grupo:
 ### Processo
 
 O processo consiste nas seguintes etapas: cerimônia de planejamento, dailys e retrospectiva. A cerimônia de planejamento é realizada no início da sprint para definir as tarefas a serem executadas. As dailys são realizadas diariamente para acompanhar o andamento das tarefas. A retrospectiva é realizada no final da sprint para analisar o processo e identificar oportunidades de melhoria.
- 
-> **Links Úteis**:
-> - [Planejamento e Gestáo Ágil de Projetos](https://pucminas.instructure.com/courses/87878/pages/unidade-2-tema-2-utilizacao-de-ferramentas-para-controle-de-versoes-de-software)
-> - [Sobre quadros de projeto](https://docs.github.com/pt/issues/organizing-your-work-with-project-boards/managing-project-boards/about-project-boards)
-> - [Project management, made simple](https://github.com/features/project-management/)
-> - [Sobre quadros de projeto](https://docs.github.com/pt/github/managing-your-work-on-github/about-project-boards)
-> - [Como criar Backlogs no Github](https://www.youtube.com/watch?v=RXEy6CFu9Hk)
-> - [Tutorial Slack](https://slack.com/intl/en-br/)
 
 ### Ferramentas
 
