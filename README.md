@@ -58,4 +58,4 @@ Assim que a primeira versão do sistema estiver disponível, deverá complementa
 
 # Documentos importantes
 
-<li><a href="https://sgapucminasbr-my.sharepoint.com/:x:/g/personal/1387192_sga_pucminas_br/EdDatyGdL-dNqOFUXVLSpWIBUZwnFx8Bobu_76bCwdFWhw?e=TzyYJ1">Planilha com os planos de testes</a></li>
+<li><a href="https://sgapucminasbr-my.sharepoint.com/:x:/g/personal/1387192_sga_pucminas_br/EdDatyGdL-dNqOFUXVLSpWIBUZwnFx8Bobu_76bCwdFWhw?e=TzyYJ1" target="_blank">Planilha com os planos de testes</a></li>
