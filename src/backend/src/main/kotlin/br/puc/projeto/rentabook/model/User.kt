@@ -1,4 +1,4 @@
-package br.puc.projeto.rentabook.models
+package br.puc.projeto.rentabook.model
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.index.Indexed
