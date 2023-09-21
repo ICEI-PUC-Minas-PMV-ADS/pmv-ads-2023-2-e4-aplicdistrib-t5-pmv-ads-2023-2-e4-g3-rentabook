@@ -1,12 +1,9 @@
 package br.puc.projeto.rentabook.forms
 
-import br.puc.projeto.rentabook.models.User
-import jakarta.validation.constraints.Min
+import br.puc.projeto.rentabook.model.User
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
 import lombok.Data
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.Calendar
 
 @Data

@@ -45,7 +45,7 @@ class RegisterUserTests {
     @Test
     fun `T001 - Cadastrar usuario`() {
         mockMvc.perform(MockMvcRequestBuilders
-            .post("/register")
+            .post("/user/register")
             .contentType("application/json")
             .content(ObjectMapper().writeValueAsString(UserForm(
                 name = "John",
@@ -72,7 +72,7 @@ class RegisterUserTests {
     @Test
     fun `T002 - Cadastrar usuario - email ja existe`() {
         mockMvc.perform(MockMvcRequestBuilders
-            .post("/register")
+            .post("/user/register")
             .contentType("application/json")
             .content(ObjectMapper().writeValueAsString(UserForm(
                 name = "John",
@@ -81,7 +81,7 @@ class RegisterUserTests {
             ))))
 
         mockMvc.perform(MockMvcRequestBuilders
-            .post("/register")
+            .post("/user/register")
             .contentType("application/json")
             .content(ObjectMapper().writeValueAsString(UserForm(
                 name = "John",
