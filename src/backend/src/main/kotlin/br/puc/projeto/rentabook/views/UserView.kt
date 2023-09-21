@@ -1,7 +1,6 @@
 package br.puc.projeto.rentabook.views
 
-import br.puc.projeto.rentabook.models.Image
-import java.time.LocalDateTime
+import br.puc.projeto.rentabook.model.Image
 import java.util.*
 
 data class UserView(

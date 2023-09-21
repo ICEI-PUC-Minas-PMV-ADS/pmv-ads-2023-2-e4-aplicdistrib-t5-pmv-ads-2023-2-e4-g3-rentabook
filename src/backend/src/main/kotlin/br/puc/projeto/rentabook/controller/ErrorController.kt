@@ -1,6 +1,5 @@
-package br.puc.projeto.rentabook.controllers
+package br.puc.projeto.rentabook.controller
 
-import org.json.JSONObject
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler

@@ -1,6 +1,6 @@
-package br.puc.projeto.rentabook.mappers
+package br.puc.projeto.rentabook.mapper
 
-import br.puc.projeto.rentabook.models.User
+import br.puc.projeto.rentabook.model.User
 import br.puc.projeto.rentabook.views.UserView
 
 class UserMapper {

@@ -1,8 +1,8 @@
-package br.puc.projeto.rentabook.services
+package br.puc.projeto.rentabook.service
 
 import br.puc.projeto.rentabook.forms.UserForm
-import br.puc.projeto.rentabook.models.User
-import br.puc.projeto.rentabook.repositories.UserRepository
+import br.puc.projeto.rentabook.model.User
+import br.puc.projeto.rentabook.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.lang.Exception
