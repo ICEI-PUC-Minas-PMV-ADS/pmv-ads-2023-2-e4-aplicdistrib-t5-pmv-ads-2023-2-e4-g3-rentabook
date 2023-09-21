@@ -2,6 +2,7 @@ package br.puc.projeto.rentabook.service
 
 import br.puc.projeto.rentabook.dto.BookView
 import br.puc.projeto.rentabook.dto.SearchVolumeGoogleBooksDTO
+import br.puc.projeto.rentabook.exception.NotFoundException
 import br.puc.projeto.rentabook.mapper.BookViewMapper
 import br.puc.projeto.rentabook.repository.BookRepository
 import org.springframework.data.domain.Page
@@ -24,7 +25,7 @@ class BookService (
     fun findAll (search: String, pageable: Pageable): Page<BookView>{
         return bookRepository.findAll(search).run {
             this.items.map {t ->
-                t ?: throw Exception("Nenhum livro encontrado")
+                t ?: throw NotFoundException("Nenhum livro encontrado")
                 bookViewMapper.map(t)
             }.run {
                 getCustomPage(this, pageable = pageable)

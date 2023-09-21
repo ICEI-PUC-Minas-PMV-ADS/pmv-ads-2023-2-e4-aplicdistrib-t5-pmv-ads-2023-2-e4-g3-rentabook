@@ -2,6 +2,7 @@ package br.puc.projeto.rentabook.repository
 
 import br.puc.projeto.rentabook.dto.EspecificVolumeGoogleBooksDTO
 import br.puc.projeto.rentabook.dto.SearchVolumeGoogleBooksDTO
+import br.puc.projeto.rentabook.exception.NotFoundException
 import org.springframework.stereotype.Repository
 import org.springframework.web.reactive.function.client.WebClient
 
@@ -21,7 +22,7 @@ class BookRepository {
             .retrieve()
             .bodyToMono(EspecificVolumeGoogleBooksDTO::class.java)
             .block().run {
-                this ?: throw Exception(message)
+                this ?: throw NotFoundException(message)
             }
     }
 
@@ -36,7 +37,7 @@ class BookRepository {
             .retrieve()
             .bodyToMono(SearchVolumeGoogleBooksDTO::class.java)
             .block().run {
-                this ?: throw Exception(message)
+                this ?: throw NotFoundException(message)
             }
     }
 

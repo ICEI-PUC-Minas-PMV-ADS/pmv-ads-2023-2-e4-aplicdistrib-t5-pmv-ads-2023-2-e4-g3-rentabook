@@ -7,5 +7,5 @@ import org.springframework.data.mongodb.core.mapping.Document
 data class Image(
     @Id
     val id: String? = null,
-    val path: String,
+    var path: String? = null,
 )
