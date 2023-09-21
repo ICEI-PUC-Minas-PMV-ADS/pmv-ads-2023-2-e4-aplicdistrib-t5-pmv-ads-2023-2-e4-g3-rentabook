@@ -1,7 +1,9 @@
 package br.puc.projeto.rentabook.models
 
 import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.mapping.Document
 
+@Document("addresses")
 data class Address(
     @Id
     val id: String,

@@ -4,7 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class RentabookApplication
+class RentabookApplication {
+}
 
 fun main(args: Array<String>) {
 	runApplication<RentabookApplication>(*args)
