@@ -19,12 +19,12 @@ data class UserForm(
     @field:Size(min = 6, message = "A senha deve ter um tamanho minimo de 6 caracteres")
     val password: String,
 ) {
-    fun toUser(): User {
-        return User(
-            name = name,
-            email = email,
-            password = password,
-            createData = Calendar.getInstance().time,
-        )
-    }
+//    fun toUser(): User {
+//        return User(
+//            name = name,
+//            email = email,
+//            password = password,
+//            createData = Calendar.getInstance().time,
+//        )
+//    }
 }
