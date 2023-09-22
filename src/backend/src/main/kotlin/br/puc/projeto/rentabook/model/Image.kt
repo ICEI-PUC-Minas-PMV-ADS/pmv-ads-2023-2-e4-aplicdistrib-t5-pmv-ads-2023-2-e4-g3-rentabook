@@ -8,4 +8,5 @@ data class Image(
     @Id
     val id: String? = null,
     var path: String? = null,
+    var type: String? = null
 )

@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
@@ -28,6 +30,8 @@ class SecurityConfig (
             authorizeHttpRequests {
                 authorize(AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/register"), permitAll)
                 authorize(AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/login"), permitAll)
+                authorize(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/user/{id}"), permitAll)
+                authorize(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/image/{id}"), permitAll)
                 authorize(anyRequest, authenticated)
             }
             sessionManagement {
@@ -52,4 +56,6 @@ class SecurityConfig (
     fun authenticationManager(authenticationConfiguration: AuthenticationConfiguration): AuthenticationManager {
         return authenticationConfiguration.authenticationManager
     }
+
+
 }

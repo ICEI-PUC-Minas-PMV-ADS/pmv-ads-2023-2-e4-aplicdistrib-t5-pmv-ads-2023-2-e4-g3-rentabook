@@ -11,9 +11,8 @@ data class User(
     @Id
     val id: String? = null,
     val name: String,
-    val userImage: Image?, // Image
+    var userImage: Image?,
     val email: String,
-
     val password: String,
     val createData: LocalDateTime = LocalDateTime.now(),
     val booksId: List<String?>?,
