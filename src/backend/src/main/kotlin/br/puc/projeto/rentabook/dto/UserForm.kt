@@ -1,4 +1,4 @@
-package br.puc.projeto.rentabook.forms
+package br.puc.projeto.rentabook.dto
 
 import br.puc.projeto.rentabook.model.User
 import jakarta.validation.constraints.NotBlank
@@ -19,12 +19,4 @@ data class UserForm(
     @field:Size(min = 6, message = "A senha deve ter um tamanho minimo de 6 caracteres")
     val password: String,
 ) {
-//    fun toUser(): User {
-//        return User(
-//            name = name,
-//            email = email,
-//            password = password,
-//            createData = Calendar.getInstance().time,
-//        )
-//    }
 }

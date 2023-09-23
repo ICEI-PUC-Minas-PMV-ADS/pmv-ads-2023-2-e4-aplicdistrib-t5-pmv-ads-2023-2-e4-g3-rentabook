@@ -1,6 +1,7 @@
 package br.puc.projeto.rentabook
 
-import br.puc.projeto.rentabook.forms.UserForm
+import br.puc.projeto.rentabook.dto.UpdateProfileForm
+import br.puc.projeto.rentabook.dto.UserForm
 import br.puc.projeto.rentabook.views.UserView
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.gson.Gson
@@ -18,7 +19,6 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
-import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 
 @AutoConfigureMockMvc
@@ -45,21 +45,22 @@ class RegisterUserTests {
     @Test
     fun `T001 - Cadastrar usuario`() {
         mockMvc.perform(MockMvcRequestBuilders
-            .post("/user/register")
+            .post("/register")
             .contentType("application/json")
-            .content(ObjectMapper().writeValueAsString(UserForm(
+            .content(ObjectMapper().writeValueAsString(
+                UserForm(
                 name = "John",
                 email = "john@email.com",
                 password = "123456",
-            ))))
+            )
+            )))
             .andExpect(status().isOk)
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect {
                 val response = JSONObject(it.response.contentAsString)
-                val data = Gson().fromJson(response.getJSONObject("data").toString(), UserView::class.java)
+                val token = response.getString("token")
 
-                Assertions.assertEquals("John", data.name)
-                Assertions.assertEquals("john@email.com", data.email)
+                Assertions.assertNotNull(token)
             }
     }
 
@@ -72,34 +73,75 @@ class RegisterUserTests {
     @Test
     fun `T002 - Cadastrar usuario - email ja existe`() {
         mockMvc.perform(MockMvcRequestBuilders
-            .post("/user/register")
+            .post("/register")
             .contentType("application/json")
-            .content(ObjectMapper().writeValueAsString(UserForm(
-                name = "John",
-                email = "john@email.com",
-                password = "123456",
-            ))))
+            .content(ObjectMapper().writeValueAsString(
+                UserForm(
+                    name = "John",
+                    email = "john@email.com",
+                    password = "123456",
+                )
+            )))
 
         mockMvc.perform(MockMvcRequestBuilders
-            .post("/user/register")
+            .post("/register")
             .contentType("application/json")
-            .content(ObjectMapper().writeValueAsString(UserForm(
-                name = "John",
-                email = "john@email.com",
-                password = "123456",
-            ))))
+            .content(ObjectMapper().writeValueAsString(
+                UserForm(
+                    name = "John",
+                    email = "john@email.com",
+                    password = "123456",
+                )
+            )))
+            .andExpect(status().is5xxServerError)
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect {
+                val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
+
+                val status = response.getInt("status")
+                Assertions.assertEquals(500, status)
+
+                val error = response.getString("message")
+                Assertions.assertEquals("Este email já esta em uso!", error)
+            }
+    }
+
+    @Test
+    fun `Atualiza usuario`() {
+        var token = ""
+        val newName = "John2"
+
+        mockMvc.perform(MockMvcRequestBuilders
+            .post("/register")
+            .contentType("application/json")
+            .content(ObjectMapper().writeValueAsString(
+                UserForm(
+                    name = "John",
+                    email = "john@email.com",
+                    password = "123456",
+                )
+            )))
+            .andExpect {
+                val response = JSONObject(it.response.contentAsString)
+                token = response.getString("token")
+            }
+
+        mockMvc.perform(MockMvcRequestBuilders
+            .post("/user/updateProfile")
+            .contentType("application/json")
+            .header("Authorization", "Bearer $token")
+            .content(ObjectMapper().writeValueAsString(
+                UpdateProfileForm(
+                    name = "John2"
+                )
+            )))
             .andExpect(status().isOk)
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect {
                 val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
 
-                val status = response.getString("status")
-                Assertions.assertEquals("error", status)
-
-                val data = response.getJSONObject("data")
-                val error = data.getString("message")
-
-                Assertions.assertEquals("Este email já foi registrado!", error)
+                val name = response.getString("name")
+                Assertions.assertEquals(newName, name)
             }
     }
 

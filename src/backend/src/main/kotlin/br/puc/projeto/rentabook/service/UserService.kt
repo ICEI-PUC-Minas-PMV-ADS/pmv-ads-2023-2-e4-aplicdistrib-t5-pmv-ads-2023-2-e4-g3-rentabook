@@ -49,6 +49,11 @@ class UserService(
         }
     }
 
+    fun <R> checkDuplicatedEmail(email: String, block: () -> R): R {
+        userRepository.findByEmail(email)?.let { throw Exception("Este email já esta em uso!") }
+        return block()
+    }
+
     fun register(form: RegisterForm): User {
         return registerFormMapper.map(form).run {
             userRepository.save(this)
@@ -135,7 +140,7 @@ class UserService(
     fun registerBook(id: String): PrivateUserView {
         val authentication = SecurityContextHolder.getContext().authentication
         return userRepository.findByEmail(authentication.name).run {
-                this ?: throw Exception("Usuário autenticado não encontrado")
+            this ?: throw Exception("Usuário autenticado não encontrado")
             val findedBook = booksId.find { book ->
                 book == id
             }
@@ -164,4 +169,14 @@ class UserService(
         }
     }
 
+    fun updateUserProfile(updateProfileForm: UpdateProfileForm): PrivateUserView {
+        val authentication = SecurityContextHolder.getContext().authentication
+        return userRepository.findByEmail(authentication.name).run {
+            this ?: throw Exception("Usuário autenticado não encontrado")
+            this.name =  updateProfileForm.name
+            userRepository.save(this).run {
+                privateUserViewMapper.map(this)
+            }
+        }
+    }
 }

@@ -9,5 +9,5 @@ data class UserView(
     val userImage: Image? = null,
     val email: String,
     val createData: Date? = null,
-    val addresses: MutableList<String?> = mutableListOf(null),
+    val addresses: MutableList<String?> = mutableListOf(),
 )

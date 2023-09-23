@@ -10,12 +10,12 @@ import java.util.*
 data class User(
     @Id
     val id: String? = null,
-    val name: String,
-    var userImage: Image?,
+    var name: String,
+    var userImage: Image? = null,
     val email: String,
     var password: String,
     val createData: LocalDateTime = LocalDateTime.now(),
-    val booksId: MutableList<String?> = mutableListOf(null),
-    val addresses: MutableList<Address?> = mutableListOf(null),
+    val booksId: MutableList<String?> = mutableListOf(),
+    val addresses: MutableList<Address?> = mutableListOf(),
     val role: List<Role>
 )

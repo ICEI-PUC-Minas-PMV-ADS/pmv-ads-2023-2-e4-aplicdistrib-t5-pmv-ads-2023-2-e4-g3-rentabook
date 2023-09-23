@@ -33,8 +33,10 @@ class UserController(
 
     @PostMapping("/register")
     fun register(@RequestBody @Valid form: RegisterForm): ResponseLoginView {
-        return userService.register(form).run {
-            userService.authenticateAndGenerateToken(form.email, form.password)
+        return userService.checkDuplicatedEmail(form.email) {
+            userService.register(form).run {
+                userService.authenticateAndGenerateToken(form.email, form.password)
+            }
         }
     }
 
@@ -73,6 +75,14 @@ class UserController(
     @DeleteMapping("/user/address/{id}")
     fun deleteAddress(@PathVariable id: String): PrivateUserView {
         return userService.deleteAddress(id)
+    }
+
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
+    @PostMapping("/user/updateProfile")
+    fun updateProfile(@RequestBody updateProfileForm: UpdateProfileForm): PrivateUserView {
+        return userService.updateUserProfile(updateProfileForm)
     }
 
     @SecurityRequirement(
