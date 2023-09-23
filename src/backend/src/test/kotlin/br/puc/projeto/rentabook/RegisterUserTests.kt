@@ -106,8 +106,13 @@ class RegisterUserTests {
             }
     }
 
+    /**
+     * Teste:       T-007
+     * Requisito:   RF-006
+     * Objetivo:    Tentar efetuar a alteração do nome do usuário.
+     */
     @Test
-    fun `Atualiza usuario`() {
+    fun `T007 - Atualiza usuario`() {
         var token = ""
         val newName = "John2"
 
