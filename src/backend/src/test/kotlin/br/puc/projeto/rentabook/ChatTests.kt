@@ -324,7 +324,7 @@ class ChatTests {
 
         mockMvc.perform(
             MockMvcRequestBuilders
-                .post("/chat_messages/new")
+                .post("/chat/messages/new")
                 .contentType("application/json")
                 .header("Authorization", "Bearer $userOneToken")
                 .content(
@@ -344,6 +344,152 @@ class ChatTests {
                 )
                 Assertions.assertEquals(message, chatMessageView.message)
                 Assertions.assertEquals(userOneId, chatMessageView.sender.id)
+            }
+    }
+
+    /**
+     * Teste:       T-013
+     * Requisito:   RF-008
+     * Objetivo:    Tentar listar as mensagens mais recentes enviadas no chat.
+     */
+    @Test
+    fun `T013 - Listar as mensagens recentes enviadas no chat`() {
+        var addressId = ""
+        var announcementId = ""
+        var chatId = ""
+
+        val message = "Hello world!"
+
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .post("/user/address")
+                .contentType("application/json")
+                .header("Authorization", "Bearer $userOneToken")
+                .content(
+                    ObjectMapper().writeValueAsString(
+                        AddressForm(
+                            name = "Casa",
+                            cep = "01001-000",
+                            street = "Praça da Sé",
+                            number = "10",
+                            complement = "casa",
+                            neighborhood = "Sé",
+                            city = "São Paulo",
+                            state = "SP",
+                        )
+                    )
+                )
+            )
+            .andExpect {
+                val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
+                addressId = response.getString("id")
+            }
+
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .post("/announcement/new")
+                .contentType("application/json")
+                .header("Authorization", "Bearer $userOneToken")
+                .content(
+                    ObjectMapper().writeValueAsString(
+                        CreateAnnouncementForm(
+                            bookId = "f1u-swEACAAJ",
+                            images = listOf(),
+                            description = "description",
+                            dailyValue = 10,
+                            locationId = addressId,
+                        )
+                    )
+                )
+            )
+            .andExpect {
+                val builder = GsonBuilder()
+                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
+                val gson = builder.create()
+
+                val announcementView = gson.fromJson(
+                    it.response.getContentAsString(StandardCharsets.UTF_8),
+                    AnnouncementView::class.java,
+                )
+
+                announcementId = announcementView.id
+
+                Assertions.assertEquals("f1u-swEACAAJ", announcementView.book.id)
+                Assertions.assertEquals("description", announcementView.description)
+                Assertions.assertEquals(0, announcementView.images.size)
+                Assertions.assertEquals(10, announcementView.dailyValue)
+            }
+
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .post("/announcement/rent")
+                .contentType("application/json")
+                .header("Authorization", "Bearer $userTwoToken")
+                .content(
+                    ObjectMapper().writeValueAsString(
+                        CreateRentForm(
+                            announcementId = announcementId,
+                            startDate = "2023-09-23",
+                            endDate = "2023-09-26",
+                            value = 15.0,
+                        )
+                    )
+                )
+            )
+            .andExpect(status().isOk)
+            .andExpect {
+                val builder = GsonBuilder()
+                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
+                builder.registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())
+                val gson = builder.create()
+
+                val rentView = gson.fromJson(
+                    it.response.getContentAsString(StandardCharsets.UTF_8),
+                    RentView::class.java
+                )
+
+                Assertions.assertNotNull(rentView.chat)
+                Assertions.assertEquals(userOneId, rentView.chat.owner.id)
+                Assertions.assertEquals(userTwoId, rentView.chat.lead.id)
+
+                chatId = rentView.chat.id
+            }
+
+        for (i in 0 until 20) {
+            mockMvc.perform(
+                MockMvcRequestBuilders
+                    .post("/chat/messages/new")
+                    .contentType("application/json")
+                    .header("Authorization", "Bearer $userOneToken")
+                    .content(
+                        ObjectMapper().writeValueAsString(
+                            CreateChatMessageForm(
+                                chatId = chatId,
+                                message = "$i: $message",
+                            )
+                        )
+                    )
+                )
+                .andExpect(status().isOk)
+        }
+
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .get("/chat/$chatId/recent_messages")
+                .contentType("application/json")
+                .header("Authorization", "Bearer $userTwoToken")
+            )
+            .andExpect(status().isOk)
+            .andExpect {
+                val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
+                val chatMessages = Gson().fromJson(
+                    response.getJSONArray("content").toString(),
+                    Array<ChatMessageView>::class.java,
+                )
+
+                Assertions.assertEquals(10, chatMessages.size)
+                Assertions.assertEquals("19: Hello world!", chatMessages[0].message)
+                Assertions.assertEquals("18: Hello world!", chatMessages[1].message)
             }
     }
 
