@@ -8,10 +8,12 @@
 
 O diagrama de classes ilustra graficamente como será a estrutura do software, e como cada uma das classes da sua estrutura estarão interligadas. Essas classes servem de modelo para materializar os objetos que executarão na memória.
 
-As referências abaixo irão auxiliá-lo na geração do artefato “Diagrama de Classes”.
+<img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/3f76041d13362a5ac1ca45a126c5497a8ca6e797/docs/img/Diagrama%20de%20classe%20RentABook.png" alt="Diagrama de classes">
 
-> - [Diagramas de Classes - Documentação da IBM](https://www.ibm.com/docs/pt-br/rational-soft-arch/9.6.1?topic=diagrams-class)
-> - [O que é um diagrama de classe UML? | Lucidchart](https://www.lucidchart.com/pages/pt/o-que-e-diagrama-de-classe-uml)
+Acesse o link abaixo para visualizar o diagrama completo.
+
+> - [Diagramas de Classes RentABook - Lucidchart](https://lucid.app/lucidchart/4d4f1757-4a0b-451a-b8a5-e19dde46423a/edit?viewport_loc=-400%2C-186%2C404%2C189%2CHWEp-vi-RSFO&invitationId=inv_863d048b-9aa6-4f41-9538-69c68af99aee)
+
 
 ## Modelo ER
 
