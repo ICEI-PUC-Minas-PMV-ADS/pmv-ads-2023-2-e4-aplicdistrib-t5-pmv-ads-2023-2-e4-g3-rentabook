@@ -2,6 +2,7 @@ package br.puc.projeto.rentabook
 
 import br.puc.projeto.rentabook.adapters.LocalDateTimeAdapter
 import br.puc.projeto.rentabook.dto.*
+import br.puc.projeto.rentabook.utils.TestUtils
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -42,24 +43,15 @@ class BooksTests {
             "QkW8EAAAQBAJ"
         )
 
-        mockMvc.perform(
-            MockMvcRequestBuilders
-                .post("/register")
-                .contentType("application/json")
-                .content(
-                    ObjectMapper().writeValueAsString(
-                        UserForm(
-                            name = "John",
-                            email = "john@email.com",
-                            password = "123456",
-                        )
-                    )
-                )
-        )
-            .andExpect {
-                val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
-                userOneToken = response.getString("token")
+        TestUtils.createUser(
+            mockMvc = mockMvc,
+            name = "John",
+            email = "john@email.com",
+            password = "123456",
+            onCreate = {
+                userOneToken = it.getString("token")
             }
+        )
 
         mockMvc.perform(
             MockMvcRequestBuilders
@@ -80,7 +72,7 @@ class BooksTests {
                         )
                     )
                 )
-        )
+            )
             .andExpect {
                 val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
                 addressId = response.getString("id")
@@ -92,7 +84,7 @@ class BooksTests {
                 .get("/user")
                 .contentType("application/json")
                 .header("Authorization", "Bearer $userOneToken")
-        )
+            )
             .andExpect {
                 val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
                 userOneId = response.getString("id")
@@ -105,7 +97,7 @@ class BooksTests {
                     .post("/user/books/$bookId")
                     .contentType("application/json")
                     .header("Authorization", "Bearer $userOneToken")
-            )
+                )
                 .andExpect(status().isOk)
         }
     }
