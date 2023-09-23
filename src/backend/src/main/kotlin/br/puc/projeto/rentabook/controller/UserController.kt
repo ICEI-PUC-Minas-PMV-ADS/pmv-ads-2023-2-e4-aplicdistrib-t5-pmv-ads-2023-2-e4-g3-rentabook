@@ -65,7 +65,7 @@ class UserController(
         name = "bearerAuth"
     )
     @PostMapping("/user/address")
-    fun registerAddress(@RequestBody @Valid form: AddressForm): PrivateUserView {
+    fun registerAddress(@RequestBody @Valid form: AddressForm): AddressView {
         return userService.registerAddress(form)
     }
 

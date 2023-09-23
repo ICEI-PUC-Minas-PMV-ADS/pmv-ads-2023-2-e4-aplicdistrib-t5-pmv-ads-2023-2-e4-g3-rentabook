@@ -4,10 +4,7 @@ import br.puc.projeto.rentabook.dto.*
 import br.puc.projeto.rentabook.exception.InvalidLoginException
 import br.puc.projeto.rentabook.exception.NotFoundException
 import br.puc.projeto.rentabook.exception.ResourceAlreadyExistsException
-import br.puc.projeto.rentabook.mapper.AddressFormMapper
-import br.puc.projeto.rentabook.mapper.PrivateUserViewMapper
-import br.puc.projeto.rentabook.mapper.PublicUserViewMapper
-import br.puc.projeto.rentabook.mapper.RegisterFormMapper
+import br.puc.projeto.rentabook.mapper.*
 import br.puc.projeto.rentabook.model.User
 import br.puc.projeto.rentabook.repository.AddressRepository
 import br.puc.projeto.rentabook.repository.UserRepository
@@ -31,7 +28,8 @@ class UserService(
     private val jwtUtils: JWTUtils,
     private val privateUserViewMapper: PrivateUserViewMapper,
     private val addressFormMapper: AddressFormMapper,
-    private val addressRepository: AddressRepository
+    private val addressRepository: AddressRepository,
+    private val addressViewMapper: AddressViewMapper,
 ) {
 
     fun getPublicUser(id: String): PublicUserView {
@@ -92,15 +90,15 @@ class UserService(
         }
     }
 
-    fun registerAddress(form: AddressForm): PrivateUserView {
+    fun registerAddress(form: AddressForm): AddressView {
         val authentication = SecurityContextHolder.getContext().authentication
-
-        return addressRepository.save(addressFormMapper.map(form)).let { address ->
-            userRepository.findByEmail(authentication.name).run {
-                this ?: throw Exception("Usuário autenticado não encontrado")
+        return userRepository.findByEmail(authentication.name).run {
+            this ?: throw Exception("Usuário autenticado não encontrado")
+            addressRepository.save(addressFormMapper.map(form)).let { address ->
+                val addressIndex = addresses.size
                 addresses.add(address)
-                userRepository.save(this).run {
-                    privateUserViewMapper.map(this)
+                userRepository.save(this@run).run {
+                    addressViewMapper.map(this.addresses[addressIndex] ?: throw Exception("Endereço não foi localizado"))
                 }
             }
         }

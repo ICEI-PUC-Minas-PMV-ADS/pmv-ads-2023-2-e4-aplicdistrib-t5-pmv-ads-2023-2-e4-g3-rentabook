@@ -1,13 +1,10 @@
 package br.puc.projeto.rentabook
 
-import br.puc.projeto.rentabook.adapters.LocalDateAdapter
 import br.puc.projeto.rentabook.adapters.LocalDateTimeAdapter
 import br.puc.projeto.rentabook.dto.*
-import br.puc.projeto.rentabook.model.ChatMessage
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import jakarta.validation.constraints.AssertTrue
 import org.json.JSONObject
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions
@@ -23,13 +20,13 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.nio.charset.StandardCharsets
-import java.time.LocalDate
 import java.time.LocalDateTime
+
 
 @ExtendWith(SpringExtension::class)
 @AutoConfigureMockMvc
 @SpringBootTest(properties = ["spring.data.mongodb.database=rentabook_db_test"])
-class ChatTests {
+class BooksTests {
 
     @Autowired
     private lateinit var mockMvc: MockMvc
@@ -37,12 +34,14 @@ class ChatTests {
     @Autowired
     private lateinit var mongoTemplate: MongoTemplate
 
-    /**
-     * Inicia os usuário de teste e pega suas respectivar credenciais e ids.
-     */
-
     @BeforeEach
     fun initializeDatabase() {
+        val books = listOf(
+            "B9KTjwEACAAJ",
+            "f1u-swEACAAJ",
+            "QkW8EAAAQBAJ"
+        )
+
         mockMvc.perform(
             MockMvcRequestBuilders
                 .post("/register")
@@ -56,7 +55,7 @@ class ChatTests {
                         )
                     )
                 )
-            )
+        )
             .andExpect {
                 val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
                 userOneToken = response.getString("token")
@@ -64,15 +63,223 @@ class ChatTests {
 
         mockMvc.perform(
             MockMvcRequestBuilders
+                .post("/user/address")
+                .contentType("application/json")
+                .header("Authorization", "Bearer $userOneToken")
+                .content(
+                    ObjectMapper().writeValueAsString(
+                        AddressForm(
+                            name = "Casa",
+                            cep = "01001-000",
+                            street = "Praça da Sé",
+                            number = "10",
+                            complement = "casa",
+                            neighborhood = "Sé",
+                            city = "São Paulo",
+                            state = "SP",
+                        )
+                    )
+                )
+        )
+            .andExpect {
+                val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
+                addressId = response.getString("id")
+            }
+
+        // Busca as informações do usuário.
+        mockMvc.perform(
+            MockMvcRequestBuilders
                 .get("/user")
                 .contentType("application/json")
                 .header("Authorization", "Bearer $userOneToken")
-            )
+        )
             .andExpect {
                 val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
                 userOneId = response.getString("id")
             }
 
+        // Os livros a lista do usuario.
+        books.forEach { bookId ->
+            mockMvc.perform(
+                MockMvcRequestBuilders
+                    .post("/user/books/$bookId")
+                    .contentType("application/json")
+                    .header("Authorization", "Bearer $userOneToken")
+            )
+                .andExpect(status().isOk)
+        }
+    }
+
+    @BeforeEach
+    fun clearDocument() {
+        mongoTemplate.db.drop()
+    }
+
+    /**
+     *
+     * Teste:       T-010
+     * Requisito:   RF-016
+     * Objetivo:    Tentar disponibilizar para negociar um dos livros disponiveis para negociação.
+     */
+
+    @Test
+    fun `T010 - Disponibilizar um livro para negociar`() {
+        val bookIdToNegotiate = "B9KTjwEACAAJ"
+
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .post("/announcement/new")
+                .contentType("application/json")
+                .header("Authorization", "Bearer $userOneToken")
+                .content(
+                    ObjectMapper().writeValueAsString(
+                        CreateAnnouncementForm(
+                            bookId = bookIdToNegotiate,
+                            images = listOf(),
+                            description = "description",
+                            dailyValue = 10,
+                            locationId = addressId,
+                        )
+                    )
+                )
+            )
+            .andExpect {
+                val builder = GsonBuilder()
+                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
+                val gson = builder.create()
+
+                val announcementView = gson.fromJson(
+                    it.response.getContentAsString(StandardCharsets.UTF_8),
+                    AnnouncementView::class.java,
+                )
+
+                Assertions.assertEquals(bookIdToNegotiate, announcementView.book.id)
+                Assertions.assertEquals("description", announcementView.description)
+                Assertions.assertEquals(0, announcementView.images.size)
+                Assertions.assertEquals(10, announcementView.dailyValue)
+                Assertions.assertEquals(addressId, announcementView.location.id)
+            }
+    }
+
+    /**
+     * Teste:       T-011
+     * Requisito:   RF-009
+     * Objetivo:    Tentar buscar a lista de livros disponiveis para negociação.
+     */
+
+    @Test
+    fun `T011 - Buscar a lista de livros disponiveis para negociacao`() {
+        val books = listOf(
+            "f1u-swEACAAJ",
+            "QkW8EAAAQBAJ"
+        )
+
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .post("/announcement/new")
+                .contentType("application/json")
+                .header("Authorization", "Bearer $userOneToken")
+                .content(
+                    ObjectMapper().writeValueAsString(
+                        CreateAnnouncementForm(
+                            bookId = "f1u-swEACAAJ",
+                            images = listOf(),
+                            description = "description",
+                            dailyValue = 10,
+                            locationId = addressId,
+                        )
+                    )
+                )
+            )
+            .andExpect {
+                val builder = GsonBuilder()
+                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
+                val gson = builder.create()
+
+                val announcementView = gson.fromJson(
+                    it.response.getContentAsString(StandardCharsets.UTF_8),
+                    AnnouncementView::class.java,
+                )
+
+                Assertions.assertEquals("f1u-swEACAAJ", announcementView.book.id)
+                Assertions.assertEquals("description", announcementView.description)
+                Assertions.assertEquals(0, announcementView.images.size)
+                Assertions.assertEquals(10, announcementView.dailyValue)
+                Assertions.assertEquals(addressId, announcementView.location.id)
+            }
+
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .post("/announcement/new")
+                .contentType("application/json")
+                .header("Authorization", "Bearer $userOneToken")
+                .content(
+                    ObjectMapper().writeValueAsString(
+                        CreateAnnouncementForm(
+                            bookId = "QkW8EAAAQBAJ",
+                            images = listOf(),
+                            description = "description",
+                            dailyValue = 10,
+                            locationId = addressId,
+                        )
+                    )
+                )
+            )
+            .andExpect {
+                val builder = GsonBuilder()
+                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
+                val gson = builder.create()
+
+                val announcementView = gson.fromJson(
+                    it.response.getContentAsString(StandardCharsets.UTF_8),
+                    AnnouncementView::class.java,
+                )
+
+                Assertions.assertEquals("QkW8EAAAQBAJ", announcementView.book.id)
+                Assertions.assertEquals("description", announcementView.description)
+                Assertions.assertEquals(0, announcementView.images.size)
+                Assertions.assertEquals(10, announcementView.dailyValue)
+                Assertions.assertEquals(addressId, announcementView.location.id)
+            }
+
+
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .get("/books/availableToNegotiate")
+                .contentType("application/json")
+                .header("Authorization", "Bearer $userOneToken")
+            )
+            .andExpect {
+                val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
+                val booksAvailableToNegotiate = Gson().fromJson(
+                    response.getJSONArray("content").toString(),
+                    Array<EspecificVolumeGoogleBooksDTO>::class.java,
+                )
+
+                Assertions.assertEquals(2, booksAvailableToNegotiate.size)
+
+                Assertions.assertEquals(books[0], booksAvailableToNegotiate[0].id)
+                Assertions.assertEquals(books[1], booksAvailableToNegotiate[1].id)
+            }
+    }
+
+    /**
+     * Teste:       T-012
+     * Requisito:   RF-009
+     * Objetivo:    Tentar buscar a lista de livros disponiveis para negociação, com 1 livro alugado.
+     */
+
+    @Test
+    fun `T012 - Buscar a lista de livros disponiveis para negociacao, sendo que um dos livros foi alugado`() {
+        var userRentId = ""
+        var userRentToken = ""
+        var announcementId = ""
+        val books = listOf(
+            "f1u-swEACAAJ",
+            "QkW8EAAAQBAJ"
+        )
+
+        // Cria o usuario que ira alugar o livro
         mockMvc.perform(
             MockMvcRequestBuilders
                 .post("/register")
@@ -89,62 +296,22 @@ class ChatTests {
             )
             .andExpect {
                 val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
-                userTwoToken = response.getString("token")
+                userRentToken = response.getString("token")
             }
 
+        // Busca as informações do usuário que ira alugar o livro.
         mockMvc.perform(
             MockMvcRequestBuilders
                 .get("/user")
                 .contentType("application/json")
-                .header("Authorization", "Bearer $userTwoToken")
+                .header("Authorization", "Bearer $userRentToken")
             )
             .andExpect {
                 val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
-                userTwoId = response.getString("id")
+                userRentId = response.getString("id")
             }
 
-    }
-
-    @BeforeEach
-    fun clearDocument() {
-        mongoTemplate.db.drop()
-    }
-
-    /**
-     * Teste:       T-008
-     * Requisito:   RF-008
-     * Objetivo:    Tentar criar um chat entre dois usuários.
-     */
-    @Test
-    fun `T008 - Criar chat`() {
-        var addressId = ""
-        var announcementId = ""
-
-        mockMvc.perform(
-            MockMvcRequestBuilders
-                .post("/user/address")
-                .contentType("application/json")
-                .header("Authorization", "Bearer $userOneToken")
-                .content(
-                    ObjectMapper().writeValueAsString(
-                        AddressForm(
-                            name = "Casa",
-                            cep = "01001-000",
-                            street = "Praça da Sé",
-                            number = "10",
-                            complement = "casa",
-                            neighborhood = "Sé",
-                            city = "São Paulo",
-                            state = "SP",
-                        )
-                    )
-                )
-            )
-            .andExpect {
-                val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
-                addressId = response.getString("id")
-            }
-
+        // Cria um anuncio.
         mockMvc.perform(
             MockMvcRequestBuilders
                 .post("/announcement/new")
@@ -178,80 +345,10 @@ class ChatTests {
                 Assertions.assertEquals("description", announcementView.description)
                 Assertions.assertEquals(0, announcementView.images.size)
                 Assertions.assertEquals(10, announcementView.dailyValue)
+                Assertions.assertEquals(addressId, announcementView.location.id)
             }
 
-        mockMvc.perform(
-            MockMvcRequestBuilders
-                .post("/announcement/rent")
-                .contentType("application/json")
-                .header("Authorization", "Bearer $userTwoToken")
-                .content(
-                    ObjectMapper().writeValueAsString(
-                        CreateRentForm(
-                            announcementId = announcementId,
-                            startDate = "2023-09-23",
-                            endDate = "2023-09-26",
-                            value = 15.0,
-                        )
-                    )
-                )
-            )
-            .andExpect(status().isOk)
-            .andExpect {
-                val builder = GsonBuilder()
-                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
-                builder.registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())
-                val gson = builder.create()
-
-                val rentView = gson.fromJson(
-                    it.response.getContentAsString(StandardCharsets.UTF_8),
-                    RentView::class.java
-                )
-
-                Assertions.assertNotNull(rentView.chat)
-                Assertions.assertEquals(userOneId, rentView.chat.owner.id)
-                Assertions.assertEquals(userTwoId, rentView.chat.lead.id)
-            }
-    }
-
-    /**
-     * Teste:       T-009
-     * Requisito:   RF-008
-     * Objetivo:    Tentar criar uma mensagem de chat entre dois usuários.
-     */
-    @Test
-    fun `T008 - Criar mensagem de chat entre dois usuarios`() {
-        var addressId = ""
-        var announcementId = ""
-        var chatId = ""
-
-        val message = "Hello world!"
-
-        mockMvc.perform(
-            MockMvcRequestBuilders
-                .post("/user/address")
-                .contentType("application/json")
-                .header("Authorization", "Bearer $userOneToken")
-                .content(
-                    ObjectMapper().writeValueAsString(
-                        AddressForm(
-                            name = "Casa",
-                            cep = "01001-000",
-                            street = "Praça da Sé",
-                            number = "10",
-                            complement = "casa",
-                            neighborhood = "Sé",
-                            city = "São Paulo",
-                            state = "SP",
-                        )
-                    )
-                )
-            )
-            .andExpect {
-                val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
-                addressId = response.getString("id")
-            }
-
+        // Cria um anuncio.
         mockMvc.perform(
             MockMvcRequestBuilders
                 .post("/announcement/new")
@@ -260,7 +357,7 @@ class ChatTests {
                 .content(
                     ObjectMapper().writeValueAsString(
                         CreateAnnouncementForm(
-                            bookId = "f1u-swEACAAJ",
+                            bookId = "QkW8EAAAQBAJ",
                             images = listOf(),
                             description = "description",
                             dailyValue = 10,
@@ -279,19 +376,19 @@ class ChatTests {
                     AnnouncementView::class.java,
                 )
 
-                announcementId = announcementView.id
-
-                Assertions.assertEquals("f1u-swEACAAJ", announcementView.book.id)
+                Assertions.assertEquals("QkW8EAAAQBAJ", announcementView.book.id)
                 Assertions.assertEquals("description", announcementView.description)
                 Assertions.assertEquals(0, announcementView.images.size)
                 Assertions.assertEquals(10, announcementView.dailyValue)
+                Assertions.assertEquals(addressId, announcementView.location.id)
             }
 
+        // Aluga um livro.
         mockMvc.perform(
             MockMvcRequestBuilders
                 .post("/announcement/rent")
                 .contentType("application/json")
-                .header("Authorization", "Bearer $userTwoToken")
+                .header("Authorization", "Bearer $userRentToken")
                 .content(
                     ObjectMapper().writeValueAsString(
                         CreateRentForm(
@@ -304,46 +401,22 @@ class ChatTests {
                 )
             )
             .andExpect(status().isOk)
-            .andExpect {
-                val builder = GsonBuilder()
-                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
-                builder.registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())
-                val gson = builder.create()
-
-                val rentView = gson.fromJson(
-                    it.response.getContentAsString(StandardCharsets.UTF_8),
-                    RentView::class.java
-                )
-
-                Assertions.assertNotNull(rentView.chat)
-                Assertions.assertEquals(userOneId, rentView.chat.owner.id)
-                Assertions.assertEquals(userTwoId, rentView.chat.lead.id)
-
-                chatId = rentView.chat.id
-            }
 
         mockMvc.perform(
             MockMvcRequestBuilders
-                .post("/chat_messages/new")
+                .get("/books/availableToNegotiate")
                 .contentType("application/json")
                 .header("Authorization", "Bearer $userOneToken")
-                .content(
-                    ObjectMapper().writeValueAsString(
-                        CreateChatMessageForm(
-                            chatId = chatId,
-                            message = message,
-                        )
-                    )
-                )
             )
-            .andExpect(status().isOk())
             .andExpect {
-                val chatMessageView = Gson().fromJson(
-                    it.response.getContentAsString(StandardCharsets.UTF_8),
-                    ChatMessageView::class.java,
+                val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
+                val booksAvailableToNegotiate = Gson().fromJson(
+                    response.getJSONArray("content").toString(),
+                    Array<EspecificVolumeGoogleBooksDTO>::class.java,
                 )
-                Assertions.assertEquals(message, chatMessageView.message)
-                Assertions.assertEquals(userOneId, chatMessageView.sender.id)
+
+                Assertions.assertEquals(1, booksAvailableToNegotiate.size)
+                Assertions.assertEquals(books[1], booksAvailableToNegotiate[0].id)
             }
     }
 
@@ -353,10 +426,10 @@ class ChatTests {
 
     companion object {
         private var userOneToken = ""
-        private var userTwoToken = ""
 
         private var userOneId = ""
-        private var userTwoId = ""
+
+        private var addressId = ""
 
         @JvmStatic
         @AfterAll
