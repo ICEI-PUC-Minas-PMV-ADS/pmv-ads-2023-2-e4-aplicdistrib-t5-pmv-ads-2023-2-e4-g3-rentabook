@@ -2,9 +2,7 @@ package br.puc.projeto.rentabook
 
 import br.puc.projeto.rentabook.dto.UpdateProfileForm
 import br.puc.projeto.rentabook.dto.UserForm
-import br.puc.projeto.rentabook.views.UserView
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.google.gson.Gson
 import org.json.JSONObject
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions
