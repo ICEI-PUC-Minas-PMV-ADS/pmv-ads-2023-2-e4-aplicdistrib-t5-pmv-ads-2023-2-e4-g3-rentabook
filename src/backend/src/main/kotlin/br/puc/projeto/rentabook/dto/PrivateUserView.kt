@@ -8,6 +8,6 @@ data class PrivateUserView (
     val name: String,
     var userImage: String?,
     val email: String,
-    val booksId: List<String?>?,
-    val addresses: List<Address?>?,
+    val booksId: List<String?>,
+    val addresses: List<String?>,
 )

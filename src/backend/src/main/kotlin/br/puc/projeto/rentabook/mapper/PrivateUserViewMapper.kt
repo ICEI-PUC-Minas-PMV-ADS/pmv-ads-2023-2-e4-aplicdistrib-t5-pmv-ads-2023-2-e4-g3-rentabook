@@ -14,7 +14,9 @@ class PrivateUserViewMapper: Mapper<User, PrivateUserView> {
             userImage = t.userImage?.id,
             email = t.email,
             booksId = t.booksId,
-            addresses = t.addresses
+            addresses = t.addresses.map { address ->
+                address?.id
+            }
         )
     }
 }

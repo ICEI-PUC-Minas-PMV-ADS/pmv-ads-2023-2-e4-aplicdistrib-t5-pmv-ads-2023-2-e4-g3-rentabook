@@ -16,8 +16,8 @@ class RegisterFormMapper(
             name = t.name,
             email = t.email,
             password = BCryptPasswordEncoder().encode(t.password),
-            addresses = null,
-            booksId = null,
+            addresses = mutableListOf(null),
+            booksId = mutableListOf(null),
             role = listOf(roleService.getCommonUserRole()),
             userImage = null
         )

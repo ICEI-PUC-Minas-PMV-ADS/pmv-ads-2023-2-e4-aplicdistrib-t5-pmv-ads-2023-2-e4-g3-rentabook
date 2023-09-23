@@ -28,6 +28,9 @@ class SecurityConfig (
         http.invoke {
             csrf { disable() }
             authorizeHttpRequests {
+                authorize(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/swagger-ui/*"), permitAll)
+                authorize(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/v3/api-docs/**"), permitAll)
+                authorize(AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/login"), permitAll)
                 authorize(AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/register"), permitAll)
                 authorize(AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/login"), permitAll)
                 authorize(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/user/{id}"), permitAll)

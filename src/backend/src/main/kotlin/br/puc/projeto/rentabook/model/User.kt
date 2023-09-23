@@ -13,9 +13,9 @@ data class User(
     val name: String,
     var userImage: Image?,
     val email: String,
-    val password: String,
+    var password: String,
     val createData: LocalDateTime = LocalDateTime.now(),
-    val booksId: List<String?>?,
-    val addresses: List<Address?>?,
+    val booksId: MutableList<String?> = mutableListOf(null),
+    val addresses: MutableList<Address?> = mutableListOf(null),
     val role: List<Role>
 )

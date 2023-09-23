@@ -9,6 +9,7 @@ class AddressFormMapper : Mapper<AddressForm, Address> {
     override fun map(t: AddressForm): Address {
         return Address(
             cep = t.cep,
+            name = t.name,
             street = t.street,
             number = t.number,
             complement = t.complement,
