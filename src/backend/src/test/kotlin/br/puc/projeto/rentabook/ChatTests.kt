@@ -456,11 +456,16 @@ class ChatTests {
             }
 
         for (i in 0 until 20) {
+            val userToken = if (i % 2 == 0)
+                userOneToken // John
+            else
+                userTwoToken // Mary
+
             mockMvc.perform(
                 MockMvcRequestBuilders
                     .post("/chat/messages/new")
                     .contentType("application/json")
-                    .header("Authorization", "Bearer $userOneToken")
+                    .header("Authorization", "Bearer $userToken")
                     .content(
                         ObjectMapper().writeValueAsString(
                             CreateChatMessageForm(
@@ -489,7 +494,10 @@ class ChatTests {
 
                 Assertions.assertEquals(10, chatMessages.size)
                 Assertions.assertEquals("19: Hello world!", chatMessages[0].message)
+                Assertions.assertEquals("Mary", chatMessages[0].sender.name)
+
                 Assertions.assertEquals("18: Hello world!", chatMessages[1].message)
+                Assertions.assertEquals("John", chatMessages[1].sender.name)
             }
     }
 

@@ -1,9 +1,11 @@
 package br.puc.projeto.rentabook
 
+import br.puc.projeto.rentabook.adapters.LocalDateAdapter
 import br.puc.projeto.rentabook.adapters.LocalDateTimeAdapter
 import br.puc.projeto.rentabook.dto.*
 import br.puc.projeto.rentabook.utils.TestUtils
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import org.json.JSONObject
@@ -12,6 +14,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.objectweb.asm.TypeReference
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -21,6 +24,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.nio.charset.StandardCharsets
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 
@@ -120,7 +124,7 @@ class BooksTests {
 
         mockMvc.perform(
             MockMvcRequestBuilders
-                .post("/announcement/new")
+                .post("/announcements/new")
                 .contentType("application/json")
                 .header("Authorization", "Bearer $userOneToken")
                 .content(
@@ -168,7 +172,7 @@ class BooksTests {
 
         mockMvc.perform(
             MockMvcRequestBuilders
-                .post("/announcement/new")
+                .post("/announcements/new")
                 .contentType("application/json")
                 .header("Authorization", "Bearer $userOneToken")
                 .content(
@@ -202,7 +206,7 @@ class BooksTests {
 
         mockMvc.perform(
             MockMvcRequestBuilders
-                .post("/announcement/new")
+                .post("/announcements/new")
                 .contentType("application/json")
                 .header("Authorization", "Bearer $userOneToken")
                 .content(
@@ -306,7 +310,7 @@ class BooksTests {
         // Cria um anuncio.
         mockMvc.perform(
             MockMvcRequestBuilders
-                .post("/announcement/new")
+                .post("/announcements/new")
                 .contentType("application/json")
                 .header("Authorization", "Bearer $userOneToken")
                 .content(
@@ -343,7 +347,7 @@ class BooksTests {
         // Cria um anuncio.
         mockMvc.perform(
             MockMvcRequestBuilders
-                .post("/announcement/new")
+                .post("/announcements/new")
                 .contentType("application/json")
                 .header("Authorization", "Bearer $userOneToken")
                 .content(
@@ -378,7 +382,7 @@ class BooksTests {
         // Aluga um livro.
         mockMvc.perform(
             MockMvcRequestBuilders
-                .post("/announcement/rent")
+                .post("/announcements/rent")
                 .contentType("application/json")
                 .header("Authorization", "Bearer $userRentToken")
                 .content(
@@ -409,6 +413,244 @@ class BooksTests {
 
                 Assertions.assertEquals(1, booksAvailableToNegotiate.size)
                 Assertions.assertEquals(books[1], booksAvailableToNegotiate[0].id)
+            }
+    }
+
+    /**
+     * Teste:       T-014
+     * Requisito:   RF-009
+     * Objetivo:    Tentar buscar a lista de livros disponiveis para negociação, com 1 livro alugado.
+     */
+
+    @Test
+    fun `T014 - Faz a devolucao de um livro alugado`() {
+        var userRentToken = ""
+        var announcementId = ""
+        var rentView: RentView? = null
+
+        // Cria o usuario que ira alugar o livro
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .post("/register")
+                .contentType("application/json")
+                .content(
+                    ObjectMapper().writeValueAsString(
+                        UserForm(
+                            name = "Mary",
+                            email = "mary@email.com",
+                            password = "123456",
+                        )
+                    )
+                )
+            )
+            .andExpect {
+                val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
+                userRentToken = response.getString("token")
+            }
+
+        // Busca as informações do usuário que ira alugar o livro.
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .get("/user")
+                .contentType("application/json")
+                .header("Authorization", "Bearer $userRentToken")
+            )
+            .andExpect(status().isOk)
+
+        // Cria um anuncio.
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .post("/announcements/new")
+                .contentType("application/json")
+                .header("Authorization", "Bearer $userOneToken")
+                .content(
+                    ObjectMapper().writeValueAsString(
+                        CreateAnnouncementForm(
+                            bookId = "f1u-swEACAAJ",
+                            images = listOf(),
+                            description = "description",
+                            dailyValue = 10,
+                            locationId = addressId,
+                        )
+                    )
+                )
+            )
+            .andExpect {
+                val builder = GsonBuilder()
+                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
+                val gson = builder.create()
+
+                val announcementView = gson.fromJson(
+                    it.response.getContentAsString(StandardCharsets.UTF_8),
+                    AnnouncementView::class.java,
+                )
+
+                announcementId = announcementView.id
+
+                Assertions.assertEquals("f1u-swEACAAJ", announcementView.book.id)
+                Assertions.assertEquals("description", announcementView.description)
+                Assertions.assertEquals(0, announcementView.images.size)
+                Assertions.assertEquals(10, announcementView.dailyValue)
+                Assertions.assertEquals(addressId, announcementView.location.id)
+            }
+
+        // Cria um anuncio.
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .post("/announcements/new")
+                .contentType("application/json")
+                .header("Authorization", "Bearer $userOneToken")
+                .content(
+                    ObjectMapper().writeValueAsString(
+                        CreateAnnouncementForm(
+                            bookId = "QkW8EAAAQBAJ",
+                            images = listOf(),
+                            description = "description",
+                            dailyValue = 10,
+                            locationId = addressId,
+                        )
+                    )
+                )
+            )
+            .andExpect {
+                val builder = GsonBuilder()
+                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
+                val gson = builder.create()
+
+                val announcementView = gson.fromJson(
+                    it.response.getContentAsString(StandardCharsets.UTF_8),
+                    AnnouncementView::class.java,
+                )
+
+                Assertions.assertEquals("QkW8EAAAQBAJ", announcementView.book.id)
+                Assertions.assertEquals("description", announcementView.description)
+                Assertions.assertEquals(0, announcementView.images.size)
+                Assertions.assertEquals(10, announcementView.dailyValue)
+                Assertions.assertEquals(addressId, announcementView.location.id)
+            }
+
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .get("/announcements")
+                .contentType("application/json")
+                .header("Authorization", "Bearer $userRentToken")
+            )
+            .andExpect(status().isOk)
+            .andExpect {
+                val builder = GsonBuilder()
+                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
+                val gson = builder.create()
+
+                val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
+                val announcements = gson.fromJson(
+                    response.getJSONArray("content").toString(),
+                    Array<AnnouncementView>::class.java,
+                )
+
+                for (announcement: AnnouncementView in announcements) {
+                    if (announcement.id == announcementId) {
+                        Assertions.assertTrue(announcement.isAvailable)
+                    }
+                }
+            }
+
+        // Aluga um livro.
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .post("/announcements/rent")
+                .contentType("application/json")
+                .header("Authorization", "Bearer $userRentToken")
+                .content(
+                    ObjectMapper().writeValueAsString(
+                        CreateRentForm(
+                            announcementId = announcementId,
+                            startDate = "2023-09-23",
+                            endDate = "2023-09-26",
+                            value = 15.0,
+                        )
+                    )
+                )
+            )
+            .andExpect(status().isOk)
+            .andExpect {
+                val builder = GsonBuilder()
+                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
+                builder.registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())
+                val gson = builder.create()
+
+                rentView = gson.fromJson(
+                    it.response.getContentAsString(StandardCharsets.UTF_8),
+                    RentView::class.java,
+                )
+            }
+
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .get("/announcements")
+                .contentType("application/json")
+                .header("Authorization", "Bearer $userRentToken")
+            )
+            .andExpect(status().isOk)
+            .andExpect {
+                val builder = GsonBuilder()
+                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
+                builder.registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())
+                val gson = builder.create()
+
+                val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
+                val announcements = gson.fromJson(
+                    response.getJSONArray("content").toString(),
+                    Array<AnnouncementView>::class.java,
+                )
+
+                for (announcement: AnnouncementView in announcements) {
+                    if (announcement.id == announcementId) {
+                        Assertions.assertFalse(announcement.isAvailable)
+                    }
+                }
+            }
+        
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .post("/announcements/give_back")
+                .contentType("application/json")
+                .header("Authorization", "Bearer $userRentToken")
+                .content(
+                    ObjectMapper().writeValueAsString(
+                        GiveBackForm(
+                            id = rentView!!.id,
+                            ratingMessage = "Tudo certo!",
+                            ratingFeedback = true,
+                        )
+                    )
+                )
+            )
+            .andExpect(status().isOk)
+            
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .get("/announcements")
+                .contentType("application/json")
+                .header("Authorization", "Bearer $userRentToken")
+            )
+            .andExpect(status().isOk)
+            .andExpect {
+                val builder = GsonBuilder()
+                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
+                builder.registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())
+                val gson = builder.create()
+
+                val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
+                val announcements = gson.fromJson(
+                    response.getJSONArray("content").toString(),
+                    Array<AnnouncementView>::class.java,
+                )
+
+                for (announcement: AnnouncementView in announcements) {
+                    if (announcement.id == announcementId) {
+                        Assertions.assertTrue(announcement.isAvailable)
+                    }
+                }
             }
     }
 

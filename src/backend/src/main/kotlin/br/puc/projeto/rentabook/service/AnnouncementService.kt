@@ -1,19 +1,20 @@
 package br.puc.projeto.rentabook.service
 
-import br.puc.projeto.rentabook.dto.AnnouncementView
-import br.puc.projeto.rentabook.dto.CreateAnnouncementForm
-import br.puc.projeto.rentabook.dto.CreateRentForm
-import br.puc.projeto.rentabook.dto.RentView
+import br.puc.projeto.rentabook.dto.*
 import br.puc.projeto.rentabook.mapper.AnnouncementViewMapper
 import br.puc.projeto.rentabook.mapper.CreateAnnouncementFormMapper
 import br.puc.projeto.rentabook.mapper.CreateRentFormMapper
 import br.puc.projeto.rentabook.mapper.RentViewMapper
+import br.puc.projeto.rentabook.model.Rating
 import br.puc.projeto.rentabook.repository.AnnouncementRepository
+import br.puc.projeto.rentabook.repository.RatingRepository
 import br.puc.projeto.rentabook.repository.RentRepository
 import br.puc.projeto.rentabook.repository.UserRepository
 import br.puc.projeto.rentabook.utils.AuthenticationUtils
-import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import java.lang.Exception
 
 @Service
 class AnnouncementService(
@@ -24,7 +25,13 @@ class AnnouncementService(
     private val rentRepository: RentRepository,
     private val createRentFormMapper: CreateRentFormMapper,
     private val rentViewMapper: RentViewMapper,
+    private val ratingRepository: RatingRepository,
 ) {
+
+    fun findAll(pageable: Pageable): Page<AnnouncementView> {
+        return announcementRepository.findAll(pageable).map { announcementViewMapper.map(it) }
+    }
+
     fun createAnnouncement(createAnnouncementForm: CreateAnnouncementForm): AnnouncementView {
         return AuthenticationUtils.authenticate(userRepository) {
             announcementRepository.save(createAnnouncementFormMapper.map(createAnnouncementForm)).run {
@@ -40,6 +47,19 @@ class AnnouncementService(
                 announcementRepository.save(announcement)
                 rentViewMapper.map(this)
             }
+        }
+    }
+
+    fun giveBackRent(giveBackForm: GiveBackForm) {
+        return AuthenticationUtils.authenticate(userRepository) {
+            val rent = rentRepository.findById(giveBackForm.id).orElseThrow { throw Exception("Id de aluguel invalido!") }
+            rent.rating = ratingRepository.save(Rating(
+                message = giveBackForm.ratingMessage,
+                feedback = giveBackForm.ratingFeedback,
+            ))
+            rent.announcement.isAvailable = true
+            announcementRepository.save(rent.announcement)
+            rentRepository.save(rent)
         }
     }
 }
