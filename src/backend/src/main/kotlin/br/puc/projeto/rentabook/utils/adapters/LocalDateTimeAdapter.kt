@@ -1,4 +1,4 @@
-package br.puc.projeto.rentabook.adapters
+package br.puc.projeto.rentabook.utils.adapters
 
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader

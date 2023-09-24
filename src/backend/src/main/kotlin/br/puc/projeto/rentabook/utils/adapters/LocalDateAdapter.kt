@@ -1,11 +1,10 @@
-package br.puc.projeto.rentabook.adapters
+package br.puc.projeto.rentabook.utils.adapters
 
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
 import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 class LocalDateAdapter : TypeAdapter<LocalDate>() {
     private val format = SimpleDateFormat()

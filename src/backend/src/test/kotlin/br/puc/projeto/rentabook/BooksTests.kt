@@ -1,11 +1,10 @@
 package br.puc.projeto.rentabook
 
-import br.puc.projeto.rentabook.adapters.LocalDateAdapter
-import br.puc.projeto.rentabook.adapters.LocalDateTimeAdapter
+import br.puc.projeto.rentabook.utils.adapters.LocalDateAdapter
+import br.puc.projeto.rentabook.utils.adapters.LocalDateTimeAdapter
 import br.puc.projeto.rentabook.dto.*
 import br.puc.projeto.rentabook.utils.TestUtils
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import org.json.JSONObject
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.objectweb.asm.TypeReference
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -38,6 +36,9 @@ class BooksTests {
 
     @Autowired
     private lateinit var mongoTemplate: MongoTemplate
+    
+    @Autowired
+    private lateinit var gson: Gson
 
     @BeforeEach
     fun initializeDatabase() {
@@ -140,10 +141,6 @@ class BooksTests {
                 )
             )
             .andExpect {
-                val builder = GsonBuilder()
-                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
-                val gson = builder.create()
-
                 val announcementView = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
                     AnnouncementView::class.java,
@@ -188,10 +185,6 @@ class BooksTests {
                 )
             )
             .andExpect {
-                val builder = GsonBuilder()
-                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
-                val gson = builder.create()
-
                 val announcementView = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
                     AnnouncementView::class.java,
@@ -222,10 +215,6 @@ class BooksTests {
                 )
             )
             .andExpect {
-                val builder = GsonBuilder()
-                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
-                val gson = builder.create()
-
                 val announcementView = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
                     AnnouncementView::class.java,
@@ -247,7 +236,7 @@ class BooksTests {
             )
             .andExpect {
                 val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
-                val booksAvailableToNegotiate = Gson().fromJson(
+                val booksAvailableToNegotiate = gson.fromJson(
                     response.getJSONArray("content").toString(),
                     Array<EspecificVolumeGoogleBooksDTO>::class.java,
                 )
@@ -326,10 +315,6 @@ class BooksTests {
                 )
             )
             .andExpect {
-                val builder = GsonBuilder()
-                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
-                val gson = builder.create()
-
                 val announcementView = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
                     AnnouncementView::class.java,
@@ -363,10 +348,6 @@ class BooksTests {
                 )
             )
             .andExpect {
-                val builder = GsonBuilder()
-                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
-                val gson = builder.create()
-
                 val announcementView = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
                     AnnouncementView::class.java,
@@ -406,7 +387,7 @@ class BooksTests {
             )
             .andExpect {
                 val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
-                val booksAvailableToNegotiate = Gson().fromJson(
+                val booksAvailableToNegotiate = gson.fromJson(
                     response.getJSONArray("content").toString(),
                     Array<EspecificVolumeGoogleBooksDTO>::class.java,
                 )
@@ -476,10 +457,6 @@ class BooksTests {
                 )
             )
             .andExpect {
-                val builder = GsonBuilder()
-                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
-                val gson = builder.create()
-
                 val announcementView = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
                     AnnouncementView::class.java,
@@ -513,10 +490,6 @@ class BooksTests {
                 )
             )
             .andExpect {
-                val builder = GsonBuilder()
-                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
-                val gson = builder.create()
-
                 val announcementView = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
                     AnnouncementView::class.java,
@@ -537,10 +510,6 @@ class BooksTests {
             )
             .andExpect(status().isOk)
             .andExpect {
-                val builder = GsonBuilder()
-                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
-                val gson = builder.create()
-
                 val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
                 val announcements = gson.fromJson(
                     response.getJSONArray("content").toString(),
@@ -573,11 +542,6 @@ class BooksTests {
             )
             .andExpect(status().isOk)
             .andExpect {
-                val builder = GsonBuilder()
-                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
-                builder.registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())
-                val gson = builder.create()
-
                 rentView = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
                     RentView::class.java,
@@ -592,11 +556,6 @@ class BooksTests {
             )
             .andExpect(status().isOk)
             .andExpect {
-                val builder = GsonBuilder()
-                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
-                builder.registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())
-                val gson = builder.create()
-
                 val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
                 val announcements = gson.fromJson(
                     response.getJSONArray("content").toString(),
@@ -635,11 +594,6 @@ class BooksTests {
             )
             .andExpect(status().isOk)
             .andExpect {
-                val builder = GsonBuilder()
-                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
-                builder.registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())
-                val gson = builder.create()
-
                 val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
                 val announcements = gson.fromJson(
                     response.getJSONArray("content").toString(),

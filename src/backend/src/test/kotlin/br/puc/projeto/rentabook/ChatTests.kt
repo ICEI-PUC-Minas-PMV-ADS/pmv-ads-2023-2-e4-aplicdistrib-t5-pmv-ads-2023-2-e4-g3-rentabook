@@ -1,13 +1,11 @@
 package br.puc.projeto.rentabook
 
-import br.puc.projeto.rentabook.adapters.LocalDateAdapter
-import br.puc.projeto.rentabook.adapters.LocalDateTimeAdapter
+import br.puc.projeto.rentabook.utils.adapters.LocalDateAdapter
+import br.puc.projeto.rentabook.utils.adapters.LocalDateTimeAdapter
 import br.puc.projeto.rentabook.dto.*
-import br.puc.projeto.rentabook.model.ChatMessage
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import jakarta.validation.constraints.AssertTrue
 import org.json.JSONObject
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions
@@ -36,6 +34,9 @@ class ChatTests {
 
     @Autowired
     private lateinit var mongoTemplate: MongoTemplate
+
+    @Autowired
+    private lateinit var gson: Gson
 
     /**
      * Inicia os usuário de teste e pega suas respectivar credenciais e ids.
@@ -163,10 +164,6 @@ class ChatTests {
                 )
             )
             .andExpect {
-                val builder = GsonBuilder()
-                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
-                val gson = builder.create()
-
                 val announcementView = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
                     AnnouncementView::class.java,
@@ -198,11 +195,6 @@ class ChatTests {
             )
             .andExpect(status().isOk)
             .andExpect {
-                val builder = GsonBuilder()
-                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
-                builder.registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())
-                val gson = builder.create()
-
                 val rentView = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
                     RentView::class.java
@@ -270,10 +262,6 @@ class ChatTests {
                 )
             )
             .andExpect {
-                val builder = GsonBuilder()
-                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
-                val gson = builder.create()
-
                 val announcementView = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
                     AnnouncementView::class.java,
@@ -305,11 +293,6 @@ class ChatTests {
             )
             .andExpect(status().isOk)
             .andExpect {
-                val builder = GsonBuilder()
-                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
-                builder.registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())
-                val gson = builder.create()
-
                 val rentView = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
                     RentView::class.java
@@ -338,7 +321,7 @@ class ChatTests {
             )
             .andExpect(status().isOk())
             .andExpect {
-                val chatMessageView = Gson().fromJson(
+                val chatMessageView = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
                     ChatMessageView::class.java,
                 )
@@ -403,10 +386,6 @@ class ChatTests {
                 )
             )
             .andExpect {
-                val builder = GsonBuilder()
-                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
-                val gson = builder.create()
-
                 val announcementView = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
                     AnnouncementView::class.java,
@@ -438,11 +417,6 @@ class ChatTests {
             )
             .andExpect(status().isOk)
             .andExpect {
-                val builder = GsonBuilder()
-                builder.registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())
-                builder.registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())
-                val gson = builder.create()
-
                 val rentView = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
                     RentView::class.java
@@ -487,7 +461,7 @@ class ChatTests {
             .andExpect(status().isOk)
             .andExpect {
                 val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
-                val chatMessages = Gson().fromJson(
+                val chatMessages = gson.fromJson(
                     response.getJSONArray("content").toString(),
                     Array<ChatMessageView>::class.java,
                 )
