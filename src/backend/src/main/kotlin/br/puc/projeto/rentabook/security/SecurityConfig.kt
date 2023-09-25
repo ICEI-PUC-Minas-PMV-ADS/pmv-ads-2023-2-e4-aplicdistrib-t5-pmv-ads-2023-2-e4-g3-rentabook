@@ -32,7 +32,6 @@ class SecurityConfig (
                 authorize(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/v3/api-docs/**"), permitAll)
                 authorize(AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/login"), permitAll)
                 authorize(AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/register"), permitAll)
-                authorize(AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/login"), permitAll)
                 authorize(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/user/{id}"), permitAll)
                 authorize(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/image/{id}"), permitAll)
                 authorize(anyRequest, authenticated)

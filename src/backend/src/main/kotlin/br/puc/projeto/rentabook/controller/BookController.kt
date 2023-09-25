@@ -24,6 +24,7 @@ class BookController(
         return bookService.findById(bookId)
     }
 
+
     @GetMapping("/find")
     fun findAll(@RequestParam search: String,
                 @PageableDefault(

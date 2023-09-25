@@ -9,6 +9,7 @@ import br.puc.projeto.rentabook.model.User
 import br.puc.projeto.rentabook.repository.AddressRepository
 import br.puc.projeto.rentabook.repository.UserRepository
 import br.puc.projeto.rentabook.security.JWTUtils
+import br.puc.projeto.rentabook.utils.AuthenticationUtils
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -40,10 +41,8 @@ class UserService(
     }
 
     fun getPrivateUser(): PrivateUserView {
-        val authentication = SecurityContextHolder.getContext().authentication
-        return userRepository.findByEmail(authentication.name).run {
-            this ?: throw Exception("Usuário autenticado não encontrado")
-            privateUserViewMapper.map(this)
+        return AuthenticationUtils.authenticate(userRepository) {user ->
+            privateUserViewMapper.map(user)
         }
     }
 
@@ -67,37 +66,31 @@ class UserService(
     }
 
     fun updateUserImage(image: MultipartFile): PrivateUserView {
-        val authentication = SecurityContextHolder.getContext().authentication
-        return userRepository.findByEmail(authentication.name).run {
-            this ?: throw Exception("Usuário autenticado não encontrado")
-            userImage = imageService.uploadImage(image)
-            userRepository.save(this).run {
-                privateUserViewMapper.map(this)
+        return AuthenticationUtils.authenticate(userRepository) {user ->
+            user.userImage = imageService.uploadImage(image)
+            userRepository.save(user).run {
+                privateUserViewMapper.map(user)
             }
         }
     }
 
     fun deleteUserImage(): PrivateUserView {
-        val authentication = SecurityContextHolder.getContext().authentication
-        return userRepository.findByEmail(authentication.name).run {
-            this ?: throw Exception("Usuário autenticado não encontrado")
-            val imageId = this.userImage ?: throw NotFoundException("Usuário não possuí imagem de perfil")
+        return AuthenticationUtils.authenticate(userRepository) {user ->
+            val imageId = user.userImage ?: throw NotFoundException("Usuário não possuí imagem de perfil")
             imageService.deleteImage(imageId.id as String)
-            userImage = null
-            userRepository.save(this).run {
-                privateUserViewMapper.map(this)
+            user.userImage = null
+            userRepository.save(user).run {
+                privateUserViewMapper.map(user)
             }
         }
     }
 
     fun registerAddress(form: AddressForm): AddressView {
-        val authentication = SecurityContextHolder.getContext().authentication
-        return userRepository.findByEmail(authentication.name).run {
-            this ?: throw Exception("Usuário autenticado não encontrado")
+        return AuthenticationUtils.authenticate(userRepository) {user ->
             addressRepository.save(addressFormMapper.map(form)).let { address ->
-                val addressIndex = addresses.size
-                addresses.add(address)
-                userRepository.save(this@run).run {
+                val addressIndex = user.addresses.size
+                user.addresses.add(address)
+                userRepository.save(user).run {
                     addressViewMapper.map(this.addresses[addressIndex] ?: throw Exception("Endereço não foi localizado"))
                 }
             }
@@ -105,75 +98,64 @@ class UserService(
     }
 
     fun deleteAddress(id: String): PrivateUserView {
-        val authentication = SecurityContextHolder.getContext().authentication
-
-        return userRepository.findByEmail(authentication.name).run {
-            this ?: throw Exception("Usuário autenticado não encontrado")
-            val findedAddress = addresses.find { address ->
+        return AuthenticationUtils.authenticate(userRepository) {user ->
+            val findedAddress = user.addresses.find { address ->
                 address?.id == id
             }
             if (findedAddress != null){
-                this.addresses.remove(findedAddress)
+                user.addresses.remove(findedAddress)
                 addressRepository.deleteById(id)
             } else throw NotFoundException("Endereço não encontrado!")
 
-            userRepository.save(this).run {
-                privateUserViewMapper.map(this)
+            userRepository.save(user).run {
+                privateUserViewMapper.map(user)
             }
         }
     }
 
     fun updatePassword(form: UpdatePasswordForm): User{
-        val authentication = SecurityContextHolder.getContext().authentication
-        return userRepository.findByEmail(authentication.name).run {
-            this ?: throw Exception("Usuário autenticado não encontrado")
-            val oldPasswordValidate = BCryptPasswordEncoder().matches(form.oldPassword, password)
-            if (email == form.email && oldPasswordValidate){
-                password = BCryptPasswordEncoder().encode(form.newPassword)
+        return AuthenticationUtils.authenticate(userRepository) {user ->
+            val oldPasswordValidate = BCryptPasswordEncoder().matches(form.oldPassword, user.password)
+            if (user.email == form.email && oldPasswordValidate){
+                user.password = BCryptPasswordEncoder().encode(form.newPassword)
             } else throw InvalidLoginException("Login inválido")
-            userRepository.save(this)
+            userRepository.save(user)
         }
     }
 
     fun registerBook(id: String): PrivateUserView {
-        val authentication = SecurityContextHolder.getContext().authentication
-        return userRepository.findByEmail(authentication.name).run {
-            this ?: throw Exception("Usuário autenticado não encontrado")
-            val findedBook = booksId.find { book ->
+        return AuthenticationUtils.authenticate(userRepository) {user ->
+            val findedBook = user.booksId.find { book ->
                 book == id
             }
             if (findedBook == null){
-                booksId.add(id)
+                user.booksId.add(id)
             } else throw ResourceAlreadyExistsException("Esse livro já foi cadastrado!")
-                userRepository.save(this).run {
-                    privateUserViewMapper.map(this)
+                userRepository.save(user).run {
+                    privateUserViewMapper.map(user)
                 }
             }
     }
 
     fun deleteBook(id: String): PrivateUserView {
-        val authentication = SecurityContextHolder.getContext().authentication
-        return userRepository.findByEmail(authentication.name).run {
-            this ?: throw Exception("Usuário autenticado não encontrado")
-            val findedBook = booksId.find { book ->
+        return AuthenticationUtils.authenticate(userRepository) {user ->
+            val findedBook = user.booksId.find { book ->
                 book == id
             }
             if (findedBook != null){
-                booksId.remove(findedBook)
+                user.booksId.remove(findedBook)
             } else throw NotFoundException("Livro não encontrado!")
-            userRepository.save(this).run {
-                privateUserViewMapper.map(this)
+            userRepository.save(user).run {
+                privateUserViewMapper.map(user)
             }
         }
     }
 
     fun updateUserProfile(updateProfileForm: UpdateProfileForm): PrivateUserView {
-        val authentication = SecurityContextHolder.getContext().authentication
-        return userRepository.findByEmail(authentication.name).run {
-            this ?: throw Exception("Usuário autenticado não encontrado")
-            this.name =  updateProfileForm.name
-            userRepository.save(this).run {
-                privateUserViewMapper.map(this)
+        return AuthenticationUtils.authenticate(userRepository) {user ->
+            user.name =  updateProfileForm.name
+            userRepository.save(user).run {
+                privateUserViewMapper.map(user)
             }
         }
     }
