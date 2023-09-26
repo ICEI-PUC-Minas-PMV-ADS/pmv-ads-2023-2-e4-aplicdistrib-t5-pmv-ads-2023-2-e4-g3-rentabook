@@ -6,6 +6,7 @@ import br.puc.projeto.rentabook.model.User
 import br.puc.projeto.rentabook.service.UserService
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -106,6 +107,7 @@ class UserController(
     @SecurityRequirement(
         name = "bearerAuth"
     )
+
     @DeleteMapping("/user/books/{id}")
     fun deleteBook(@PathVariable id: String): PrivateUserView {
         return userService.deleteBook(id)

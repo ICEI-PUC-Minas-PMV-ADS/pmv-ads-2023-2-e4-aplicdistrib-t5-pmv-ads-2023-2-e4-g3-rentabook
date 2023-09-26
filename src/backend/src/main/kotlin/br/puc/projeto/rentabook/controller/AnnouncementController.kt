@@ -4,16 +4,13 @@ import br.puc.projeto.rentabook.dto.*
 import br.puc.projeto.rentabook.service.AnnouncementService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController()
 @RequestMapping("/announcements")
 class AnnouncementController(
     private val announcementService: AnnouncementService,
+
 ) {
 
     /**
@@ -21,15 +18,24 @@ class AnnouncementController(
      */
 
     @GetMapping
-    fun getAllAnnouncement(pageable: Pageable): Page<AnnouncementView> {
+    fun getAllAnnouncement(pageable: Pageable): Page<AnnouncementViewTest> {
         return announcementService.findAll(pageable)
     }
 
+    @GetMapping("/list")
+    fun getList(pageable: Pageable,
+                @RequestParam
+                city : String?,
+                @RequestParam
+                bookId : String?,
+                ) : Page<AnnouncementView> {
+        return announcementService.list(pageable, city, bookId)
+    }
     /**
      * Cria um novo anuncio.
      */
     @PostMapping("/new")
-    fun createAnnouncement(@RequestBody createAnnouncementForm: CreateAnnouncementForm): AnnouncementView {
+    fun createAnnouncement(@RequestBody createAnnouncementForm: CreateAnnouncementForm): AnnouncementViewTest {
         return announcementService.createAnnouncement(createAnnouncementForm)
     }
 
@@ -48,4 +54,10 @@ class AnnouncementController(
     fun giveBackRent(@RequestBody giveBackForm: GiveBackForm) {
         return announcementService.giveBackRent(giveBackForm)
     }
+
+    @PostMapping("/cancel/{announcementId}")
+    fun cancelAnnouncement(@PathVariable announcementId: String) {
+        announcementService.cancelAnnouncement(announcementId)
+    }
+
 }

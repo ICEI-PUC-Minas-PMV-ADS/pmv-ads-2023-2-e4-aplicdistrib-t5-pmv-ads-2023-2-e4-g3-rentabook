@@ -6,15 +6,15 @@ import org.springframework.stereotype.Component
 
 @Component
 class RentViewMapper(
-    private val announcementViewMapper: AnnouncementViewMapper,
-    private val publicUserViewMapper: PublicUserViewMapper,
-    private val ratingViewMapper: RatingViewMapper,
-    private val chatViewMapper: ChatViewMapper,
+        private val announcementViewTestMapper: AnnouncementViewTestMapper,
+        private val publicUserViewMapper: PublicUserViewMapper,
+        private val ratingViewMapper: RatingViewMapper,
+        private val chatViewMapper: ChatViewMapper,
 ): Mapper<Rent, RentView> {
     override fun map(t: Rent): RentView {
         return RentView(
             id = t.id ?: throw Exception("Registro de aluguel não localizado!"),
-            announcement = announcementViewMapper.map(t.announcement),
+            announcement = announcementViewTestMapper.map(t.announcement),
             ownerUser = publicUserViewMapper.map(t.ownerUser),
             createData = t.createData,
             startDate = t.startDate,
