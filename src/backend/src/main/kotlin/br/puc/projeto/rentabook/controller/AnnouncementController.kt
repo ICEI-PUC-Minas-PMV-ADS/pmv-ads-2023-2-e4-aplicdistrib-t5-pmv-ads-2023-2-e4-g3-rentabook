@@ -4,6 +4,7 @@ import br.puc.projeto.rentabook.dto.*
 import br.puc.projeto.rentabook.service.AnnouncementService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.web.PageableDefault
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -31,6 +32,21 @@ class AnnouncementController(
     @PostMapping("/new")
     fun createAnnouncement(@RequestBody createAnnouncementForm: CreateAnnouncementForm): AnnouncementView {
         return announcementService.createAnnouncement(createAnnouncementForm)
+    }
+
+    @GetMapping("/available")
+    fun getAnnouncementsAvailable(
+        @PageableDefault(size = 5) pageable: Pageable
+    ): Page<AnnouncementView> {
+        return announcementService.findAllUsersBooksAvailableToNegotiate(pageable)
+    }
+
+    /**
+     * Cria um novo anuncio.
+     */
+    @GetMapping("/availableToRent")
+    fun getRentAnnouncements(pageable: Pageable): Page<AnnouncementView> {
+        return announcementService.findAllBooksAvailableToRent(pageable)
     }
 
     /**

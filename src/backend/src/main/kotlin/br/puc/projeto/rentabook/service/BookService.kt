@@ -1,11 +1,14 @@
 package br.puc.projeto.rentabook.service
 
+import br.puc.projeto.rentabook.dto.AnnouncementView
 import br.puc.projeto.rentabook.dto.BookView
 import br.puc.projeto.rentabook.exception.NotFoundException
+import br.puc.projeto.rentabook.mapper.AnnouncementViewMapper
 import br.puc.projeto.rentabook.mapper.BookViewMapper
 import br.puc.projeto.rentabook.repository.AnnouncementRepository
 import br.puc.projeto.rentabook.repository.BookRepository
 import br.puc.projeto.rentabook.repository.UserRepository
+import br.puc.projeto.rentabook.utils.AuthenticationUtils
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
@@ -17,8 +20,6 @@ import kotlin.Exception
 class BookService (
     private val bookRepository: BookRepository,
     private val bookViewMapper: BookViewMapper,
-    private val userRepository: UserRepository,
-    private val announcementRepository: AnnouncementRepository,
 ){
     fun findById (id: String): BookView {
         return bookRepository.findById(id).run {
@@ -37,24 +38,12 @@ class BookService (
         }
     }
 
-    fun findAllBooksAvailableToNegotiate(pageable: Pageable): Page<BookView> {
-        val authentication = SecurityContextHolder.getContext().authentication
-        return userRepository.findByEmail(authentication.name).run {
-            this ?: throw Exception("Usuário autenticado não encontrado")
-            announcementRepository.findAllByOwnerUserId(this.id ?: throw Exception("Id do usuário não foi localizado!"))
-                .filter { it.isAvailable }
-                .map { it.bookId }
-                .map { bookRepository.findById(it).run { this } }
-                .run { getCustomPage(map { bookViewMapper.map(it) }, pageable = pageable) }
-        }
-    }
-
-    fun getCustomPage(bookList: List<BookView>, pageable: Pageable): Page<BookView> {
+    fun <R> getCustomPage(list: List<R>, pageable: Pageable): Page<R> {
         val startIndex = pageable.pageNumber * pageable.pageSize
-        val endIndex = (startIndex + pageable.pageSize).coerceAtMost(bookList.size)
+        val endIndex = (startIndex + pageable.pageSize).coerceAtMost(list.size)
 
-        val pageList = bookList.subList(startIndex, endIndex)
+        val pageList = list.subList(startIndex, endIndex)
 
-        return PageImpl(pageList, pageable, bookList.size.toLong())
+        return PageImpl(pageList, pageable, list.size.toLong())
     }
 }

@@ -1,12 +1,9 @@
 package br.puc.projeto.rentabook
 
-import br.puc.projeto.rentabook.utils.adapters.LocalDateAdapter
-import br.puc.projeto.rentabook.utils.adapters.LocalDateTimeAdapter
 import br.puc.projeto.rentabook.dto.*
 import br.puc.projeto.rentabook.utils.TestUtils
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import org.json.JSONObject
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions
@@ -22,14 +19,12 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.nio.charset.StandardCharsets
-import java.time.LocalDate
-import java.time.LocalDateTime
 
 
 @ExtendWith(SpringExtension::class)
 @AutoConfigureMockMvc
 @SpringBootTest(properties = ["spring.data.mongodb.database=rentabook_db_test"])
-class BooksTests {
+class AnnouncementsTests {
 
     @Autowired
     private lateinit var mockMvc: MockMvc
@@ -230,7 +225,7 @@ class BooksTests {
 
         mockMvc.perform(
             MockMvcRequestBuilders
-                .get("/books/availableToNegotiate")
+                .get("/announcements/available")
                 .contentType("application/json")
                 .header("Authorization", "Bearer $userOneToken")
             )
@@ -238,13 +233,13 @@ class BooksTests {
                 val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
                 val booksAvailableToNegotiate = gson.fromJson(
                     response.getJSONArray("content").toString(),
-                    Array<EspecificVolumeGoogleBooksDTO>::class.java,
+                    Array<AnnouncementView>::class.java,
                 )
 
                 Assertions.assertEquals(2, booksAvailableToNegotiate.size)
 
-                Assertions.assertEquals(books[0], booksAvailableToNegotiate[0].id)
-                Assertions.assertEquals(books[1], booksAvailableToNegotiate[1].id)
+                Assertions.assertEquals(books[0], booksAvailableToNegotiate[0].book.id)
+                Assertions.assertEquals(books[1], booksAvailableToNegotiate[1].book.id)
             }
     }
 
@@ -381,7 +376,7 @@ class BooksTests {
 
         mockMvc.perform(
             MockMvcRequestBuilders
-                .get("/books/availableToNegotiate")
+                .get("/announcements/available")
                 .contentType("application/json")
                 .header("Authorization", "Bearer $userOneToken")
             )
@@ -389,11 +384,11 @@ class BooksTests {
                 val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
                 val booksAvailableToNegotiate = gson.fromJson(
                     response.getJSONArray("content").toString(),
-                    Array<EspecificVolumeGoogleBooksDTO>::class.java,
+                    Array<AnnouncementView>::class.java,
                 )
 
                 Assertions.assertEquals(1, booksAvailableToNegotiate.size)
-                Assertions.assertEquals(books[1], booksAvailableToNegotiate[0].id)
+                Assertions.assertEquals(books[1], booksAvailableToNegotiate[0].book.id)
             }
     }
 
@@ -588,7 +583,7 @@ class BooksTests {
             
         mockMvc.perform(
             MockMvcRequestBuilders
-                .get("/announcements")
+                .get("/announcements/available")
                 .contentType("application/json")
                 .header("Authorization", "Bearer $userRentToken")
             )

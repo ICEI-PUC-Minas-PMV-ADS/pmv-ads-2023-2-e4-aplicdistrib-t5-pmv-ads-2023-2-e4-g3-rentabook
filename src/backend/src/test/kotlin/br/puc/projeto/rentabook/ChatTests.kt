@@ -148,7 +148,7 @@ class ChatTests {
 
         mockMvc.perform(
             MockMvcRequestBuilders
-                .post("/announcement/new")
+                .post("/announcements/new")
                 .contentType("application/json")
                 .header("Authorization", "Bearer $userOneToken")
                 .content(
@@ -179,7 +179,7 @@ class ChatTests {
 
         mockMvc.perform(
             MockMvcRequestBuilders
-                .post("/announcement/rent")
+                .post("/announcements/rent")
                 .contentType("application/json")
                 .header("Authorization", "Bearer $userTwoToken")
                 .content(
@@ -246,7 +246,7 @@ class ChatTests {
 
         mockMvc.perform(
             MockMvcRequestBuilders
-                .post("/announcement/new")
+                .post("/announcements/new")
                 .contentType("application/json")
                 .header("Authorization", "Bearer $userOneToken")
                 .content(
@@ -261,6 +261,7 @@ class ChatTests {
                     )
                 )
             )
+            .andExpect(status().isOk)
             .andExpect {
                 val announcementView = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
@@ -277,7 +278,7 @@ class ChatTests {
 
         mockMvc.perform(
             MockMvcRequestBuilders
-                .post("/announcement/rent")
+                .post("/announcements/rent")
                 .contentType("application/json")
                 .header("Authorization", "Bearer $userTwoToken")
                 .content(
@@ -370,7 +371,7 @@ class ChatTests {
 
         mockMvc.perform(
             MockMvcRequestBuilders
-                .post("/announcement/new")
+                .post("/announcements/new")
                 .contentType("application/json")
                 .header("Authorization", "Bearer $userOneToken")
                 .content(
@@ -401,7 +402,7 @@ class ChatTests {
 
         mockMvc.perform(
             MockMvcRequestBuilders
-                .post("/announcement/rent")
+                .post("/announcements/rent")
                 .contentType("application/json")
                 .header("Authorization", "Bearer $userTwoToken")
                 .content(

@@ -24,19 +24,11 @@ class BookController(
         return bookService.findById(bookId)
     }
 
-
     @GetMapping("/find")
     fun findAll(@RequestParam search: String,
                 @PageableDefault(
                     size = 5
                 )pageable: Pageable): Page<BookView> {
         return bookService.findAll(search, pageable)
-    }
-
-    @GetMapping("/availableToNegotiate")
-    fun getBooksAvailableToNegotiate(
-        @PageableDefault(size = 5) pageable: Pageable
-    ): Page<BookView> {
-        return bookService.findAllBooksAvailableToNegotiate(pageable)
     }
 }
