@@ -61,11 +61,14 @@ class AnnouncementService(
 
     fun findAllBooksAvaliableToTrade(pageable: Pageable): Page<AnnouncementView> {
         return AuthenticationUtils.authenticate(userRepository) {
-            announcementRepository.findAllByTradeTrue(pageable).map {
-               announcementViewMapper.map(it)
-            }
+            val annoucemnetViewList = announcementRepository.findAllByTradeTrue(pageable)
+                .filter { it.isAvailable }
+                .map { announcementViewMapper.map(it) }
+                .toList()
+            getCustomPage(annoucemnetViewList, pageable)
         }
     }
+
 
     fun createRent(createRentForm: CreateRentForm): RentView {
         return AuthenticationUtils.authenticate(userRepository)  {

@@ -54,7 +54,7 @@ class AnnouncementController(
      * Cria um novo anuncio.
      */
     @GetMapping("/availableToRent")
-    fun getRentAnnouncements(pageable: Pageable): Page<AnnouncementViewTest> {
+    fun getRentAnnouncements(pageable: Pageable): Page<AnnouncementView> {
         return announcementService.findAllBooksAvailableToRent(pageable)
     }
 

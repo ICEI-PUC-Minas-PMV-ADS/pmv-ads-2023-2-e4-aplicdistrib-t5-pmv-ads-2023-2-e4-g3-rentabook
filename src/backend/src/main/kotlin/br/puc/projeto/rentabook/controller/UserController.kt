@@ -3,6 +3,7 @@ package br.puc.projeto.rentabook.controller
 import br.puc.projeto.rentabook.dto.*
 import br.puc.projeto.rentabook.model.Image
 import br.puc.projeto.rentabook.model.User
+import br.puc.projeto.rentabook.service.NotificationService
 import br.puc.projeto.rentabook.service.UserService
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
@@ -16,7 +17,8 @@ import org.springframework.web.multipart.MultipartFile
 
 @RestController
 class UserController(
-    private val userService: UserService
+    private val userService: UserService,
+    private val notificationService: NotificationService
 ) {
     @GetMapping("/user/{id}")
     fun getPublicUser(@PathVariable id: String): PublicUserView {
@@ -110,5 +112,10 @@ class UserController(
     fun deleteBook(@PathVariable id: String): PrivateUserView {
         return userService.deleteBook(id)
     }
+    @GetMapping("/user/notifications")
+    fun sendNotificationstoUser() : List<NotificationView> {
+        return notificationService.getAllNotification()
+    }
+
 
 }
