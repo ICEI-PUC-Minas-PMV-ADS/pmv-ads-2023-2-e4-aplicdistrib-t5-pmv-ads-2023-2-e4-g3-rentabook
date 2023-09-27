@@ -51,10 +51,11 @@ class AnnouncementService(
 
     fun findAllBooksAvailableToRent(pageable: Pageable): Page<AnnouncementView> {
         return AuthenticationUtils.authenticate(userRepository) {
-            announcementRepository.findAllByRentTrue(pageable).map {
-                announcementViewMapper.map(it)
-            }
-
+            val announcementViewList = announcementRepository.findAllByRentTrue(pageable)
+                .filter { it.isAvailable }
+                .map { announcementViewMapper.map(it) }
+                .toList()
+            getCustomPage(announcementViewList, pageable)
         }
     }
 
