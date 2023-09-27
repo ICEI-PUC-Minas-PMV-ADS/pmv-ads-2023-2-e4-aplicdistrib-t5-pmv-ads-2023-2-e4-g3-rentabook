@@ -45,6 +45,11 @@ class AnnouncementController(
         return announcementService.findAllUsersBooksAvailableToNegotiate(pageable)
     }
 
+    @GetMapping("/avaliabeToTrade")
+    fun getTradeAnnoucemnets(pageable: Pageable): Page<AnnouncementView> {
+        return announcementService.findAllBooksAvaliableToTrade(pageable)
+    }
+
     /**
      * Cria um novo anuncio.
      */

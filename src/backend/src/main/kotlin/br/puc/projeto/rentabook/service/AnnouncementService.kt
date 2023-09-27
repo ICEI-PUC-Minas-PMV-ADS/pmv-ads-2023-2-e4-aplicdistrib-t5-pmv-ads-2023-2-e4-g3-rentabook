@@ -49,11 +49,20 @@ class AnnouncementService(
         }
     }
 
-    fun findAllBooksAvailableToRent(pageable: Pageable): Page<AnnouncementViewTest> {
+    fun findAllBooksAvailableToRent(pageable: Pageable): Page<AnnouncementView> {
         return AuthenticationUtils.authenticate(userRepository) {
-            announcementRepository.findAllByRentTrue(pageable)
-                .filter { it.isAvailable }
-                .run { getCustomPage(map { announcementViewTestMapper.map(it) }, pageable = pageable) }
+            announcementRepository.findAllByRentTrue(pageable).map {
+                announcementViewMapper.map(it)
+            }
+
+        }
+    }
+
+    fun findAllBooksAvaliableToTrade(pageable: Pageable): Page<AnnouncementView> {
+        return AuthenticationUtils.authenticate(userRepository) {
+            announcementRepository.findAllByTradeTrue(pageable).map {
+               announcementViewMapper.map(it)
+            }
         }
     }
 

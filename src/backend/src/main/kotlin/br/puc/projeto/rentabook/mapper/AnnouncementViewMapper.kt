@@ -17,6 +17,7 @@ class AnnouncementViewMapper : Mapper <Announcement, AnnouncementView> {
             isAvailable = t.isAvailable,
             rent = t.rent,
             sale = t.sale,
+            trade = t.trade,
             dailyValue = t.dailyValue,
             saleValue = t.saleValue,
             location = t.location.id

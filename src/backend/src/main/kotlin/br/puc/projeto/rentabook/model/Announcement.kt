@@ -17,6 +17,7 @@ data class Announcement(
     var isAvailable: Boolean = true,
     val rent: Boolean = false,
     val sale: Boolean = false,
+    val trade: Boolean = false,
     val dailyValue: Long? = null,
     val saleValue: Long? = null,
     val location: Address,
