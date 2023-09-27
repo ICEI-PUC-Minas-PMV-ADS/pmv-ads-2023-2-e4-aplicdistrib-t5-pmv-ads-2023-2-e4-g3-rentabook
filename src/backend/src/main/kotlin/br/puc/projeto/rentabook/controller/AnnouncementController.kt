@@ -92,4 +92,10 @@ class AnnouncementController(
              pageable: Pageable): Page<AnnouncementView>{
        return announcementService.findByFilters(city, bookId, rent, sale, pageable)
     }
+    @GetMapping("/{id}")
+    fun getAnnouncementsDetail(
+        @RequestParam id: String
+    ): AnnouncementView {
+        return announcementService.detailService(id)
+    }
 }

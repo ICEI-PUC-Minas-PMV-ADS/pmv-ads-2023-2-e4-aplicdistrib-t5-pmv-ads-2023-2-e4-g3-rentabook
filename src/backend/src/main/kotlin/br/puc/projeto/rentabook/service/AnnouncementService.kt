@@ -170,4 +170,9 @@ class AnnouncementService(
             announcementViewMapper.map(t)
         }
     }
+    fun detailService (id: String) : AnnouncementView {
+        return AuthenticationUtils.authenticate(userRepository) {
+            announcementViewMapper.map(announcementRepository.findById(id).orElseThrow())
+        }
+    }
 }
