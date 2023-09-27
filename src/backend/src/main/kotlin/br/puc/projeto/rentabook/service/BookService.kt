@@ -1,20 +1,13 @@
 package br.puc.projeto.rentabook.service
 
-import br.puc.projeto.rentabook.dto.AnnouncementView
 import br.puc.projeto.rentabook.dto.BookView
 import br.puc.projeto.rentabook.exception.NotFoundException
-import br.puc.projeto.rentabook.mapper.AnnouncementViewMapper
 import br.puc.projeto.rentabook.mapper.BookViewMapper
-import br.puc.projeto.rentabook.repository.AnnouncementRepository
 import br.puc.projeto.rentabook.repository.BookRepository
-import br.puc.projeto.rentabook.repository.UserRepository
-import br.puc.projeto.rentabook.utils.AuthenticationUtils
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
-import kotlin.Exception
 
 @Service
 class BookService (

@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 data class RentView(
     val id: String,
-    val announcement: AnnouncementView,
+    val announcement: AnnouncementViewTest,
     val ownerUser: PublicUserView,
     val createData: LocalDateTime = LocalDateTime.now(),
     val startDate: LocalDate,

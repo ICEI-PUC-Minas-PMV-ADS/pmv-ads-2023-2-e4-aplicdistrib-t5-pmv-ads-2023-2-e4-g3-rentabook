@@ -136,16 +136,16 @@ class AnnouncementsTests {
                 )
             )
             .andExpect {
-                val announcementView = gson.fromJson(
+                val announcementViewTest = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
-                    AnnouncementView::class.java,
+                    AnnouncementViewTest::class.java,
                 )
 
-                Assertions.assertEquals(bookIdToNegotiate, announcementView.book.id)
-                Assertions.assertEquals("description", announcementView.description)
-                Assertions.assertEquals(0, announcementView.images.size)
-                Assertions.assertEquals(10, announcementView.dailyValue)
-                Assertions.assertEquals(addressId, announcementView.location.id)
+                Assertions.assertEquals(bookIdToNegotiate, announcementViewTest.book.id)
+                Assertions.assertEquals("description", announcementViewTest.description)
+                Assertions.assertEquals(0, announcementViewTest.images.size)
+                Assertions.assertEquals(10, announcementViewTest.dailyValue)
+                Assertions.assertEquals(addressId, announcementViewTest.location.id)
             }
     }
 
@@ -180,16 +180,16 @@ class AnnouncementsTests {
                 )
             )
             .andExpect {
-                val announcementView = gson.fromJson(
+                val announcementViewTest = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
-                    AnnouncementView::class.java,
+                    AnnouncementViewTest::class.java,
                 )
 
-                Assertions.assertEquals("f1u-swEACAAJ", announcementView.book.id)
-                Assertions.assertEquals("description", announcementView.description)
-                Assertions.assertEquals(0, announcementView.images.size)
-                Assertions.assertEquals(10, announcementView.dailyValue)
-                Assertions.assertEquals(addressId, announcementView.location.id)
+                Assertions.assertEquals("f1u-swEACAAJ", announcementViewTest.book.id)
+                Assertions.assertEquals("description", announcementViewTest.description)
+                Assertions.assertEquals(0, announcementViewTest.images.size)
+                Assertions.assertEquals(10, announcementViewTest.dailyValue)
+                Assertions.assertEquals(addressId, announcementViewTest.location.id)
             }
 
         mockMvc.perform(
@@ -210,16 +210,16 @@ class AnnouncementsTests {
                 )
             )
             .andExpect {
-                val announcementView = gson.fromJson(
+                val announcementViewTest = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
-                    AnnouncementView::class.java,
+                    AnnouncementViewTest::class.java,
                 )
 
-                Assertions.assertEquals("QkW8EAAAQBAJ", announcementView.book.id)
-                Assertions.assertEquals("description", announcementView.description)
-                Assertions.assertEquals(0, announcementView.images.size)
-                Assertions.assertEquals(10, announcementView.dailyValue)
-                Assertions.assertEquals(addressId, announcementView.location.id)
+                Assertions.assertEquals("QkW8EAAAQBAJ", announcementViewTest.book.id)
+                Assertions.assertEquals("description", announcementViewTest.description)
+                Assertions.assertEquals(0, announcementViewTest.images.size)
+                Assertions.assertEquals(10, announcementViewTest.dailyValue)
+                Assertions.assertEquals(addressId, announcementViewTest.location.id)
             }
 
 
@@ -233,7 +233,7 @@ class AnnouncementsTests {
                 val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
                 val booksAvailableToNegotiate = gson.fromJson(
                     response.getJSONArray("content").toString(),
-                    Array<AnnouncementView>::class.java,
+                    Array<AnnouncementViewTest>::class.java,
                 )
 
                 Assertions.assertEquals(2, booksAvailableToNegotiate.size)
@@ -310,18 +310,18 @@ class AnnouncementsTests {
                 )
             )
             .andExpect {
-                val announcementView = gson.fromJson(
+                val announcementViewTest = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
-                    AnnouncementView::class.java,
+                    AnnouncementViewTest::class.java,
                 )
 
-                announcementId = announcementView.id
+                announcementId = announcementViewTest.id
 
-                Assertions.assertEquals("f1u-swEACAAJ", announcementView.book.id)
-                Assertions.assertEquals("description", announcementView.description)
-                Assertions.assertEquals(0, announcementView.images.size)
-                Assertions.assertEquals(10, announcementView.dailyValue)
-                Assertions.assertEquals(addressId, announcementView.location.id)
+                Assertions.assertEquals("f1u-swEACAAJ", announcementViewTest.book.id)
+                Assertions.assertEquals("description", announcementViewTest.description)
+                Assertions.assertEquals(0, announcementViewTest.images.size)
+                Assertions.assertEquals(10, announcementViewTest.dailyValue)
+                Assertions.assertEquals(addressId, announcementViewTest.location.id)
             }
 
         // Cria um anuncio.
@@ -343,16 +343,16 @@ class AnnouncementsTests {
                 )
             )
             .andExpect {
-                val announcementView = gson.fromJson(
+                val announcementViewTest = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
-                    AnnouncementView::class.java,
+                    AnnouncementViewTest::class.java,
                 )
 
-                Assertions.assertEquals("QkW8EAAAQBAJ", announcementView.book.id)
-                Assertions.assertEquals("description", announcementView.description)
-                Assertions.assertEquals(0, announcementView.images.size)
-                Assertions.assertEquals(10, announcementView.dailyValue)
-                Assertions.assertEquals(addressId, announcementView.location.id)
+                Assertions.assertEquals("QkW8EAAAQBAJ", announcementViewTest.book.id)
+                Assertions.assertEquals("description", announcementViewTest.description)
+                Assertions.assertEquals(0, announcementViewTest.images.size)
+                Assertions.assertEquals(10, announcementViewTest.dailyValue)
+                Assertions.assertEquals(addressId, announcementViewTest.location.id)
             }
 
         // Aluga um livro.
@@ -384,7 +384,7 @@ class AnnouncementsTests {
                 val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
                 val booksAvailableToNegotiate = gson.fromJson(
                     response.getJSONArray("content").toString(),
-                    Array<AnnouncementView>::class.java,
+                    Array<AnnouncementViewTest>::class.java,
                 )
 
                 Assertions.assertEquals(1, booksAvailableToNegotiate.size)
@@ -452,18 +452,18 @@ class AnnouncementsTests {
                 )
             )
             .andExpect {
-                val announcementView = gson.fromJson(
+                val announcementViewTest = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
-                    AnnouncementView::class.java,
+                    AnnouncementViewTest::class.java,
                 )
 
-                announcementId = announcementView.id
+                announcementId = announcementViewTest.id
 
-                Assertions.assertEquals("f1u-swEACAAJ", announcementView.book.id)
-                Assertions.assertEquals("description", announcementView.description)
-                Assertions.assertEquals(0, announcementView.images.size)
-                Assertions.assertEquals(10, announcementView.dailyValue)
-                Assertions.assertEquals(addressId, announcementView.location.id)
+                Assertions.assertEquals("f1u-swEACAAJ", announcementViewTest.book.id)
+                Assertions.assertEquals("description", announcementViewTest.description)
+                Assertions.assertEquals(0, announcementViewTest.images.size)
+                Assertions.assertEquals(10, announcementViewTest.dailyValue)
+                Assertions.assertEquals(addressId, announcementViewTest.location.id)
             }
 
         // Cria um anuncio.
@@ -485,16 +485,16 @@ class AnnouncementsTests {
                 )
             )
             .andExpect {
-                val announcementView = gson.fromJson(
+                val announcementViewTest = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
-                    AnnouncementView::class.java,
+                    AnnouncementViewTest::class.java,
                 )
 
-                Assertions.assertEquals("QkW8EAAAQBAJ", announcementView.book.id)
-                Assertions.assertEquals("description", announcementView.description)
-                Assertions.assertEquals(0, announcementView.images.size)
-                Assertions.assertEquals(10, announcementView.dailyValue)
-                Assertions.assertEquals(addressId, announcementView.location.id)
+                Assertions.assertEquals("QkW8EAAAQBAJ", announcementViewTest.book.id)
+                Assertions.assertEquals("description", announcementViewTest.description)
+                Assertions.assertEquals(0, announcementViewTest.images.size)
+                Assertions.assertEquals(10, announcementViewTest.dailyValue)
+                Assertions.assertEquals(addressId, announcementViewTest.location.id)
             }
 
         mockMvc.perform(
@@ -508,10 +508,10 @@ class AnnouncementsTests {
                 val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
                 val announcements = gson.fromJson(
                     response.getJSONArray("content").toString(),
-                    Array<AnnouncementView>::class.java,
+                    Array<AnnouncementViewTest>::class.java,
                 )
 
-                for (announcement: AnnouncementView in announcements) {
+                for (announcement: AnnouncementViewTest in announcements) {
                     if (announcement.id == announcementId) {
                         Assertions.assertTrue(announcement.isAvailable)
                     }
@@ -554,10 +554,10 @@ class AnnouncementsTests {
                 val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
                 val announcements = gson.fromJson(
                     response.getJSONArray("content").toString(),
-                    Array<AnnouncementView>::class.java,
+                    Array<AnnouncementViewTest>::class.java,
                 )
 
-                for (announcement: AnnouncementView in announcements) {
+                for (announcement: AnnouncementViewTest in announcements) {
                     if (announcement.id == announcementId) {
                         Assertions.assertFalse(announcement.isAvailable)
                     }
@@ -592,10 +592,10 @@ class AnnouncementsTests {
                 val response = JSONObject(it.response.getContentAsString(StandardCharsets.UTF_8))
                 val announcements = gson.fromJson(
                     response.getJSONArray("content").toString(),
-                    Array<AnnouncementView>::class.java,
+                    Array<AnnouncementViewTest>::class.java,
                 )
 
-                for (announcement: AnnouncementView in announcements) {
+                for (announcement: AnnouncementViewTest in announcements) {
                     if (announcement.id == announcementId) {
                         Assertions.assertTrue(announcement.isAvailable)
                     }

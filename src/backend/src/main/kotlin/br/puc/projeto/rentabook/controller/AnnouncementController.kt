@@ -26,7 +26,7 @@ class AnnouncementController(
      */
 
     @GetMapping
-    fun getAllAnnouncement(pageable: Pageable): Page<AnnouncementView> {
+    fun getAllAnnouncement(pageable: Pageable): Page<AnnouncementViewTest> {
         return announcementService.findAll(pageable)
     }
 
@@ -34,14 +34,14 @@ class AnnouncementController(
      * Cria um novo anuncio.
      */
     @PostMapping("/new")
-    fun createAnnouncement(@RequestBody createAnnouncementForm: CreateAnnouncementForm): AnnouncementView {
+    fun createAnnouncement(@RequestBody createAnnouncementForm: CreateAnnouncementForm): AnnouncementViewTest {
         return announcementService.createAnnouncement(createAnnouncementForm)
     }
 
     @GetMapping("/available")
     fun getAnnouncementsAvailable(
         @PageableDefault(size = 5) pageable: Pageable
-    ): Page<AnnouncementView> {
+    ): Page<AnnouncementViewTest> {
         return announcementService.findAllUsersBooksAvailableToNegotiate(pageable)
     }
 
@@ -49,7 +49,7 @@ class AnnouncementController(
      * Cria um novo anuncio.
      */
     @GetMapping("/availableToRent")
-    fun getRentAnnouncements(pageable: Pageable): Page<AnnouncementView> {
+    fun getRentAnnouncements(pageable: Pageable): Page<AnnouncementViewTest> {
         return announcementService.findAllBooksAvailableToRent(pageable)
     }
 
@@ -70,12 +70,21 @@ class AnnouncementController(
     }
 
     @PostMapping("/images/{id}")
-    fun uploadImage(@RequestBody image: MultipartFile, @PathVariable id: String): AnnouncementView{
+    fun uploadImage(@RequestBody image: MultipartFile, @PathVariable id: String): AnnouncementViewTest{
        return announcementService.uploadImage(image, id)
     }
 
     @DeleteMapping("/images")
-    fun deleteImage(@RequestBody form: DeleteImageAnnouncementForm): AnnouncementView{
+    fun deleteImage(@RequestBody form: DeleteImageAnnouncementForm): AnnouncementViewTest{
         return announcementService.deleteImage(form)
+    }
+
+    @GetMapping("/list")
+    fun list(@RequestParam city: String?,
+             @RequestParam bookId: String?,
+             @RequestParam rent: Boolean?,
+             @RequestParam sale: Boolean?,
+             pageable: Pageable): Page<AnnouncementView>{
+       return announcementService.findByFilters(city, bookId, rent, sale, pageable)
     }
 }

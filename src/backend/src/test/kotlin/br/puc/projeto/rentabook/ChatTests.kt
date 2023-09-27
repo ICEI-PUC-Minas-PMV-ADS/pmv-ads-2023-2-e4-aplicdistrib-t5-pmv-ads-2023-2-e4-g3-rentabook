@@ -1,11 +1,8 @@
 package br.puc.projeto.rentabook
 
-import br.puc.projeto.rentabook.utils.adapters.LocalDateAdapter
-import br.puc.projeto.rentabook.utils.adapters.LocalDateTimeAdapter
 import br.puc.projeto.rentabook.dto.*
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import org.json.JSONObject
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions
@@ -21,8 +18,6 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.nio.charset.StandardCharsets
-import java.time.LocalDate
-import java.time.LocalDateTime
 
 @ExtendWith(SpringExtension::class)
 @AutoConfigureMockMvc
@@ -164,17 +159,17 @@ class ChatTests {
                 )
             )
             .andExpect {
-                val announcementView = gson.fromJson(
+                val announcementViewTest = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
-                    AnnouncementView::class.java,
+                    AnnouncementViewTest::class.java,
                 )
 
-                announcementId = announcementView.id
+                announcementId = announcementViewTest.id
 
-                Assertions.assertEquals("f1u-swEACAAJ", announcementView.book.id)
-                Assertions.assertEquals("description", announcementView.description)
-                Assertions.assertEquals(0, announcementView.images.size)
-                Assertions.assertEquals(10, announcementView.dailyValue)
+                Assertions.assertEquals("f1u-swEACAAJ", announcementViewTest.book.id)
+                Assertions.assertEquals("description", announcementViewTest.description)
+                Assertions.assertEquals(0, announcementViewTest.images.size)
+                Assertions.assertEquals(10, announcementViewTest.dailyValue)
             }
 
         mockMvc.perform(
@@ -263,17 +258,17 @@ class ChatTests {
             )
             .andExpect(status().isOk)
             .andExpect {
-                val announcementView = gson.fromJson(
+                val announcementViewTest = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
-                    AnnouncementView::class.java,
+                    AnnouncementViewTest::class.java,
                 )
 
-                announcementId = announcementView.id
+                announcementId = announcementViewTest.id
 
-                Assertions.assertEquals("f1u-swEACAAJ", announcementView.book.id)
-                Assertions.assertEquals("description", announcementView.description)
-                Assertions.assertEquals(0, announcementView.images.size)
-                Assertions.assertEquals(10, announcementView.dailyValue)
+                Assertions.assertEquals("f1u-swEACAAJ", announcementViewTest.book.id)
+                Assertions.assertEquals("description", announcementViewTest.description)
+                Assertions.assertEquals(0, announcementViewTest.images.size)
+                Assertions.assertEquals(10, announcementViewTest.dailyValue)
             }
 
         mockMvc.perform(
@@ -387,17 +382,17 @@ class ChatTests {
                 )
             )
             .andExpect {
-                val announcementView = gson.fromJson(
+                val announcementViewTest = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
-                    AnnouncementView::class.java,
+                    AnnouncementViewTest::class.java,
                 )
 
-                announcementId = announcementView.id
+                announcementId = announcementViewTest.id
 
-                Assertions.assertEquals("f1u-swEACAAJ", announcementView.book.id)
-                Assertions.assertEquals("description", announcementView.description)
-                Assertions.assertEquals(0, announcementView.images.size)
-                Assertions.assertEquals(10, announcementView.dailyValue)
+                Assertions.assertEquals("f1u-swEACAAJ", announcementViewTest.book.id)
+                Assertions.assertEquals("description", announcementViewTest.description)
+                Assertions.assertEquals(0, announcementViewTest.images.size)
+                Assertions.assertEquals(10, announcementViewTest.dailyValue)
             }
 
         mockMvc.perform(
