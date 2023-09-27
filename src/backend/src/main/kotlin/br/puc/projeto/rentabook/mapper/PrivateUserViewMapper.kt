@@ -15,7 +15,7 @@ class PrivateUserViewMapper: Mapper<User, PrivateUserView> {
             email = t.email,
             booksId = t.booksId,
             addresses = t.addresses.map { address ->
-                address?.id
+                address.id
             }
         )
     }

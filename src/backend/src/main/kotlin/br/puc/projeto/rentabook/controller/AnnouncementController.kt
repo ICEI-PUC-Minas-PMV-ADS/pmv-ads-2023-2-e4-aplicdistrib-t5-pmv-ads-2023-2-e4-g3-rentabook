@@ -5,11 +5,15 @@ import br.puc.projeto.rentabook.service.AnnouncementService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.multipart.MultipartFile
 
 @RestController()
 @RequestMapping("/announcements")
@@ -63,5 +67,15 @@ class AnnouncementController(
     @PostMapping("/give_back")
     fun giveBackRent(@RequestBody giveBackForm: GiveBackForm) {
         return announcementService.giveBackRent(giveBackForm)
+    }
+
+    @PostMapping("/images/{id}")
+    fun uploadImage(@RequestBody image: MultipartFile, @PathVariable id: String): AnnouncementView{
+       return announcementService.uploadImage(image, id)
+    }
+
+    @DeleteMapping("/images")
+    fun deleteImage(@RequestBody form: DeleteImageAnnouncementForm): AnnouncementView{
+        return announcementService.deleteImage(form)
     }
 }

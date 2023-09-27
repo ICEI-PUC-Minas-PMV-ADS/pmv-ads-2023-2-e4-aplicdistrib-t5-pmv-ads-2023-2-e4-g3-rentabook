@@ -11,7 +11,7 @@ data class Announcement(
     val id: String? = null,
     val bookId: String,
     val ownerUser: User,
-    val images: List<Image> = listOf(),
+    val images: MutableList<Image> = mutableListOf(),
     val description: String = "",
     val createdDate: LocalDateTime = LocalDateTime.now(),
     var isAvailable: Boolean = true,

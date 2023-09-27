@@ -20,7 +20,7 @@ class CreateAnnouncementFormMapper(
         return Announcement(
             bookId = t.bookId,
             ownerUser = userRepository.findByEmail(authentication.name) ?: throw Exception("Owner user não encontrado!"),
-            images = t.images.map { imageIdToImage(it) }.toList(),
+            images = t.images.map { imageIdToImage(it) }.toMutableList(),
             description = t.description,
             location = addressRepository.findById(t.locationId).orElseThrow { throw Exception("Endereço não encontrado!") },
             dailyValue = t.dailyValue,

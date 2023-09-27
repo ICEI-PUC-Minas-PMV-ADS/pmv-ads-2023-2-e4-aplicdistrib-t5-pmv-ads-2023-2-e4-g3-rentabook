@@ -9,19 +9,23 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
-import java.nio.file.Files
 
 
 @Service
 class ImageService(
     private val imageRepository: ImageRepository
 ) {
-    fun uploadImage(image: MultipartFile): Image {
+    fun uploadImage(image: MultipartFile, userPhoto: Boolean? = true): Image {
         return detectedAndValidateType(image).let { imageType ->
             imageRepository.save(Image()).run {
                 id as String
                 val currentDirectory = System.getProperty("user.dir")
-                val uploadDir = File("$currentDirectory/src/backend/src/main/kotlin/br/puc/projeto/rentabook/images/users")
+                val category = mapOf(
+                    true to "users",
+                    false to "announcements"
+                )
+                val categoryPath = category[userPhoto]
+                val uploadDir = File("$currentDirectory/src/backend/src/main/kotlin/br/puc/projeto/rentabook/images/$categoryPath")
                 if (!uploadDir.exists()) {
                     uploadDir.mkdirs()
                 }

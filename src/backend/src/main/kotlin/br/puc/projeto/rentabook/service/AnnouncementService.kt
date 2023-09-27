@@ -11,11 +11,15 @@ import br.puc.projeto.rentabook.repository.RatingRepository
 import br.puc.projeto.rentabook.repository.RentRepository
 import br.puc.projeto.rentabook.repository.UserRepository
 import br.puc.projeto.rentabook.utils.AuthenticationUtils
+import br.puc.projeto.rentabook.exception.NotFoundException
+import br.puc.projeto.rentabook.model.Image
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import java.lang.Exception
+import org.springframework.web.multipart.MultipartFile
+import kotlin.Exception
 
 @Service
 class AnnouncementService(
@@ -27,6 +31,8 @@ class AnnouncementService(
     private val createRentFormMapper: CreateRentFormMapper,
     private val rentViewMapper: RentViewMapper,
     private val ratingRepository: RatingRepository,
+    private val imageService: ImageService,
+
 ) {
 
     fun findAll(pageable: Pageable): Page<AnnouncementView> {
@@ -86,5 +92,35 @@ class AnnouncementService(
         val pageList = list.subList(startIndex, endIndex)
 
         return PageImpl(pageList, pageable, list.size.toLong())
+    }
+
+    fun uploadImage(image: MultipartFile, announcementId: String): AnnouncementView{
+         return AuthenticationUtils.authenticate(userRepository){user ->
+            announcementRepository.findByIdOrNull(announcementId).let { announcement ->
+                announcement ?: throw NotFoundException("Anúncio não encontrado!")
+                if (announcement.ownerUser.id != user.id) throw Exception("Você não tem permissão para modificar esse anúncio")
+                imageService.uploadImage(image, false).let { image ->
+                    announcement.images.add(image)
+                }
+                announcementRepository.save(announcement)
+                announcementViewMapper.map(announcement)
+            }
+        }
+    }
+
+    fun deleteImage(form: DeleteImageAnnouncementForm ): AnnouncementView{
+        return AuthenticationUtils.authenticate(userRepository){user ->
+            announcementRepository.findByIdOrNull(form.announcementId).let { announcement ->
+                announcement ?: throw NotFoundException("Anúncio não encontrado!")
+                if (announcement.ownerUser.id != user.id) throw Exception("Você não tem permissão para modificar esse anúncio")
+                val image = announcement.images.find { image ->
+                    image.id == form.imageId
+                } ?: throw NotFoundException("Imagem não encontrada!")
+                imageService.deleteImage(form.imageId)
+                announcement.images.remove(image)
+                announcementRepository.save(announcement)
+                announcementViewMapper.map(announcement)
+            }
+        }
     }
 }
