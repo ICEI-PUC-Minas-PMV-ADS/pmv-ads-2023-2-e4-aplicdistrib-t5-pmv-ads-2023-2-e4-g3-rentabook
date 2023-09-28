@@ -1,5 +1,9 @@
 package br.puc.projeto.rentabook.model
 
+import br.puc.projeto.rentabook.model.Announcement
+import br.puc.projeto.rentabook.model.Chat
+import br.puc.projeto.rentabook.model.Rating
+import br.puc.projeto.rentabook.model.User
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDate

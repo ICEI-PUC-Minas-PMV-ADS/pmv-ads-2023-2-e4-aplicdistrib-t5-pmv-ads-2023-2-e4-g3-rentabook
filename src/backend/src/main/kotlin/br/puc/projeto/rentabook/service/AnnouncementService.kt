@@ -161,5 +161,17 @@ class AnnouncementService(
     fun findById(id: String): Announcement {
         return announcementRepository.findByIdOrNull(id) ?: throw NotFoundException("Anúncio não encontrado")
     }
-
+    
+    fun giveBackSale(giveBackForm: GiveBackForm) {
+        return AuthenticationUtils.authenticate(userRepository) {
+            val rent = rentRepository.findById(giveBackForm.id).orElseThrow { throw Exception("Id de aluguel invalido!") }
+            rent.rating = ratingRepository.save(Rating(
+                    message = giveBackForm.ratingMessage,
+                    feedback = giveBackForm.ratingFeedback,
+            ))
+            rent.announcement.isAvailable = true
+            announcementRepository.save(rent.announcement)
+            rentRepository.save(rent)
+        }
+    }
 }
