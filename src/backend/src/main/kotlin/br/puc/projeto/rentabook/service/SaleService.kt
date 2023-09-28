@@ -88,9 +88,9 @@ class SaleService(private val saleRepository: SaleRepository, private val saleFo
 
     }
 
-    fun findByOwnerUser(pageable: Pageable): Page<SaleView> {
+    fun findByBuyerUser(pageable: Pageable): Page<SaleView> {
         return AuthenticationUtils.authenticate(userRepository) { user ->
-            saleRepository.findByOwnerUser(user.id, pageable).map { t ->
+            saleRepository.findByBuyerUser(user.id, pageable).map { t ->
                 saleViewMapper.map(t)
             }
         }

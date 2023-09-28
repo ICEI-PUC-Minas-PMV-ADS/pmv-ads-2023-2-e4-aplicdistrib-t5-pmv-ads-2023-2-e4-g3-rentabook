@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.repository.Query
 interface SaleRepository : MongoRepository<Sale, String> {
  fun findByAcceptedAndAnnouncementOwnerUserId (accepted: Boolean?, ownerUser: String?, pageable: Pageable): Page <Sale>
 
- fun findByOwnerUser (ownerUser: String?, pageable: Pageable): Page <Sale>
+ fun findByBuyerUser (buyerUser: String?, pageable: Pageable): Page <Sale>
  fun findByAnnouncementId(announcementId: String, pageable: Pageable): Page <Sale>
 }
 
