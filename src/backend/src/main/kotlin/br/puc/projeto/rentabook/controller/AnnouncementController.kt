@@ -45,11 +45,16 @@ class AnnouncementController(
         return announcementService.findAllUsersBooksAvailableToNegotiate(pageable)
     }
 
+    @GetMapping("/avaliabeToTrade")
+    fun getTradeAnnoucemnets(pageable: Pageable): Page<AnnouncementView> {
+        return announcementService.findAllBooksAvaliableToTrade(pageable)
+    }
+
     /**
      * Cria um novo anuncio.
      */
     @GetMapping("/availableToRent")
-    fun getRentAnnouncements(pageable: Pageable): Page<AnnouncementViewTest> {
+    fun getRentAnnouncements(pageable: Pageable): Page<AnnouncementView> {
         return announcementService.findAllBooksAvailableToRent(pageable)
     }
 
@@ -87,5 +92,10 @@ class AnnouncementController(
              pageable: Pageable): Page<AnnouncementView>{
        return announcementService.findByFilters(city, bookId, rent, sale, pageable)
     }
-
+    @GetMapping("/{id}")
+    fun getAnnouncementsDetail(
+        @RequestParam id: String
+    ): AnnouncementView {
+        return announcementService.detailService(id)
+    }
 }

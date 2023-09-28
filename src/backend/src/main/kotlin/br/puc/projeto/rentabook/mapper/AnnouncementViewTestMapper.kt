@@ -23,6 +23,7 @@ class AnnouncementViewTestMapper(
             isAvailable = t.isAvailable,
             rent = t.rent,
             sale = t.sale,
+            trade = t.trade,
             dailyValue = t.dailyValue,
             saleValue = t.saleValue,
             location = addressViewMapper.map(t.location),

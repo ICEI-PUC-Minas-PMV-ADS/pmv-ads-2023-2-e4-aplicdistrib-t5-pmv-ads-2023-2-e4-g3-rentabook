@@ -12,6 +12,7 @@ data class AnnouncementViewTest(
     val isAvailable: Boolean,
     val rent: Boolean = false,
     val sale: Boolean = false,
+    val trade: Boolean = false,
     val dailyValue: Long? = null,
     val saleValue: Long? = null,
     val location: AddressView,

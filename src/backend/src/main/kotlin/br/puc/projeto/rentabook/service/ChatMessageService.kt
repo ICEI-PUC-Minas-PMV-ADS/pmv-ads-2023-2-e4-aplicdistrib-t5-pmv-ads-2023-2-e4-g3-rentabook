@@ -1,6 +1,5 @@
 package br.puc.projeto.rentabook.service
 
-import br.puc.projeto.rentabook.dto.BookView
 import br.puc.projeto.rentabook.dto.ChatMessageView
 import br.puc.projeto.rentabook.dto.CreateChatMessageForm
 import br.puc.projeto.rentabook.mapper.ChatMessageViewMapper

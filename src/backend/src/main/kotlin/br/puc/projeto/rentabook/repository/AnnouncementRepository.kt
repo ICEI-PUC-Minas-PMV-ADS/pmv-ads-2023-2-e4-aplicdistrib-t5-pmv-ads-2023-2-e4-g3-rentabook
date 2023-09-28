@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.repository.Query
 
 interface AnnouncementRepository : MongoRepository<Announcement, String> {
     fun findAllByIsAvailableTrue(pageable: Pageable): Page<Announcement>
-    fun findAllByRentTrue(pageable: Pageable): List<Announcement>
+    fun findAllByRentTrue(pageable: Pageable): Page<Announcement>
+    fun findAllByTradeTrue(pageable: Pageable): Page<Announcement>
 
 }

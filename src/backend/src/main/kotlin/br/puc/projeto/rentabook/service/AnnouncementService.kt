@@ -49,13 +49,26 @@ class AnnouncementService(
         }
     }
 
-    fun findAllBooksAvailableToRent(pageable: Pageable): Page<AnnouncementViewTest> {
+    fun findAllBooksAvailableToRent(pageable: Pageable): Page<AnnouncementView> {
         return AuthenticationUtils.authenticate(userRepository) {
-            announcementRepository.findAllByRentTrue(pageable)
-                    .filter { it.isAvailable }
-                    .run { getCustomPage(map { announcementViewTestMapper.map(it) }, pageable = pageable) }
+            val announcementViewList = announcementRepository.findAllByRentTrue(pageable)
+                .filter { it.isAvailable }
+                .map { announcementViewMapper.map(it) }
+                .toList()
+            getCustomPage(announcementViewList, pageable)
         }
     }
+
+    fun findAllBooksAvaliableToTrade(pageable: Pageable): Page<AnnouncementView> {
+        return AuthenticationUtils.authenticate(userRepository) {
+            val annoucemnetViewList = announcementRepository.findAllByTradeTrue(pageable)
+                .filter { it.isAvailable }
+                .map { announcementViewMapper.map(it) }
+                .toList()
+            getCustomPage(annoucemnetViewList, pageable)
+        }
+    }
+
 
     fun createRent(createRentForm: CreateRentForm): RentView {
         return AuthenticationUtils.authenticate(userRepository) {
@@ -172,6 +185,12 @@ class AnnouncementService(
             rent.announcement.isAvailable = true
             announcementRepository.save(rent.announcement)
             rentRepository.save(rent)
+        }
+
+    }
+    fun detailService (id: String) : AnnouncementView {
+        return AuthenticationUtils.authenticate(userRepository) {
+            announcementViewMapper.map(announcementRepository.findById(id).orElseThrow())
         }
     }
 }
