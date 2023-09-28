@@ -21,16 +21,16 @@ import org.springframework.web.multipart.MultipartFile
 
 @Service
 class UserService(
-    private val userRepository: UserRepository,
-    private val publicUserViewMapper: PublicUserViewMapper,
-    private val imageService: ImageService,
-    private val registerFormMapper: RegisterFormMapper,
-    private val authManager: AuthenticationManager,
-    private val jwtUtils: JWTUtils,
-    private val privateUserViewMapper: PrivateUserViewMapper,
-    private val addressFormMapper: AddressFormMapper,
-    private val addressRepository: AddressRepository,
-    private val addressViewMapper: AddressViewMapper,
+        private val userRepository: UserRepository,
+        private val publicUserViewMapper: PublicUserViewMapper,
+        private val imageService: ImageService,
+        private val registerFormMapper: RegisterFormMapper,
+        private val authManager: AuthenticationManager,
+        private val jwtUtils: JWTUtils,
+        private val privateUserViewMapper: PrivateUserViewMapper,
+        private val addressFormMapper: AddressFormMapper,
+        private val addressRepository: AddressRepository,
+        private val addressViewMapper: AddressViewMapper,
 ) {
 
     fun getPublicUser(id: String): PublicUserView {
@@ -159,5 +159,9 @@ class UserService(
                 privateUserViewMapper.map(user)
             }
         }
+    }
+
+    fun findById(id: String): User {
+        return userRepository.findByIdOrNull(id) ?: throw NotFoundException("Usuário não encontrado!")
     }
 }

@@ -23,17 +23,17 @@ import kotlin.Exception
 
 @Service
 class AnnouncementService(
-    private val announcementRepository: AnnouncementRepository,
-    private val userRepository: UserRepository,
-    private val createAnnouncementFormMapper: CreateAnnouncementFormMapper,
-    private val announcementViewTestMapper: AnnouncementViewTestMapper,
-    private val rentRepository: RentRepository,
-    private val createRentFormMapper: CreateRentFormMapper,
-    private val rentViewMapper: RentViewMapper,
-    private val ratingRepository: RatingRepository,
-    private val imageService: ImageService,
-    private val mongoTemplate: MongoTemplate,
-    private val announcementViewMapper: AnnouncementViewMapper
+        private val announcementRepository: AnnouncementRepository,
+        private val userRepository: UserRepository,
+        private val createAnnouncementFormMapper: CreateAnnouncementFormMapper,
+        private val announcementViewTestMapper: AnnouncementViewTestMapper,
+        private val rentRepository: RentRepository,
+        private val createRentFormMapper: CreateRentFormMapper,
+        private val rentViewMapper: RentViewMapper,
+        private val ratingRepository: RatingRepository,
+        private val imageService: ImageService,
+        private val mongoTemplate: MongoTemplate,
+        private val announcementViewMapper: AnnouncementViewMapper
 
 ) {
 
@@ -52,13 +52,13 @@ class AnnouncementService(
     fun findAllBooksAvailableToRent(pageable: Pageable): Page<AnnouncementViewTest> {
         return AuthenticationUtils.authenticate(userRepository) {
             announcementRepository.findAllByRentTrue(pageable)
-                .filter { it.isAvailable }
-                .run { getCustomPage(map { announcementViewTestMapper.map(it) }, pageable = pageable) }
+                    .filter { it.isAvailable }
+                    .run { getCustomPage(map { announcementViewTestMapper.map(it) }, pageable = pageable) }
         }
     }
 
     fun createRent(createRentForm: CreateRentForm): RentView {
-        return AuthenticationUtils.authenticate(userRepository)  {
+        return AuthenticationUtils.authenticate(userRepository) {
             rentRepository.save(createRentFormMapper.map(createRentForm)).run {
                 announcement.isAvailable = false
                 announcementRepository.save(announcement)
@@ -70,7 +70,7 @@ class AnnouncementService(
     fun findAllUsersBooksAvailableToNegotiate(pageable: Pageable): Page<AnnouncementViewTest> {
         return AuthenticationUtils.authenticate(userRepository) {
             announcementRepository.findAllByIsAvailableTrue(pageable)
-                .map { announcementViewTestMapper.map(it) }
+                    .map { announcementViewTestMapper.map(it) }
         }
     }
 
@@ -78,8 +78,8 @@ class AnnouncementService(
         return AuthenticationUtils.authenticate(userRepository) {
             val rent = rentRepository.findById(giveBackForm.id).orElseThrow { throw Exception("Id de aluguel invalido!") }
             rent.rating = ratingRepository.save(Rating(
-                message = giveBackForm.ratingMessage,
-                feedback = giveBackForm.ratingFeedback,
+                    message = giveBackForm.ratingMessage,
+                    feedback = giveBackForm.ratingFeedback,
             ))
             rent.announcement.isAvailable = true
             announcementRepository.save(rent.announcement)
@@ -96,8 +96,8 @@ class AnnouncementService(
         return PageImpl(pageList, pageable, list.size.toLong())
     }
 
-    fun uploadImage(image: MultipartFile, announcementId: String): AnnouncementViewTest{
-         return AuthenticationUtils.authenticate(userRepository){user ->
+    fun uploadImage(image: MultipartFile, announcementId: String): AnnouncementViewTest {
+        return AuthenticationUtils.authenticate(userRepository) { user ->
             announcementRepository.findByIdOrNull(announcementId).let { announcement ->
                 announcement ?: throw NotFoundException("Anúncio não encontrado!")
                 if (announcement.ownerUser.id != user.id) throw Exception("Você não tem permissão para modificar esse anúncio")
@@ -110,8 +110,8 @@ class AnnouncementService(
         }
     }
 
-    fun deleteImage(form: DeleteImageAnnouncementForm ): AnnouncementViewTest{
-        return AuthenticationUtils.authenticate(userRepository){user ->
+    fun deleteImage(form: DeleteImageAnnouncementForm): AnnouncementViewTest {
+        return AuthenticationUtils.authenticate(userRepository) { user ->
             announcementRepository.findByIdOrNull(form.announcementId).let { announcement ->
                 announcement ?: throw NotFoundException("Anúncio não encontrado!")
                 if (announcement.ownerUser.id != user.id) throw Exception("Você não tem permissão para modificar esse anúncio")
@@ -127,11 +127,11 @@ class AnnouncementService(
     }
 
     fun findByFilters(
-        city: String?,
-        bookId: String?,
-        rent: Boolean?,
-        sale: Boolean?,
-        pageable: Pageable
+            city: String?,
+            bookId: String?,
+            rent: Boolean?,
+            sale: Boolean?,
+            pageable: Pageable
     ): Page<AnnouncementView> {
         val query = Query()
 
@@ -157,4 +157,9 @@ class AnnouncementService(
             announcementViewMapper.map(t)
         }
     }
+
+    fun findById(id: String): Announcement {
+        return announcementRepository.findByIdOrNull(id) ?: throw NotFoundException("Anúncio não encontrado")
+    }
+
 }

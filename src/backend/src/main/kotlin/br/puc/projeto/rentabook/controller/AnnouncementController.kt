@@ -87,4 +87,5 @@ class AnnouncementController(
              pageable: Pageable): Page<AnnouncementView>{
        return announcementService.findByFilters(city, bookId, rent, sale, pageable)
     }
+
 }
