@@ -85,7 +85,7 @@ O usuário Inicia a interação com o sistema acessando a plataforma Rentabook p
 O frontend da aplicação, desenvolvido em React Native, apresenta a interface de usuário intuitiva e permite que os usuários naveguem pelos livros, listem seus próprios livros e iniciem interações, como compra, venda ou troca.</br></br>
 O backend da aplicação é construído utilizando o Spring Framework e é responsável por processar as solicitações do frontend, interagir com o banco de dados MongoDB e gerenciar as operações de compra, venda e troca de livros.</br></br>
 O MongoDB armazena os dados do aplicativo, incluindo informações sobre livros, usuários, transações e interações.</br></br>
-O MongoDB Compass é utilizada para gerenciar e visualizar os dados no banco de dados MongoDB.</br></br>
+O MongoDB Compass é utilizado para gerenciar e visualizar os dados no banco de dados MongoDB.</br></br>
 Utilizamos o IntelliJ IDEA para escrever, depurar e testar o código Kotlin e Spring.</br></br>
 Utilizamos o Insomnia para testar a API, garantindo que elas funcionem corretamente e atendam aos requisitos.</br></br>
 O Swagger é usado para documentar a API do Rentabook, criando uma documentação interativa que os desenvolvedores e os usuários podem consultar para entender como interagir com a plataforma.
