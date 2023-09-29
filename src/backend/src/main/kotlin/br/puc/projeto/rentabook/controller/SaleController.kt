@@ -39,8 +39,16 @@ class SaleController(private val saleService: SaleService) {
     @SecurityRequirement(
         name = "bearerAuth"
     )
-    @PutMapping("{id}/cancel")
+    @PutMapping("/{id}/cancel")
     fun cancel(@PathVariable id: String): SaleView {
         return saleService.cancel(id)
+    }
+
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
+    @PutMapping("/{id}/complete")
+    fun complete(@PathVariable id: String): SaleView {
+        return saleService.complete(id)
     }
 }

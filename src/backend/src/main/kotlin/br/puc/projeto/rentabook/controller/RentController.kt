@@ -40,8 +40,16 @@ class RentController(private val rentService: RentService) {
     @SecurityRequirement(
         name = "bearerAuth"
     )
-    @PutMapping("{id}/cancel")
+    @PutMapping("/{id}/cancel")
     fun cancel(@PathVariable id: String): RentView {
         return rentService.cancel(id)
+    }
+
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
+    @PutMapping("/{id}/complete")
+    fun complete(@PathVariable id: String): RentView {
+        return rentService.complete(id)
     }
 }

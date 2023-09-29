@@ -66,7 +66,22 @@ class SaleService(
             if (!sale.cancelled) {
                 throw IllegalStateException("Esta venda não foi cancelada e não pode ser desfeita")
             }
+            sale.announcement.isAvailable = true
+            announcementRepository.save(sale.announcement)
             sale.cancelled = true
+            saleViewMapper.map(saleRepository.save(sale))
+        }
+    }
+    fun complete(id: String): SaleView {
+        return AuthenticationUtils.authenticate(userRepository) { user ->
+            val sale = saleRepository.findById(id)
+                .orElseThrow { NotFoundException("Venda não encontrada") }
+            if (!sale.cancelled) {
+                throw IllegalStateException("Esta venda não foi cancelada e não pode ser desfeita")
+            }
+            sale.announcement.isAvailable = false
+            announcementRepository.save(sale.announcement)
+            sale.accepted = true
             saleViewMapper.map(saleRepository.save(sale))
         }
     }

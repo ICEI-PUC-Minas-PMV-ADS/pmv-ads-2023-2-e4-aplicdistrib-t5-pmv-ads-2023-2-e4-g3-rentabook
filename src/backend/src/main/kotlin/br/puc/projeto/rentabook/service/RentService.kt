@@ -58,7 +58,23 @@ class RentService(
             if (!rent.cancelled) {
                 throw IllegalStateException("Esta venda não foi cancelada e não pode ser desfeita")
             }
+            rent.announcement.isAvailable = true
+            announcementRepository.save(rent.announcement)
             rent.cancelled = true
+            rentViewMapper.map(rentRepository.save(rent))
+        }
+    }
+
+    fun complete(id: String): RentView {
+        return AuthenticationUtils.authenticate(userRepository) { user ->
+            val rent = rentRepository.findById(id)
+                .orElseThrow { NotFoundException("Venda não encontrada") }
+            if (!rent.cancelled) {
+                throw IllegalStateException("Esta venda não foi cancelada e não pode ser desfeita")
+            }
+            rent.announcement.isAvailable = true
+            announcementRepository.save(rent.announcement)
+            rent.accepted = true
             rentViewMapper.map(rentRepository.save(rent))
         }
     }

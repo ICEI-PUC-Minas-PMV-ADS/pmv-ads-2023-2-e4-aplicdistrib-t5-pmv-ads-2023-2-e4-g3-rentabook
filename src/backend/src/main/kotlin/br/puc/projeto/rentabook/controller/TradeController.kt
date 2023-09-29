@@ -47,4 +47,12 @@ class TradeController(
     fun cancel(@PathVariable id: String): TradeView {
         return tradeService.cancel(id)
     }
+
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
+    @PutMapping("{id}/complete")
+    fun complete(@PathVariable id: String): TradeView {
+        return tradeService.complete(id)
+    }
 }

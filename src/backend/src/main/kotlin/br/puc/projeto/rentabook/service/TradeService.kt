@@ -61,7 +61,23 @@ class TradeService(
             if (!trade.cancelled) {
                 throw IllegalStateException("Esta venda não foi cancelada e não pode ser desfeita")
             }
+            trade.announcement.isAvailable = true
+            announcementRepository.save(trade.announcement)
             trade.cancelled = true
+            tradeViewMapper.map(tradeRepository.save(trade))
+        }
+    }
+
+    fun complete(id: String): TradeView {
+        return AuthenticationUtils.authenticate(userRepository) { user ->
+            val trade = tradeRepository.findById(id)
+                .orElseThrow { NotFoundException("Troca não encontrada") }
+            if (!trade.cancelled) {
+                throw IllegalStateException("Esta venda não foi cancelada e não pode ser desfeita")
+            }
+            trade.announcement.isAvailable = false
+            announcementRepository.save(trade.announcement)
+            trade.accepted = true
             tradeViewMapper.map(tradeRepository.save(trade))
         }
     }
