@@ -55,9 +55,45 @@ db.createCollection("chat_messages")
 
 ## Tecnologias Utilizadas
 
-Descreva aqui qual(is) tecnologias você vai usar para resolver o seu problema, ou seja, implementar a sua solução. Liste todas as tecnologias envolvidas, linguagens a serem utilizadas, serviços web, frameworks, bibliotecas, IDEs de desenvolvimento, e ferramentas.
+Tecnologias Utilizadas:
 
-Apresente também uma figura explicando como as tecnologias estão relacionadas ou como uma interação do usuário com o sistema vai ser conduzida, por onde ela passa até retornar uma resposta ao usuário.
+Kotlin: Uma linguagem de programação moderna e concisa para desenvolvimento Android e aplicações backend.
+Framework de Desenvolvimento:
+
+Spring Framework: Um framework de aplicação Java amplamente utilizado para criar aplicativos Java empresariais.
+Banco de Dados:
+
+MongoDB: Um banco de dados NoSQL altamente escalável e flexível, adequado para armazenar dados de forma eficiente.
+Ferramenta de Gerenciamento de Banco de Dados:
+
+MongoDB Compass: Uma interface gráfica para facilitar o gerenciamento e visualização dos dados armazenados no MongoDB.
+Ambiente de Desenvolvimento Integrado (IDE):
+
+IntelliJ IDEA: Uma IDE poderosa para desenvolvimento Kotlin e Java.
+Ferramenta de Teste de API:
+
+Insomnia: Uma ferramenta de teste de API que permite testar e depurar chamadas de API de forma eficiente.
+Documentação de API:
+
+Swagger: Uma estrutura para documentar APIs REST de forma padronizada e gerar documentação interativa.
+
+Explicação:
+
+Usuário: Inicia a interação com o sistema acessando a plataforma Rentabook por meio de um navegador da web ou aplicativo móvel.
+
+Frontend: O frontend da aplicação, desenvolvido em React Native, apresenta a interface de usuário intuitiva e permite que os usuários naveguem pelos livros, listem seus próprios livros e iniciem interações, como compra, venda ou troca.
+
+Backend (Spring Framework): O backend da aplicação é construído utilizando o Spring Framework e é responsável por processar as solicitações do frontend, interagir com o banco de dados MongoDB e gerenciar as operações de compra, venda e troca de livros.
+
+Banco de Dados MongoDB: O MongoDB armazena os dados do aplicativo, incluindo informações sobre livros, usuários, transações e interações.
+
+Ferramenta de Gerenciamento de Banco de Dados (MongoDB Compass): O MongoDB Compass é utilizada para gerenciar e visualizar os dados no banco de dados MongoDB.
+
+IDE (IntelliJ IDEA): Utilizamos o IntelliJ IDEA para escrever, depurar e testar o código Kotlin e Spring.
+
+Ferramenta de Teste de API (Insomnia): Utilizamos o Insomnia para testar a API, garantindo que elas funcionem corretamente e atendam aos requisitos.
+
+Documentação de API (Swagger): O Swagger é usado para documentar a API do Rentabook, criando uma documentação interativa que os desenvolvedores e os usuários podem consultar para entender como interagir com a plataforma.
 
 ## Hospedagem
 
