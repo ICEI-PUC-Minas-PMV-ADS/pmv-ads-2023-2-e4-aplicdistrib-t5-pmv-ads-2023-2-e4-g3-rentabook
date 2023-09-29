@@ -29,7 +29,27 @@ As referências abaixo irão auxiliá-lo na geração do artefato “Esquema Rel
 
 ## Modelo Físico
 
-Entregar um arquivo banco.sql contendo os scripts de criação das tabelas do banco de dados. Este arquivo deverá ser incluído dentro da pasta src\bd.
+Cria o banco de dados:
+
+```
+use rentabook_db
+```
+
+Cria as collections dos dados:
+```
+db.createCollection("users")
+db.createCollection("announcements")
+db.createCollection("images")
+db.createCollection("addresses")
+db.createCollection("notifications")
+db.createCollection("roles")
+db.createCollection("rents")
+db.createCollection("trades")
+db.createCollection("sales")
+db.createCollection("ratings")
+db.createCollection("chats")
+db.createCollection("chat_messages")
+```
 
 ## Tecnologias Utilizadas
 
