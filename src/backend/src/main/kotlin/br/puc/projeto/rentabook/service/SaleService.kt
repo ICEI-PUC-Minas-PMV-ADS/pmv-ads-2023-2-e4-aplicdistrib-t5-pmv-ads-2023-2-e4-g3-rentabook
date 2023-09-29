@@ -22,7 +22,7 @@ import java.lang.IllegalStateException
 class SaleService(private val saleRepository: SaleRepository, private val saleFormMapper: SaleFormMapper, private val saleViewMapper: SaleViewMapper, private val userRepository: UserRepository, private val announcementService: AnnouncementService) {
 
     @Transactional
-    fun createSale(saleForm: SaleForm): SaleView {
+    fun create(saleForm: SaleForm): SaleView {
 
         val createdSale = saleRepository.save(saleFormMapper.map(saleForm))
 
@@ -33,16 +33,18 @@ class SaleService(private val saleRepository: SaleRepository, private val saleFo
 
     @Transactional
     fun undoSale(saleId: String): SaleView {
-        val sale = saleRepository.findById(saleId)
-                .orElseThrow { NotFoundException("Venda não encontrada") }
+        return AuthenticationUtils.authenticate(userRepository) { user ->
+            val sale = saleRepository.findById(saleId)
+                    .orElseThrow { NotFoundException("Venda não encontrada") }
 
-        if (!sale.cancelled) {
-            throw IllegalStateException("Esta venda não foi cancelada e não pode ser desfeita")
+            if (!sale.cancelled) {
+                throw IllegalStateException("Esta venda não foi cancelada e não pode ser desfeita")
+            }
+
+
+            sale.cancelled = true
+           saleViewMapper.map(saleRepository.save(sale))
         }
-
-
-        sale.cancelled = true
-        return saleViewMapper.map(saleRepository.save(sale))
     }
 
     fun getUnreadedRequests(pageable: Pageable): Page<SaleView> {
@@ -108,13 +110,6 @@ class SaleService(private val saleRepository: SaleRepository, private val saleFo
     }
 
 
-    //fazer autenticação, verificar o usuario autenticado é o buyUser ou ownUser
-   // fun findById(id: String): SaleView {
-     //   return AuthenticationUtils.authenticate(userRepository) { user ->
-
-       // }
-    //}
-// criar as controllers restantes
 
 }
 

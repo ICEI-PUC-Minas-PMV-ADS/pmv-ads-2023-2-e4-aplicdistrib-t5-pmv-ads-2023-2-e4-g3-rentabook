@@ -15,6 +15,6 @@ data class SaleView (
     val buyerUser: String?,
     var rating: String?,
     val chat: String?,
-    val accepted: Boolean?,
-    var cancelled: Boolean
+    var accepted: Boolean = false,
+    var cancelled: Boolean = false,
 )

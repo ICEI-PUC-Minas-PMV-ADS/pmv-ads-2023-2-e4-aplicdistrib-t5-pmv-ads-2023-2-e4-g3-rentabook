@@ -17,6 +17,7 @@ data class Trade (
     val tradeUser: User,
     var rating: Rating? = null,
     val chat: Chat,
-    val accepted: Boolean = false,
+    var accepted: Boolean = false,
+    var cancelled: Boolean = false,
 
     )
