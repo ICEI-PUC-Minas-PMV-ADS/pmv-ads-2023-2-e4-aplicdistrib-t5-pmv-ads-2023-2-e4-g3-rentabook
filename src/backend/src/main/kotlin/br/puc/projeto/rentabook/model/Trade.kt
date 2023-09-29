@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-@Document("Trade")
+@Document("trades")
 data class Trade (
     @Id
     val id: String? = null,
@@ -13,11 +13,11 @@ data class Trade (
     val ownerUser: User,
     val createData: LocalDateTime = LocalDateTime.now(),
     val startDate: LocalDate,
-    val tradeDate: LocalDate,
-    val tradeUser: User,
+    val endDate: LocalDate,
+    val value: Double,
+    val lead: User,
     var rating: Rating? = null,
     val chat: Chat,
     var accepted: Boolean = false,
     var cancelled: Boolean = false,
-
-    )
+)

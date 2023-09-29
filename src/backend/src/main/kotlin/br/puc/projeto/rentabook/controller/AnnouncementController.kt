@@ -26,6 +26,9 @@ class AnnouncementController(
      * Lista os anuncios do usuário
      */
 
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
     @GetMapping
     fun getAllAnnouncement(pageable: Pageable): Page<AnnouncementViewTest> {
         return announcementService.findAll(pageable)
@@ -42,6 +45,9 @@ class AnnouncementController(
         return announcementService.createAnnouncement(createAnnouncementForm)
     }
 
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
     @GetMapping("/available")
     fun getAnnouncementsAvailable(
         @PageableDefault(size = 5) pageable: Pageable
@@ -49,6 +55,9 @@ class AnnouncementController(
         return announcementService.findAllUsersBooksAvailableToNegotiate(pageable)
     }
 
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
     @GetMapping("/avaliabeToTrade")
     fun getTradeAnnoucemnets(pageable: Pageable): Page<AnnouncementView> {
         return announcementService.findAllBooksAvaliableToTrade(pageable)
@@ -57,20 +66,12 @@ class AnnouncementController(
     /**
      * Cria um novo anuncio.
      */
-    @GetMapping("/availableToRent")
-    fun getRentAnnouncements(pageable: Pageable): Page<AnnouncementView> {
-        return announcementService.findAllBooksAvailableToRent(pageable)
-    }
-
-    /**
-     * Aluga um livro.
-     */
     @SecurityRequirement(
         name = "bearerAuth"
     )
-    @PostMapping("/rent")
-    fun createAnnouncement(@RequestBody createRentForm: CreateRentForm): RentView {
-        return announcementService.createRent(createRentForm)
+    @GetMapping("/availableToRent")
+    fun getRentAnnouncements(pageable: Pageable): Page<AnnouncementView> {
+        return announcementService.findAllBooksAvailableToRent(pageable)
     }
 
     /**
@@ -100,6 +101,9 @@ class AnnouncementController(
         return announcementService.deleteImage(form)
     }
 
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
     @GetMapping("/list")
     fun list(@RequestParam city: String?,
              @RequestParam bookId: String?,
@@ -108,6 +112,10 @@ class AnnouncementController(
              pageable: Pageable): Page<AnnouncementView>{
        return announcementService.findByFilters(city, bookId, rent, sale, pageable)
     }
+
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
     @GetMapping("/{id}")
     fun getAnnouncementsDetail(
         @RequestParam id: String

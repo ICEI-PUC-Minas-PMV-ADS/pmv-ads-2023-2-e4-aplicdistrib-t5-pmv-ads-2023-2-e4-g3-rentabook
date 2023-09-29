@@ -1,6 +1,6 @@
 package br.puc.projeto.rentabook.mapper
 
-import br.puc.projeto.rentabook.dto.CreateRentForm
+import br.puc.projeto.rentabook.dto.RentForm
 import br.puc.projeto.rentabook.model.Chat
 import br.puc.projeto.rentabook.model.Rent
 import br.puc.projeto.rentabook.repository.AnnouncementRepository
@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component
 import java.time.LocalDate
 
 @Component
-class CreateRentFormMapper(
+class RentFormMapper(
     private val announcementRepository: AnnouncementRepository,
     private val userRepository: UserRepository,
     private val chatRepository: ChatRepository,
-): Mapper<CreateRentForm, Rent> {
-    override fun map(t: CreateRentForm): Rent {
+): Mapper<RentForm, Rent> {
+    override fun map(t: RentForm): Rent {
         val authentication = SecurityContextHolder.getContext().authentication
         val announcement = announcementRepository.findById(t.announcementId).orElseThrow { throw Exception("Anuncio não foi localizado!") }
         val lead = userRepository.findByEmail(authentication.name) ?: throw Exception("Usuário que ira alugar não localizado!")

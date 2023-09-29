@@ -1,6 +1,5 @@
 package br.puc.projeto.rentabook.mapper
 
-import br.puc.projeto.rentabook.dto.SaleView
 import br.puc.projeto.rentabook.model.Sale
 import org.springframework.stereotype.Component
 

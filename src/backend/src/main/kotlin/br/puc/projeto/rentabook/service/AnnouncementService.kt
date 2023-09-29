@@ -23,17 +23,17 @@ import kotlin.Exception
 
 @Service
 class AnnouncementService(
-        private val announcementRepository: AnnouncementRepository,
-        private val userRepository: UserRepository,
-        private val createAnnouncementFormMapper: CreateAnnouncementFormMapper,
-        private val announcementViewTestMapper: AnnouncementViewTestMapper,
-        private val rentRepository: RentRepository,
-        private val createRentFormMapper: CreateRentFormMapper,
-        private val rentViewMapper: RentViewMapper,
-        private val ratingRepository: RatingRepository,
-        private val imageService: ImageService,
-        private val mongoTemplate: MongoTemplate,
-        private val announcementViewMapper: AnnouncementViewMapper
+    private val announcementRepository: AnnouncementRepository,
+    private val userRepository: UserRepository,
+    private val createAnnouncementFormMapper: CreateAnnouncementFormMapper,
+    private val announcementViewTestMapper: AnnouncementViewTestMapper,
+    private val rentRepository: RentRepository,
+    private val createRentFormMapper: RentFormMapper,
+    private val rentViewMapper: RentViewMapper,
+    private val ratingRepository: RatingRepository,
+    private val imageService: ImageService,
+    private val mongoTemplate: MongoTemplate,
+    private val announcementViewMapper: AnnouncementViewMapper
 
 ) {
 
@@ -70,7 +70,7 @@ class AnnouncementService(
     }
 
 
-    fun createRent(createRentForm: CreateRentForm): RentView {
+    fun createRent(createRentForm: RentForm): RentView {
         return AuthenticationUtils.authenticate(userRepository) {
             rentRepository.save(createRentFormMapper.map(createRentForm)).run {
                 announcement.isAvailable = false

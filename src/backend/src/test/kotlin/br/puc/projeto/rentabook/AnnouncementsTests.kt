@@ -363,7 +363,7 @@ class AnnouncementsTests {
                 .header("Authorization", "Bearer $userRentToken")
                 .content(
                     ObjectMapper().writeValueAsString(
-                        CreateRentForm(
+                        RentForm(
                             announcementId = announcementId,
                             startDate = "2023-09-23",
                             endDate = "2023-09-26",
@@ -526,7 +526,7 @@ class AnnouncementsTests {
                 .header("Authorization", "Bearer $userRentToken")
                 .content(
                     ObjectMapper().writeValueAsString(
-                        CreateRentForm(
+                        RentForm(
                             announcementId = announcementId,
                             startDate = "2023-09-23",
                             endDate = "2023-09-26",

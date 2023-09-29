@@ -1,16 +1,20 @@
 package br.puc.projeto.rentabook.service
 
+import br.puc.projeto.rentabook.dto.RentForm
+import br.puc.projeto.rentabook.dto.RentView
 import br.puc.projeto.rentabook.dto.SaleForm
 import br.puc.projeto.rentabook.dto.SaleView
 import br.puc.projeto.rentabook.exception.NotFoundException
+import br.puc.projeto.rentabook.mapper.RentFormMapper
+import br.puc.projeto.rentabook.mapper.RentViewMapper
 import br.puc.projeto.rentabook.mapper.SaleFormMapper
 import br.puc.projeto.rentabook.mapper.SaleViewMapper
 import br.puc.projeto.rentabook.model.Sale
-import br.puc.projeto.rentabook.model.User
+import br.puc.projeto.rentabook.repository.AnnouncementRepository
+import br.puc.projeto.rentabook.repository.RentRepository
 import br.puc.projeto.rentabook.repository.SaleRepository
 import br.puc.projeto.rentabook.repository.UserRepository
 import br.puc.projeto.rentabook.utils.AuthenticationUtils
-import org.springframework.data.annotation.Id
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
@@ -19,98 +23,53 @@ import org.springframework.transaction.annotation.Transactional
 import java.lang.IllegalStateException
 
 @Service
-class SaleService(private val saleRepository: SaleRepository, private val saleFormMapper: SaleFormMapper, private val saleViewMapper: SaleViewMapper, private val userRepository: UserRepository, private val announcementService: AnnouncementService) {
+class SaleService(
+    private val saleRepository: SaleRepository,
+    private val saleViewMapper: SaleViewMapper,
+    private val saleFormMapper: SaleFormMapper,
+    private val userRepository: UserRepository,
+    private val announcementRepository: AnnouncementRepository,
+) {
 
-    @Transactional
-    fun create(saleForm: SaleForm): SaleView {
-
-        val createdSale = saleRepository.save(saleFormMapper.map(saleForm))
-
-
-
-        return saleViewMapper.map(createdSale)
+    fun create(form: SaleForm): SaleView {
+        return AuthenticationUtils.authenticate(userRepository) {
+            saleRepository.save(saleFormMapper.map(form)).run {
+                announcement.isAvailable = false
+                announcementRepository.save(announcement)
+                saleViewMapper.map(this)
+            }
+        }
     }
 
-    @Transactional
-    fun undoSale(saleId: String): SaleView {
-        return AuthenticationUtils.authenticate(userRepository) { user ->
-            val sale = saleRepository.findById(saleId)
-                    .orElseThrow { NotFoundException("Venda não encontrada") }
+    fun get(id: String): SaleView? {
+        return AuthenticationUtils.authenticate(userRepository) { _ ->
+            val sale = saleRepository.findById(id)
+            if (sale.isPresent) {
+                saleViewMapper.map(sale.get())
+            } else {
+                null
+            }
+        }
+    }
 
+    fun getAll(pageable: Pageable): Page<SaleView> {
+        return AuthenticationUtils.authenticate(userRepository) { user ->
+            saleRepository.findAll(pageable)
+                .map { saleViewMapper.map(it) }
+        }
+    }
+
+    fun cancel(id: String): SaleView {
+        return AuthenticationUtils.authenticate(userRepository) { user ->
+            val sale = saleRepository.findById(id)
+                .orElseThrow { NotFoundException("Venda não encontrada") }
             if (!sale.cancelled) {
                 throw IllegalStateException("Esta venda não foi cancelada e não pode ser desfeita")
             }
-
-
             sale.cancelled = true
-           saleViewMapper.map(saleRepository.save(sale))
-        }
-    }
-
-    fun getUnreadedRequests(pageable: Pageable): Page<SaleView> {
-        return AuthenticationUtils.authenticate(userRepository) { user ->
-
-            saleRepository.findByAcceptedAndAnnouncementOwnerUserId(
-                    accepted = null,
-                    ownerUser = user.id,
-                    pageable = pageable).map { t ->
-                saleViewMapper.map(t)
-            }
-        }
-
-    }
-
-    fun acceptRequest(id: String): SaleView {
-        return AuthenticationUtils.authenticate(userRepository) { user ->
-            val sale = saleRepository.findByIdOrNull(
-                    id
-            ) ?: throw NotFoundException("Venda não encontrada")
-            if (sale.announcement.ownerUser.id != user.id) throw Exception("Não autorizado")
-            sale.accepted = true
-
             saleViewMapper.map(saleRepository.save(sale))
-
-        }
-
-
-    }
-
-    fun denyRequest(id: String): SaleView {
-        return AuthenticationUtils.authenticate(userRepository) { user ->
-            val sale = saleRepository.findByIdOrNull(
-                    id
-            ) ?: throw NotFoundException("Venda não encontrada")
-            if (sale.announcement.ownerUser.id != user.id) throw Exception("Não autorizado")
-            sale.accepted = false
-
-            saleViewMapper.map(saleRepository.save(sale))
-
-        }
-
-
-    }
-
-    fun findByBuyerUser(pageable: Pageable): Page<SaleView> {
-        return AuthenticationUtils.authenticate(userRepository) { user ->
-            saleRepository.findByBuyerUser(user.id, pageable).map { t ->
-                saleViewMapper.map(t)
-            }
         }
     }
-
-    fun findByAnnouncementId(announcementId: String, pageable: Pageable): Page<SaleView> {
-        return AuthenticationUtils.authenticate(userRepository) { user ->
-            announcementService.findById(announcementId).run {
-                if (this.ownerUser.id != user.id) throw Exception("Acesso negado!")
-            }
-            saleRepository.findByAnnouncementId (announcementId, pageable).map { t ->
-                saleViewMapper.map(t)
-            }
-        }
-    }
-
-
-
 }
 
 

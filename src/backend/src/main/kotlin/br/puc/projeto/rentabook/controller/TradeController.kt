@@ -4,23 +4,47 @@ import br.puc.projeto.rentabook.dto.SaleForm
 import br.puc.projeto.rentabook.dto.SaleView
 import br.puc.projeto.rentabook.dto.TradeForm
 import br.puc.projeto.rentabook.dto.TradeView
-import br.puc.projeto.rentabook.model.Sale
-import br.puc.projeto.rentabook.service.SaleService
 import br.puc.projeto.rentabook.service.TradeService
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/sales")
-class TradeController(private val tradeService: TradeService) {
-
+@RequestMapping("/trades")
+class TradeController(
+    private val tradeService: TradeService,
+) {
 
     @SecurityRequirement(
         name = "bearerAuth"
     )
-    @PutMapping("{id}/undo")
+    @PostMapping("/create")
+    fun create(@RequestBody form: TradeForm): TradeView {
+        return tradeService.create(form)
+    }
+
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
+    @GetMapping("/{id}")
+    fun get(@PathVariable id: String): TradeView? {
+        return tradeService.get(id)
+    }
+
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
+    @GetMapping
+    fun getAll(pageable: Pageable): Page<TradeView> {
+        return tradeService.getAll(pageable)
+    }
+
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
+    @PutMapping("{id}/cancel")
     fun cancel(@PathVariable id: String): TradeView {
         return tradeService.cancel(id)
     }
-
 }
