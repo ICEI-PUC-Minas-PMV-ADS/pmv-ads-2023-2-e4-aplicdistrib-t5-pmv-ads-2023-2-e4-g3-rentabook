@@ -2,7 +2,7 @@
 
 
 
-<img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/imagem_2023-09-08_154329598.png" alt="personas">
+<img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/imagem_2023-09-08_154329598.png">
 
 ## Diagrama de Classes
 
@@ -17,11 +17,7 @@ Acesse o link abaixo para visualizar o diagrama completo.
 
 ## Modelo ER
 
-O Modelo ER representa através de um diagrama como as entidades (coisas, objetos) se relacionam entre si na aplicação interativa.]
-
-As referências abaixo irão auxiliá-lo na geração do artefato “Modelo ER”.
-
-> - [Como fazer um diagrama entidade relacionamento | Lucidchart](https://www.lucidchart.com/pages/pt/como-fazer-um-diagrama-entidade-relacionamento)
+<img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/diag.png" >
 
 ## Esquema Relacional
 
@@ -33,13 +29,66 @@ As referências abaixo irão auxiliá-lo na geração do artefato “Esquema Rel
 
 ## Modelo Físico
 
-Entregar um arquivo banco.sql contendo os scripts de criação das tabelas do banco de dados. Este arquivo deverá ser incluído dentro da pasta src\bd.
+Usando a ferramenta mongosh, disponibilizada com o cliente do mongo, deve-se seguir os seguintes passos.
+
+Criar o banco de dados:
+
+```
+use rentabook_db
+```
+
+Criar as collections dos dados:
+```
+db.createCollection("users")
+db.createCollection("announcements")
+db.createCollection("images")
+db.createCollection("addresses")
+db.createCollection("notifications")
+db.createCollection("roles")
+db.createCollection("rents")
+db.createCollection("trades")
+db.createCollection("sales")
+db.createCollection("ratings")
+db.createCollection("chats")
+db.createCollection("chat_messages")
+```
 
 ## Tecnologias Utilizadas
 
-Descreva aqui qual(is) tecnologias você vai usar para resolver o seu problema, ou seja, implementar a sua solução. Liste todas as tecnologias envolvidas, linguagens a serem utilizadas, serviços web, frameworks, bibliotecas, IDEs de desenvolvimento, e ferramentas.
+<strong> Kotlin: 
+Uma linguagem de programação moderna e concisa para desenvolvimento Android e aplicações backend.
 
-Apresente também uma figura explicando como as tecnologias estão relacionadas ou como uma interação do usuário com o sistema vai ser conduzida, por onde ela passa até retornar uma resposta ao usuário.
+Spring Framework: 
+Um framework de aplicação Java amplamente utilizado para criar aplicativos Java empresariais.
+
+MongoDB: 
+Um banco de dados NoSQL altamente escalável e flexível, adequado para armazenar dados de forma eficiente.
+Ferramenta de Gerenciamento de Banco de Dados:
+
+MongoDB Compass: 
+Uma interface gráfica para facilitar o gerenciamento e visualização dos dados armazenados no MongoDB.
+Ambiente de Desenvolvimento Integrado (IDE):
+
+IntelliJ IDEA: 
+Uma IDE poderosa para desenvolvimento Kotlin e Java.
+
+Insomnia: 
+Uma ferramenta de teste de API que permite testar e depurar chamadas de API de forma eficiente.
+Documentação de API:
+
+Swagger: 
+Uma estrutura para documentar APIs REST de forma padronizada e gerar documentação interativa. </strong>
+
+### Explicação:
+
+O usuário Inicia a interação com o sistema acessando a plataforma Rentabook por meio de um navegador da web ou aplicativo móvel. </br></br>
+O frontend da aplicação, desenvolvido em React Native, apresenta a interface de usuário intuitiva e permite que os usuários naveguem pelos livros, listem seus próprios livros e iniciem interações, como compra, venda ou troca.</br></br>
+O backend da aplicação é construído utilizando o Spring Framework e é responsável por processar as solicitações do frontend, interagir com o banco de dados MongoDB e gerenciar as operações de compra, venda e troca de livros.</br></br>
+O MongoDB armazena os dados do aplicativo, incluindo informações sobre livros, usuários, transações e interações.</br></br>
+O MongoDB Compass é utilizado para gerenciar e visualizar os dados no banco de dados MongoDB.</br></br>
+Utilizamos o IntelliJ IDEA para escrever, depurar e testar o código Kotlin e Spring.</br></br>
+Utilizamos o Insomnia para testar a API, garantindo que elas funcionem corretamente e atendam aos requisitos.</br></br>
+O Swagger é usado para documentar a API do Rentabook, criando uma documentação interativa que os desenvolvedores e os usuários podem consultar para entender como interagir com a plataforma.
 
 ## Hospedagem
 
