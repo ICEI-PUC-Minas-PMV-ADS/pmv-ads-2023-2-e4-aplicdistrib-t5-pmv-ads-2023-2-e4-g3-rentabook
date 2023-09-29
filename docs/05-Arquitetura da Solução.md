@@ -55,9 +55,8 @@ db.createCollection("chat_messages")
 
 ## Tecnologias Utilizadas
 
-Tecnologias Utilizadas:
-
-Kotlin: Uma linguagem de programação moderna e concisa para desenvolvimento Android e aplicações backend.
+#Kotlin: 
+Uma linguagem de programação moderna e concisa para desenvolvimento Android e aplicações backend.
 Framework de Desenvolvimento:
 
 Spring Framework: Um framework de aplicação Java amplamente utilizado para criar aplicativos Java empresariais.
