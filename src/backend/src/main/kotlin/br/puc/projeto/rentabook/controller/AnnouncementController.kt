@@ -2,6 +2,7 @@ package br.puc.projeto.rentabook.controller
 
 import br.puc.projeto.rentabook.dto.*
 import br.puc.projeto.rentabook.service.AnnouncementService
+import br.puc.projeto.rentabook.service.RatingService
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile
 @RequestMapping("/announcements")
 class AnnouncementController(
     private val announcementService: AnnouncementService,
+    private val ratingService: RatingService,
 ) {
 
     /**
@@ -121,5 +123,19 @@ class AnnouncementController(
         @RequestParam id: String
     ): AnnouncementView {
         return announcementService.detailService(id)
+    }
+
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
+    @PostMapping("/rate")
+    fun createRating(@RequestBody ratingForm: RatingForm): RatingView {
+        val announcementId = ratingForm.announcementId
+        val rating = ratingForm.rating
+        val comments = ratingForm.comments
+        val date = ratingForm.date
+        val time = ratingForm.time
+
+        return ratingService.createRating(announcementId, rating, comments, date, time)
     }
 }
