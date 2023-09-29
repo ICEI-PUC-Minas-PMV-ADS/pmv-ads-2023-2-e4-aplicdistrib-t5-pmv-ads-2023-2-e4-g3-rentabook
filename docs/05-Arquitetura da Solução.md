@@ -55,26 +55,32 @@ db.createCollection("chat_messages")
 
 ## Tecnologias Utilizadas
 
-#Kotlin: 
+### Kotlin: 
 Uma linguagem de programação moderna e concisa para desenvolvimento Android e aplicações backend.
 Framework de Desenvolvimento:
 
-Spring Framework: Um framework de aplicação Java amplamente utilizado para criar aplicativos Java empresariais.
+### Spring Framework: 
+Um framework de aplicação Java amplamente utilizado para criar aplicativos Java empresariais.
 Banco de Dados:
 
-MongoDB: Um banco de dados NoSQL altamente escalável e flexível, adequado para armazenar dados de forma eficiente.
+### MongoDB: 
+Um banco de dados NoSQL altamente escalável e flexível, adequado para armazenar dados de forma eficiente.
 Ferramenta de Gerenciamento de Banco de Dados:
 
-MongoDB Compass: Uma interface gráfica para facilitar o gerenciamento e visualização dos dados armazenados no MongoDB.
+### MongoDB Compass: 
+Uma interface gráfica para facilitar o gerenciamento e visualização dos dados armazenados no MongoDB.
 Ambiente de Desenvolvimento Integrado (IDE):
 
-IntelliJ IDEA: Uma IDE poderosa para desenvolvimento Kotlin e Java.
+### IntelliJ IDEA: 
+Uma IDE poderosa para desenvolvimento Kotlin e Java.
 Ferramenta de Teste de API:
 
-Insomnia: Uma ferramenta de teste de API que permite testar e depurar chamadas de API de forma eficiente.
+### Insomnia: 
+Uma ferramenta de teste de API que permite testar e depurar chamadas de API de forma eficiente.
 Documentação de API:
 
-Swagger: Uma estrutura para documentar APIs REST de forma padronizada e gerar documentação interativa.
+### Swagger: 
+Uma estrutura para documentar APIs REST de forma padronizada e gerar documentação interativa.
 
 Explicação:
 
