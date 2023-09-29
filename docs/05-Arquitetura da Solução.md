@@ -57,11 +57,9 @@ db.createCollection("chat_messages")
 
 <strong> Kotlin: 
 Uma linguagem de programação moderna e concisa para desenvolvimento Android e aplicações backend.
-Framework de Desenvolvimento:
 
 Spring Framework: 
 Um framework de aplicação Java amplamente utilizado para criar aplicativos Java empresariais.
-Banco de Dados:
 
 MongoDB: 
 Um banco de dados NoSQL altamente escalável e flexível, adequado para armazenar dados de forma eficiente.
@@ -73,7 +71,6 @@ Ambiente de Desenvolvimento Integrado (IDE):
 
 IntelliJ IDEA: 
 Uma IDE poderosa para desenvolvimento Kotlin e Java.
-Ferramenta de Teste de API:
 
 Insomnia: 
 Uma ferramenta de teste de API que permite testar e depurar chamadas de API de forma eficiente.
