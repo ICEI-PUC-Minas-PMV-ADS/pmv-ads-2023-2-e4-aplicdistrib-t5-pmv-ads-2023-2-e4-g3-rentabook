@@ -113,6 +113,9 @@ class UserController(
     fun deleteBook(@PathVariable id: String): PrivateUserView {
         return userService.deleteBook(id)
     }
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
     @GetMapping("/user/notifications")
     fun sendNotificationstoUser() : List<NotificationView> {
         return notificationService.getAllNotification()

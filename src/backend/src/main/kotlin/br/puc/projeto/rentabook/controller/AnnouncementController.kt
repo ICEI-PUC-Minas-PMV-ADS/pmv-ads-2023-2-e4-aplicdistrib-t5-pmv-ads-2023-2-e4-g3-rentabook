@@ -2,6 +2,7 @@ package br.puc.projeto.rentabook.controller
 
 import br.puc.projeto.rentabook.dto.*
 import br.puc.projeto.rentabook.service.AnnouncementService
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
@@ -33,6 +34,9 @@ class AnnouncementController(
     /**
      * Cria um novo anuncio.
      */
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
     @PostMapping("/new")
     fun createAnnouncement(@RequestBody createAnnouncementForm: CreateAnnouncementForm): AnnouncementViewTest {
         return announcementService.createAnnouncement(createAnnouncementForm)
@@ -61,6 +65,9 @@ class AnnouncementController(
     /**
      * Aluga um livro.
      */
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
     @PostMapping("/rent")
     fun createAnnouncement(@RequestBody createRentForm: CreateRentForm): RentView {
         return announcementService.createRent(createRentForm)
@@ -69,16 +76,25 @@ class AnnouncementController(
     /**
      * Faz a devolução de um livro alugado.
      */
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
     @PostMapping("/give_back")
     fun giveBackRent(@RequestBody giveBackForm: GiveBackForm) {
         return announcementService.giveBackRent(giveBackForm)
     }
 
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
     @PostMapping("/images/{id}")
     fun uploadImage(@RequestBody image: MultipartFile, @PathVariable id: String): AnnouncementViewTest{
        return announcementService.uploadImage(image, id)
     }
 
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
     @DeleteMapping("/images")
     fun deleteImage(@RequestBody form: DeleteImageAnnouncementForm): AnnouncementViewTest{
         return announcementService.deleteImage(form)

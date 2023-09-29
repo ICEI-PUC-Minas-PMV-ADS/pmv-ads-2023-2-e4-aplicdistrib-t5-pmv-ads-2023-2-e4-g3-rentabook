@@ -7,6 +7,7 @@ import br.puc.projeto.rentabook.dto.TradeView
 import br.puc.projeto.rentabook.model.Sale
 import br.puc.projeto.rentabook.service.SaleService
 import br.puc.projeto.rentabook.service.TradeService
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.*
 class TradeController(private val tradeService: TradeService) {
 
 
-
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
     @PutMapping("{id}/undo")
     fun cancel(@PathVariable id: String): TradeView {
         return tradeService.cancel(id)

@@ -3,6 +3,7 @@ package br.puc.projeto.rentabook.controller
 import br.puc.projeto.rentabook.exception.NotFoundException
 import br.puc.projeto.rentabook.repository.ImageRepository
 import br.puc.projeto.rentabook.service.ImageService
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.MediaType
@@ -18,6 +19,9 @@ import java.nio.file.Files
 class ImageController(
     private val imageService: ImageService
 ) {
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
     @GetMapping("/image/{id}")
     fun getImagem (@PathVariable id: String, response: HttpServletResponse): ResponseEntity<ByteArray> {
         return imageService.getImage(id).run {
