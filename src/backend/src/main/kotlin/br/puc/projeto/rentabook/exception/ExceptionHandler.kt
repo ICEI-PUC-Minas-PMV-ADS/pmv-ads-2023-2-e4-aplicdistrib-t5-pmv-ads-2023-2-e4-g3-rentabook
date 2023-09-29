@@ -12,6 +12,58 @@ import kotlin.Exception
 @RestControllerAdvice
 class ExceptionHandler {
 
+    @ExceptionHandler(ResourceAlreadyExistsException::class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    fun alreadyExists(
+        exception: ResourceAlreadyExistsException,
+        request: HttpServletRequest
+    ): ErrorView {
+        return ErrorView(
+            status = HttpStatus.CONFLICT.value(),
+            error = HttpStatus.CONFLICT.name,
+            message = exception.message,
+            path = request.servletPath
+        )
+    }
+    @ExceptionHandler(InvalidTokenException::class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    fun invalidToken(
+        exception: InvalidTokenException,
+        request: HttpServletRequest
+    ): ErrorView {
+        return ErrorView(
+            status = HttpStatus.UNAUTHORIZED.value(),
+            error = HttpStatus.UNAUTHORIZED.name,
+            message = exception.message,
+            path = request.servletPath
+        )
+    }
+    @ExceptionHandler(ImageTypeNotSupportedException::class)
+    @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+    fun imageType(
+        exception: ImageTypeNotSupportedException,
+        request: HttpServletRequest
+    ): ErrorView {
+        return ErrorView(
+            status = HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(),
+            error = HttpStatus.UNSUPPORTED_MEDIA_TYPE.name,
+            message = exception.message,
+            path = request.servletPath
+        )
+    }
+    @ExceptionHandler(InvalidLoginException::class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    fun invalidLogin(
+        exception: InvalidLoginException,
+        request: HttpServletRequest
+    ): ErrorView {
+        return ErrorView(
+            status = HttpStatus.UNAUTHORIZED.value(),
+            error = HttpStatus.UNAUTHORIZED.name,
+            message = exception.message,
+            path = request.servletPath
+        )
+    }
     @ExceptionHandler(NotFoundException::class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     fun handleNotFound(

@@ -2,6 +2,7 @@ package br.puc.projeto.rentabook.service
 
 import br.puc.projeto.rentabook.dto.*
 import br.puc.projeto.rentabook.exception.InvalidLoginException
+import br.puc.projeto.rentabook.exception.InvalidTokenException
 import br.puc.projeto.rentabook.exception.NotFoundException
 import br.puc.projeto.rentabook.exception.ResourceAlreadyExistsException
 import br.puc.projeto.rentabook.mapper.*
@@ -17,19 +18,23 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
+import java.util.*
+import kotlin.random.Random
+import kotlin.random.nextInt
 
 @Service
 class UserService(
-        private val userRepository: UserRepository,
-        private val publicUserViewMapper: PublicUserViewMapper,
-        private val imageService: ImageService,
-        private val registerFormMapper: RegisterFormMapper,
-        private val authManager: AuthenticationManager,
-        private val jwtUtils: JWTUtils,
-        private val privateUserViewMapper: PrivateUserViewMapper,
-        private val addressFormMapper: AddressFormMapper,
-        private val addressRepository: AddressRepository,
-        private val addressViewMapper: AddressViewMapper,
+    private val userRepository: UserRepository,
+    private val publicUserViewMapper: PublicUserViewMapper,
+    private val imageService: ImageService,
+    private val registerFormMapper: RegisterFormMapper,
+    private val authManager: AuthenticationManager,
+    private val jwtUtils: JWTUtils,
+    private val privateUserViewMapper: PrivateUserViewMapper,
+    private val addressFormMapper: AddressFormMapper,
+    private val addressRepository: AddressRepository,
+    private val addressViewMapper: AddressViewMapper,
+    private val emailService: EmailService
 ) {
 
     fun getPublicUser(id: String): PublicUserView {
@@ -59,11 +64,13 @@ class UserService(
     }
 
     fun authenticateAndGenerateToken(username: String, password: String): ResponseLoginView {
-        userRepository.findByEmail(username) ?: throw InvalidLoginException("Login inválido")
-        val token = UsernamePasswordAuthenticationToken(username, password)
-        val authResult: Authentication = authManager.authenticate(token)
-        val user = authResult.principal as UserDetail
-        return ResponseLoginView(jwtUtils.generateToken(user.username, user.authorities))
+        return userRepository.findByEmail(username).run {
+            this ?: throw InvalidLoginException("Login inválido")
+            val token = UsernamePasswordAuthenticationToken(username, password)
+            val authResult: Authentication = authManager.authenticate(token)
+            val user = authResult.principal as UserDetail
+            ResponseLoginView(jwtUtils.generateToken(user.username, user.authorities, this.passwordVersion))
+        }
     }
 
     fun updateUserImage(image: MultipartFile): PrivateUserView {
@@ -77,7 +84,7 @@ class UserService(
 
     fun deleteUserImage(): PrivateUserView {
         return AuthenticationUtils.authenticate(userRepository) { user ->
-            val imageId = user.userImage ?: throw NotFoundException("Usuário não possuí imagem de perfil")
+            val imageId = user.userImage ?: throw NotFoundException("Usuário não possui imagem de perfil")
             imageService.deleteImage(imageId.id as String)
             user.userImage = null
             userRepository.save(user).run {
@@ -117,8 +124,35 @@ class UserService(
             val oldPasswordValidate = BCryptPasswordEncoder().matches(form.oldPassword, user.password)
             if (user.email == form.email && oldPasswordValidate) {
                 user.password = BCryptPasswordEncoder().encode(form.newPassword)
+                user.passwordVersion++
             } else throw InvalidLoginException("Login inválido")
             userRepository.save(user)
+        }
+    }
+
+    fun sendRecoveryPassword(email: String) {
+        findByEmail(email).run {
+            passwordRecoveryToken = Random.nextInt(100000, 999999).toString()
+            passwordRecoveryExpiration = Date(System.currentTimeMillis() + 900000)
+            userRepository.save(this).run {
+                val subject = "Código de recuperação de senha"
+                val body = "Seu código de recuperação de senha é $passwordRecoveryToken"
+                emailService.emailSender(toEmail = email, subject = subject, body = body)
+            }
+        }
+    }
+
+    fun recoveryPassword(form: RecoveryPasswordForm) {
+        findByEmail(form.email).run {
+            passwordRecoveryExpiration ?: throw NotFoundException("Código de verificação inválido!")
+            passwordRecoveryToken ?: throw Exception("Código de verificação inválido!")
+            if (form.verificationCode != passwordRecoveryToken) throw InvalidTokenException("Código de verificação inválido!")
+            if(Date(System.currentTimeMillis()) > passwordRecoveryExpiration!!) throw InvalidTokenException("Código de verificação expirado!")
+            password = BCryptPasswordEncoder().encode(form.newPassword)
+            passwordVersion++
+            passwordRecoveryToken = null
+            passwordRecoveryExpiration = null
+            userRepository.save(this)
         }
     }
 
@@ -162,5 +196,9 @@ class UserService(
 
     fun findById(id: String): User {
         return userRepository.findByIdOrNull(id) ?: throw NotFoundException("Usuário não encontrado!")
+    }
+
+    fun findByEmail(email: String?): User {
+        return userRepository.findByEmail(email) ?: throw NotFoundException("Usuário não encontrado!")
     }
 }
