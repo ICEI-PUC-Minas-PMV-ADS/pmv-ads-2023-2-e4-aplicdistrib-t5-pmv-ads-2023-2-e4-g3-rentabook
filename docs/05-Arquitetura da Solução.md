@@ -29,13 +29,15 @@ As referências abaixo irão auxiliá-lo na geração do artefato “Esquema Rel
 
 ## Modelo Físico
 
-Cria o banco de dados:
+Usando a ferramenta mongosh, disponibilizada com o cliente do mongo, deve-se seguir os seguintes passos.
+
+Criar o banco de dados:
 
 ```
 use rentabook_db
 ```
 
-Cria as collections dos dados:
+Criar as collections dos dados:
 ```
 db.createCollection("users")
 db.createCollection("announcements")
