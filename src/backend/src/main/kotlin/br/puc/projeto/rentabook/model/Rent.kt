@@ -15,7 +15,7 @@ data class Rent(
     val startDate: LocalDate,
     val endDate: LocalDate,
     val value: Double,
-    val renterUser: User,
+    val lead: User, // Usuario interessado em alugar o livro.
     var rating: Rating? = null,
     val chat: Chat,
     var accepted: Boolean = false,

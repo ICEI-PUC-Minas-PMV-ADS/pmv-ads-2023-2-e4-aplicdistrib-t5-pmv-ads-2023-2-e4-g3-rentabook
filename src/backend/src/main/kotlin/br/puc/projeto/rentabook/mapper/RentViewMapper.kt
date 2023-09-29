@@ -20,7 +20,7 @@ class RentViewMapper(
             startDate = t.startDate,
             endDate = t.endDate,
             value = t.value,
-            renterUser = publicUserViewMapper.map(t.renterUser),
+            renterUser = publicUserViewMapper.map(t.lead),
             rating = if (t.rating != null)
                 ratingViewMapper.map(t.rating ?: throw Exception("Avaliação não encontrada"))
             else null,

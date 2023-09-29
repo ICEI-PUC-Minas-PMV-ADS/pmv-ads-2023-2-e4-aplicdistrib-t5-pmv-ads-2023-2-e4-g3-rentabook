@@ -63,6 +63,9 @@ class SaleService(
         return AuthenticationUtils.authenticate(userRepository) { user ->
             val sale = saleRepository.findById(id)
                 .orElseThrow { NotFoundException("Venda não encontrada") }
+            if (sale.ownerUser.id != user.id && sale.lead.id == user.id) {
+                throw IllegalStateException("Você não tem autorização para fazer essa operação.")
+            }
             if (!sale.cancelled) {
                 throw IllegalStateException("Esta venda não foi cancelada e não pode ser desfeita")
             }
@@ -76,6 +79,9 @@ class SaleService(
         return AuthenticationUtils.authenticate(userRepository) { user ->
             val sale = saleRepository.findById(id)
                 .orElseThrow { NotFoundException("Venda não encontrada") }
+            if (sale.ownerUser.id != user.id && sale.lead.id == user.id) {
+                throw IllegalStateException("Você não tem autorização para fazer essa operação.")
+            }
             if (!sale.cancelled) {
                 throw IllegalStateException("Esta venda não foi cancelada e não pode ser desfeita")
             }

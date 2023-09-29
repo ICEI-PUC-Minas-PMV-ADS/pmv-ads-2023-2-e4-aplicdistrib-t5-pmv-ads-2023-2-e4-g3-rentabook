@@ -26,7 +26,7 @@ class RentFormMapper(
             startDate = LocalDate.parse(t.startDate),
             endDate = LocalDate.parse(t.endDate),
             value = t.value,
-            renterUser = lead,
+            lead = lead,
             chat = chatRepository.save(Chat(owner = announcement.ownerUser, lead = lead)),
         )
     }

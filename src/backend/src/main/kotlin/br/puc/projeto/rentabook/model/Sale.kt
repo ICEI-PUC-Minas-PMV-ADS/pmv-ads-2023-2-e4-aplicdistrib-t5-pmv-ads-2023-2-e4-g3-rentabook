@@ -15,7 +15,7 @@ data class Sale(
     val startDate: LocalDate,
     val endDate: LocalDate,
     val value: Double,
-    val lead: User,
+    val lead: User, // Usuario interessado em comprar o livro.
     var rating: Rating? = null,
     val chat: Chat,
     var accepted: Boolean = false,

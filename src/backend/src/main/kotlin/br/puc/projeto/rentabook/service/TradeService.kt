@@ -58,6 +58,9 @@ class TradeService(
         return AuthenticationUtils.authenticate(userRepository) { user ->
             val trade = tradeRepository.findById(id)
                 .orElseThrow { NotFoundException("Troca não encontrada") }
+            if (trade.ownerUser.id != user.id && trade.lead.id == user.id) {
+                throw IllegalStateException("Você não tem autorização para fazer essa operação.")
+            }
             if (!trade.cancelled) {
                 throw IllegalStateException("Esta venda não foi cancelada e não pode ser desfeita")
             }
@@ -72,6 +75,9 @@ class TradeService(
         return AuthenticationUtils.authenticate(userRepository) { user ->
             val trade = tradeRepository.findById(id)
                 .orElseThrow { NotFoundException("Troca não encontrada") }
+            if (trade.ownerUser.id != user.id && trade.lead.id == user.id) {
+                throw IllegalStateException("Você não tem autorização para fazer essa operação.")
+            }
             if (!trade.cancelled) {
                 throw IllegalStateException("Esta venda não foi cancelada e não pode ser desfeita")
             }

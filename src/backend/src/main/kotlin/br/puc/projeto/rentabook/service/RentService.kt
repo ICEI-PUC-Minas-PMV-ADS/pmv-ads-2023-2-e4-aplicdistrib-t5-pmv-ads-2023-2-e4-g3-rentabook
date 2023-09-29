@@ -55,6 +55,9 @@ class RentService(
         return AuthenticationUtils.authenticate(userRepository) { user ->
             val rent = rentRepository.findById(id)
                 .orElseThrow { NotFoundException("Venda não encontrada") }
+            if (rent.ownerUser.id != user.id && rent.lead.id == user.id) {
+                throw IllegalStateException("Você não tem autorização para fazer essa operação.")
+            }
             if (!rent.cancelled) {
                 throw IllegalStateException("Esta venda não foi cancelada e não pode ser desfeita")
             }
@@ -69,6 +72,9 @@ class RentService(
         return AuthenticationUtils.authenticate(userRepository) { user ->
             val rent = rentRepository.findById(id)
                 .orElseThrow { NotFoundException("Venda não encontrada") }
+            if (rent.ownerUser.id != user.id && rent.lead.id == user.id) {
+                throw IllegalStateException("Você não tem autorização para fazer essa operação.")
+            }
             if (!rent.cancelled) {
                 throw IllegalStateException("Esta venda não foi cancelada e não pode ser desfeita")
             }
