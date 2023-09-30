@@ -265,7 +265,7 @@ class CustomTests {
 
         mockMvc.perform(
             MockMvcRequestBuilders
-                .put("/rents/$rentId/cancel")
+                .put("/rents/$rentId/complete")
                 .contentType("application/json")
                 .header("Authorization", "Bearer $userOneToken")
             )
@@ -307,7 +307,7 @@ class CustomTests {
                     it.response.getContentAsString(StandardCharsets.UTF_8),
                     RentView::class.java
                 )
-                rentId = rentView.id
+                saleId = rentView.id
             }
 
         /**
@@ -316,7 +316,7 @@ class CustomTests {
 
         mockMvc.perform(
             MockMvcRequestBuilders
-                .put("/sales/$rentId/cancel")
+                .put("/sales/$saleId/cancel")
                 .contentType("application/json")
                 .header("Authorization", "Bearer $userTwoToken")
             )
