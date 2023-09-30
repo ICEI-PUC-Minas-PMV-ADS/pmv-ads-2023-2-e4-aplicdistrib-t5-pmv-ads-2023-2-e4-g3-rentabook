@@ -152,24 +152,25 @@ class ChatTests {
                             bookId = "f1u-swEACAAJ",
                             images = listOf(),
                             description = "description",
-                            dailyValue = 10,
+                            value = 10,
                             locationId = addressId,
+                            announcementType = CreateAnnouncementForm.RENT,
                         )
                     )
                 )
             )
             .andExpect {
-                val announcementViewTest = gson.fromJson(
+                val announcementView = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
-                    AnnouncementViewTest::class.java,
+                    AnnouncementView::class.java,
                 )
 
-                announcementId = announcementViewTest.id
+                announcementId = announcementView.id
 
-                Assertions.assertEquals("f1u-swEACAAJ", announcementViewTest.book.id)
-                Assertions.assertEquals("description", announcementViewTest.description)
-                Assertions.assertEquals(0, announcementViewTest.images.size)
-                Assertions.assertEquals(10, announcementViewTest.dailyValue)
+                Assertions.assertEquals("f1u-swEACAAJ", announcementView.book.id)
+                Assertions.assertEquals("description", announcementView.description)
+                Assertions.assertEquals(0, announcementView.images.size)
+                Assertions.assertEquals(10, announcementView.value)
             }
 
         mockMvc.perform(
@@ -181,8 +182,6 @@ class ChatTests {
                     ObjectMapper().writeValueAsString(
                         RentForm(
                             announcementId = announcementId,
-                            startDate = "2023-09-23",
-                            endDate = "2023-09-26",
                             value = 15.0,
                         )
                     )
@@ -250,25 +249,26 @@ class ChatTests {
                             bookId = "f1u-swEACAAJ",
                             images = listOf(),
                             description = "description",
-                            dailyValue = 10,
+                            value = 10,
                             locationId = addressId,
+                            announcementType = CreateAnnouncementForm.RENT,
                         )
                     )
                 )
             )
             .andExpect(status().isOk)
             .andExpect {
-                val announcementViewTest = gson.fromJson(
+                val announcementView = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
-                    AnnouncementViewTest::class.java,
+                    AnnouncementView::class.java,
                 )
 
-                announcementId = announcementViewTest.id
+                announcementId = announcementView.id
 
-                Assertions.assertEquals("f1u-swEACAAJ", announcementViewTest.book.id)
-                Assertions.assertEquals("description", announcementViewTest.description)
-                Assertions.assertEquals(0, announcementViewTest.images.size)
-                Assertions.assertEquals(10, announcementViewTest.dailyValue)
+                Assertions.assertEquals("f1u-swEACAAJ", announcementView.book.id)
+                Assertions.assertEquals("description", announcementView.description)
+                Assertions.assertEquals(0, announcementView.images.size)
+                Assertions.assertEquals(10, announcementView.value)
             }
 
         mockMvc.perform(
@@ -280,8 +280,6 @@ class ChatTests {
                     ObjectMapper().writeValueAsString(
                         RentForm(
                             announcementId = announcementId,
-                            startDate = "2023-09-23",
-                            endDate = "2023-09-26",
                             value = 15.0,
                         )
                     )
@@ -375,24 +373,25 @@ class ChatTests {
                             bookId = "f1u-swEACAAJ",
                             images = listOf(),
                             description = "description",
-                            dailyValue = 10,
+                            value = 10,
                             locationId = addressId,
+                            announcementType = CreateAnnouncementForm.RENT,
                         )
                     )
                 )
             )
             .andExpect {
-                val announcementViewTest = gson.fromJson(
+                val announcementView = gson.fromJson(
                     it.response.getContentAsString(StandardCharsets.UTF_8),
-                    AnnouncementViewTest::class.java,
+                    AnnouncementView::class.java,
                 )
 
-                announcementId = announcementViewTest.id
+                announcementId = announcementView.id
 
-                Assertions.assertEquals("f1u-swEACAAJ", announcementViewTest.book.id)
-                Assertions.assertEquals("description", announcementViewTest.description)
-                Assertions.assertEquals(0, announcementViewTest.images.size)
-                Assertions.assertEquals(10, announcementViewTest.dailyValue)
+                Assertions.assertEquals("f1u-swEACAAJ", announcementView.book.id)
+                Assertions.assertEquals("description", announcementView.description)
+                Assertions.assertEquals(0, announcementView.images.size)
+                Assertions.assertEquals(10, announcementView.value)
             }
 
         mockMvc.perform(
@@ -404,8 +403,6 @@ class ChatTests {
                     ObjectMapper().writeValueAsString(
                         RentForm(
                             announcementId = announcementId,
-                            startDate = "2023-09-23",
-                            endDate = "2023-09-26",
                             value = 15.0,
                         )
                     )

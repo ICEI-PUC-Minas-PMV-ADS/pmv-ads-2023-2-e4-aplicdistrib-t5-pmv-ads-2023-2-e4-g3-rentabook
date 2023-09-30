@@ -23,8 +23,10 @@ class CreateAnnouncementFormMapper(
             images = t.images.map { imageIdToImage(it) }.toMutableList(),
             description = t.description,
             location = addressRepository.findById(t.locationId).orElseThrow { throw Exception("Endereço não encontrado!") },
-            dailyValue = t.dailyValue,
-            saleValue = t.saleValue,
+            value = t.value,
+            rent = t.announcementType.contains(CreateAnnouncementForm.RENT),
+            sale = t.announcementType.contains(CreateAnnouncementForm.SALE),
+            trade = t.announcementType.contains(CreateAnnouncementForm.TRADE),
         )
     }
 

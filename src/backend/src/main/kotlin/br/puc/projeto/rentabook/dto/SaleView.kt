@@ -5,14 +5,15 @@ import java.time.LocalDateTime
 
 data class SaleView(
     val id: String,
-    val announcement: AnnouncementViewTest,
+    val announcement: AnnouncementView,
     val ownerUser: PublicUserView,
     val createData: LocalDateTime = LocalDateTime.now(),
     val startDate: LocalDate,
-    val endDate: LocalDate,
+    val endDate: LocalDate?,
     val value: Double,
-    val renterUser: PublicUserView,
+    val lead: PublicUserView,
     val rating: RatingView?,
     val chat: ChatView,
     val accepted: Boolean,
+    val cancelled: Boolean,
 )

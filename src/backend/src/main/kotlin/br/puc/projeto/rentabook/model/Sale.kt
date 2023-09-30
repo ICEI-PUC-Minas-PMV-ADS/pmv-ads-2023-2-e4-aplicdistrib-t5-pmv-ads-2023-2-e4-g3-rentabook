@@ -12,8 +12,8 @@ data class Sale(
     val announcement: Announcement,
     val ownerUser: User,
     val createData: LocalDateTime = LocalDateTime.now(),
-    val startDate: LocalDate,
-    val endDate: LocalDate,
+    val startDate: LocalDate? = null,
+    val endDate: LocalDate? = null,
     val value: Double,
     val lead: User, // Usuario interessado em comprar o livro.
     var rating: Rating? = null,

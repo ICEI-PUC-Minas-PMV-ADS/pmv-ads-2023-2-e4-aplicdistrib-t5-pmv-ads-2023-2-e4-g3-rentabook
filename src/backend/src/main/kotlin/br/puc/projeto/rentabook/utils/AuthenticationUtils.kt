@@ -1,10 +1,7 @@
 package br.puc.projeto.rentabook.utils
 
-import br.puc.projeto.rentabook.dto.AnnouncementView
-import br.puc.projeto.rentabook.dto.AnnouncementViewTest
 import br.puc.projeto.rentabook.model.User
 import br.puc.projeto.rentabook.repository.UserRepository
-import org.springframework.data.domain.Page
 import org.springframework.security.core.context.SecurityContextHolder
 
 class AuthenticationUtils {

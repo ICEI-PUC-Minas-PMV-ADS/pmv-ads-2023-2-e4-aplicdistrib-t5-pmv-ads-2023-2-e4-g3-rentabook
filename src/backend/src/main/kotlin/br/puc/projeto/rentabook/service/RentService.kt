@@ -12,6 +12,7 @@ import br.puc.projeto.rentabook.utils.AuthenticationUtils
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import java.lang.Exception
 import java.lang.IllegalStateException
 
 @Service
@@ -26,6 +27,9 @@ class RentService(
     fun create(form: RentForm): RentView {
         return AuthenticationUtils.authenticate(userRepository) {
             rentRepository.save(rentFormMapper.map(form)).run {
+                if (!announcement.rent || !announcement.isAvailable) {
+                    throw Exception("Este livro não esta disponivel para aluguel")
+                }
                 announcement.isAvailable = false
                 announcementRepository.save(announcement)
                 rentViewMapper.map(this)
@@ -58,8 +62,8 @@ class RentService(
             if (rent.ownerUser.id != user.id && rent.lead.id == user.id) {
                 throw IllegalStateException("Você não tem autorização para fazer essa operação.")
             }
-            if (!rent.cancelled) {
-                throw IllegalStateException("Esta venda não foi cancelada e não pode ser desfeita")
+            if (rent.cancelled) {
+                throw IllegalStateException("Este aluguel não foi cancelada e não pode ser desfeita")
             }
             rent.announcement.isAvailable = true
             announcementRepository.save(rent.announcement)
@@ -75,8 +79,8 @@ class RentService(
             if (rent.ownerUser.id != user.id && rent.lead.id == user.id) {
                 throw IllegalStateException("Você não tem autorização para fazer essa operação.")
             }
-            if (!rent.cancelled) {
-                throw IllegalStateException("Esta venda não foi cancelada e não pode ser desfeita")
+            if (rent.cancelled) {
+                throw IllegalStateException("Esta aluguel não foi cancelada e não pode ser desfeita")
             }
             rent.announcement.isAvailable = true
             announcementRepository.save(rent.announcement)

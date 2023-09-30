@@ -26,33 +26,31 @@ class AnnouncementService(
     private val announcementRepository: AnnouncementRepository,
     private val userRepository: UserRepository,
     private val createAnnouncementFormMapper: CreateAnnouncementFormMapper,
-    private val announcementViewTestMapper: AnnouncementViewTestMapper,
+    private val announcementViewMapper: AnnouncementViewMapper,
     private val rentRepository: RentRepository,
     private val createRentFormMapper: RentFormMapper,
     private val rentViewMapper: RentViewMapper,
     private val ratingRepository: RatingRepository,
     private val imageService: ImageService,
     private val mongoTemplate: MongoTemplate,
-    private val announcementViewMapper: AnnouncementViewMapper
-
 ) {
 
-    fun findAll(pageable: Pageable): Page<AnnouncementViewTest> {
-        return announcementRepository.findAll(pageable).map { announcementViewTestMapper.map(it) }
+    fun findAll(pageable: Pageable): Page<AnnouncementView> {
+        return announcementRepository.findAll(pageable).map { announcementViewMapper.map(it) }
     }
 
-    fun createAnnouncement(createAnnouncementForm: CreateAnnouncementForm): AnnouncementViewTest {
+    fun createAnnouncement(createAnnouncementForm: CreateAnnouncementForm): AnnouncementView {
         return AuthenticationUtils.authenticate(userRepository) {
             announcementRepository.save(createAnnouncementFormMapper.map(createAnnouncementForm)).run {
-                announcementViewTestMapper.map(this)
+                announcementViewMapper.map(this)
             }
         }
     }
 
     fun findAllBooksAvailableToRent(pageable: Pageable): Page<AnnouncementView> {
-        return AuthenticationUtils.authenticate(userRepository) {
+        return AuthenticationUtils.authenticate(userRepository) { userIt ->
             val announcementViewList = announcementRepository.findAllByRentTrue(pageable)
-                .filter { it.isAvailable }
+                .filter { it.isAvailable && it.ownerUser.id != userIt.id }
                 .map { announcementViewMapper.map(it) }
                 .toList()
             getCustomPage(announcementViewList, pageable)
@@ -60,15 +58,24 @@ class AnnouncementService(
     }
 
     fun findAllBooksAvaliableToTrade(pageable: Pageable): Page<AnnouncementView> {
-        return AuthenticationUtils.authenticate(userRepository) {
+        return AuthenticationUtils.authenticate(userRepository) { userIt ->
             val annoucemnetViewList = announcementRepository.findAllByTradeTrue(pageable)
-                .filter { it.isAvailable }
+                .filter { it.isAvailable && it.ownerUser.id != userIt.id }
                 .map { announcementViewMapper.map(it) }
                 .toList()
             getCustomPage(annoucemnetViewList, pageable)
         }
     }
 
+    fun findAllBooksAvaliableToSale(pageable: Pageable): Page<AnnouncementView> {
+        return AuthenticationUtils.authenticate(userRepository) { userIt ->
+            val annoucemnetViewList = announcementRepository.findAllBySaleTrue(pageable)
+                .filter { it.isAvailable && it.ownerUser.id != userIt.id }
+                .map { announcementViewMapper.map(it) }
+                .toList()
+            getCustomPage(annoucemnetViewList, pageable)
+        }
+    }
 
     fun createRent(createRentForm: RentForm): RentView {
         return AuthenticationUtils.authenticate(userRepository) {
@@ -80,10 +87,13 @@ class AnnouncementService(
         }
     }
 
-    fun findAllUsersBooksAvailableToNegotiate(pageable: Pageable): Page<AnnouncementViewTest> {
+    fun findAllUsersBooksAvailableToNegotiate(pageable: Pageable): Page<AnnouncementView> {
         return AuthenticationUtils.authenticate(userRepository) {
-            announcementRepository.findAllByIsAvailableTrue(pageable)
-                    .map { announcementViewTestMapper.map(it) }
+            val announcementList = announcementRepository.findAllByIsAvailableTrue(pageable)
+                .filter { it.ownerUser.id != it.id }
+                .toList()
+                .map { announcementViewMapper.map(it) }
+            PageImpl(announcementList, pageable, announcementList.size.toLong())
         }
     }
 
@@ -91,8 +101,8 @@ class AnnouncementService(
         return AuthenticationUtils.authenticate(userRepository) {
             val rent = rentRepository.findById(giveBackForm.id).orElseThrow { throw Exception("Id de aluguel invalido!") }
             rent.rating = ratingRepository.save(Rating(
-                    message = giveBackForm.ratingMessage,
-                    feedback = giveBackForm.ratingFeedback,
+                message = giveBackForm.ratingMessage,
+                feedback = giveBackForm.ratingFeedback,
             ))
             rent.announcement.isAvailable = true
             announcementRepository.save(rent.announcement)
@@ -109,7 +119,7 @@ class AnnouncementService(
         return PageImpl(pageList, pageable, list.size.toLong())
     }
 
-    fun uploadImage(image: MultipartFile, announcementId: String): AnnouncementViewTest {
+    fun uploadImage(image: MultipartFile, announcementId: String): AnnouncementView {
         return AuthenticationUtils.authenticate(userRepository) { user ->
             announcementRepository.findByIdOrNull(announcementId).let { announcement ->
                 announcement ?: throw NotFoundException("Anúncio não encontrado!")
@@ -118,12 +128,12 @@ class AnnouncementService(
                     announcement.images.add(image)
                 }
                 announcementRepository.save(announcement)
-                announcementViewTestMapper.map(announcement)
+                announcementViewMapper.map(announcement)
             }
         }
     }
 
-    fun deleteImage(form: DeleteImageAnnouncementForm): AnnouncementViewTest {
+    fun deleteImage(form: DeleteImageAnnouncementForm): AnnouncementView {
         return AuthenticationUtils.authenticate(userRepository) { user ->
             announcementRepository.findByIdOrNull(form.announcementId).let { announcement ->
                 announcement ?: throw NotFoundException("Anúncio não encontrado!")
@@ -134,40 +144,43 @@ class AnnouncementService(
                 imageService.deleteImage(form.imageId)
                 announcement.images.remove(image)
                 announcementRepository.save(announcement)
-                announcementViewTestMapper.map(announcement)
+                announcementViewMapper.map(announcement)
             }
         }
     }
 
     fun findByFilters(
-            city: String?,
-            bookId: String?,
-            rent: Boolean?,
-            sale: Boolean?,
-            pageable: Pageable
+        city: String?,
+        bookId: String?,
+        rent: Boolean?,
+        sale: Boolean?,
+        pageable: Pageable
     ): Page<AnnouncementView> {
-        val query = Query()
+        return AuthenticationUtils.authenticate(userRepository) { user ->
+            val query = Query()
 
-        if (!city.isNullOrBlank()) {
-            query.addCriteria(Criteria.where("locationCity").regex(city, "i"))
-        }
+            if (!city.isNullOrBlank()) {
+                query.addCriteria(Criteria.where("locationCity").regex(city, "i"))
+            }
 
-        if (!bookId.isNullOrBlank()) {
-            query.addCriteria(Criteria.where("bookId").`is`(bookId))
-        }
+            if (!bookId.isNullOrBlank()) {
+                query.addCriteria(Criteria.where("bookId").`is`(bookId))
+            }
 
-        if (rent != null) {
-            query.addCriteria(Criteria.where("rent").`is`(rent))
-        }
+            if (rent != null) {
+                query.addCriteria(Criteria.where("rent").`is`(rent))
+            }
 
-        if (sale != null) {
-            query.addCriteria(Criteria.where("sale").`is`(sale))
-        }
+            if (sale != null) {
+                query.addCriteria(Criteria.where("sale").`is`(sale))
+            }
 
-        val results = mongoTemplate.find(query, Announcement::class.java)
+            val results = mongoTemplate.find(query, Announcement::class.java)
+                .filter { it.ownerUser.id != user.id}
+                .toList()
 
-        return PageImpl(results, pageable, results.size.toLong()).map { t ->
-            announcementViewMapper.map(t)
+            PageImpl(results, pageable, results.size.toLong())
+                .map { t -> announcementViewMapper.map(t) }
         }
     }
 

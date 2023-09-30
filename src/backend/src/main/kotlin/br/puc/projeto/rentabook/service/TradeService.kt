@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.lang.Exception
 import java.lang.IllegalStateException
 
 @Service
@@ -29,6 +30,9 @@ class TradeService(
     fun create(form: TradeForm): TradeView {
         return AuthenticationUtils.authenticate(userRepository) {
             tradeRepository.save(tradeFormMapper.map(form)).run {
+                if (!announcement.trade || !announcement.isAvailable) {
+                    throw Exception("Este livro não esta disponivel para troca")
+                }
                 announcement.isAvailable = false
                 announcementRepository.save(announcement)
                 tradeViewMapper.map(this)
@@ -61,8 +65,8 @@ class TradeService(
             if (trade.ownerUser.id != user.id && trade.lead.id == user.id) {
                 throw IllegalStateException("Você não tem autorização para fazer essa operação.")
             }
-            if (!trade.cancelled) {
-                throw IllegalStateException("Esta venda não foi cancelada e não pode ser desfeita")
+            if (trade.cancelled) {
+                throw IllegalStateException("Esta troca não foi cancelada e não pode ser desfeita")
             }
             trade.announcement.isAvailable = true
             announcementRepository.save(trade.announcement)
@@ -78,8 +82,8 @@ class TradeService(
             if (trade.ownerUser.id != user.id && trade.lead.id == user.id) {
                 throw IllegalStateException("Você não tem autorização para fazer essa operação.")
             }
-            if (!trade.cancelled) {
-                throw IllegalStateException("Esta venda não foi cancelada e não pode ser desfeita")
+            if (trade.cancelled) {
+                throw IllegalStateException("Esta troca não foi cancelada e não pode ser desfeita")
             }
             trade.announcement.isAvailable = false
             announcementRepository.save(trade.announcement)

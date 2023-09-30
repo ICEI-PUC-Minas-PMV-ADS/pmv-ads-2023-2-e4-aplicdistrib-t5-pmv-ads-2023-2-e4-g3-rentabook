@@ -32,7 +32,7 @@ class AnnouncementController(
         name = "bearerAuth"
     )
     @GetMapping
-    fun getAllAnnouncement(pageable: Pageable): Page<AnnouncementViewTest> {
+    fun getAllAnnouncement(pageable: Pageable): Page<AnnouncementView> {
         return announcementService.findAll(pageable)
     }
 
@@ -43,7 +43,7 @@ class AnnouncementController(
         name = "bearerAuth"
     )
     @PostMapping("/new")
-    fun createAnnouncement(@RequestBody createAnnouncementForm: CreateAnnouncementForm): AnnouncementViewTest {
+    fun createAnnouncement(@RequestBody createAnnouncementForm: CreateAnnouncementForm): AnnouncementView {
         return announcementService.createAnnouncement(createAnnouncementForm)
     }
 
@@ -53,7 +53,7 @@ class AnnouncementController(
     @GetMapping("/available")
     fun getAnnouncementsAvailable(
         @PageableDefault(size = 5) pageable: Pageable
-    ): Page<AnnouncementViewTest> {
+    ): Page<AnnouncementView> {
         return announcementService.findAllUsersBooksAvailableToNegotiate(pageable)
     }
 
@@ -63,6 +63,14 @@ class AnnouncementController(
     @GetMapping("/avaliabeToTrade")
     fun getTradeAnnoucemnets(pageable: Pageable): Page<AnnouncementView> {
         return announcementService.findAllBooksAvaliableToTrade(pageable)
+    }
+
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
+    @GetMapping("/avaliabeToSale")
+    fun getSaleAnnoucemnets(pageable: Pageable): Page<AnnouncementView> {
+        return announcementService.findAllBooksAvaliableToSale(pageable)
     }
 
     /**
@@ -91,7 +99,7 @@ class AnnouncementController(
         name = "bearerAuth"
     )
     @PostMapping("/images/{id}")
-    fun uploadImage(@RequestBody image: MultipartFile, @PathVariable id: String): AnnouncementViewTest{
+    fun uploadImage(@RequestBody image: MultipartFile, @PathVariable id: String): AnnouncementView{
        return announcementService.uploadImage(image, id)
     }
 
@@ -99,7 +107,7 @@ class AnnouncementController(
         name = "bearerAuth"
     )
     @DeleteMapping("/images")
-    fun deleteImage(@RequestBody form: DeleteImageAnnouncementForm): AnnouncementViewTest{
+    fun deleteImage(@RequestBody form: DeleteImageAnnouncementForm): AnnouncementView{
         return announcementService.deleteImage(form)
     }
 

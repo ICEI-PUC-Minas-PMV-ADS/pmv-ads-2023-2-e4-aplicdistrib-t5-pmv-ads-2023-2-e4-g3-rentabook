@@ -9,11 +9,6 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.data.mongodb.repository.Query
 
-interface TradeRepository : MongoRepository<Trade, String> {
- fun findByAcceptedAndAnnouncementOwnerUserId (accepted: Boolean?, ownerUser: String?, pageable: Pageable): Page <Trade>
-
- fun findByBuyerUser (buyerUser: String?, pageable: Pageable): Page <Trade>
- fun findByAnnouncementId(announcementId: String, pageable: Pageable): Page <Trade>
-}
+interface TradeRepository : MongoRepository<Trade, String> {}
 
 

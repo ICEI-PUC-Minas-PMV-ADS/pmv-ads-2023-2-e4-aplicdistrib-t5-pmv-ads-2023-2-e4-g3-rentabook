@@ -7,7 +7,13 @@ data class CreateAnnouncementForm(
     val bookId: String,
     val images: List<String> = listOf(),
     val description: String = "",
-    val dailyValue: Long? = null,
-    val saleValue: Long? = null,
+    val value: Long,
     val locationId: String,
-)
+    val announcementType: String,
+) {
+    companion object {
+        const val RENT = "rent"
+        const val SALE = "sale"
+        const val TRADE = "trade"
+    }
+}

@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.lang.Exception
 import java.lang.IllegalStateException
 
 @Service
@@ -34,6 +35,9 @@ class SaleService(
     fun create(form: SaleForm): SaleView {
         return AuthenticationUtils.authenticate(userRepository) {
             saleRepository.save(saleFormMapper.map(form)).run {
+                if (!announcement.sale || !announcement.isAvailable) {
+                    throw Exception("Este livro não esta disponivel para venda")
+                }
                 announcement.isAvailable = false
                 announcementRepository.save(announcement)
                 saleViewMapper.map(this)
@@ -66,7 +70,7 @@ class SaleService(
             if (sale.ownerUser.id != user.id && sale.lead.id == user.id) {
                 throw IllegalStateException("Você não tem autorização para fazer essa operação.")
             }
-            if (!sale.cancelled) {
+            if (sale.cancelled) {
                 throw IllegalStateException("Esta venda não foi cancelada e não pode ser desfeita")
             }
             sale.announcement.isAvailable = true
@@ -82,7 +86,7 @@ class SaleService(
             if (sale.ownerUser.id != user.id && sale.lead.id == user.id) {
                 throw IllegalStateException("Você não tem autorização para fazer essa operação.")
             }
-            if (!sale.cancelled) {
+            if (sale.cancelled) {
                 throw IllegalStateException("Esta venda não foi cancelada e não pode ser desfeita")
             }
             sale.announcement.isAvailable = false

@@ -23,8 +23,7 @@ class TradeFormMapper(
         return Trade(
             announcement = announcement,
             ownerUser = announcement.ownerUser,
-            startDate = LocalDate.parse(t.startDate),
-            endDate = LocalDate.parse(t.endDate),
+            startDate = LocalDate.now(),
             value = t.value,
             lead = lead,
             chat = chatRepository.save(Chat(owner = announcement.ownerUser, lead = lead)),

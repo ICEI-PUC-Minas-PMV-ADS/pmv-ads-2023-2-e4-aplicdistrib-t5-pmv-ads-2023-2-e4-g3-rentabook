@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/sales")
-class SaleController(private val saleService: SaleService) {
+class SaleController(
+    private val saleService: SaleService
+) {
 
     @SecurityRequirement(
         name = "bearerAuth"
