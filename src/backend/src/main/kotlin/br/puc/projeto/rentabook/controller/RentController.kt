@@ -40,6 +40,14 @@ class RentController(private val rentService: RentService) {
     @SecurityRequirement(
         name = "bearerAuth"
     )
+    @GetMapping("/own")
+    fun getAllOwnRents(pageable: Pageable): Page<RentView> {
+        return rentService.getAllOwnRents(pageable)
+    }
+
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
     @PutMapping("/{id}/cancel")
     fun cancel(@PathVariable id: String): RentView {
         return rentService.cancel(id)

@@ -1,9 +1,6 @@
 package br.puc.projeto.rentabook.controller
 
-import br.puc.projeto.rentabook.dto.SaleForm
-import br.puc.projeto.rentabook.dto.SaleView
-import br.puc.projeto.rentabook.dto.TradeForm
-import br.puc.projeto.rentabook.dto.TradeView
+import br.puc.projeto.rentabook.dto.*
 import br.puc.projeto.rentabook.service.TradeService
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.data.domain.Page
@@ -38,6 +35,14 @@ class TradeController(
     @GetMapping
     fun getAll(pageable: Pageable): Page<TradeView> {
         return tradeService.getAll(pageable)
+    }
+
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
+    @GetMapping("/own")
+    fun getAllOwnRents(pageable: Pageable): Page<TradeView> {
+        return tradeService.getAllOwnTrades(pageable)
     }
 
     @SecurityRequirement(

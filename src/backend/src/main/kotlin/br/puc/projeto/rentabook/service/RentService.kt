@@ -5,18 +5,25 @@ import br.puc.projeto.rentabook.dto.RentView
 import br.puc.projeto.rentabook.exception.NotFoundException
 import br.puc.projeto.rentabook.mapper.RentFormMapper
 import br.puc.projeto.rentabook.mapper.RentViewMapper
+import br.puc.projeto.rentabook.model.Rent
 import br.puc.projeto.rentabook.repository.AnnouncementRepository
 import br.puc.projeto.rentabook.repository.RentRepository
 import br.puc.projeto.rentabook.repository.UserRepository
 import br.puc.projeto.rentabook.utils.AuthenticationUtils
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
+import org.springframework.data.mongodb.core.MongoTemplate
+import org.springframework.data.mongodb.core.query.Criteria
+import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.mongodb.core.query.isEqualTo
 import org.springframework.stereotype.Service
 import java.lang.Exception
 import java.lang.IllegalStateException
 
 @Service
 class RentService(
+    private val mongoTemplate: MongoTemplate,
     private val rentRepository: RentRepository,
     private val rentViewMapper: RentViewMapper,
     private val rentFormMapper: RentFormMapper,
@@ -27,6 +34,9 @@ class RentService(
     fun create(form: RentForm): RentView {
         return AuthenticationUtils.authenticate(userRepository) {
             rentRepository.save(rentFormMapper.map(form)).run {
+                if (announcement.ownerUser.id == it.id) {
+                    throw Exception("O proprietario do livro não pode aluga-lo")
+                }
                 if (!announcement.rent || !announcement.isAvailable) {
                     throw Exception("Este livro não esta disponivel para aluguel")
                 }
@@ -52,6 +62,21 @@ class RentService(
         return AuthenticationUtils.authenticate(userRepository) { user ->
             rentRepository.findAll(pageable)
                 .map { rentViewMapper.map(it) }
+        }
+    }
+
+    fun getAllOwnRents(pageable: Pageable): Page<RentView> {
+        return AuthenticationUtils.authenticate(userRepository) { user ->
+            val query = Query()
+                .with(pageable)
+                .addCriteria(Criteria("accepted").isEqualTo(false))
+                .addCriteria(Criteria("cancelled").isEqualTo(false))
+                .addCriteria(Criteria("lead.id").isEqualTo(user.id ?: throw Exception("Id do usuário invalido")))
+
+            val rents = mongoTemplate.find(query, Rent::class.java)
+                .map { rentViewMapper.map(it) }
+
+            PageImpl(rents, pageable, rents.size.toLong())
         }
     }
 

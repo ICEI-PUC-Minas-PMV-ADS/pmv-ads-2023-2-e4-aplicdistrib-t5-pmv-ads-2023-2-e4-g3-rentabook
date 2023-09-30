@@ -6,13 +6,20 @@ import br.puc.projeto.rentabook.mapper.SaleFormMapper
 import br.puc.projeto.rentabook.mapper.SaleViewMapper
 import br.puc.projeto.rentabook.mapper.TradeFormMapper
 import br.puc.projeto.rentabook.mapper.TradeViewMapper
+import br.puc.projeto.rentabook.model.Sale
+import br.puc.projeto.rentabook.model.Trade
 import br.puc.projeto.rentabook.repository.AnnouncementRepository
 import br.puc.projeto.rentabook.repository.SaleRepository
 import br.puc.projeto.rentabook.repository.TradeRepository
 import br.puc.projeto.rentabook.repository.UserRepository
 import br.puc.projeto.rentabook.utils.AuthenticationUtils
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
+import org.springframework.data.mongodb.core.MongoTemplate
+import org.springframework.data.mongodb.core.query.Criteria
+import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.mongodb.core.query.isEqualTo
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.lang.Exception
@@ -20,6 +27,7 @@ import java.lang.IllegalStateException
 
 @Service
 class TradeService(
+    private val mongoTemplate: MongoTemplate,
     private val tradeRepository: TradeRepository,
     private val tradeViewMapper: TradeViewMapper,
     private val tradeFormMapper: TradeFormMapper,
@@ -30,6 +38,9 @@ class TradeService(
     fun create(form: TradeForm): TradeView {
         return AuthenticationUtils.authenticate(userRepository) {
             tradeRepository.save(tradeFormMapper.map(form)).run {
+                if (announcement.ownerUser.id == it.id) {
+                    throw Exception("O proprietario do livro não pode troca-lo")
+                }
                 if (!announcement.trade || !announcement.isAvailable) {
                     throw Exception("Este livro não esta disponivel para troca")
                 }
@@ -55,6 +66,21 @@ class TradeService(
         return AuthenticationUtils.authenticate(userRepository) { user ->
             tradeRepository.findAll(pageable)
                 .map { tradeViewMapper.map(it) }
+        }
+    }
+
+    fun getAllOwnTrades(pageable: Pageable): Page<TradeView> {
+        return AuthenticationUtils.authenticate(userRepository) { user ->
+            val query = Query()
+                .with(pageable)
+                .addCriteria(Criteria("accepted").isEqualTo(false))
+                .addCriteria(Criteria("cancelled").isEqualTo(false))
+                .addCriteria(Criteria("lead.id").isEqualTo(user.id ?: throw Exception("Id do usuário invalido")))
+
+            val trades = mongoTemplate.find(query, Trade::class.java)
+                .map { tradeViewMapper.map(it) }
+
+            PageImpl(trades, pageable, trades.size.toLong())
         }
     }
 

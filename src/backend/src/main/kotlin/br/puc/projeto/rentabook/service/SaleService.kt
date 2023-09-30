@@ -9,6 +9,7 @@ import br.puc.projeto.rentabook.mapper.RentFormMapper
 import br.puc.projeto.rentabook.mapper.RentViewMapper
 import br.puc.projeto.rentabook.mapper.SaleFormMapper
 import br.puc.projeto.rentabook.mapper.SaleViewMapper
+import br.puc.projeto.rentabook.model.Rent
 import br.puc.projeto.rentabook.model.Sale
 import br.puc.projeto.rentabook.repository.AnnouncementRepository
 import br.puc.projeto.rentabook.repository.RentRepository
@@ -16,7 +17,12 @@ import br.puc.projeto.rentabook.repository.SaleRepository
 import br.puc.projeto.rentabook.repository.UserRepository
 import br.puc.projeto.rentabook.utils.AuthenticationUtils
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
+import org.springframework.data.mongodb.core.MongoTemplate
+import org.springframework.data.mongodb.core.query.Criteria
+import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.mongodb.core.query.isEqualTo
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -25,6 +31,7 @@ import java.lang.IllegalStateException
 
 @Service
 class SaleService(
+    private val mongoTemplate: MongoTemplate,
     private val saleRepository: SaleRepository,
     private val saleViewMapper: SaleViewMapper,
     private val saleFormMapper: SaleFormMapper,
@@ -35,6 +42,9 @@ class SaleService(
     fun create(form: SaleForm): SaleView {
         return AuthenticationUtils.authenticate(userRepository) {
             saleRepository.save(saleFormMapper.map(form)).run {
+                if (announcement.ownerUser.id == it.id) {
+                    throw Exception("O proprietario do livro não pode compra-lo")
+                }
                 if (!announcement.sale || !announcement.isAvailable) {
                     throw Exception("Este livro não esta disponivel para venda")
                 }
@@ -60,6 +70,21 @@ class SaleService(
         return AuthenticationUtils.authenticate(userRepository) { user ->
             saleRepository.findAll(pageable)
                 .map { saleViewMapper.map(it) }
+        }
+    }
+
+    fun getAllOwnSales(pageable: Pageable): Page<SaleView> {
+        return AuthenticationUtils.authenticate(userRepository) { user ->
+            val query = Query()
+                .with(pageable)
+                .addCriteria(Criteria("accepted").isEqualTo(false))
+                .addCriteria(Criteria("cancelled").isEqualTo(false))
+                .addCriteria(Criteria("lead.id").isEqualTo(user.id ?: throw Exception("Id do usuário invalido")))
+
+            val sales = mongoTemplate.find(query, Sale::class.java)
+                .map { saleViewMapper.map(it) }
+
+            PageImpl(sales, pageable, sales.size.toLong())
         }
     }
 

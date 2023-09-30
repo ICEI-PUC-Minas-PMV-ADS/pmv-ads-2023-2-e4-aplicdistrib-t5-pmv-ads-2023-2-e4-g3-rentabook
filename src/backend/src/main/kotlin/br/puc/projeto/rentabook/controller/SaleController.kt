@@ -1,5 +1,6 @@
 package br.puc.projeto.rentabook.controller
 
+import br.puc.projeto.rentabook.dto.RentView
 import br.puc.projeto.rentabook.dto.SaleForm
 import br.puc.projeto.rentabook.dto.SaleView
 import br.puc.projeto.rentabook.service.SaleService
@@ -36,6 +37,14 @@ class SaleController(
     @GetMapping
     fun getAll(pageable: Pageable): Page<SaleView> {
         return saleService.getAll(pageable)
+    }
+
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
+    @GetMapping("/own")
+    fun getAllOwnRents(pageable: Pageable): Page<SaleView> {
+        return saleService.getAllOwnSales(pageable)
     }
 
     @SecurityRequirement(
