@@ -2,20 +2,23 @@ package br.puc.projeto.rentabook.mapper
 
 import br.puc.projeto.rentabook.dto.RatingView
 import br.puc.projeto.rentabook.model.Rating
+import br.puc.projeto.rentabook.repository.UserRepository
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 
 @Component
-class RatingViewMapper : Mapper<Rating, RatingView> {
+class RatingViewMapper(
+    private val userRepository: UserRepository,
+    private val publicUserViewMapper: PublicUserViewMapper,
+) : Mapper<Rating, RatingView> {
     override fun map(t: Rating): RatingView {
+        val authentication = SecurityContextHolder.getContext().authentication
+        val lead = userRepository.findByEmail(authentication.name) ?: throw Exception("Usuário que ira alugar não localizado!")
         return RatingView(
             id = t.id ?: throw Exception("Id de avaliação inválido!"),
-            announcementId = t.announcementId,
-            ownerUser = t.ownerUser,
-            renterUser = t.renterUser,
-            rating = t.rating,
-            comments = t.comments,
-            date = t.date,
-            time = t.time
+            ownerUser = publicUserViewMapper.map(lead),
+            message = t.message,
+            feedback = t.feedback,
         )
     }
 }

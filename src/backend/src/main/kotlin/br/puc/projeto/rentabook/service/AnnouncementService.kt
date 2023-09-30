@@ -101,6 +101,7 @@ class AnnouncementService(
         return AuthenticationUtils.authenticate(userRepository) {
             val rent = rentRepository.findById(giveBackForm.id).orElseThrow { throw Exception("Id de aluguel invalido!") }
             rent.rating = ratingRepository.save(Rating(
+                ownerUser = it,
                 message = giveBackForm.ratingMessage,
                 feedback = giveBackForm.ratingFeedback,
             ))
@@ -108,15 +109,6 @@ class AnnouncementService(
             announcementRepository.save(rent.announcement)
             rentRepository.save(rent)
         }
-    }
-
-    fun <R> getCustomPage(list: List<R>, pageable: Pageable): Page<R> {
-        val startIndex = pageable.pageNumber * pageable.pageSize
-        val endIndex = (startIndex + pageable.pageSize).coerceAtMost(list.size)
-
-        val pageList = list.subList(startIndex, endIndex)
-
-        return PageImpl(pageList, pageable, list.size.toLong())
     }
 
     fun uploadImage(image: MultipartFile, announcementId: String): AnnouncementView {
@@ -187,23 +179,19 @@ class AnnouncementService(
     fun findById(id: String): Announcement {
         return announcementRepository.findByIdOrNull(id) ?: throw NotFoundException("Anúncio não encontrado")
     }
-    
-    fun giveBackSale(giveBackForm: GiveBackForm) {
-        return AuthenticationUtils.authenticate(userRepository) {
-            val rent = rentRepository.findById(giveBackForm.id).orElseThrow { throw Exception("Id de aluguel invalido!") }
-            rent.rating = ratingRepository.save(Rating(
-                    message = giveBackForm.ratingMessage,
-                    feedback = giveBackForm.ratingFeedback,
-            ))
-            rent.announcement.isAvailable = true
-            announcementRepository.save(rent.announcement)
-            rentRepository.save(rent)
-        }
 
-    }
     fun detailService (id: String) : AnnouncementView {
         return AuthenticationUtils.authenticate(userRepository) {
             announcementViewMapper.map(announcementRepository.findById(id).orElseThrow())
         }
+    }
+
+    fun <R> getCustomPage(list: List<R>, pageable: Pageable): Page<R> {
+        val startIndex = pageable.pageNumber * pageable.pageSize
+        val endIndex = (startIndex + pageable.pageSize).coerceAtMost(list.size)
+
+        val pageList = list.subList(startIndex, endIndex)
+
+        return PageImpl(pageList, pageable, list.size.toLong())
     }
 }

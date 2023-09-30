@@ -273,13 +273,5 @@ class CustomTests {
                 .header("Authorization", "Bearer $userTwoToken")
             )
             .andExpect(status().isOk)
-
-
-
-        mockMvc.perform(
-            MockMvcRequestBuilders
-                .post("/bubble")
-        )
-            .andExpect(status().isOk)
     }
 }

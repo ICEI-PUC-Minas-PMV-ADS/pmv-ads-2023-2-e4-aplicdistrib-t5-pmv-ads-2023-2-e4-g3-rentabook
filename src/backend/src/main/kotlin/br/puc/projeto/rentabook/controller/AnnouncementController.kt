@@ -138,12 +138,6 @@ class AnnouncementController(
     )
     @PostMapping("/rate")
     fun createRating(@RequestBody ratingForm: RatingForm): RatingView {
-        val announcementId = ratingForm.announcementId
-        val rating = ratingForm.rating
-        val comments = ratingForm.comments
-        val date = ratingForm.date
-        val time = ratingForm.time
-
-        return ratingService.createRating(announcementId, rating, comments, date, time)
+        return ratingService.createRating(ratingForm)
     }
 }

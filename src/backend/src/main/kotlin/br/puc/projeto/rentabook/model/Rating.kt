@@ -8,13 +8,7 @@ import java.time.LocalTime
 @Document("ratings")
 data class Rating(
     val id: String? = null,
-    val announcementId: String,
-    val rating: Int,
-    val comments: String,
-    val date: LocalDate,
-    val time: LocalTime,
-    val ownerUser: PublicUserView?,
-    val renterUser: PublicUserView?,
+    val ownerUser: User,
     val message: String,
     val feedback: Boolean
 )
