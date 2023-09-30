@@ -65,7 +65,7 @@ class TradeService(
             if (trade.ownerUser.id != user.id && trade.lead.id != user.id) {
                 throw IllegalStateException("Você não tem autorização para fazer essa operação.")
             }
-            if (trade.cancelled) {
+            if (trade.cancelled && trade.accepted) {
                 throw IllegalStateException("Esta troca não foi cancelada e não pode ser desfeita")
             }
             trade.announcement.isAvailable = true
@@ -82,7 +82,7 @@ class TradeService(
             if (trade.ownerUser.id != user.id) {
                 throw IllegalStateException("Você não tem autorização para fazer essa operação.")
             }
-            if (trade.cancelled) {
+            if (trade.cancelled && trade.accepted) {
                 throw IllegalStateException("Esta troca não foi cancelada e não pode ser desfeita")
             }
             trade.announcement.isAvailable = false

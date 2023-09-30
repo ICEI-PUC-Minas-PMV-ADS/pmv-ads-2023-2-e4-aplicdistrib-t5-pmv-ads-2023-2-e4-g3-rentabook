@@ -70,7 +70,7 @@ class SaleService(
             if (sale.ownerUser.id != user.id && sale.lead.id != user.id) {
                 throw IllegalStateException("Você não tem autorização para fazer essa operação.")
             }
-            if (sale.cancelled) {
+            if (sale.cancelled && sale.accepted) {
                 throw IllegalStateException("Esta venda não foi cancelada e não pode ser desfeita")
             }
             sale.announcement.isAvailable = true
@@ -87,7 +87,7 @@ class SaleService(
             if (sale.ownerUser.id != user.id) {
                 throw IllegalStateException("Você não tem autorização para fazer essa operação.")
             }
-            if (sale.cancelled) {
+            if (sale.cancelled && sale.accepted) {
                 throw IllegalStateException("Esta venda não foi cancelada e não pode ser desfeita")
             }
             sale.announcement.isAvailable = false

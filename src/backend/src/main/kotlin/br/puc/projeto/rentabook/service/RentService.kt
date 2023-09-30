@@ -62,7 +62,7 @@ class RentService(
             if (rent.ownerUser.id != user.id && rent.lead.id != user.id) {
                 throw IllegalStateException("Você não tem autorização para fazer essa operação.")
             }
-            if (rent.cancelled) {
+            if (rent.cancelled && rent.accepted) {
                 throw IllegalStateException("Este aluguel não foi cancelada e não pode ser desfeita")
             }
             rent.announcement.isAvailable = true
@@ -79,7 +79,7 @@ class RentService(
             if (rent.ownerUser.id != user.id) {
                 throw IllegalStateException("Você não tem autorização para fazer essa operação.")
             }
-            if (rent.cancelled) {
+            if (rent.cancelled && rent.accepted) {
                 throw IllegalStateException("Esta aluguel não foi cancelada e não pode ser desfeita")
             }
             rent.announcement.isAvailable = true
