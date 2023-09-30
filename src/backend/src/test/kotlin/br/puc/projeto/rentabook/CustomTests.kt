@@ -47,7 +47,9 @@ class CustomTests {
     fun `Roteiro para o video`() {
         var addressId = ""
         var announcementOneId = ""
+        var announcementTwoId = ""
         var rentId = ""
+        var saleId = ""
         var chatId = ""
 
         /**
@@ -170,6 +172,13 @@ class CustomTests {
                 )
             )
             .andExpect(status().isOk)
+            .andExpect {
+                val announcementView = gson.fromJson(
+                    it.response.getContentAsString(StandardCharsets.UTF_8),
+                    AnnouncementView::class.java,
+                )
+                announcementOneId = announcementView.id
+            }
 
         /**
          * Cadastrar anuncio para o livro: Bran New Death
@@ -199,7 +208,7 @@ class CustomTests {
                     it.response.getContentAsString(StandardCharsets.UTF_8),
                     AnnouncementView::class.java,
                 )
-                announcementOneId = announcementView.id
+                announcementTwoId = announcementView.id
             }
 
         /**
@@ -214,7 +223,7 @@ class CustomTests {
                 .content(
                     ObjectMapper().writeValueAsString(
                         RentForm(
-                            announcementId = announcementOneId,
+                            announcementId = announcementTwoId,
                             value = 10.0,
                         )
                     )
@@ -229,18 +238,6 @@ class CustomTests {
                 rentId = rentView.id
                 chatId = rentView.chat.id
             }
-
-        /**
-         * Listar livros disponiveis para anuncio.
-         */
-
-        mockMvc.perform(
-            MockMvcRequestBuilders
-                .get("/announcements/available")
-                .contentType("application/json")
-                .header("Authorization", "Bearer $userTwoToken")
-            )
-            .andExpect(status().isOk)
 
         /**
          * Enviar uma mensagem no chat
@@ -263,12 +260,63 @@ class CustomTests {
             .andExpect(status().isOk)
 
         /**
-         * Cancelar solicitação de aluguel.
+         * Completar solicitação de aluguel.
          */
 
         mockMvc.perform(
             MockMvcRequestBuilders
                 .put("/rents/$rentId/cancel")
+                .contentType("application/json")
+                .header("Authorization", "Bearer $userOneToken")
+            )
+            .andExpect(status().isOk)
+
+        /**
+         * Listar livros disponiveis para anuncio.
+         */
+
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .get("/announcements/available")
+                .contentType("application/json")
+                .header("Authorization", "Bearer $userTwoToken")
+            )
+            .andExpect(status().isOk)
+
+        /**
+         * Solicitar aluguel do livro: Dona Branca
+         */
+
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .post("/sales/create")
+                .contentType("application/json")
+                .header("Authorization", "Bearer $userTwoToken")
+                .content(
+                    ObjectMapper().writeValueAsString(
+                        RentForm(
+                            announcementId = announcementOneId,
+                            value = 10.0,
+                        )
+                    )
+                )
+            )
+            .andExpect(status().isOk)
+            .andExpect {
+                val rentView = gson.fromJson(
+                    it.response.getContentAsString(StandardCharsets.UTF_8),
+                    RentView::class.java
+                )
+                rentId = rentView.id
+            }
+
+        /**
+         * Cancelar solicitação de aluguel.
+         */
+
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .put("/sales/$rentId/cancel")
                 .contentType("application/json")
                 .header("Authorization", "Bearer $userTwoToken")
             )

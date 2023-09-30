@@ -67,7 +67,7 @@ class SaleService(
         return AuthenticationUtils.authenticate(userRepository) { user ->
             val sale = saleRepository.findById(id)
                 .orElseThrow { NotFoundException("Venda não encontrada") }
-            if (sale.ownerUser.id != user.id && sale.lead.id == user.id) {
+            if (sale.ownerUser.id != user.id && sale.lead.id != user.id) {
                 throw IllegalStateException("Você não tem autorização para fazer essa operação.")
             }
             if (sale.cancelled) {
@@ -79,11 +79,12 @@ class SaleService(
             saleViewMapper.map(saleRepository.save(sale))
         }
     }
+
     fun complete(id: String): SaleView {
         return AuthenticationUtils.authenticate(userRepository) { user ->
             val sale = saleRepository.findById(id)
                 .orElseThrow { NotFoundException("Venda não encontrada") }
-            if (sale.ownerUser.id != user.id && sale.lead.id == user.id) {
+            if (sale.ownerUser.id != user.id) {
                 throw IllegalStateException("Você não tem autorização para fazer essa operação.")
             }
             if (sale.cancelled) {
