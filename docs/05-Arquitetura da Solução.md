@@ -86,16 +86,14 @@ Utilizamos o IntelliJ IDEA para escrever, depurar e testar o código Kotlin e Sp
 Utilizamos o Insomnia para testar a API, garantindo que elas funcionem corretamente e atendam aos requisitos.</br></br>
 O Swagger é usado para documentar a API do Rentabook, criando uma documentação interativa que os desenvolvedores e os usuários podem consultar para entender como interagir com a plataforma.
 
-## Hospedagem
+## Contrato de API
 
-Explique como a hospedagem e o lançamento da plataforma foi feita.
+Um contrato de API é um documento sobre como a API é projetada. Atualmente, a forma mais comum de contrato de API é uma especificação OpenAPI, um formato de descrição neutro, portátil e aberto, que padroniza como as APIs REST são descritas. A ferramenta utilizada no projeto foi o  Swagger que é um conjunto de ferramentas de código aberto criadas em torno da especificação OpenAPI que nos ajudou a documentar e consumir a API REST. 
+<br>
+Segue abaixo o PDF do Swagger para análise até o contrato ser disponibilizado online:
 
-> **Links Úteis**:
->
-> - [Website com GitHub Pages](https://pages.github.com/)
-> - [Programação colaborativa com Repl.it](https://repl.it/)
-> - [Getting Started with Heroku](https://devcenter.heroku.com/start)
-> - [Publicando Seu Site No Heroku](http://pythonclub.com.br/publicando-seu-hello-world-no-heroku.html)
+> - [PDF do Contrato da API](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/d41264b2786f574546401112d3b4bc8ea6fb48fb/docs/img/Swagger%20UI.pdf)
+
 
 ## Qualidade de Software
 
