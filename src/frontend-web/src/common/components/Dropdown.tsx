@@ -7,12 +7,13 @@ import Assets from '../theme/assets';
  * Props
  */
 
-type DropdownProps = {
-  value?: string,
+type DropdownProps<T> = {
   width?: number,
   height?: number,
-  onClick?: (state: boolean) => void,
-  content?: () => JSX.Element,
+  placeholder?: string,
+  items: T[],
+  onSelect?: (item: T) => void,
+  children: (item: T) => JSX.Element,
 };
 
 /**
@@ -51,14 +52,22 @@ const style = StyleSheet.create({
  * https://www.figma.com/file/2lR8urPO212OkkhvDTmmgF/Untitled?type=design&node-id=32-279&mode=design&t=ZkwebBuGnnQ715v7-4
  */
 
-export default function Dropdown({ value, width, height, onClick, content }: DropdownProps) {
+export default function Dropdown<T>({ placeholder, width, height, items, onSelect, children }: DropdownProps<T>) {
   const [size, setSize] = React.useState<{ width?: number, height?: number }>({});
+  const [selectedItem, setSelectedItem] = React.useState<T | undefined>();
   const [opened, setOpened] = React.useState<boolean>(false);
   const [layout, setLayout] = React.useState<DropdownLayout>({});
+  const [dropdownValue, setDropdownValue] = React.useState<string>(placeholder ?? "");
 
   const onLayout = (event: LayoutChangeEvent) => {
     const { width, height, x, y } = event.nativeEvent.layout;
     setLayout({ width, height, x, y });
+  };
+
+  const onHandleSelect = (item: T) => {
+    onSelect?.(item);
+    setSelectedItem(item);
+    setOpened(false);
   };
 
   React.useEffect(() => {
@@ -71,7 +80,7 @@ export default function Dropdown({ value, width, height, onClick, content }: Dro
     <View style={{ width, height }} onLayout={onLayout}>
       <Pressable onPress={() => setOpened(opened => !opened)}>
         <View style={style.dropdownContainer}>
-          <Text>{value}</Text>
+          {selectedItem ? children(selectedItem) : <Text>{dropdownValue}</Text>}
           <Image
             source={{ uri: Assets.IcDropdownArrow, width: size.width, height: size.height }}
           />
@@ -81,7 +90,11 @@ export default function Dropdown({ value, width, height, onClick, content }: Dro
       <Modal visible={opened} transparent animationType='none'>
         <Pressable style={{ flex: 1 }} onPress={() => setOpened(false)}>
           <View style={{ position: 'absolute', width: layout.width, top: layout.y! + layout.height!, right: layout.x }}>
-            {content?.()}
+            {items.map((value) =>
+              <Pressable onPress={() => onHandleSelect(value)}>
+                {children(value)}
+              </Pressable>
+            )}
           </View>
         </Pressable>
       </Modal>

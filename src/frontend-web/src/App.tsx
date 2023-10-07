@@ -7,6 +7,13 @@ import DestructiveButton from './common/components/DestructiveButton';
 import Input from './common/components/Input';
 import Dropdown from './common/components/Dropdown';
 import './App.css';
+import TextArea from './common/components/TextArea';
+
+const items = [
+  { title: 'Item #1', value: 1 },
+  { title: 'Item #2', value: 2 },
+  { title: 'Item #3', value: 3 },
+];
 
 function App() {
   return (
@@ -21,17 +28,11 @@ function App() {
           <View style={{ height: 10 }} />
           <Input label='Nome' />
           <View style={{ height: 10 }} />
-          <Dropdown
-            value='Ordenar por'
-            content={() => (
-              <View style={{ backgroundColor: "#703030" }}>
-                <Text>Item #1</Text>
-                <Text>Item #2</Text>
-                <Text>Item #3</Text>
-                <Text>Item #4</Text>
-              </View>
-            )}
-          />
+          <Dropdown placeholder='Ordenar por' items={items}>
+            {(value) => <Text>{value.title}</Text>}
+          </Dropdown>
+          <View style={{ height: 10 }} />
+          <TextArea placeholder='Texto' />
         </View>
       </ClickOutsideProvider>
     </View>
