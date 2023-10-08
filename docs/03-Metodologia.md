@@ -41,3 +41,5 @@ As ferramentas empregadas no projeto são:
 
 - GitHub para versionamento do projeto e organização/controle das tarefas.
 - Whatsapp para comunicação entre a equipe.
+- IntelliJ para desenvolvimento do backend.
+- VSCode para desenvolvimento dos frontends web e mobile.
