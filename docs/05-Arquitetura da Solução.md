@@ -2,7 +2,7 @@
 
 
 
-<img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/imagem_2023-09-08_154329598.png">
+<img src="https://raw.githubusercontent.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/fcba8bb63ad4ec9358662cc98cf0b050e99d2a26/docs/img/sddsdsssss.PNG">
 
 ## Diagrama de Classes
 
