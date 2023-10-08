@@ -11,7 +11,9 @@ ambientes com seu respectivo propósito é apresentada na tabela que se segue.
 |Ambiente                         |Plataforma e Link de Acesso                                                                                |
 |---------------------------------|-----------------------------------------------------------------------------------------------------------|
 |Repositório de código fonte      |[GitHub](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook)          |
-|Documentos do projeto            |[GitHub](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook)          |       
+|Documentos do projeto            |[GitHub](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook)          |      
+|Gerenciamento de tarefas         |[GitHub](https://github.com/orgs/ICEI-PUC-Minas-PMV-ADS/projects/461/views/1)                              |
+|Diagramas                        |[Lucidchart](https://lucid.app/lucidchart/4d4f1757-4a0b-451a-b8a5-e19dde46423a/edit?invitationId=inv_863d048b-9aa6-4f41-9538-69c68af99aee&page=HWEp-vi-RSFO#)|
 
 ## Controle de Versão
 
@@ -39,3 +41,5 @@ As ferramentas empregadas no projeto são:
 
 - GitHub para versionamento do projeto e organização/controle das tarefas.
 - Whatsapp para comunicação entre a equipe.
+- IntelliJ para desenvolvimento do backend.
+- VSCode para desenvolvimento dos frontends web e mobile.
