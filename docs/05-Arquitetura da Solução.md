@@ -23,6 +23,12 @@ Acesse o link abaixo para visualizar o diagrama completo.
 
 <img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/diag.png" >
 
+## Diagrama de componentes
+
+O diagrama a seguir mostra como o código está organizado fisicamente. Os serviços abstraem a lógica de negócio e podem ser reutilizados nas diferentes rotas dos controladores.
+
+<img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Diagrama de componentes.png" >
+
 ## Modelo Físico
 
 Usando a ferramenta mongosh, disponibilizada com o cliente do mongo, deve-se seguir os seguintes passos.
