@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Image,
   ImageSourcePropType,
+  TouchableOpacity,
 } from "react-native";
 import { GreenLight, PrimaryGreenColor, WhiteColor } from "../theme/colors";
 
@@ -33,7 +34,8 @@ const style = StyleSheet.create({
     color: PrimaryGreenColor,
     fontSize: 16,
     marginLeft: 16,
-    fontWeight: "bold",
+    fontWeight: "normal",
+    padding: 10,
   },
   icon: {
     width: 54,
@@ -48,7 +50,9 @@ export default function NavBar() {
 
   return (
     <View style={style.navbar}>
-      <Image source={Icone} style={style.icon} />
+      <TouchableOpacity onPress={() => handleLinkClick("Icone")}>
+        <Image source={Icone} style={style.icon} />
+      </TouchableOpacity>
       <View style={style.navLinkContainer}>
         <View style={style.navLinks}>
           <Text
@@ -67,7 +71,9 @@ export default function NavBar() {
             Chat
           </Text>
         </View>
-        <Image source={IconeDois} style={style.icon} />
+        <TouchableOpacity onPress={() => handleLinkClick("IconeDois")}>
+          <Image source={IconeDois} style={style.icon} />
+        </TouchableOpacity>
       </View>
     </View>
   );
