@@ -1,17 +1,17 @@
-import * as React from 'react';
+import * as React from "react";
 import { Pressable, View, Text, StyleSheet } from "react-native";
-import { BlackColor, PrimaryGreenColor, WhiteColor } from '../theme/colors';
+import { BlackColor, PrimaryGreenColor, WhiteColor } from "../theme/colors";
 
 /**
  * Props
  */
 
 type ComposedButtonProps = {
-  title: string,
-  subtitle?: string,
-  width?: number,
-  height?: number,
-  onClick: () => void,
+  title: string;
+  subtitle?: string;
+  width?: number;
+  height?: number;
+  onClick: () => void;
 };
 
 /**
@@ -25,11 +25,11 @@ const style = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     alignItems: "center",
-    border: `2px solid ${PrimaryGreenColor}`
+    border: `2px solid ${PrimaryGreenColor}`,
   },
   title: {
     color: BlackColor,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 16,
   },
   subtitle: {
@@ -43,7 +43,13 @@ const style = StyleSheet.create({
  * https://www.figma.com/file/2lR8urPO212OkkhvDTmmgF/Untitled?type=design&node-id=32-292&mode=design&t=zo5JuzOpjwxyNwko-4
  */
 
-export default function ComposedButton({ title, subtitle, width, height, onClick }: ComposedButtonProps) {
+export default function ComposedButton({
+  title,
+  subtitle,
+  width,
+  height,
+  onClick,
+}: ComposedButtonProps) {
   return (
     <Pressable onPress={() => onClick()}>
       <View style={[style.background, { width, height }]}>
