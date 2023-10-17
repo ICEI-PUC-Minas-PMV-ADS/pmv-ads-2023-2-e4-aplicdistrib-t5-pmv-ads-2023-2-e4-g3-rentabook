@@ -8,9 +8,16 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { GreenLight, PrimaryGreenColor, WhiteColor } from "../theme/colors";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { AppParamsList } from "../../routes/AppParamsList";
+
+
+
 
 const Icone: ImageSourcePropType = require("../assets/icon.png");
 const IconeDois: ImageSourcePropType = require("../assets/IconDois.png");
+
 
 const style = StyleSheet.create({
   navbar: {
@@ -43,10 +50,12 @@ const style = StyleSheet.create({
   },
 });
 
+
 export default function NavBar() {
   const handleLinkClick = (text: string) => {
     console.log(`Link clicado: ${text}`);
   };
+  const navigation = useNavigation<NativeStackNavigationProp<AppParamsList>>()
 
   return (
     <View style={style.navbar}>
@@ -57,13 +66,13 @@ export default function NavBar() {
         <View style={style.navLinks}>
           <Text
             style={style.navLink}
-            onPress={() => handleLinkClick("Anúncio")}
+            onPress={() => navigation.navigate('Home', {})}
           >
             Anúncio
           </Text>
           <Text
             style={style.navLink}
-            onPress={() => handleLinkClick("Meus Anúncios")}
+            onPress={() => navigation.navigate('MyAnnouncements', {})}
           >
             Meus Anúncios
           </Text>

@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.util.*
 import kotlin.random.Random
-import kotlin.random.nextInt
 
 @Service
 class UserService(
@@ -41,6 +40,13 @@ class UserService(
         return userRepository.findByIdOrNull(id).run {
             this ?: throw NotFoundException("Usuário não encontrado")
             publicUserViewMapper.map(this)
+        }
+    }
+
+    fun invalidateToken(){
+        return AuthenticationUtils.authenticate(userRepository) { user ->
+            user.tokenVersion++
+            userRepository.save(user)
         }
     }
 
@@ -69,7 +75,7 @@ class UserService(
             val token = UsernamePasswordAuthenticationToken(username, password)
             val authResult: Authentication = authManager.authenticate(token)
             val user = authResult.principal as UserDetail
-            ResponseLoginView(jwtUtils.generateToken(user.username, user.authorities, this.passwordVersion))
+            ResponseLoginView(jwtUtils.generateToken(user.username, user.authorities, this.tokenVersion))
         }
     }
 
@@ -124,7 +130,7 @@ class UserService(
             val oldPasswordValidate = BCryptPasswordEncoder().matches(form.oldPassword, user.password)
             if (user.email == form.email && oldPasswordValidate) {
                 user.password = BCryptPasswordEncoder().encode(form.newPassword)
-                user.passwordVersion++
+                user.tokenVersion++
             } else throw InvalidLoginException("Login inválido")
             userRepository.save(user)
         }
@@ -149,7 +155,7 @@ class UserService(
             if (form.verificationCode != passwordRecoveryToken) throw InvalidTokenException("Código de verificação inválido!")
             if(Date(System.currentTimeMillis()) > passwordRecoveryExpiration!!) throw InvalidTokenException("Código de verificação expirado!")
             password = BCryptPasswordEncoder().encode(form.newPassword)
-            passwordVersion++
+            tokenVersion++
             passwordRecoveryToken = null
             passwordRecoveryExpiration = null
             userRepository.save(this)

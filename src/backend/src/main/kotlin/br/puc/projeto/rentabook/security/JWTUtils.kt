@@ -4,7 +4,6 @@ import br.puc.projeto.rentabook.exception.NotFoundException
 import br.puc.projeto.rentabook.model.Role
 import br.puc.projeto.rentabook.repository.UserRepository
 import br.puc.projeto.rentabook.service.UserDetailsService
-import br.puc.projeto.rentabook.service.UserService
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.security.core.Authentication
@@ -28,7 +27,7 @@ class JWTUtils(
         return Jwts.builder()
             .setSubject(userName)
             .claim("role", authorities)
-            .claim("passwordVersion", passwordVersion)
+            .claim("tokenVersion", passwordVersion)
             .setExpiration(Date(System.currentTimeMillis() + expiration))
             .signWith(key, SignatureAlgorithm.HS512)
             .compact()
@@ -40,8 +39,8 @@ class JWTUtils(
                 .setSigningKey(secretKey.toByteArray())
                 .build().parseClaimsJws(jwt).body
             val user = userRepository.findByEmail(claims.subject) ?: throw NotFoundException("Usuário associado ao token não encontrado")
-            val storedPasswordVersion = claims["passwordVersion"] as Int
-            storedPasswordVersion == user.passwordVersion
+            val storedPasswordVersion = claims["tokenVersion"] as Int
+            storedPasswordVersion == user.tokenVersion
         } catch (e: IllegalArgumentException) {
             false
         }

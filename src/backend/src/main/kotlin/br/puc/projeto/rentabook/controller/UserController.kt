@@ -7,6 +7,7 @@ import br.puc.projeto.rentabook.service.NotificationService
 import br.puc.projeto.rentabook.service.UserService
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 
 @RestController
+@CrossOrigin
 class UserController(
     private val userService: UserService,
     private val notificationService: NotificationService
@@ -34,6 +36,11 @@ class UserController(
         return userService.getPrivateUser()
     }
 
+    @PostMapping("/leave")
+    fun logout() {
+        return userService.invalidateToken()
+    }
+
     @PostMapping("/register")
     fun register(@RequestBody @Valid form: RegisterForm): ResponseLoginView {
         return userService.checkDuplicatedEmail(form.email) {
@@ -47,6 +54,7 @@ class UserController(
     fun login(@RequestBody @Valid credentials: LoginForm): ResponseLoginView {
         return userService.authenticateAndGenerateToken(credentials.email, credentials.password)
     }
+
 
     @SecurityRequirement(
         name = "bearerAuth"

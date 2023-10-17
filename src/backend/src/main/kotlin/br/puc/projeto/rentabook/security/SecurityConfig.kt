@@ -18,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 
 
+
 @Configuration
 @EnableWebSecurity
 class SecurityConfig (
@@ -44,6 +45,7 @@ class SecurityConfig (
             headers {
                 frameOptions { disable() }
             }
+
         }
         http.addFilterBefore(
             JTWAuthenticationFilter(jwtUtils = jwtUtils),

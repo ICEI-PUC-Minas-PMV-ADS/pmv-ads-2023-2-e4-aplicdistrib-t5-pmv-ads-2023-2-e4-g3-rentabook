@@ -1,7 +1,6 @@
 package br.puc.projeto.rentabook.model
 
 import org.springframework.data.annotation.Id
-import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
 import java.util.*
@@ -16,7 +15,7 @@ data class User(
     var password: String,
     var passwordRecoveryToken: String? = null,
     var passwordRecoveryExpiration: Date? = null,
-    var passwordVersion: Int = 0,
+    var tokenVersion: Int = 0,
     val createData: LocalDateTime = LocalDateTime.now(),
     val booksId: MutableList<String> = mutableListOf(),
     val addresses: MutableList<Address> = mutableListOf(),

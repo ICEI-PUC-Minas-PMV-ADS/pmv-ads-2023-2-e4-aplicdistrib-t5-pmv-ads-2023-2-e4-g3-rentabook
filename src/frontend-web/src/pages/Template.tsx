@@ -1,6 +1,7 @@
 import * as React from "react";
 import { View, StyleSheet } from "react-native";
 import NavBar from "../common/components/Navbar";
+
 const style = StyleSheet.create({
   container: {
     flex: 1,
