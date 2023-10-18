@@ -16,12 +16,16 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import org.springframework.web.filter.CorsFilter
+import org.springframework.web.servlet.config.annotation.EnableWebMvc
 
 
-
-@Configuration
 @EnableWebSecurity
-class SecurityConfig (
+@Configuration
+class SecurityConfig(
     private val jwtUtils: JWTUtils,
 ) {
     @Bean
@@ -48,12 +52,14 @@ class SecurityConfig (
             headers {
                 frameOptions { disable() }
             }
-
+            cors { }
         }
         http.addFilterBefore(
             JTWAuthenticationFilter(jwtUtils = jwtUtils),
             UsernamePasswordAuthenticationFilter::class.java
         )
+
+
         return http.build()
     }
 
@@ -61,10 +67,26 @@ class SecurityConfig (
     fun passwordEncoder(): PasswordEncoder {
         return BCryptPasswordEncoder()
     }
+
     @Bean
     fun authenticationManager(authenticationConfiguration: AuthenticationConfiguration): AuthenticationManager {
         return authenticationConfiguration.authenticationManager
     }
 
+    @Bean
+    fun corsFilter(): CorsFilter {
+        val source = UrlBasedCorsConfigurationSource()
+        val config = CorsConfiguration()
+
+
+        config.allowedOrigins = listOf("*")
+        config.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
+        config.allowedHeaders = listOf("Authorization", "Content-Type")
+        config.maxAge = 3600
+
+        source.registerCorsConfiguration("/**", config)
+
+        return CorsFilter(source)
+    }
 
 }

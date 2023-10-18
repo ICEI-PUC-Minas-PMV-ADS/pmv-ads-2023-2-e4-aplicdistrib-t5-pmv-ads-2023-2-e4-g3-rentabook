@@ -5,6 +5,7 @@ import br.puc.projeto.rentabook.service.NotificationService
 import br.puc.projeto.rentabook.service.UserService
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
-
 @RestController
 class UserController(
     private val userService: UserService,
@@ -45,7 +45,6 @@ class UserController(
             }
         }
     }
-
     @PostMapping("/login")
     fun login(@RequestBody @Valid credentials: LoginForm): ResponseLoginView {
         return userService.authenticateAndGenerateToken(credentials.email, credentials.password)

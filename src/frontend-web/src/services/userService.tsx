@@ -1,5 +1,4 @@
 import { useApi } from "../hooks/useApi";
-import axios from 'axios';
 import { LoginForm } from "../types/LoginForm";
 import { RegisterForm } from "../types/RegisterForm";
 

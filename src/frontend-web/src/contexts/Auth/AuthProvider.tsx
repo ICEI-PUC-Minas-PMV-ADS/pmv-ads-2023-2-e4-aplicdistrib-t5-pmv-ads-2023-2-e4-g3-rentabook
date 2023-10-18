@@ -3,7 +3,6 @@ import { PrivateUser } from "../../types/PrivateUser";
 import { AuthContext } from "./AuthContext";
 import { LoginForm } from '../../types/LoginForm';
 import { userService } from '../../services/userService';
-import Login from '../../pages/Login';
 
 export const AuthProvider = ({ children }: { children: JSX.Element }) => {
 
