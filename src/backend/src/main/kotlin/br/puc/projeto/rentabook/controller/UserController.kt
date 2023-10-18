@@ -1,13 +1,10 @@
 package br.puc.projeto.rentabook.controller
 
 import br.puc.projeto.rentabook.dto.*
-import br.puc.projeto.rentabook.model.Image
-import br.puc.projeto.rentabook.model.User
 import br.puc.projeto.rentabook.service.NotificationService
 import br.puc.projeto.rentabook.service.UserService
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
-import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -18,12 +15,11 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 
 @RestController
-@CrossOrigin
 class UserController(
     private val userService: UserService,
     private val notificationService: NotificationService
 ) {
-    @GetMapping("/user/{id}")
+    @GetMapping("/public/user/{id}")
     fun getPublicUser(@PathVariable id: String): PublicUserView {
         return userService.getPublicUser(id)
     }
@@ -70,22 +66,6 @@ class UserController(
     @DeleteMapping("/user/image")
     fun deleteImage(): PrivateUserView {
         return userService.deleteUserImage()
-    }
-
-    @SecurityRequirement(
-        name = "bearerAuth"
-    )
-    @PostMapping("/user/address")
-    fun registerAddress(@RequestBody @Valid form: AddressForm): AddressView {
-        return userService.registerAddress(form)
-    }
-
-    @SecurityRequirement(
-        name = "bearerAuth"
-    )
-    @DeleteMapping("/user/address/{id}")
-    fun deleteAddress(@PathVariable id: String): PrivateUserView {
-        return userService.deleteAddress(id)
     }
 
     @SecurityRequirement(

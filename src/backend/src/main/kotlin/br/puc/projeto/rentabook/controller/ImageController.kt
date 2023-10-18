@@ -19,10 +19,7 @@ import java.nio.file.Files
 class ImageController(
     private val imageService: ImageService
 ) {
-    @SecurityRequirement(
-        name = "bearerAuth"
-    )
-    @GetMapping("/image/{id}")
+    @GetMapping("/public/image/{id}")
     fun getImagem (@PathVariable id: String, response: HttpServletResponse): ResponseEntity<ByteArray> {
         return imageService.getImage(id).run {
             val image = File(this.path ?: throw Exception("Houve um problema ao encontrar o caminho da imagem"))

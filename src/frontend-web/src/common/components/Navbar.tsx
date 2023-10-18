@@ -68,7 +68,7 @@ export default function NavBar() {
             style={style.navLink}
             onPress={() => navigation.navigate('Home', {})}
           >
-            Anúncio
+            Anúncios
           </Text>
           <Text
             style={style.navLink}

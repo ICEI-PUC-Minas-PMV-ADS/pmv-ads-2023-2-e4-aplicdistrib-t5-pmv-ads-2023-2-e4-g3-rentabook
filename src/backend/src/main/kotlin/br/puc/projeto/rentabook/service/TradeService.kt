@@ -63,7 +63,7 @@ class TradeService(
     }
 
     fun getAll(pageable: Pageable): Page<TradeView> {
-        return AuthenticationUtils.authenticate(userRepository) { user ->
+        return AuthenticationUtils.authenticate(userRepository) {
             tradeRepository.findAll(pageable)
                 .map { tradeViewMapper.map(it) }
         }

@@ -99,28 +99,28 @@ class AnnouncementController(
         name = "bearerAuth"
     )
     @PostMapping("/images/{id}")
-    fun uploadImage(@RequestBody image: MultipartFile, @PathVariable id: String): AnnouncementView{
-       return announcementService.uploadImage(image, id)
+    fun uploadImage(@RequestBody image: MultipartFile, @PathVariable id: String): AnnouncementView {
+        return announcementService.uploadImage(image, id)
     }
 
     @SecurityRequirement(
         name = "bearerAuth"
     )
     @DeleteMapping("/images")
-    fun deleteImage(@RequestBody form: DeleteImageAnnouncementForm): AnnouncementView{
+    fun deleteImage(@RequestBody form: DeleteImageAnnouncementForm): AnnouncementView {
         return announcementService.deleteImage(form)
     }
 
-    @SecurityRequirement(
-        name = "bearerAuth"
-    )
-    @GetMapping("/list")
-    fun list(@RequestParam city: String?,
-             @RequestParam bookId: String?,
-             @RequestParam rent: Boolean?,
-             @RequestParam sale: Boolean?,
-             pageable: Pageable): Page<AnnouncementView>{
-       return announcementService.findByFilters(city, bookId, rent, sale, pageable)
+    @GetMapping("/find")
+    fun list(
+        @RequestParam city: String?,
+        @RequestParam bookId: String?,
+        @RequestParam rent: Boolean?,
+        @RequestParam sale: Boolean?,
+        @RequestParam trade: Boolean?,
+        pageable: Pageable
+    ): Page<AnnouncementView> {
+        return announcementService.findByFilters(city, bookId, rent, sale, trade, pageable)
     }
 
     @SecurityRequirement(

@@ -26,6 +26,6 @@ class LocalDateTimeAdapter : TypeAdapter<LocalDateTime?>() {
             p0.nextNull()
             return null
         }
-        return LocalDateTime.parse(p0!!.nextString())
+        return LocalDateTime.parse(p0.nextString())
     }
 }

@@ -35,8 +35,11 @@ class SecurityConfig (
                 authorize(AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/register"), permitAll)
                 authorize(AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/recovery/{email}"), permitAll)
                 authorize(AntPathRequestMatcher.antMatcher(HttpMethod.PUT, "/recovery"), permitAll)
-                authorize(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/user/{id}"), permitAll)
-                authorize(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/image/{id}"), permitAll)
+                authorize(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/public/books/*"), permitAll)
+                authorize(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/public/user/{id}"), permitAll)
+                authorize(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/announcements/find"), permitAll)
+                authorize(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/public/image/{id}"), permitAll)
+                authorize(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/public/address/{id}"), permitAll)
                 authorize(anyRequest, authenticated)
             }
             sessionManagement {

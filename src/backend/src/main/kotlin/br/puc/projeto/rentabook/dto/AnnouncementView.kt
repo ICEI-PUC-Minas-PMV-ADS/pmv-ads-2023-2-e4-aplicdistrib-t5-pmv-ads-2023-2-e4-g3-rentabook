@@ -14,5 +14,5 @@ data class AnnouncementView(
     val sale: Boolean = false,
     val trade: Boolean = false,
     val value: Long? = null,
-    val location: AddressView,
+    val location: PrivateAddressView,
 )

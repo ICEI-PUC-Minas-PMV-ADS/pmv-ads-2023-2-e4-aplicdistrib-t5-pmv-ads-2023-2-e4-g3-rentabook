@@ -9,7 +9,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 class WebConfig {
     @Bean
     fun cors(): WebMvcConfigurer{
-        println("CORS FUNCIONANDO")
         return object : WebMvcConfigurer{
             override fun addCorsMappings(registry: CorsRegistry) {
                 registry.addMapping("/**")

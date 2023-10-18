@@ -6,9 +6,7 @@ import { RegisterForm } from "../types/RegisterForm";
 export const userService = {
   login: async (form: LoginForm) => {
     const json = JSON.stringify(form)
-    console.log(json)
     const response = await useApi.post("/login", json);
-    console.log(response.data)
     return response.data;
   }, // NÃO USAR ESSA FUNÇÃO DIRETAMENTE, USE O AUTHCONTEXT
 

@@ -6,6 +6,7 @@ import br.puc.projeto.rentabook.exception.InvalidTokenException
 import br.puc.projeto.rentabook.exception.NotFoundException
 import br.puc.projeto.rentabook.exception.ResourceAlreadyExistsException
 import br.puc.projeto.rentabook.mapper.*
+import br.puc.projeto.rentabook.model.Address
 import br.puc.projeto.rentabook.model.User
 import br.puc.projeto.rentabook.repository.AddressRepository
 import br.puc.projeto.rentabook.repository.UserRepository
@@ -32,7 +33,7 @@ class UserService(
     private val privateUserViewMapper: PrivateUserViewMapper,
     private val addressFormMapper: AddressFormMapper,
     private val addressRepository: AddressRepository,
-    private val addressViewMapper: AddressViewMapper,
+    private val privateAddressViewMapper: PrivateAddressViewMapper,
     private val emailService: EmailService
 ) {
 
@@ -46,7 +47,7 @@ class UserService(
     fun invalidateToken(){
         return AuthenticationUtils.authenticate(userRepository) { user ->
             user.tokenVersion++
-            userRepository.save(user)
+            save(user)
         }
     }
 
@@ -64,7 +65,7 @@ class UserService(
     fun register(form: RegisterForm): User {
         return checkDuplicatedEmail(form.email) {
             registerFormMapper.map(form).run {
-                userRepository.save(this)
+                save(this)
             }
         }
     }
@@ -82,7 +83,7 @@ class UserService(
     fun updateUserImage(image: MultipartFile): PrivateUserView {
         return AuthenticationUtils.authenticate(userRepository) { user ->
             user.userImage = imageService.uploadImage(image)
-            userRepository.save(user).run {
+            save(user).run {
                 privateUserViewMapper.map(user)
             }
         }
@@ -93,35 +94,28 @@ class UserService(
             val imageId = user.userImage ?: throw NotFoundException("Usuário não possui imagem de perfil")
             imageService.deleteImage(imageId.id as String)
             user.userImage = null
-            userRepository.save(user).run {
+            save(user).run {
                 privateUserViewMapper.map(user)
             }
         }
     }
 
-    fun registerAddress(form: AddressForm): AddressView {
-        return AuthenticationUtils.authenticate(userRepository) { user ->
-            addressRepository.save(addressFormMapper.map(form)).let { address ->
+    fun saveAddress(address: Address) {
+         AuthenticationUtils.authenticate(userRepository) { user ->
                 user.addresses.add(address)
-                userRepository.save(user).run {
-                    addressViewMapper.map(address)
-                }
-            }
+                save(user)
         }
     }
 
-    fun deleteAddress(id: String): PrivateUserView {
-        return AuthenticationUtils.authenticate(userRepository) { user ->
+    fun deleteAddress(id: String) {
+        AuthenticationUtils.authenticate(userRepository) { user ->
             val findedAddress = user.addresses.find { address ->
-                address?.id == id
+                address.id == id
             }
             if (findedAddress != null) {
                 user.addresses.remove(findedAddress)
-                addressRepository.deleteById(id)
             } else throw NotFoundException("Endereço não encontrado!")
-            userRepository.save(user).run {
-                privateUserViewMapper.map(user)
-            }
+            save(user)
         }
     }
 
@@ -132,7 +126,7 @@ class UserService(
                 user.password = BCryptPasswordEncoder().encode(form.newPassword)
                 user.tokenVersion++
             } else throw InvalidLoginException("Login inválido")
-            userRepository.save(user)
+            save(user)
         }
     }
 
@@ -140,7 +134,7 @@ class UserService(
         findByEmail(email).run {
             passwordRecoveryToken = Random.nextInt(100000, 999999).toString()
             passwordRecoveryExpiration = Date(System.currentTimeMillis() + 900000)
-            userRepository.save(this).run {
+            save(this).run {
                 val subject = "Código de recuperação de senha"
                 val body = "Seu código de recuperação de senha é $passwordRecoveryToken"
                 emailService.emailSender(toEmail = email, subject = subject, body = body)
@@ -158,7 +152,7 @@ class UserService(
             tokenVersion++
             passwordRecoveryToken = null
             passwordRecoveryExpiration = null
-            userRepository.save(this)
+            save(this)
         }
     }
 
@@ -171,7 +165,7 @@ class UserService(
                 user.booksId.add(id)
             } else throw ResourceAlreadyExistsException("Esse livro já foi cadastrado!")
 
-            userRepository.save(user).run {
+            save(user).run {
                 privateUserViewMapper.map(user)
             }
         }
@@ -185,7 +179,7 @@ class UserService(
             if (findedBook != null) {
                 user.booksId.remove(findedBook)
             } else throw NotFoundException("Livro não encontrado!")
-            userRepository.save(user).run {
+            save(user).run {
                 privateUserViewMapper.map(user)
             }
         }
@@ -194,7 +188,7 @@ class UserService(
     fun updateUserProfile(updateProfileForm: UpdateProfileForm): PrivateUserView {
         return AuthenticationUtils.authenticate(userRepository) { user ->
             user.name = updateProfileForm.name
-            userRepository.save(user).run {
+            save(user).run {
                 privateUserViewMapper.map(user)
             }
         }
@@ -206,5 +200,9 @@ class UserService(
 
     fun findByEmail(email: String?): User {
         return userRepository.findByEmail(email) ?: throw NotFoundException("Usuário não encontrado!")
+    }
+
+    fun save(user: User): User{
+        return userRepository.save(user)
     }
 }

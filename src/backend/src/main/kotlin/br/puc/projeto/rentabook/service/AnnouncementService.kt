@@ -146,9 +146,9 @@ class AnnouncementService(
         bookId: String?,
         rent: Boolean?,
         sale: Boolean?,
+        trade: Boolean?,
         pageable: Pageable
     ): Page<AnnouncementView> {
-        return AuthenticationUtils.authenticate(userRepository) { user ->
             val query = Query()
 
             if (!city.isNullOrBlank()) {
@@ -167,13 +167,15 @@ class AnnouncementService(
                 query.addCriteria(Criteria.where("sale").`is`(sale))
             }
 
+            if (trade != null) {
+                query.addCriteria(Criteria.where("trade").`is`(trade))
+            }
+
             val results = mongoTemplate.find(query, Announcement::class.java)
-                .filter { it.ownerUser.id != user.id}
                 .toList()
 
-            PageImpl(results, pageable, results.size.toLong())
+           return PageImpl(results, pageable, results.size.toLong())
                 .map { t -> announcementViewMapper.map(t) }
-        }
     }
 
     fun findById(id: String): Announcement {

@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/books")
+@RequestMapping("/public/books")
 class BookController(
     private val bookService: BookService
 ) {
-    @GetMapping("/id/{bookId}")
+    @GetMapping("/{bookId}")
     fun findById(@PathVariable bookId: String): BookView {
         return bookService.findById(bookId)
     }

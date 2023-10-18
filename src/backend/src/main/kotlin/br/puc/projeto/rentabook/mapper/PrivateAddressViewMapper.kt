@@ -1,13 +1,13 @@
 package br.puc.projeto.rentabook.mapper
 
-import br.puc.projeto.rentabook.dto.AddressView
+import br.puc.projeto.rentabook.dto.PrivateAddressView
 import br.puc.projeto.rentabook.model.Address
 import org.springframework.stereotype.Component
 
 @Component
-class AddressViewMapper : Mapper<Address, AddressView> {
-    override fun map(t: Address): AddressView {
-        return AddressView(
+class PrivateAddressViewMapper : Mapper<Address, PrivateAddressView> {
+    override fun map(t: Address): PrivateAddressView {
+        return PrivateAddressView(
             id = t.id ?: throw Exception("Id do endereço invalido!"),
             name = t.name,
             cep = t.cep,

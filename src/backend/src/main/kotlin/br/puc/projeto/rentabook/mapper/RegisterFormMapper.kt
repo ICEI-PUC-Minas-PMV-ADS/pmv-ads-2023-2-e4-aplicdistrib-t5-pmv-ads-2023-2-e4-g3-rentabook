@@ -14,7 +14,6 @@ class RegisterFormMapper(
     private val roleService: RoleService,
 ): Mapper<RegisterForm, User>{
     override fun map(t: RegisterForm): User {
-        val authentication = SecurityContextHolder.getContext().authentication
         return User(
             id = null,
             name = t.name,

@@ -67,7 +67,7 @@ class SaleService(
     }
 
     fun getAll(pageable: Pageable): Page<SaleView> {
-        return AuthenticationUtils.authenticate(userRepository) { user ->
+        return AuthenticationUtils.authenticate(userRepository) {
             saleRepository.findAll(pageable)
                 .map { saleViewMapper.map(it) }
         }

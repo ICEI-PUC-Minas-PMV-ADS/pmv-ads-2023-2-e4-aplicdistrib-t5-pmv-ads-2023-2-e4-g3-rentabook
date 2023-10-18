@@ -59,7 +59,7 @@ class RentService(
     }
 
     fun getAll(pageable: Pageable): Page<RentView> {
-        return AuthenticationUtils.authenticate(userRepository) { user ->
+        return AuthenticationUtils.authenticate(userRepository) {
             rentRepository.findAll(pageable)
                 .map { rentViewMapper.map(it) }
         }

@@ -17,7 +17,7 @@ class RatingService(
     private val ratingViewMapper: RatingViewMapper,
 ) {
     fun createRating(ratingForm: RatingForm): RatingView {
-        return AuthenticationUtils.authenticate(userRepository) { user ->
+        return AuthenticationUtils.authenticate(userRepository) {
             ratingRepository.save(ratingFormMapper.map(ratingForm)).run {
                 ratingViewMapper.map(this)
             }

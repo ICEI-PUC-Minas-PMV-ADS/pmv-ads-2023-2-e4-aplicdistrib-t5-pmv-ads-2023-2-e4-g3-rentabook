@@ -10,7 +10,7 @@ class AnnouncementViewMapper(
     private val bookRepository: BookRepository,
     private val publicUserViewMapper: PublicUserViewMapper,
     private val imageMapper: ImageViewMapper,
-    private val addressViewMapper: AddressViewMapper,
+    private val privateAddressViewMapper: PrivateAddressViewMapper,
 ) : Mapper<Announcement, AnnouncementView> {
     override fun map(t: Announcement): AnnouncementView {
         return AnnouncementView(
@@ -25,7 +25,7 @@ class AnnouncementViewMapper(
             sale = t.sale,
             trade = t.trade,
             value = t.value,
-            location = addressViewMapper.map(t.location),
+            location = privateAddressViewMapper.map(t.location),
         )
     }
 }
