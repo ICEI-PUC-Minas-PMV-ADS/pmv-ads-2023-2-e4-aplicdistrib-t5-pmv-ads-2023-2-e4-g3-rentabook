@@ -2,17 +2,27 @@ import { useApi } from "../hooks/useApi";
 import { LoginForm } from "../types/LoginForm";
 import { RegisterForm } from "../types/RegisterForm";
 
+
 export const userService = {
   login: async (form: LoginForm) => {
     const json = JSON.stringify(form)
-    const response = await useApi.post("/login", json);
+    const response = await useApi.post("/login", json, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
     return response.data;
   }, // NÃO USAR ESSA FUNÇÃO DIRETAMENTE, USE O AUTHCONTEXT
 
-  register: async (form: RegisterForm) => {
-    const response = await useApi.post("/register", form);
+  signup: async (form: RegisterForm) => {
+    const json = JSON.stringify(form)
+    const response = await useApi.post("/register", json, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
     return response.data;
-  },
+  },// NÃO USAR ESSA FUNÇÃO DIRETAMENTE, USE O AUTHCONTEXT
 
   getPrivateUser: async () => {
     const token = localStorage.getItem('authToken')
@@ -25,7 +35,14 @@ export const userService = {
   },
 
   logout: async () => {
-    const response = await useApi.post("/leave")
-    return response.data;
+    const body = JSON.stringify({})
+    const token = localStorage.getItem('authToken')
+    const response = await useApi.post("/leave", body, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    return response;
   }, // NÃO USAR ESSA FUNÇÃO DIRETAMENTE, USE O AUTHCONTEXT
 }

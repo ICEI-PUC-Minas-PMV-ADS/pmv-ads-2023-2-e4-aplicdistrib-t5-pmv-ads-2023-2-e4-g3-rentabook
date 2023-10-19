@@ -3,4 +3,7 @@ export type AppParamsList = {
   MyAnnouncements: {};
   RequireAuth: {};
   Login: {};
+  Profile: {};
+  Chat: {};
+  Signup: {};
 }

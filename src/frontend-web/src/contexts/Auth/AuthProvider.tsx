@@ -3,6 +3,7 @@ import { PrivateUser } from "../../types/PrivateUser";
 import { AuthContext } from "./AuthContext";
 import { LoginForm } from '../../types/LoginForm';
 import { userService } from '../../services/userService';
+import { RegisterForm } from '../../types/RegisterForm';
 
 export const AuthProvider = ({ children }: { children: JSX.Element }) => {
 
@@ -37,8 +38,24 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
   }
 
   const logout = async () => {
-    await userService.logout()
-    setUser(null)
+    const data = await userService.logout()
+    if (data.status == 200) {
+      setUser(null)
+      localStorage.removeItem('authToken')
+      return true
+    }
+    return false
+  }
+
+  const signup = async (form: RegisterForm) => {
+    const data = await userService.signup(form)
+    if (data.token) {
+      setToken(data.token)
+      const userData = await userService.getPrivateUser()
+      setUser(userData)
+      return true;
+    }
+    return false;
   }
 
   const setToken = (token: string) => {
@@ -48,7 +65,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
 
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, signup }}>
       {children}
     </AuthContext.Provider>
   )

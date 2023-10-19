@@ -11,12 +11,14 @@ import { GreenLight, PrimaryGreenColor, WhiteColor } from "../theme/colors";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { AppParamsList } from "../../routes/AppParamsList";
+import { AuthContext } from "../../contexts/Auth/AuthContext";
 
 
 
 
 const Icone: ImageSourcePropType = require("../assets/icon.png");
 const IconeDois: ImageSourcePropType = require("../assets/IconDois.png");
+
 
 
 const style = StyleSheet.create({
@@ -52,14 +54,12 @@ const style = StyleSheet.create({
 
 
 export default function NavBar() {
-  const handleLinkClick = (text: string) => {
-    console.log(`Link clicado: ${text}`);
-  };
   const navigation = useNavigation<NativeStackNavigationProp<AppParamsList>>()
+  const authContext = React.useContext(AuthContext)
 
   return (
     <View style={style.navbar}>
-      <TouchableOpacity onPress={() => handleLinkClick("Icone")}>
+      <TouchableOpacity onPress={() => navigation.navigate('Home', {})}>
         <Image source={Icone} style={style.icon} />
       </TouchableOpacity>
       <View style={style.navLinkContainer}>
@@ -70,19 +70,38 @@ export default function NavBar() {
           >
             Anúncios
           </Text>
-          <Text
-            style={style.navLink}
-            onPress={() => navigation.navigate('MyAnnouncements', {})}
-          >
-            Meus Anúncios
-          </Text>
-          <Text style={style.navLink} onPress={() => handleLinkClick("Chat")}>
-            Chat
-          </Text>
+          {authContext.user &&
+            <>
+              <Text
+                style={style.navLink}
+                onPress={() => navigation.navigate('MyAnnouncements', {})}
+              >
+                Meus Anúncios
+              </Text>
+              <Text style={style.navLink} onPress={() => navigation.navigate('Chat', {})}>
+                Chat
+              </Text>
+            </>
+          }
+          {!authContext.user &&
+            <>
+              <Text
+                style={style.navLink}
+                onPress={() => navigation.navigate('Signup', {})}
+              >
+                Criar conta
+              </Text>
+              <Text style={style.navLink} onPress={() => navigation.navigate('Login', {})}>
+                Entrar
+              </Text>
+            </>
+          }
         </View>
-        <TouchableOpacity onPress={() => handleLinkClick("IconeDois")}>
-          <Image source={IconeDois} style={style.icon} />
-        </TouchableOpacity>
+        {authContext.user &&
+          <TouchableOpacity onPress={() => navigation.navigate('Profile', {})}>
+            <Image source={IconeDois} style={style.icon} />
+          </TouchableOpacity>
+        }
       </View>
     </View>
   );
