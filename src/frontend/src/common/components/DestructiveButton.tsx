@@ -8,8 +8,7 @@ import { DestructiveColor, WhiteColor } from '../theme/colors';
 
 type DestructiveButtonProps = {
   label: string,
-  width?: number,
-  height?: number,
+  style?: Object,
   onClick: () => void,
 };
 
@@ -17,7 +16,7 @@ type DestructiveButtonProps = {
  * Style
  */
 
-const style = StyleSheet.create({
+const DestructiveButtonStyle = StyleSheet.create({
   background: {
     borderRadius: 8,
     backgroundColor: WhiteColor,
@@ -37,11 +36,11 @@ const style = StyleSheet.create({
  * https://www.figma.com/file/2lR8urPO212OkkhvDTmmgF/Untitled?type=design&node-id=32-258&mode=design&t=ZkwebBuGnnQ715v7-4
  */
 
-export default function DestructiveButton({ label, width, height, onClick }: DestructiveButtonProps) {
+export default function DestructiveButton({ label, style, onClick }: DestructiveButtonProps) {
   return (
     <Pressable onPress={() => onClick()}>
-      <View style={[style.background, { width, height }]}>
-        <Text style={style.text}>{label}</Text>
+      <View style={[DestructiveButtonStyle.background, style]}>
+        <Text style={DestructiveButtonStyle.text}>{label}</Text>
       </View>
     </Pressable>
   );

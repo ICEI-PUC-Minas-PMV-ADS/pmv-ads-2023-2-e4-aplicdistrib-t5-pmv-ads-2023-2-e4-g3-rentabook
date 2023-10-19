@@ -10,8 +10,7 @@ import Assets from '../theme/assets';
 type SearchInputProps = {
   value?: string,
   placeholder?: string,
-  width?: number,
-  height?: number,
+  style?: Object,
   onChange?: (value: string) => void,
 };
 
@@ -19,7 +18,7 @@ type SearchInputProps = {
  * Style
  */
 
-const style = StyleSheet.create({
+const SearchInputStyle = StyleSheet.create({
   label: {
     borderRadius: 12,
     color: InputLabelGreenColor,
@@ -45,7 +44,7 @@ const style = StyleSheet.create({
  * https://www.figma.com/file/2lR8urPO212OkkhvDTmmgF/Untitled?type=design&node-id=32-302&mode=design&t=G0WN8D6m416029bq-4
  */
 
-export default function SearchInput({ value = "", placeholder, width, height, onChange }: SearchInputProps) {
+export default function SearchInput({ value = "", placeholder, style, onChange }: SearchInputProps) {
   const [size, setSize] = React.useState<{ width?: number, height?: number }>({});
 
   React.useEffect(() => {
@@ -55,11 +54,11 @@ export default function SearchInput({ value = "", placeholder, width, height, on
   }, []);
 
   return (
-    <View style={{ width, height }}>
-      <View style={style.inputContainer}>
+    <View style={style}>
+      <View style={SearchInputStyle.inputContainer}>
         <Image source={{ uri: Assets.IcSearchIcon, width: size.width, height: size.height }} />
         <TextInput
-          style={style.input}
+          style={SearchInputStyle.input}
           placeholder={placeholder}
           placeholderTextColor='#777777'
           defaultValue={value}

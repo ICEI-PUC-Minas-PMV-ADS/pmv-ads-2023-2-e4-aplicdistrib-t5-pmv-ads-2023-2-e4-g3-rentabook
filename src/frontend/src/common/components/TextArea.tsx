@@ -8,8 +8,7 @@ import { BlackColor, DarkGreyColor } from '../theme/colors';
 
 type TextAreaProps = {
   value?: string,
-  width?: number,
-  height?: number,
+  style?: Object,
   placeholder?: string,
   onChange?: (value: string) => void,
 };
@@ -18,7 +17,7 @@ type TextAreaProps = {
  * Style
  */
 
-const style = StyleSheet.create({
+const TextAreaStyle = StyleSheet.create({
   input: {
     borderRadius: 4,
     backgroundColor: DarkGreyColor,
@@ -33,12 +32,12 @@ const style = StyleSheet.create({
  * https://www.figma.com/file/2lR8urPO212OkkhvDTmmgF/Untitled?type=design&node-id=32-288&mode=design&t=466y1e8lbnY8yoon-4
  */
 
-export default function TextArea({ width, height, value, placeholder, onChange }: TextAreaProps) {
+export default function TextArea({ style, value, placeholder, onChange }: TextAreaProps) {
   const [inputValue, setInputValue] = React.useState(value ?? "");
   return (
-    <View style={{ width, height }}>
+    <View style={style}>
       <TextInput
-        style={style.input}
+        style={TextAreaStyle.input}
         multiline={true}
         placeholder={placeholder}
         onChangeText={(cvalue) => {

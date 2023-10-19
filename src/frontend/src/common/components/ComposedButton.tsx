@@ -9,8 +9,7 @@ import { BlackColor, PrimaryGreenColor, WhiteColor } from '../theme/colors';
 type ComposedButtonProps = {
   title: string,
   subtitle?: string,
-  width?: number,
-  height?: number,
+  style?: Object,
   onClick: () => void,
 };
 
@@ -18,7 +17,7 @@ type ComposedButtonProps = {
  * Style
  */
 
-const style = StyleSheet.create({
+const ComposedButtonStyle = StyleSheet.create({
   background: {
     borderRadius: 50,
     backgroundColor: WhiteColor,
@@ -43,12 +42,12 @@ const style = StyleSheet.create({
  * https://www.figma.com/file/2lR8urPO212OkkhvDTmmgF/Untitled?type=design&node-id=32-292&mode=design&t=zo5JuzOpjwxyNwko-4
  */
 
-export default function ComposedButton({ title, subtitle, width, height, onClick }: ComposedButtonProps) {
+export default function ComposedButton({ title, subtitle, style, onClick }: ComposedButtonProps) {
   return (
-    <Pressable onPress={() => onClick()}>
-      <View style={[style.background, { width, height }]}>
-        <Text style={style.title}>{title}</Text>
-        {subtitle && <Text style={style.subtitle}>{subtitle}</Text>}
+    <Pressable onPress={onClick}>
+      <View style={[ComposedButtonStyle.background, style]}>
+        <Text style={ComposedButtonStyle.title}>{title}</Text>
+        {subtitle && <Text style={ComposedButtonStyle.subtitle}>{subtitle}</Text>}
       </View>
     </Pressable>
   );

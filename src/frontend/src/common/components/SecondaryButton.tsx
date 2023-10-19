@@ -8,8 +8,7 @@ import { PrimaryGreenColor, WhiteColor } from '../theme/colors';
 
 type SecondaryButtonProps = {
   label: string,
-  width?: number,
-  height?: number,
+  style?: Object,
   onClick: () => void,
 };
 
@@ -17,7 +16,7 @@ type SecondaryButtonProps = {
  * Style
  */
 
-const style = StyleSheet.create({
+const SecondaryButtonStyle = StyleSheet.create({
   background: {
     borderRadius: 8,
     backgroundColor: WhiteColor,
@@ -37,11 +36,11 @@ const style = StyleSheet.create({
  * https://www.figma.com/file/2lR8urPO212OkkhvDTmmgF/Untitled?type=design&node-id=32-257&mode=design&t=ZkwebBuGnnQ715v7-4
  */
 
-export default function SecondaryButton({ label, width, height, onClick }: SecondaryButtonProps) {
+export default function SecondaryButton({ label, style, onClick }: SecondaryButtonProps) {
   return (
-    <Pressable onPress={() => onClick()}>
-      <View style={[style.background, { width, height }]}>
-        <Text style={style.text}>{label}</Text>
+    <Pressable onPress={onClick}>
+      <View style={[SecondaryButtonStyle.background, style]}>
+        <Text style={SecondaryButtonStyle.text}>{label}</Text>
       </View>
     </Pressable>
   );

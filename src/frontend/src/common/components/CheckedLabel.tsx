@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Image, Text, StyleSheet } from "react-native";
-import { GreyColor, InputLabelGreenColor } from '../theme/colors';
+import { InputLabelGreenColor } from '../theme/colors';
 import Assets from '../theme/assets';
 
 /**
@@ -9,15 +9,14 @@ import Assets from '../theme/assets';
 
 type CheckedLabelProps = {
   label?: string,
-  width?: number,
-  height?: number,
+  style?: Object,
 };
 
 /**
  * Style
  */
 
-const style = StyleSheet.create({
+const CheckedLabelStyle = StyleSheet.create({
   container: {
     flexDirection: 'row',
     paddingVertical: 4,
@@ -38,7 +37,7 @@ const style = StyleSheet.create({
  * https://www.figma.com/file/2lR8urPO212OkkhvDTmmgF/Untitled?type=design&node-id=32-254&mode=design&t=G0WN8D6m416029bq-4
  */
 
-export default function CheckedLabel({ label, width, height }: CheckedLabelProps) {
+export default function CheckedLabel({ label, style }: CheckedLabelProps) {
   const [size, setSize] = React.useState<{ width?: number, height?: number }>({});
 
   React.useEffect(() => {
@@ -48,10 +47,10 @@ export default function CheckedLabel({ label, width, height }: CheckedLabelProps
   }, []);
 
   return (
-    <View style={{ width, height }}>
-      <View style={style.container}>
+    <View style={style}>
+      <View style={CheckedLabelStyle.container}>
         <Image source={{ uri: Assets.IcCheckbox, width: size.width, height: size.height }} />
-        <Text style={style.label}>{label}</Text>
+        <Text style={CheckedLabelStyle.label}>{label}</Text>
       </View>
     </View>
   );

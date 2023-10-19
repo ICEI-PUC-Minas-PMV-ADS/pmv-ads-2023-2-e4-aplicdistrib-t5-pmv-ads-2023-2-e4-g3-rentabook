@@ -8,8 +8,7 @@ import Assets from '../theme/assets';
  */
 
 type DropdownProps<T> = {
-  width?: number,
-  height?: number,
+  style?: Object,
   placeholder?: string,
   items: T[],
   onSelect?: (item: T) => void,
@@ -31,7 +30,7 @@ type DropdownLayout = {
  * Style
  */
 
-const style = StyleSheet.create({
+const DropdownStyle = StyleSheet.create({
   dropdownContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -52,7 +51,7 @@ const style = StyleSheet.create({
  * https://www.figma.com/file/2lR8urPO212OkkhvDTmmgF/Untitled?type=design&node-id=32-279&mode=design&t=ZkwebBuGnnQ715v7-4
  */
 
-export default function Dropdown<T>({ placeholder, width, height, items, onSelect, children }: DropdownProps<T>) {
+export default function Dropdown<T>({ placeholder, style, items, onSelect, children }: DropdownProps<T>) {
   const [size, setSize] = React.useState<{ width?: number, height?: number }>({});
   const [selectedItem, setSelectedItem] = React.useState<T | undefined>();
   const [opened, setOpened] = React.useState<boolean>(false);
@@ -77,9 +76,9 @@ export default function Dropdown<T>({ placeholder, width, height, items, onSelec
   }, []);
 
   return (
-    <View style={{ width, height }} onLayout={onLayout}>
+    <View style={style} onLayout={onLayout}>
       <Pressable onPress={() => setOpened(opened => !opened)}>
-        <View style={style.dropdownContainer}>
+        <View style={DropdownStyle.dropdownContainer}>
           {selectedItem ? children(selectedItem) : <Text>{dropdownValue}</Text>}
           <Image
             source={{ uri: Assets.IcDropdownArrow, width: size.width, height: size.height }}

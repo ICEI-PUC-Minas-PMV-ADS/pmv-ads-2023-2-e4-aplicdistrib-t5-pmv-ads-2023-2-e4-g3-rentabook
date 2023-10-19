@@ -8,15 +8,14 @@ import { PrimaryGreenColor, WhiteColor } from '../theme/colors';
 
 type SeparatorProps = {
   label: string,
-  width?: number,
-  height?: number,
+  style?: Object,
 };
 
 /**
  * Style
  */
 
-const style = StyleSheet.create({
+const SeparatorStyle = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -37,12 +36,12 @@ const style = StyleSheet.create({
  * https://www.figma.com/file/2lR8urPO212OkkhvDTmmgF/Untitled?type=design&node-id=32-255&mode=design&t=G0WN8D6m416029bq-4
  */
 
-export default function Separator({ label, width, height }: SeparatorProps) {
+export default function Separator({ label, style }: SeparatorProps) {
   return (
-    <View style={[style.container, { width, height }]}>
-      <View style={style.separator}></View>
-      <Text style={style.label}>{label}</Text>
-      <View style={style.separator}></View>
+    <View style={[SeparatorStyle.container, style]}>
+      <View style={SeparatorStyle.separator}></View>
+      <Text style={SeparatorStyle.label}>{label}</Text>
+      <View style={SeparatorStyle.separator}></View>
     </View>
   );
 }

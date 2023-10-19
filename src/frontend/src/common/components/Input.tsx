@@ -11,14 +11,16 @@ type InputProps = {
   width?: number,
   height?: number,
   label: string,
-  onChange?: (value: string) => void,
+  placeholder?: string,
+  style?: Object,
+  onChangeText?: (value: string) => void,
 };
 
 /**
  * Style
  */
 
-const style = StyleSheet.create({
+const InputStyle = StyleSheet.create({
   label: {
     borderRadius: 12,
     color: InputLabelGreenColor,
@@ -39,12 +41,16 @@ const style = StyleSheet.create({
  * https://www.figma.com/file/2lR8urPO212OkkhvDTmmgF/Untitled?type=design&node-id=32-256&mode=design&t=ZkwebBuGnnQ715v7-4
  */
 
-export default function Input({ value = "", label, width, height, onChange }: InputProps) {
+export default function Input({ style, value = "", label, placeholder, onChangeText }: InputProps) {
   return (
-    <View style={{ width, height }}>
-      <Text style={style.label}>{label}</Text>
-      <View style={style.inputContainer}>
-        <TextInput style={style.input} onChangeText={onChange} defaultValue={value} />
+    <View style={style}>
+      <Text style={InputStyle.label}>{label}</Text>
+      <View style={InputStyle.inputContainer}>
+        <TextInput
+          style={InputStyle.input}
+          placeholder={placeholder}
+          onChangeText={onChangeText}
+          defaultValue={value} />
       </View>
     </View>
   );

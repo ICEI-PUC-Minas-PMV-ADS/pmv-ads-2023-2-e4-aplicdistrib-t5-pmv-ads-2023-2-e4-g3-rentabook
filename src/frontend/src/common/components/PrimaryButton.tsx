@@ -8,16 +8,15 @@ import { PrimaryGreenColor, WhiteColor } from '../theme/colors';
 
 type PrimaryButtonProps = {
   label: string,
-  width?: number,
-  height?: number,
-  onClick: () => void,
+  style?: Object,
+  onPress: () => void,
 };
 
 /**
  * Style
  */
 
-const style = StyleSheet.create({
+const ButtonStyle = StyleSheet.create({
   background: {
     borderRadius: 8,
     backgroundColor: PrimaryGreenColor,
@@ -36,11 +35,11 @@ const style = StyleSheet.create({
  * https://www.figma.com/file/2lR8urPO212OkkhvDTmmgF/Untitled?type=design&node-id=32-259&mode=design&t=ZkwebBuGnnQ715v7-4
  */
 
-export default function PrimaryButton({ label, width, height, onClick }: PrimaryButtonProps) {
+export default function PrimaryButton({ label, style, onPress }: PrimaryButtonProps) {
   return (
-    <Pressable onPress={() => onClick()}>
-      <View style={[style.background, { width, height }]}>
-        <Text style={style.text}>{label}</Text>
+    <Pressable onPress={onPress}>
+      <View style={[ButtonStyle.background, style]}>
+        <Text style={ButtonStyle.text}>{label}</Text>
       </View>
     </Pressable>
   );
