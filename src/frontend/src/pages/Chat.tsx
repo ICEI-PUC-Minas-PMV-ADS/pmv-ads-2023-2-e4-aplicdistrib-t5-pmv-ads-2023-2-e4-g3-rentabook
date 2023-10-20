@@ -1,5 +1,5 @@
 import { View, StyleSheet, Text } from "react-native";
-import NavBar from "../common/components/NavBar";
+import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
 
 const style = StyleSheet.create({
   container: {
@@ -10,10 +10,10 @@ const style = StyleSheet.create({
 
 export default function Chat() {
   return (
-    <NavBar>
+    <ResponsiveNavbar>
       <View style={style.container}>
         <Text>Mensagens</Text>
       </View>
-    </NavBar>
+    </ResponsiveNavbar>
   );
 }

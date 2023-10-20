@@ -1,9 +1,10 @@
-import { View, StyleSheet, Text } from "react-native";
-import NavBar from "../common/components/Navbar";
+import { useState } from "react";
+import { View, StyleSheet } from "react-native";
+import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
 import SearchInput from "../common/components/SearchInput";
-import Dropdown from "../common/components/Dropdown";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { DarkGreen } from "../common/theme/colors";
+import DropDownPicker from "react-native-dropdown-picker";
 
 const dropDownData = [
   {
@@ -60,8 +61,14 @@ const styleDesktop = StyleSheet.create({
 });
 
 export default function Home() {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+    { label: 'Apple', value: 'apple' },
+    { label: 'Banana', value: 'banana' }
+  ]);
   return (
-    <NavBar>
+    <ResponsiveNavbar>
       <View style={styleDesktop.container}>
         <View style={styleDesktop.topBar}>
           <View style={styleDesktop.searchContainer}>
@@ -69,17 +76,19 @@ export default function Home() {
             <SearchInput style={styleDesktop.searchBar} />
           </View>
           <View style={styleDesktop.dropDownContainer}>
-            <Dropdown
-              placeholder="Ordenar por"
-              style={styleDesktop.dropDown}
-              items={[{ id: 1, name: "pedro" }, { id: 2, name: "carlos" }, { id: 3, name: "maria" }]} onSelect={(val) => { console.log(val.name) }}>
-              {(val) => <Text style={{ backgroundColor: "white" }}>{val.name}</Text>}
-            </Dropdown>
+            <DropDownPicker
+              open={open}
+              value={value}
+              items={items}
+              setOpen={setOpen}
+              setValue={setValue}
+              setItems={setItems}
+            />
           </View>
         </View>
 
       </View>
-    </NavBar>
+    </ResponsiveNavbar>
 
   );
 }

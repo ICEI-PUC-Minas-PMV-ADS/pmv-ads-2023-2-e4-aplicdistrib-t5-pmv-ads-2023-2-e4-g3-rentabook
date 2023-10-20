@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { View, StyleSheet, Text, Button } from "react-native";
-import NavBar from "../common/components/NavBar";
+import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
 import { AuthContext } from "../contexts/Auth/AuthContext";
 import { StackTypes } from "../routes/StackTypes";
 
@@ -28,11 +28,11 @@ export default function Profile() {
 
   }
   return (
-    <NavBar>
+    <ResponsiveNavbar>
       <View style={style.container}>
         <Text>Meu Perfil</Text>
         <Button onPress={handleLogout} title="Logout" />
       </View>
-    </NavBar>
+    </ResponsiveNavbar>
   );
 }

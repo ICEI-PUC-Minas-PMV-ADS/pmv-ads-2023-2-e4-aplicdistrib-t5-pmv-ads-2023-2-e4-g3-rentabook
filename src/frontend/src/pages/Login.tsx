@@ -5,7 +5,7 @@ import { AuthContext } from '../contexts/Auth/AuthContext';
 import { StackTypes } from '../routes/StackTypes';
 import Input from '../common/components/Input';
 import PrimaryButton from '../common/components/PrimaryButton';
-import NavBar from "../common/components/NavBar";
+import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
 
 
 
@@ -39,7 +39,7 @@ export default function Login() {
 
   }
   return (
-    <NavBar>
+    <ResponsiveNavbar>
       <View style={style.container}>
         <Input
           style={style.input}
@@ -61,6 +61,6 @@ export default function Login() {
           label='Entrar'
         />
       </View>
-    </NavBar>
+    </ResponsiveNavbar>
   );
 }
