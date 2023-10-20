@@ -1,9 +1,9 @@
 export type AppParamsList = {
-  Home: {};
-  MyAnnouncements: {};
+  'Anúncios': {};
+  'Meus Anúncios': {};
   RequireAuth: {};
-  Login: {};
-  Profile: {};
-  Chat: {};
-  Signup: {};
+  'Criar Conta': {};
+  'Meu Perfil': {};
+  'Mensagens': {};
+  'Entrar': {};
 }

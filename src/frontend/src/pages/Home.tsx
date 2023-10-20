@@ -3,17 +3,18 @@ import NavBar from "../common/components/NavBar";
 
 const style = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#E1DCC5",
+    flex: 1
   },
 });
 
-export default function MyAnnouncements() {
+export default function Home() {
   return (
     <NavBar>
       <View style={style.container}>
-        <Text>Meus anuncios</Text>
+        <Text>Home</Text>
       </View>
     </NavBar>
+
   );
 }

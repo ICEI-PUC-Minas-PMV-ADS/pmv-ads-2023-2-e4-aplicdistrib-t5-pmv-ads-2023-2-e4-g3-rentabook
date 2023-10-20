@@ -1,6 +1,5 @@
-import * as React from "react";
 import { View, StyleSheet, Text } from "react-native";
-import NavBar from "../common/components/Navbar";
+import NavBar from "../common/components/NavBar";
 
 const style = StyleSheet.create({
   container: {
@@ -11,9 +10,10 @@ const style = StyleSheet.create({
 
 export default function Chat() {
   return (
-    <View style={style.container}>
-      <NavBar />
-      <Text>Chat</Text>
-    </View>
+    <NavBar>
+      <View style={style.container}>
+        <Text>Mensagens</Text>
+      </View>
+    </NavBar>
   );
 }
