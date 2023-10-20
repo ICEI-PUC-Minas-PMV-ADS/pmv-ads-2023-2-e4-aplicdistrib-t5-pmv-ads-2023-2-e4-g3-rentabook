@@ -50,7 +50,7 @@ const style = StyleSheet.create({
 });
 
 
-export default function NavBarDesktop() {
+export default function DesktopNavbar() {
   const navigation = useNavigation<StackTypes>()
   const authContext = React.useContext(AuthContext)
   const telaAtual = useRoute().name

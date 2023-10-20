@@ -1,13 +1,13 @@
 import { View } from "react-native";
 import { isDesktop } from "../../hooks/useResposive";
-import NavBarDesktop from "./NavBarDesktop";
-import NavBarMobile from "./NavBarMobile";
+import DesktopNavbar from "./DesktopNavbar";
+import MobileNavbar from "./MobileNavbar";
 
-export default function NavBar({ children }: { children: JSX.Element }) {
+export default function ResponsiveNavbar({ children }: { children: JSX.Element }) {
   if (isDesktop()) {
     return (
       <View style={{ flex: 1 }}>
-        <NavBarDesktop />
+        <DesktopNavbar />
         {children}
       </View>
     )
@@ -15,7 +15,7 @@ export default function NavBar({ children }: { children: JSX.Element }) {
   else return (
     <View style={{ flex: 1, justifyContent: 'flex-end' }}>
       {children}
-      <NavBarMobile />
+      <MobileNavbar />
     </View>
-  )
+  );
 }

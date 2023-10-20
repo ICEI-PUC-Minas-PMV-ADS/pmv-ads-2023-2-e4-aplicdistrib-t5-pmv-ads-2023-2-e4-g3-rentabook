@@ -1,6 +1,6 @@
 import * as React from "react";
 import { View, StyleSheet } from "react-native";
-import NavBar from "../common/components/Navbar";
+import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
 
 const style = StyleSheet.create({
   container: {
@@ -11,8 +11,8 @@ const style = StyleSheet.create({
 
 export default function Home() {
   return (
-    <View style={style.container}>
-      <NavBar />
-    </View>
+    <ResponsiveNavbar>
+      <View style={style.container}></View>
+    </ResponsiveNavbar>
   );
 }

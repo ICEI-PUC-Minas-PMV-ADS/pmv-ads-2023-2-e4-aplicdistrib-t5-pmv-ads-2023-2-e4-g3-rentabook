@@ -5,7 +5,9 @@ import { AuthContext } from '../contexts/Auth/AuthContext';
 import { StackTypes } from '../routes/StackTypes';
 import Input from '../common/components/Input';
 import PrimaryButton from '../common/components/PrimaryButton';
-import NavBar from "../common/components/Navbar";
+import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
+
+
 
 const style = StyleSheet.create({
   container: {
@@ -48,7 +50,7 @@ export default function Login() {
   }
 
   return (
-    <NavBar>
+    <ResponsiveNavbar>
       <View style={style.container}>
         <View style={style.leftSection}>
           <Input
@@ -75,6 +77,6 @@ export default function Login() {
           <Text style={style.welcomeText}>Bem-vindo ao Rentabook!</Text>
         </View>
       </View>
-    </NavBar>
+    </ResponsiveNavbar>
   );
 }

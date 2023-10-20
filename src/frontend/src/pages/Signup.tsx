@@ -5,7 +5,7 @@ import { AuthContext } from '../contexts/Auth/AuthContext';
 import { StackTypes } from '../routes/StackTypes';
 import Input from '../common/components/Input';
 import PrimaryButton from '../common/components/PrimaryButton';
-import NavBar from "../common/components/Navbar";
+import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
 
 const styles = StyleSheet.create({
   container: {
@@ -50,7 +50,7 @@ export default function Signup() {
   }
 
   return (
-    <NavBar>
+    <ResponsiveNavbar>
       <View style={styles.container}>
         <View style={styles.leftSection}>
           <Input
@@ -85,6 +85,6 @@ export default function Signup() {
           <Text style={styles.welcomeText}>Crie uma nova conta</Text>
         </View>
       </View>
-    </NavBar>
+    </ResponsiveNavbar>
   );
 }
