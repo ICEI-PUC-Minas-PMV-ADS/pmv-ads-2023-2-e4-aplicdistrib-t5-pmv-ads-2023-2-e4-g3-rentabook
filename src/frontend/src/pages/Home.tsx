@@ -3,16 +3,16 @@ import NavBar from "../common/components/Navbar";
 
 const style = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#E1DCC5",
+    flex: 1
   },
 });
 
-export default function Chat() {
+export default function Home() {
   return (
     <NavBar>
       <View style={style.container}>
-        <Text>Mensagens</Text>
+        <Text>Home</Text>
       </View>
     </NavBar>
   );

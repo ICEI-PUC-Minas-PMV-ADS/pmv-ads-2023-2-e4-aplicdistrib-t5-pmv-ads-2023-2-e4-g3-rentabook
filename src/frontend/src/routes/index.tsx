@@ -1,5 +1,4 @@
-
-import Home from '../pages/Template';
+import Home from '../pages/Home';
 import MyAnnouncements from '../pages/MyAnnoucements';
 import { NavigationContainer } from '@react-navigation/native';
 import { AppParamsList } from './AppParamsList';
@@ -10,44 +9,59 @@ import Profile from '../pages/Profile';
 import Chat from '../pages/Chat';
 import Signup from '../pages/Signup';
 import { AlreadyLogged } from '../contexts/Auth/AlreadyLogged';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+
 
 
 const Stack = createNativeStackNavigator<AppParamsList>();
+const Tab = createBottomTabNavigator<AppParamsList>()
+
+const home = 'Anúncios'
+const myAnnouncements = 'Meus Anúncios'
+const login = 'Entrar'
+const profile = 'Meu Perfil'
+const chat = 'Mensagens'
+const signup = 'Criar Conta'
 
 export default function Router() {
-  return (
+  return (<>
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name='Home' component={Home} />
-        <Stack.Screen name='MyAnnouncements'>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false, animation: 'none'
+        }}>
+        <Stack.Screen name={home} component={Home} />
+        <Stack.Screen name={myAnnouncements}>
           {() => (
             <RequireAuth>
               <MyAnnouncements />
             </RequireAuth>
-          )}
+          )
+          }
         </Stack.Screen>
-        <Stack.Screen name='Login'>
+        <Stack.Screen name={login}>
           {() => (
             <AlreadyLogged>
               <Login />
             </AlreadyLogged>
           )}
         </Stack.Screen>
-        <Stack.Screen name='Profile'>
+        <Stack.Screen name={profile}>
           {() => (
             <RequireAuth>
               <Profile />
             </RequireAuth>
           )}
         </Stack.Screen>
-        <Stack.Screen name='Chat'>
+        <Stack.Screen name={chat}>
           {() => (
             <RequireAuth>
               <Chat />
             </RequireAuth>
           )}
         </Stack.Screen>
-        <Stack.Screen name='Signup'>
+        <Stack.Screen name={signup}>
           {() => (
             <AlreadyLogged>
               <Signup />
@@ -55,6 +69,7 @@ export default function Router() {
           )}
         </Stack.Screen>
       </Stack.Navigator>
-    </NavigationContainer>
+    </NavigationContainer >
+  </>
   )
 }

@@ -6,3 +6,4 @@ export const DarkGreyColor = "#CBC3A7";
 export const BlackColor = "#000000";
 export const WhiteColor = "#ffffff";
 export const GreenLight = "#97C7AF";
+export const DarkGreen = "#004110"
