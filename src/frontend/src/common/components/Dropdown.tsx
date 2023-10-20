@@ -89,8 +89,8 @@ export default function Dropdown<T>({ placeholder, style, items, onSelect, child
       <Modal visible={opened} transparent animationType='none'>
         <Pressable style={{ flex: 1 }} onPress={() => setOpened(false)}>
           <View style={{ position: 'absolute', width: layout.width, top: layout.y! + layout.height!, right: layout.x }}>
-            {items.map((value) =>
-              <Pressable onPress={() => onHandleSelect(value)}>
+            {items.map((value, index) =>
+              <Pressable key={index} onPress={() => onHandleSelect(value)}>
                 {children(value)}
               </Pressable>
             )}
