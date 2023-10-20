@@ -79,7 +79,7 @@ export default function Signup() {
           />
         </View>
         <View style={styles.rightSection}>
-          <Text style={styles.welcomeText}>Bem-vindo ao Rentabook!</Text>
+          <Text style={styles.welcomeText}>Crie uma nova conta</Text>
         </View>
       </View>
     </ResponsiveNavbar>
