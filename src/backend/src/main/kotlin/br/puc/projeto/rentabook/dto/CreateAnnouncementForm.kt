@@ -9,7 +9,9 @@ data class CreateAnnouncementForm(
     val description: String = "",
     val value: Long,
     val locationId: String,
-    val announcementType: String,
+    var rent: Boolean?,
+    val trade: Boolean?,
+    val sale: Boolean?
 ) {
     companion object {
         const val RENT = "rent"

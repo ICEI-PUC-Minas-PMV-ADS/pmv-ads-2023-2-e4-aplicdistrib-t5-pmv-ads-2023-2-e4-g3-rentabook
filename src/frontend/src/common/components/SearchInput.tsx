@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { View, Image, TextInput, StyleSheet } from "react-native";
-import { GreyColor, InputLabelGreenColor } from '../theme/colors';
+import { GreyColor, InputLabelGreenColor, DarkGreen } from '../theme/colors';
 import Assets from '../theme/assets';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 /**
  * Props
@@ -29,13 +30,15 @@ const SearchInputStyle = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: GreyColor,
     paddingVertical: 4,
-    paddingHorizontal: 16,
     alignItems: 'center',
+    borderRadius: 3
   },
   input: {
     flex: 1,
-    paddingHorizontal: 16,
+    marginLeft: 5,
+    fontSize: 16,
     paddingVertical: 10,
+    paddingHorizontal: 5
   },
 });
 
@@ -56,7 +59,7 @@ export default function SearchInput({ value = "", placeholder, style, onChange }
   return (
     <View style={style}>
       <View style={SearchInputStyle.inputContainer}>
-        <Image source={{ uri: Assets.IcSearchIcon, width: size.width, height: size.height }} />
+        <Ionicons name="search" size={35} color={DarkGreen} style={{ marginLeft: 5 }} />
         <TextInput
           style={SearchInputStyle.input}
           placeholder={placeholder}
