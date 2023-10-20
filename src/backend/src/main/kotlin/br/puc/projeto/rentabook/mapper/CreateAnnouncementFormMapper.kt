@@ -17,6 +17,7 @@ class CreateAnnouncementFormMapper(
 ) : Mapper<CreateAnnouncementForm, Announcement> {
     override fun map(t: CreateAnnouncementForm): Announcement {
         val authentication = SecurityContextHolder.getContext().authentication
+        if(t.rent == null && t.trade == null && t.sale ==null) t.rent = true
         return Announcement(
             bookId = t.bookId,
             ownerUser = userRepository.findByEmail(authentication.name) ?: throw Exception("Owner user não encontrado!"),
@@ -24,9 +25,9 @@ class CreateAnnouncementFormMapper(
             description = t.description,
             location = addressRepository.findById(t.locationId).orElseThrow { throw Exception("Endereço não encontrado!") },
             value = t.value,
-            rent = t.announcementType.contains(CreateAnnouncementForm.RENT),
-            sale = t.announcementType.contains(CreateAnnouncementForm.SALE),
-            trade = t.announcementType.contains(CreateAnnouncementForm.TRADE),
+            rent = t.rent ?: false,
+            sale = t.sale ?: false,
+            trade = t.trade ?: false,
         )
     }
 

@@ -9,13 +9,9 @@ import Profile from '../pages/Profile';
 import Chat from '../pages/Chat';
 import Signup from '../pages/Signup';
 import { AlreadyLogged } from '../contexts/Auth/AlreadyLogged';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-
 
 
 const Stack = createNativeStackNavigator<AppParamsList>();
-const Tab = createBottomTabNavigator<AppParamsList>()
 
 const home = 'Anúncios'
 const myAnnouncements = 'Meus Anúncios'

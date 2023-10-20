@@ -1,32 +1,37 @@
 import { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text, Pressable } from "react-native";
 import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
 import SearchInput from "../common/components/SearchInput";
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { DarkGreen } from "../common/theme/colors";
 import DropDownPicker from "react-native-dropdown-picker";
+import PrimaryButton from "../common/components/PrimaryButton";
+import { PrimaryGreenColor, WhiteColor } from "../common/theme/colors";
+import { Desktop } from "../hooks/useResposive";
 
 const dropDownData = [
   {
     id: 1,
     label: 'Mais recente',
-    param: '&sort=createdDate,desc'
+    value: '&sort=createdDate&direction=DESC'
   },
   {
     id: 2,
     label: 'Mais antigo',
-    param: '&sort=createdDate,asc'
+    value: '&sort=createdDate&direction=ASC'
   },
   {
     id: 3,
     label: 'Menor Preço',
-    param: '&sort=value,asc'
+    value: '&sort=value&direction=ASC'
   },
   {
     id: 4,
     label: 'Maior Preço',
-    param: '&sort=value,desc'
+    value: '&sort=value&direction=DESC'
   },
+]
+
+const data = [
+
 ]
 
 const styleDesktop = StyleSheet.create({
@@ -55,39 +60,101 @@ const styleDesktop = StyleSheet.create({
     marginLeft: 10
   },
   dropDown: {
-    width: 200
+    width: 200,
+    borderWidth: 0,
+    borderRadius: 3
   },
+  buttonsContainer: {
+    width: 210,
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    gap: 20
+  },
+  leftBar: {
+    position: 'absolute',
+    left: 40,
+    top: 40
+  },
+  addressButtom: {
+    borderRadius: 50,
+    backgroundColor: WhiteColor,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    alignItems: "center",
+    borderStyle: 'solid',
+    borderWidth: 3,
+    borderColor: PrimaryGreenColor,
+  },
+  addsContainer: {
 
+  }
 });
 
 export default function Home() {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    { label: 'Apple', value: 'apple' },
-    { label: 'Banana', value: 'banana' }
-  ]);
+  const [rent, setRent] = useState(false);
+  const [trade, setTrade] = useState(false);
+  const [sale, setSale] = useState(false);
+
   return (
     <ResponsiveNavbar>
-      <View style={styleDesktop.container}>
-        <View style={styleDesktop.topBar}>
-          <View style={styleDesktop.searchContainer}>
-            <Ionicons name="search" size={35} color={DarkGreen} />
-            <SearchInput style={styleDesktop.searchBar} />
+      <Desktop>
+        <View style={styleDesktop.container}>
+          <View style={styleDesktop.topBar}>
+            <View style={styleDesktop.searchContainer}>
+              <SearchInput
+                placeholder="Pesquisar por livro..."
+                style={styleDesktop.searchBar} />
+            </View>
+            <View style={styleDesktop.dropDownContainer}>
+              <DropDownPicker
+                style={styleDesktop.dropDown}
+                placeholderStyle={{ fontSize: 16, color: '#777777' }}
+                textStyle={{ fontSize: 16 }}
+                listItemContainerStyle={{ borderWidth: 0 }}
+                placeholder="Ordenar por"
+                open={open}
+                value={value}
+                items={dropDownData}
+                setOpen={setOpen}
+                setValue={setValue}
+              />
+            </View>
           </View>
-          <View style={styleDesktop.dropDownContainer}>
-            <DropDownPicker
-              open={open}
-              value={value}
-              items={items}
-              setOpen={setOpen}
-              setValue={setValue}
-              setItems={setItems}
-            />
+          <View style={styleDesktop.leftBar}>
+            <View style={styleDesktop.buttonsContainer}>
+              <Pressable style={styleDesktop.addressButtom}>
+                <View>
+                  <Text style={{ fontSize: 18, textAlign: 'center' }}>Localização</Text>
+                  <Text>Meu endereço</Text>
+                </View>
+              </Pressable>
+              <Text style={{ fontSize: 18 }}>Filtrar por:</Text>
+              <PrimaryButton
+                style={{}}
+                activeStyle={sale}
+                onPress={() => setSale(!sale)}
+                label='Disponível para venda'
+              />
+              <PrimaryButton
+                style={{}}
+                activeStyle={rent}
+                onPress={() => setRent(!rent)}
+                label='Disponível para aluguel'
+              />
+              <PrimaryButton
+                style={{}}
+                activeStyle={trade}
+                onPress={() => setTrade(!trade)}
+                label='Disponível para troca'
+              />
+            </View>
+          </View>
+          <View style={styleDesktop.addsContainer}>
           </View>
         </View>
-
-      </View>
+      </Desktop>
     </ResponsiveNavbar>
 
   );
