@@ -1,5 +1,6 @@
 import { View, StyleSheet, Text } from "react-native";
 import NavBar from "../common/components/Navbar";
+import React from "react";
 
 const style = StyleSheet.create({
   container: {

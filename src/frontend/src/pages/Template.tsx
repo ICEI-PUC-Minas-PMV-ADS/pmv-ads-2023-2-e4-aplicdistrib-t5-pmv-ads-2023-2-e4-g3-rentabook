@@ -1,6 +1,6 @@
 import * as React from "react";
 import { View, StyleSheet } from "react-native";
-import NavBar from "../common/components/Navbar";
+import Navbar from "../common/components/Navbar";
 
 const style = StyleSheet.create({
   container: {
@@ -12,7 +12,7 @@ const style = StyleSheet.create({
 export default function Home() {
   return (
     <View style={style.container}>
-      <NavBar />
+      <Navbar  />
     </View>
   );
 }

@@ -2,6 +2,7 @@ import { View } from "react-native";
 import { isDesktop } from "../../hooks/useResposive";
 import NavBarDesktop from "./NavBarDesktop";
 import NavBarMobile from "./NavBarMobile";
+import React from "react";
 
 export default function NavBar({ children }: { children: JSX.Element }) {
   if (isDesktop()) {

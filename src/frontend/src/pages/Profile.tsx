@@ -4,6 +4,7 @@ import { View, StyleSheet, Text, Button } from "react-native";
 import NavBar from "../common/components/Navbar";
 import { AuthContext } from "../contexts/Auth/AuthContext";
 import { StackTypes } from "../routes/StackTypes";
+import React from "react";
 
 
 const style = StyleSheet.create({
