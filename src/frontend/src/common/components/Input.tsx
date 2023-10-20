@@ -13,6 +13,7 @@ type InputProps = {
   label: string,
   placeholder?: string,
   style?: Object,
+  secureTextEntry?: boolean,
   onChangeText?: (value: string) => void,
 };
 
@@ -41,13 +42,14 @@ const InputStyle = StyleSheet.create({
  * https://www.figma.com/file/2lR8urPO212OkkhvDTmmgF/Untitled?type=design&node-id=32-256&mode=design&t=ZkwebBuGnnQ715v7-4
  */
 
-export default function Input({ style, value = "", label, placeholder, onChangeText }: InputProps) {
+export default function Input({ style, value = "", label, placeholder, secureTextEntry, onChangeText }: InputProps) {
   return (
     <View style={style}>
       <Text style={InputStyle.label}>{label}</Text>
       <View style={InputStyle.inputContainer}>
         <TextInput
           style={InputStyle.input}
+          secureTextEntry={secureTextEntry}
           placeholder={placeholder}
           onChangeText={onChangeText}
           defaultValue={value} />

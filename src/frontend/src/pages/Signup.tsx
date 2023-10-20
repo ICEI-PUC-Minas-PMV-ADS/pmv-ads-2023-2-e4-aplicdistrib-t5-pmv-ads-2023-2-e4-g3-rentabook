@@ -13,6 +13,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: "#E1DCC5",
   },
+  input: {
+    margin: 10,
+  },
   leftSection: {
     flex: 1,
     padding: 20,

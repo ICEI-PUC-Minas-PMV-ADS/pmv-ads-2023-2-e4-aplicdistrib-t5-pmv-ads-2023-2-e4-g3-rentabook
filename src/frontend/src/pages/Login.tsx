@@ -13,6 +13,9 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: "#E1DCC5",
   },
+  input: {
+    margin: 10,
+  },
   leftSection: {
     flex: 1,
     padding: 20,
@@ -34,15 +37,15 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const navigation = useNavigation<StackTypes>()
 
-    const handleLogin = async () => {
-      if (email && password) {
-        const isLogged = await auth.login({ email: email, password: password })
-        if (isLogged) {
-          navigation.navigate("Anúncios", {})
-        } else throw "Erro ao logar o usuário"
-      }
-
+  const handleLogin = async () => {
+    if (email && password) {
+      const isLogged = await auth.login({ email: email, password: password })
+      if (isLogged) {
+        navigation.navigate("Anúncios", {})
+      } else throw "Erro ao logar o usuário"
     }
+
+  }
 
   return (
     <NavBar>
