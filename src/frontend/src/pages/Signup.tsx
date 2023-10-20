@@ -5,7 +5,7 @@ import { AuthContext } from '../contexts/Auth/AuthContext';
 import { StackTypes } from '../routes/StackTypes';
 import Input from '../common/components/Input';
 import PrimaryButton from '../common/components/PrimaryButton';
-import NavBar from "../common/components/NavBar";
+import NavBar from "../common/components/Navbar";
 
 const styles = StyleSheet.create({
   container: {
