@@ -1,8 +1,8 @@
-import { useContext } from "react";
-import { useNavigation } from "@react-navigation/native";
+import * as React from "react";
 import { View, StyleSheet, Text, Button } from "react-native";
 import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
 import { AuthContext } from "../contexts/Auth/AuthContext";
+import { useNavigation } from "@react-navigation/native";
 import { StackTypes } from "../routes/StackTypes";
 
 
@@ -10,6 +10,7 @@ const style = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#E1DCC5",
+    justifyContent: 'space-between'
   },
 });
 
@@ -17,12 +18,12 @@ const style = StyleSheet.create({
 
 export default function Profile() {
   const navigation = useNavigation<StackTypes>()
-  const auth = useContext(AuthContext)
+  const auth = React.useContext(AuthContext)
   const handleLogout = async () => {
     if (auth.user) {
       const logout = await auth.logout()
       if (logout) {
-        navigation.navigate("Anúncios", {})
+        navigation.navigate("Home", {})
       }
     }
 

@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { AuthContext } from "./AuthContext"
-import Home from '../../pages/Home'
+import Home from '../../pages/Template'
 
 export const AlreadyLogged = ({ children }: { children: JSX.Element }) => {
   const auth = useContext(AuthContext)

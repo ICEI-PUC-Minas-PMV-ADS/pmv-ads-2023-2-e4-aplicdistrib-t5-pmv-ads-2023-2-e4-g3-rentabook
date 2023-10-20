@@ -17,5 +17,5 @@ export default function ResponsiveNavbar({ children }: { children: JSX.Element }
       {children}
       <MobileNavbar />
     </View>
-  )
+  );
 }
