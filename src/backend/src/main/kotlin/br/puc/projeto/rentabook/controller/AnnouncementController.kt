@@ -119,7 +119,7 @@ class AnnouncementController(
         @RequestParam sale: Boolean?,
         @RequestParam trade: Boolean?,
         pageable: Pageable
-    ): Page<AnnouncementView> {
+    ): Page<CleanAnnouncementView> {
         return announcementService.findByFilters(city, bookId, rent, sale, trade, pageable)
     }
 

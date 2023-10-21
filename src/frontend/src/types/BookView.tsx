@@ -1,0 +1,11 @@
+import { ImageLinksGoogleBooks } from "./ImageLinksGoogleBooks"
+export type BookView = {
+  'id': string | null,
+  'title': string | null,
+  'authors': string | null[] | null,
+  'publisher': string | null,
+  'publishedDate': string | null,
+  'description': string | null,
+  'imageLinks': ImageLinksGoogleBooks | null,
+  'pageCount': number | null
+}

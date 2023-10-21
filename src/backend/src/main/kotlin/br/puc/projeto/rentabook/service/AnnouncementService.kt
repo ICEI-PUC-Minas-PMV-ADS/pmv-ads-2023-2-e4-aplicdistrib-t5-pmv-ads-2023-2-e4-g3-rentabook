@@ -33,6 +33,7 @@ class AnnouncementService(
     private val ratingRepository: RatingRepository,
     private val imageService: ImageService,
     private val mongoTemplate: MongoTemplate,
+    private val cleanAnnouncementViewMapper: CleanAnnouncementViewMapper
 ) {
 
     fun findAll(pageable: Pageable): Page<AnnouncementView> {
@@ -148,7 +149,7 @@ class AnnouncementService(
         sale: Boolean?,
         trade: Boolean?,
         pageable: Pageable
-    ): Page<AnnouncementView> {
+    ): Page<CleanAnnouncementView> {
             val query = Query()
 
             if (!city.isNullOrBlank()) {
@@ -175,7 +176,7 @@ class AnnouncementService(
                 .toList()
 
            return PageImpl(results, pageable, results.size.toLong())
-                .map { t -> announcementViewMapper.map(t) }
+                .map { t -> cleanAnnouncementViewMapper.map(t) }
     }
 
     fun findById(id: String): Announcement {

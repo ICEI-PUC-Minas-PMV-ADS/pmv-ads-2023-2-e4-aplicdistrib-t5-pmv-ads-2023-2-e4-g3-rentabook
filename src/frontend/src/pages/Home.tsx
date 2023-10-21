@@ -1,11 +1,17 @@
-import { useState } from "react";
-import { View, StyleSheet, Text, Pressable } from "react-native";
+import { useEffect, useState } from "react";
+import { View, StyleSheet, Text, Pressable, ScrollView, FlatList, ImageSourcePropType } from "react-native";
 import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
 import SearchInput from "../common/components/SearchInput";
 import DropDownPicker from "react-native-dropdown-picker";
 import PrimaryButton from "../common/components/PrimaryButton";
 import { PrimaryGreenColor, WhiteColor } from "../common/theme/colors";
 import { Desktop } from "../hooks/useResposive";
+import { announcementsService } from "../services/announcementsService";
+import { Page } from "../types/Page";
+import { CleanAnnouncementView } from "../types/CleanAnnouncementView";
+import { useMediaQuery } from "../hooks/useResposive";
+
+const image: ImageSourcePropType = require("../common/assets/image.jpg");
 
 const dropDownData = [
   {
@@ -30,72 +36,103 @@ const dropDownData = [
   },
 ]
 
-const data = [
-
+const content = [
+  {
+    "id": 1,
+    "book": {
+      "title": "Branca de neve"
+    },
+    "images": image,
+    "rent": true,
+    "sale": false,
+    "trade": true,
+  },
+  {
+    "id": 2,
+    "book": {
+      "title": "Branca de neve"
+    },
+    "images": image,
+    "rent": true,
+    "sale": false,
+    "trade": true,
+  },
+  {
+    "id": 3,
+    "book": {
+      "title": "Branca de neve"
+    },
+    "images": image,
+    "rent": true,
+    "sale": false,
+    "trade": true,
+  },
+  {
+    "id": 4,
+    "book": {
+      "title": "Branca de neve"
+    },
+    "images": image,
+    "rent": true,
+    "sale": false,
+    "trade": true,
+  },
+  {
+    "id": 5,
+    "book": {
+      "title": "Branca de neve"
+    },
+    "images": image,
+    "rent": true,
+    "sale": false,
+    "trade": true,
+  },
+  {
+    "id": 6,
+    "book": {
+      "title": "Branca de neve"
+    },
+    "images": image,
+    "rent": true,
+    "sale": false,
+    "trade": true,
+  },
+  {
+    "id": 7,
+    "book": {
+      "title": "Branca de neve"
+    },
+    "images": image,
+    "rent": true,
+    "sale": false,
+    "trade": true,
+  }
 ]
 
-const styleDesktop = StyleSheet.create({
-  container: {
-    backgroundColor: "#E1DCC5",
-    flex: 1
-  },
-  topBar: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    alignSelf: 'flex-end',
-    width: '65%',
-    marginTop: 40,
-    marginRight: 40
-  },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: 450
-  },
-  dropDownContainer: {
 
-  },
-  searchBar: {
-    flex: 1,
-    marginLeft: 10
-  },
-  dropDown: {
-    width: 200,
-    borderWidth: 0,
-    borderRadius: 3
-  },
-  buttonsContainer: {
-    width: 210,
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    gap: 20
-  },
-  leftBar: {
-    position: 'absolute',
-    left: 40,
-    top: 40
-  },
-  addressButtom: {
-    borderRadius: 50,
-    backgroundColor: WhiteColor,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    alignItems: "center",
-    borderStyle: 'solid',
-    borderWidth: 3,
-    borderColor: PrimaryGreenColor,
-  },
-  addsContainer: {
-
-  }
-});
 
 export default function Home() {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
+
+  const [sort, setSort] = useState(null);
   const [rent, setRent] = useState(false);
   const [trade, setTrade] = useState(false);
   const [sale, setSale] = useState(false);
+  const [data, setData] = useState<Page<CleanAnnouncementView> | null>(null)
+  const [city, setCity] = useState(null)
+  const [bookId, setBookId] = useState(null)
+  const [page, setPage] = useState(null)
+  const rentOption = rent ? true : null
+  const tradeOption = trade ? true : null
+  const saleOption = sale ? true : null
+
+  useEffect(() => {
+    const announcements = async () => {
+      const adds = await announcementsService.getAnnouncements(city, bookId, rentOption, tradeOption, saleOption, sort, page)
+      setData(adds)
+    }
+    //announcements()
+  }, [city, bookId, rentOption, tradeOption, saleOption, sort, page])
 
   return (
     <ResponsiveNavbar>
@@ -115,10 +152,10 @@ export default function Home() {
                 listItemContainerStyle={{ borderWidth: 0 }}
                 placeholder="Ordenar por"
                 open={open}
-                value={value}
+                value={sort}
                 items={dropDownData}
                 setOpen={setOpen}
-                setValue={setValue}
+                setValue={setSort}
               />
             </View>
           </View>
@@ -152,10 +189,101 @@ export default function Home() {
             </View>
           </View>
           <View style={styleDesktop.addsContainer}>
+            {
+              useMediaQuery(1025, 1300) &&
+              <FlatList
+                data={content}
+                numColumns={2}
+                renderItem={({ item }) => (
+                  <Pressable key={item.id} style={styleDesktop.card}>
+                    <Text>
+                      {item.book.title}
+                    </Text>
+                  </Pressable>
+                )} />
+            }
+            {
+              !useMediaQuery(1025, 1300) &&
+              <FlatList
+                data={content}
+                numColumns={3}
+                renderItem={({ item }) => (
+                  <Pressable key={item.id} style={styleDesktop.card}>
+                    <Text>
+                      {item.book.title}
+                    </Text>
+                  </Pressable>
+                )} />
+            }
           </View>
         </View>
       </Desktop>
-    </ResponsiveNavbar>
+    </ResponsiveNavbar >
 
   );
 }
+
+const styleDesktop = StyleSheet.create({
+  container: {
+    backgroundColor: "#E1DCC5",
+    flex: 1
+  },
+  topBar: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
+    width: '70%',
+    marginTop: 40,
+    marginRight: 40
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: 450
+  },
+  dropDownContainer: {
+
+  },
+  searchBar: {
+    flex: 1,
+  },
+  dropDown: {
+    width: 200,
+    borderWidth: 0,
+    borderRadius: 3
+  },
+  buttonsContainer: {
+    width: 210,
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    gap: 20
+  },
+  leftBar: {
+    position: 'absolute',
+    left: 40,
+    top: 40
+  },
+  addressButtom: {
+    borderRadius: 50,
+    backgroundColor: WhiteColor,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    alignItems: "center",
+    borderStyle: 'solid',
+    borderWidth: 3,
+    borderColor: PrimaryGreenColor,
+  },
+  addsContainer: {
+    alignSelf: 'flex-end',
+    width: '72.5%',
+    marginTop: 40,
+    flex: 1
+  },
+  card: {
+    width: 300,
+    height: 350,
+    backgroundColor: WhiteColor,
+    marginRight: 40,
+    marginBottom: 40
+  }
+});
