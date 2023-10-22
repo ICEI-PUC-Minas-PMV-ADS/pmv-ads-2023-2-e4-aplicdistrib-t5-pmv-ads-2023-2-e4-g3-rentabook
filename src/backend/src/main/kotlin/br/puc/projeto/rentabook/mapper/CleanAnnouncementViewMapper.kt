@@ -1,10 +1,8 @@
 package br.puc.projeto.rentabook.mapper
 
 import br.puc.projeto.rentabook.dto.CleanAnnouncementView
-import br.puc.projeto.rentabook.dto.PublicAddressView
 import br.puc.projeto.rentabook.model.Announcement
 import br.puc.projeto.rentabook.service.BookService
-import org.springframework.context.annotation.Bean
 import org.springframework.stereotype.Component
 
 @Component
@@ -28,7 +26,8 @@ class CleanAnnouncementViewMapper(
             rent = t.rent,
             sale = t.sale,
             trade = t.trade,
-            value = t.value
+            valueForSale = t.valueForSale,
+            valueForRent = t.valueForRent
         )
     }
 

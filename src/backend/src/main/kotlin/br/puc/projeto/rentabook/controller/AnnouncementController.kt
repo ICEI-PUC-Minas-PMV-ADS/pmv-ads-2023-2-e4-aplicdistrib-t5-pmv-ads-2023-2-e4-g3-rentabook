@@ -4,8 +4,11 @@ import br.puc.projeto.rentabook.dto.*
 import br.puc.projeto.rentabook.service.AnnouncementService
 import br.puc.projeto.rentabook.service.RatingService
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -43,6 +46,7 @@ class AnnouncementController(
         name = "bearerAuth"
     )
     @PostMapping("/new")
+    @CacheEvict("Announcements")
     fun createAnnouncement(@RequestBody createAnnouncementForm: CreateAnnouncementForm): AnnouncementView {
         return announcementService.createAnnouncement(createAnnouncementForm)
     }
@@ -98,6 +102,7 @@ class AnnouncementController(
     @SecurityRequirement(
         name = "bearerAuth"
     )
+    @CacheEvict("Announcements")
     @PostMapping("/images/{id}")
     fun uploadImage(@RequestBody image: MultipartFile, @PathVariable id: String): AnnouncementView {
         return announcementService.uploadImage(image, id)
@@ -107,18 +112,22 @@ class AnnouncementController(
         name = "bearerAuth"
     )
     @DeleteMapping("/images")
+    @CacheEvict("Announcements")
     fun deleteImage(@RequestBody form: DeleteImageAnnouncementForm): AnnouncementView {
         return announcementService.deleteImage(form)
     }
 
     @GetMapping("/find")
+    @Cacheable("Announcements")
     fun list(
         @RequestParam city: String?,
         @RequestParam bookId: String?,
         @RequestParam rent: Boolean?,
         @RequestParam sale: Boolean?,
         @RequestParam trade: Boolean?,
-        pageable: Pageable
+        @PageableDefault(
+            size = 9
+        )pageable: Pageable
     ): Page<CleanAnnouncementView> {
         return announcementService.findByFilters(city, bookId, rent, sale, trade, pageable)
     }

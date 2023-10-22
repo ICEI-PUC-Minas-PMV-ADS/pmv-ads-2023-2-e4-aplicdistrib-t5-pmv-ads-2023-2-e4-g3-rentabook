@@ -1,162 +1,218 @@
 import { useEffect, useState } from "react";
-import { View, StyleSheet, Text, Pressable, ScrollView, FlatList, ImageSourcePropType } from "react-native";
+import { View, StyleSheet, Text, Pressable, FlatList, TouchableWithoutFeedback } from "react-native";
 import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
 import SearchInput from "../common/components/SearchInput";
-import DropDownPicker from "react-native-dropdown-picker";
+import { Picker } from '@react-native-picker/picker';
 import PrimaryButton from "../common/components/PrimaryButton";
-import { PrimaryGreenColor, WhiteColor } from "../common/theme/colors";
+import { DarkGreen, GreyColor, PrimaryGreenColor, WhiteColor } from "../common/theme/colors";
 import { Desktop } from "../hooks/useResposive";
 import { announcementsService } from "../services/announcementsService";
 import { Page } from "../types/Page";
 import { CleanAnnouncementView } from "../types/CleanAnnouncementView";
 import { useMediaQuery } from "../hooks/useResposive";
-
-const image: ImageSourcePropType = require("../common/assets/image.jpg");
-
-const dropDownData = [
-  {
-    id: 1,
-    label: 'Mais recente',
-    value: '&sort=createdDate&direction=DESC'
-  },
-  {
-    id: 2,
-    label: 'Mais antigo',
-    value: '&sort=createdDate&direction=ASC'
-  },
-  {
-    id: 3,
-    label: 'Menor Preço',
-    value: '&sort=value&direction=ASC'
-  },
-  {
-    id: 4,
-    label: 'Maior Preço',
-    value: '&sort=value&direction=DESC'
-  },
-]
-
-const content = [
-  {
-    "id": 1,
-    "book": {
-      "title": "Branca de neve"
-    },
-    "images": image,
-    "rent": true,
-    "sale": false,
-    "trade": true,
-  },
-  {
-    "id": 2,
-    "book": {
-      "title": "Branca de neve"
-    },
-    "images": image,
-    "rent": true,
-    "sale": false,
-    "trade": true,
-  },
-  {
-    "id": 3,
-    "book": {
-      "title": "Branca de neve"
-    },
-    "images": image,
-    "rent": true,
-    "sale": false,
-    "trade": true,
-  },
-  {
-    "id": 4,
-    "book": {
-      "title": "Branca de neve"
-    },
-    "images": image,
-    "rent": true,
-    "sale": false,
-    "trade": true,
-  },
-  {
-    "id": 5,
-    "book": {
-      "title": "Branca de neve"
-    },
-    "images": image,
-    "rent": true,
-    "sale": false,
-    "trade": true,
-  },
-  {
-    "id": 6,
-    "book": {
-      "title": "Branca de neve"
-    },
-    "images": image,
-    "rent": true,
-    "sale": false,
-    "trade": true,
-  },
-  {
-    "id": 7,
-    "book": {
-      "title": "Branca de neve"
-    },
-    "images": image,
-    "rent": true,
-    "sale": false,
-    "trade": true,
-  }
-]
-
-
+import { Image } from 'expo-image';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import dropDownData from "../data/dropDownData.json"
+import { avaliableText, getFirstImageLink, getValueRent, getValueSale } from "../common/utils/annoucementsUtils";
+import { bookService } from "../services/bookService";
+import { BookView } from "../types/BookView";
+import { getUrlImage } from "../common/utils/bookUtils";
 
 export default function Home() {
-  const [open, setOpen] = useState(false);
 
-  const [sort, setSort] = useState(null);
+  const [searchValue, setSearchValue] = useState("")
+  const [sort, setSort] = useState(dropDownData[0].value);
+  const [rentSort, setRentSort] = useState(true)
+  const [saleSort, setSaleSort] = useState(true)
   const [rent, setRent] = useState(false);
   const [trade, setTrade] = useState(false);
   const [sale, setSale] = useState(false);
+  const [bookData, setbookData] = useState<Page<BookView> | null>(null)
   const [data, setData] = useState<Page<CleanAnnouncementView> | null>(null)
   const [city, setCity] = useState(null)
-  const [bookId, setBookId] = useState(null)
+  const [bookId, setBookId] = useState<null | string>(null)
   const [page, setPage] = useState(null)
   const rentOption = rent ? true : null
   const tradeOption = trade ? true : null
   const saleOption = sale ? true : null
+  const [searchOpen, setSearchOpen] = useState(false);
 
   useEffect(() => {
     const announcements = async () => {
       const adds = await announcementsService.getAnnouncements(city, bookId, rentOption, tradeOption, saleOption, sort, page)
       setData(adds)
     }
-    //announcements()
-  }, [city, bookId, rentOption, tradeOption, saleOption, sort, page])
+    announcements()
+  }, [city, bookId, rentOption, tradeOption, saleOption, page, sort])
+
+  useEffect(() => {
+    if (rent == false && sale == false && trade == false) {
+      setRentSort(true)
+      setSaleSort(true)
+    }
+    if (rent == true && sale == true && trade == true) {
+      setRentSort(true)
+      setSaleSort(true)
+    }
+    if (rent == true && sale == true && trade == false) {
+      setRentSort(true)
+      setSaleSort(true)
+    }
+    if (rent == true && trade == true && sale == false) {
+      setRentSort(true)
+      setSaleSort(false)
+    }
+    if (sale == true && trade == true && rent == false) {
+      setRentSort(false)
+      setSaleSort(true)
+    }
+    if (trade == true && rent == false && sale == false) {
+      setRentSort(false)
+      setSaleSort(false)
+    }
+    if (rent == true && sale == false && trade == false) {
+      setSaleSort(false)
+    }
+    if (sale == true && rent == false && trade == false) {
+      setRentSort(false)
+    }
+    setSort(dropDownData[0].value)
+  }, [rent, sale, trade])
+
+  const renderItem = (item: CleanAnnouncementView) => {
+    return (
+      <Pressable key={item.id} style={styleDesktop.card}>
+        <Image source={getFirstImageLink(item)} style={styleDesktop.image} />
+        <Text style={styleDesktop.cardTitle}>
+          {item.book.title}
+        </Text>
+        <View style={styleDesktop.available}>
+          <Ionicons name="checkmark-circle" size={20} style={{ color: PrimaryGreenColor }} />
+          <Text style={styleDesktop.availableText}>{avaliableText(item)}</Text>
+        </View>
+        {
+          item.rent &&
+          <View style={styleDesktop.price}>
+            <Text style={styleDesktop.priceTitle}>Alugar</Text>
+            <Text style={styleDesktop.priceText}>{getValueRent(item)}</Text>
+          </View>
+        }
+        {
+          item.sale &&
+          <View style={styleDesktop.price}>
+            <Text style={styleDesktop.priceTitle}>Comprar</Text>
+            <Text style={styleDesktop.priceText}>{getValueSale(item)}</Text>
+          </View>
+        }
+      </Pressable>
+    )
+  }
+
+  let timeOut: any = null
+  const handleSearch = (value: string) => {
+    clearTimeout(timeOut);
+    timeOut = setTimeout(async () => {
+      const data = await bookService.searchBook(value)
+      setbookData(data)
+    }, 700);
+  }
+
+  const handleBook = (item: BookView) => {
+    setBookId(item.id)
+    setSearchOpen(false)
+    setSearchValue(item.title as string)
+  }
+
 
   return (
     <ResponsiveNavbar>
       <Desktop>
         <View style={styleDesktop.container}>
           <View style={styleDesktop.topBar}>
-            <View style={styleDesktop.searchContainer}>
+            <View
+              style={styleDesktop.searchContainer}>
               <SearchInput
                 placeholder="Pesquisar por livro..."
-                style={styleDesktop.searchBar} />
+                style={styleDesktop.searchBar}
+                onChange={(value) => {
+                  setSearchValue(value)
+                  setTimeout(() => {
+                    setBookId(null)
+                    setbookData(null)
+                    handleSearch(value), 1000
+                  })
+                }}
+                onFocus={() => {
+                  setSearchOpen(true)
+                }}
+                value={searchValue}
+              />
+              {
+                searchOpen &&
+                <Pressable onPress={() => setSearchOpen(false)} style={{
+                  width: 450,
+                  height: 450,
+                  backgroundColor: GreyColor,
+                  borderRadius: 3,
+                  shadowColor: '#171717',
+                  shadowOffset: { width: 2, height: 4 },
+                  shadowOpacity: 0.2,
+                  shadowRadius: 3,
+                  position: 'absolute',
+                  paddingTop: 60,
+
+                }}>
+                  <FlatList
+                    data={bookData?.content}
+                    keyExtractor={item => item.id}
+                    numColumns={1}
+                    renderItem={({ item }) => (
+                      <Pressable
+                        onPress={() => handleBook(item)}
+                        style={styleDesktop.searchItem}>
+                        <Image source={getUrlImage(item)} style={styleDesktop.bookImage} />
+                        <View style={styleDesktop.bookTexts}>
+                          <Text style={{ fontSize: 16 }}>{item.title?.slice(0, 35)}</Text>
+                          <Text>{item.authors == null ? "Autor desconhecido" : item.authors[0]?.slice(0, 35)}</Text>
+                          <Text>{item.publishedDate}</Text>
+                        </View>
+                      </Pressable>
+                    )}
+                  />
+                </Pressable>
+              }
             </View>
             <View style={styleDesktop.dropDownContainer}>
-              <DropDownPicker
+              <Picker
                 style={styleDesktop.dropDown}
-                placeholderStyle={{ fontSize: 16, color: '#777777' }}
-                textStyle={{ fontSize: 16 }}
-                listItemContainerStyle={{ borderWidth: 0 }}
-                placeholder="Ordenar por"
-                open={open}
-                value={sort}
-                items={dropDownData}
-                setOpen={setOpen}
-                setValue={setSort}
-              />
+                selectedValue={sort}
+                onValueChange={(itemValue, itemIndex) =>
+                  setSort(itemValue)
+                }>
+                <Picker.Item
+                  label={dropDownData[0].label} value={dropDownData[0].value} />
+                <Picker.Item
+                  label={dropDownData[1].label} value={dropDownData[1].value} />
+                {
+                  rentSort &&
+                  <>
+                    <Picker.Item
+                      label={dropDownData[2].label} value={dropDownData[2].value} />
+                    <Picker.Item
+                      label={dropDownData[3].label} value={dropDownData[3].value} />
+                  </>
+                }
+                {
+                  saleSort &&
+                  <Picker.Item
+                    label={dropDownData[4].label} value={dropDownData[4].value} />
+                }
+                {
+                  saleSort &&
+                  <Picker.Item
+                    label={dropDownData[5].label} value={dropDownData[5].value} />
+                }
+              </Picker>
             </View>
           </View>
           <View style={styleDesktop.leftBar}>
@@ -192,28 +248,16 @@ export default function Home() {
             {
               useMediaQuery(1025, 1300) &&
               <FlatList
-                data={content}
+                data={data?.content}
                 numColumns={2}
-                renderItem={({ item }) => (
-                  <Pressable key={item.id} style={styleDesktop.card}>
-                    <Text>
-                      {item.book.title}
-                    </Text>
-                  </Pressable>
-                )} />
+                renderItem={({ item }) => renderItem(item)} />
             }
             {
               !useMediaQuery(1025, 1300) &&
               <FlatList
-                data={content}
+                data={data?.content}
                 numColumns={3}
-                renderItem={({ item }) => (
-                  <Pressable key={item.id} style={styleDesktop.card}>
-                    <Text>
-                      {item.book.title}
-                    </Text>
-                  </Pressable>
-                )} />
+                renderItem={({ item }) => renderItem(item)} />
             }
           </View>
         </View>
@@ -234,23 +278,28 @@ const styleDesktop = StyleSheet.create({
     alignSelf: 'flex-end',
     width: '70%',
     marginTop: 40,
-    marginRight: 40
+    marginRight: 40,
+    zIndex: 10
   },
   searchContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
     width: 450
   },
   dropDownContainer: {
-
+    width: 180,
   },
   searchBar: {
     flex: 1,
+    width: '100%',
+    zIndex: 5
   },
   dropDown: {
-    width: 200,
     borderWidth: 0,
-    borderRadius: 3
+    borderRadius: 3,
+    height: 50,
+    fontSize: 16,
+    paddingHorizontal: 8
   },
   buttonsContainer: {
     width: 210,
@@ -281,9 +330,56 @@ const styleDesktop = StyleSheet.create({
   },
   card: {
     width: 300,
-    height: 350,
+    height: 450,
     backgroundColor: WhiteColor,
     marginRight: 40,
-    marginBottom: 40
+    marginBottom: 40,
+    gap: 10
+
+  },
+  image: {
+    width: '90%',
+    height: '50%',
+    alignSelf: 'center', marginTop: 15
+  },
+  cardTitle: {
+    alignSelf: 'center',
+    fontSize: 18,
+  },
+  available: {
+    flexDirection: 'row',
+    marginLeft: 15,
+    alignItems: 'center'
+  },
+  availableText: {
+    marginLeft: 5
+  },
+  price: {
+    marginLeft: 15,
+  },
+  priceTitle: {
+    fontSize: 14
+  },
+  priceText: {
+    fontSize: 25,
+    color: DarkGreen
+  },
+  bookImage: {
+    height: '100%',
+    width: '20%',
+    borderRadius: 5
+  },
+  searchItem: {
+    flexDirection: 'row',
+    width: '100%',
+    height: 100,
+    padding: 5
+  },
+  bookTexts: {
+    marginLeft: 10,
+    flexDirection: 'column',
+    gap: 5,
+    alignSelf: 'center'
   }
+
 });

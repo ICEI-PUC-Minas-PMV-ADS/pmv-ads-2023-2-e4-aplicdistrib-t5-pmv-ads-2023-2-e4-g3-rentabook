@@ -45,10 +45,8 @@ class ImageService(
 
     }
 
-    fun getImage(id: String): Image {
-        return imageRepository.findByIdOrNull(id).run {
-            this ?: throw NotFoundException("Imagem não encontrada")
-        }
+    fun getImage(id: String): Image? {
+        return imageRepository.findByIdOrNull(id)
     }
 
     fun deleteImage(id: String){

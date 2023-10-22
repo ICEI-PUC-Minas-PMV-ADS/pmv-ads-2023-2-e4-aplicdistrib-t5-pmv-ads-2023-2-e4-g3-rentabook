@@ -24,7 +24,8 @@ class AnnouncementViewMapper(
             rent = t.rent,
             sale = t.sale,
             trade = t.trade,
-            value = t.value,
+            valueForSale = t.valueForSale,
+            valueForRent = t.valueForRent,
             location = privateAddressViewMapper.map(t.location),
         )
     }

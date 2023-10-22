@@ -7,4 +7,6 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.data.mongodb.repository.Query
 
-interface RentRepository : MongoRepository<Rent, String> {}
+interface RentRepository : MongoRepository<Rent, String> {
+    fun findByChatId(id: String): Rent?
+}

@@ -14,6 +14,7 @@ data class CleanAnnouncementView(
     val rent: Boolean,
     val sale: Boolean,
     val trade: Boolean,
-    val value: Long,
+    val valueForSale: Double?,
+    val valueForRent: Double?,
     val location: PublicAddressView,
 )

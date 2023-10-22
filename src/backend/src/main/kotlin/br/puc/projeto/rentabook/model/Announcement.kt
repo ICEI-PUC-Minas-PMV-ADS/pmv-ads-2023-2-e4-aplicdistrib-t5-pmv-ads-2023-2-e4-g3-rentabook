@@ -1,6 +1,5 @@
 package br.puc.projeto.rentabook.model
 
-import br.puc.projeto.rentabook.dto.EspecificVolumeGoogleBooksDTO
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
@@ -18,6 +17,7 @@ data class Announcement(
     val rent: Boolean = false,
     val sale: Boolean = false,
     val trade: Boolean = false,
-    val value: Long,
+    val valueForSale: Double?,
+    val valueForRent: Double?,
     val location: Address,
 )

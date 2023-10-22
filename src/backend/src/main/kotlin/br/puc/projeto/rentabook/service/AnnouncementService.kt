@@ -17,8 +17,11 @@ import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.data.support.PageableExecutionUtils
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
+import java.util.function.LongSupplier
+import java.util.function.Supplier
 import kotlin.Exception
 
 @Service
@@ -100,12 +103,15 @@ class AnnouncementService(
 
     fun giveBackRent(giveBackForm: GiveBackForm) {
         return AuthenticationUtils.authenticate(userRepository) {
-            val rent = rentRepository.findById(giveBackForm.id).orElseThrow { throw Exception("Id de aluguel invalido!") }
-            rent.rating = ratingRepository.save(Rating(
-                ownerUser = it,
-                message = giveBackForm.ratingMessage,
-                feedback = giveBackForm.ratingFeedback,
-            ))
+            val rent =
+                rentRepository.findById(giveBackForm.id).orElseThrow { throw Exception("Id de aluguel invalido!") }
+            rent.rating = ratingRepository.save(
+                Rating(
+                    ownerUser = it,
+                    message = giveBackForm.ratingMessage,
+                    feedback = giveBackForm.ratingFeedback,
+                )
+            )
             rent.announcement.isAvailable = true
             announcementRepository.save(rent.announcement)
             rentRepository.save(rent)
@@ -150,40 +156,41 @@ class AnnouncementService(
         trade: Boolean?,
         pageable: Pageable
     ): Page<CleanAnnouncementView> {
-            val query = Query()
+        val query = Query().with(pageable)
 
-            if (!city.isNullOrBlank()) {
-                query.addCriteria(Criteria.where("locationCity").regex(city, "i"))
-            }
+        if (!city.isNullOrBlank()) {
+            query.addCriteria(Criteria.where("locationCity").regex(city, "i"))
+        }
 
-            if (!bookId.isNullOrBlank()) {
-                query.addCriteria(Criteria.where("bookId").`is`(bookId))
-            }
+        if (!bookId.isNullOrBlank()) {
+            query.addCriteria(Criteria.where("bookId").`is`(bookId))
+        }
 
-            if (rent != null) {
-                query.addCriteria(Criteria.where("rent").`is`(rent))
-            }
+        if (rent != null) {
+            query.addCriteria(Criteria.where("rent").`is`(rent))
+        }
 
-            if (sale != null) {
-                query.addCriteria(Criteria.where("sale").`is`(sale))
-            }
+        if (sale != null) {
+            query.addCriteria(Criteria.where("sale").`is`(sale))
+        }
 
-            if (trade != null) {
-                query.addCriteria(Criteria.where("trade").`is`(trade))
-            }
+        if (trade != null) {
+            query.addCriteria(Criteria.where("trade").`is`(trade))
+        }
 
-            val results = mongoTemplate.find(query, Announcement::class.java)
-                .toList()
+        val results = mongoTemplate.find(query, Announcement::class.java)
+            .toList()
 
-           return PageImpl(results, pageable, results.size.toLong())
-                .map { t -> cleanAnnouncementViewMapper.map(t) }
+        val supplier = fun(): Long { return mongoTemplate.count(query, Announcement::class.java) }
+        return PageableExecutionUtils.getPage(results, pageable, supplier)
+            .map { t -> cleanAnnouncementViewMapper.map(t) }
     }
 
     fun findById(id: String): Announcement {
         return announcementRepository.findByIdOrNull(id) ?: throw NotFoundException("Anúncio não encontrado")
     }
 
-    fun detailService (id: String) : AnnouncementView {
+    fun detailService(id: String): AnnouncementView {
         return AuthenticationUtils.authenticate(userRepository) {
             announcementViewMapper.map(announcementRepository.findById(id).orElseThrow())
         }
