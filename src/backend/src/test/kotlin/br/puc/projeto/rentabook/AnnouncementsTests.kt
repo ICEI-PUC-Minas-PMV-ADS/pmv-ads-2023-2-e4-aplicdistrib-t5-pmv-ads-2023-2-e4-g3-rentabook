@@ -131,9 +131,12 @@ class AnnouncementsTests {
                             bookId = bookIdToNegotiate,
                             images = listOf(),
                             description = "description",
-                            value = 10,
+                            valueForRent = 10.0,
+                            valueForSale = null,
                             locationId = addressId,
-                            announcementType = CreateAnnouncementForm.RENT,
+                            rent = true,
+                            sale = false,
+                            trade = false,
                         )
                     )
                 )
@@ -147,7 +150,7 @@ class AnnouncementsTests {
                 Assertions.assertEquals(bookIdToNegotiate, announcementView.book.id)
                 Assertions.assertEquals("description", announcementView.description)
                 Assertions.assertEquals(0, announcementView.images.size)
-                Assertions.assertEquals(10, announcementView.value)
+                Assertions.assertEquals(10.0, announcementView.valueForRent)
                 Assertions.assertEquals(addressId, announcementView.location.id)
             }
     }
@@ -176,9 +179,12 @@ class AnnouncementsTests {
                             bookId = "f1u-swEACAAJ",
                             images = listOf(),
                             description = "description",
-                            value = 10,
+                            valueForRent = 10.0,
+                            valueForSale = null,
                             locationId = addressId,
-                            announcementType = CreateAnnouncementForm.RENT,
+                            rent = true,
+                            sale = false,
+                            trade = false,
                         )
                     )
                 )
@@ -192,7 +198,7 @@ class AnnouncementsTests {
                 Assertions.assertEquals("f1u-swEACAAJ", announcementView.book.id)
                 Assertions.assertEquals("description", announcementView.description)
                 Assertions.assertEquals(0, announcementView.images.size)
-                Assertions.assertEquals(10, announcementView.value)
+                Assertions.assertEquals(10.0, announcementView.valueForRent)
                 Assertions.assertEquals(addressId, announcementView.location.id)
             }
 
@@ -207,9 +213,12 @@ class AnnouncementsTests {
                             bookId = "QkW8EAAAQBAJ",
                             images = listOf(),
                             description = "description",
-                            value = 10,
+                            valueForRent = 10.0,
+                            valueForSale = null,
                             locationId = addressId,
-                            announcementType = CreateAnnouncementForm.RENT,
+                            rent = true,
+                            sale = false,
+                            trade = false,
                         )
                     )
                 )
@@ -223,7 +232,7 @@ class AnnouncementsTests {
                 Assertions.assertEquals("QkW8EAAAQBAJ", announcementView.book.id)
                 Assertions.assertEquals("description", announcementView.description)
                 Assertions.assertEquals(0, announcementView.images.size)
-                Assertions.assertEquals(10, announcementView.value)
+                Assertions.assertEquals(10.0, announcementView.valueForRent)
                 Assertions.assertEquals(addressId, announcementView.location.id)
             }
 
@@ -308,9 +317,12 @@ class AnnouncementsTests {
                             bookId = "f1u-swEACAAJ",
                             images = listOf(),
                             description = "description",
-                            value = 10,
+                            valueForRent = 10.0,
+                            valueForSale = null,
                             locationId = addressId,
-                            announcementType = CreateAnnouncementForm.RENT,
+                            rent = true,
+                            sale = false,
+                            trade = false,
                         )
                     )
                 )
@@ -326,7 +338,7 @@ class AnnouncementsTests {
                 Assertions.assertEquals("f1u-swEACAAJ", announcementView.book.id)
                 Assertions.assertEquals("description", announcementView.description)
                 Assertions.assertEquals(0, announcementView.images.size)
-                Assertions.assertEquals(10, announcementView.value)
+                Assertions.assertEquals(10.0, announcementView.valueForRent)
                 Assertions.assertEquals(addressId, announcementView.location.id)
             }
 
@@ -342,9 +354,12 @@ class AnnouncementsTests {
                             bookId = "QkW8EAAAQBAJ",
                             images = listOf(),
                             description = "description",
-                            value = 10,
+                            valueForRent = 10.0,
+                            valueForSale = null,
                             locationId = addressId,
-                            announcementType = CreateAnnouncementForm.RENT,
+                            rent = true,
+                            sale = false,
+                            trade = false,
                         )
                     )
                 )
@@ -358,7 +373,7 @@ class AnnouncementsTests {
                 Assertions.assertEquals("QkW8EAAAQBAJ", announcementView.book.id)
                 Assertions.assertEquals("description", announcementView.description)
                 Assertions.assertEquals(0, announcementView.images.size)
-                Assertions.assertEquals(10, announcementView.value)
+                Assertions.assertEquals(10.0, announcementView.valueForRent)
                 Assertions.assertEquals(addressId, announcementView.location.id)
             }
 
@@ -450,9 +465,12 @@ class AnnouncementsTests {
                             bookId = "f1u-swEACAAJ",
                             images = listOf(),
                             description = "description",
-                            value = 10,
+                            valueForRent = 10.0,
+                            valueForSale = null,
                             locationId = addressId,
-                            announcementType = CreateAnnouncementForm.RENT,
+                            rent = true,
+                            sale = false,
+                            trade = false,
                         )
                     )
                 )
@@ -468,7 +486,7 @@ class AnnouncementsTests {
                 Assertions.assertEquals("f1u-swEACAAJ", announcementView.book.id)
                 Assertions.assertEquals("description", announcementView.description)
                 Assertions.assertEquals(0, announcementView.images.size)
-                Assertions.assertEquals(10, announcementView.value)
+                Assertions.assertEquals(10.0, announcementView.valueForRent)
                 Assertions.assertEquals(addressId, announcementView.location.id)
             }
 
@@ -484,9 +502,12 @@ class AnnouncementsTests {
                             bookId = "QkW8EAAAQBAJ",
                             images = listOf(),
                             description = "description",
-                            value = 10,
+                            valueForRent = 10.0,
+                            valueForSale = null,
                             locationId = addressId,
-                            announcementType = CreateAnnouncementForm.RENT,
+                            rent = true,
+                            sale = false,
+                            trade = false,
                         )
                     )
                 )
@@ -500,7 +521,7 @@ class AnnouncementsTests {
                 Assertions.assertEquals("QkW8EAAAQBAJ", announcementView.book.id)
                 Assertions.assertEquals("description", announcementView.description)
                 Assertions.assertEquals(0, announcementView.images.size)
-                Assertions.assertEquals(10, announcementView.value)
+                Assertions.assertEquals(10.0, announcementView.valueForRent)
                 Assertions.assertEquals(addressId, announcementView.location.id)
             }
 

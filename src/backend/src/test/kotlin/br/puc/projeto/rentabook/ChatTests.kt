@@ -155,9 +155,12 @@ class ChatTests {
                             bookId = "f1u-swEACAAJ",
                             images = listOf(),
                             description = "description",
-                            value = 10,
+                            valueForRent = 10.0,
+                            valueForSale = null,
                             locationId = addressId,
-                            announcementType = CreateAnnouncementForm.RENT,
+                            rent = true,
+                            sale = false,
+                            trade = false,
                         )
                     )
                 )
@@ -173,7 +176,7 @@ class ChatTests {
                 Assertions.assertEquals("f1u-swEACAAJ", announcementView.book.id)
                 Assertions.assertEquals("description", announcementView.description)
                 Assertions.assertEquals(0, announcementView.images.size)
-                Assertions.assertEquals(10, announcementView.value)
+                Assertions.assertEquals(10.0, announcementView.valueForRent)
             }
 
         mockMvc.perform(
@@ -252,9 +255,12 @@ class ChatTests {
                             bookId = "f1u-swEACAAJ",
                             images = listOf(),
                             description = "description",
-                            value = 10,
+                            valueForRent = 10.0,
+                            valueForSale = null,
                             locationId = addressId,
-                            announcementType = CreateAnnouncementForm.RENT,
+                            rent = true,
+                            sale = false,
+                            trade = false,
                         )
                     )
                 )
@@ -271,7 +277,7 @@ class ChatTests {
                 Assertions.assertEquals("f1u-swEACAAJ", announcementView.book.id)
                 Assertions.assertEquals("description", announcementView.description)
                 Assertions.assertEquals(0, announcementView.images.size)
-                Assertions.assertEquals(10, announcementView.value)
+                Assertions.assertEquals(10.0, announcementView.valueForRent)
             }
 
         mockMvc.perform(
@@ -376,9 +382,12 @@ class ChatTests {
                             bookId = "f1u-swEACAAJ",
                             images = listOf(),
                             description = "description",
-                            value = 10,
+                            valueForRent = 10.0,
+                            valueForSale = null,
                             locationId = addressId,
-                            announcementType = CreateAnnouncementForm.RENT,
+                            rent = true,
+                            sale = false,
+                            trade = false,
                         )
                     )
                 )
@@ -394,7 +403,7 @@ class ChatTests {
                 Assertions.assertEquals("f1u-swEACAAJ", announcementView.book.id)
                 Assertions.assertEquals("description", announcementView.description)
                 Assertions.assertEquals(0, announcementView.images.size)
-                Assertions.assertEquals(10, announcementView.value)
+                Assertions.assertEquals(10.0, announcementView.valueForRent)
             }
 
         mockMvc.perform(

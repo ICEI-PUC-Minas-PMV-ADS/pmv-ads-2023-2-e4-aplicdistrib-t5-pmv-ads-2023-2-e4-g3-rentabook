@@ -166,9 +166,12 @@ class CustomTests {
                             bookId = "f1u-swEACAAJ",
                             images = listOf(),
                             description = "description",
-                            value = 10,
+                            valueForRent = null,
+                            valueForSale = 10.0,
                             locationId = addressId,
-                            announcementType = CreateAnnouncementForm.SALE,
+                            rent = false,
+                            sale = true,
+                            trade = false,
                         )
                     )
                 )
@@ -197,9 +200,12 @@ class CustomTests {
                             bookId = "EA2M17ApuMEC",
                             images = listOf(),
                             description = "description",
-                            value = 10,
+                            valueForRent = 10.0,
+                            valueForSale = null,
                             locationId = addressId,
-                            announcementType = CreateAnnouncementForm.RENT,
+                            rent = true,
+                            sale = false,
+                            trade = false,
                         )
                     )
                 )
@@ -445,9 +451,12 @@ class CustomTests {
                             bookId = "f1u-swEACAAJ",
                             images = listOf(),
                             description = "description",
-                            value = 10,
+                            valueForRent = 10.0,
+                            valueForSale = null,
                             locationId = addressId,
-                            announcementType = CreateAnnouncementForm.RENT,
+                            rent = true,
+                            sale = false,
+                            trade = false,
                         )
                     )
                 )
@@ -476,9 +485,12 @@ class CustomTests {
                             bookId = "EA2M17ApuMEC",
                             images = listOf(),
                             description = "description",
-                            value = 10,
+                            valueForRent = 10.0,
+                            valueForSale = null,
                             locationId = addressId,
-                            announcementType = CreateAnnouncementForm.RENT,
+                            rent = true,
+                            sale = false,
+                            trade = false,
                         )
                     )
                 )
@@ -757,9 +769,12 @@ class CustomTests {
                             bookId = "f1u-swEACAAJ",
                             images = listOf(),
                             description = "description",
-                            value = 10,
+                            valueForRent = null,
+                            valueForSale = 10.0,
                             locationId = addressId,
-                            announcementType = CreateAnnouncementForm.SALE,
+                            rent = false,
+                            sale = true,
+                            trade = false,
                         )
                     )
                 )
@@ -788,9 +803,12 @@ class CustomTests {
                             bookId = "EA2M17ApuMEC",
                             images = listOf(),
                             description = "description",
-                            value = 10,
+                            valueForRent = null,
+                            valueForSale = 10.0,
                             locationId = addressId,
-                            announcementType = CreateAnnouncementForm.SALE,
+                            rent = false,
+                            sale = true,
+                            trade = false,
                         )
                     )
                 )
