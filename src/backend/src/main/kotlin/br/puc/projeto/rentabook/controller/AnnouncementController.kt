@@ -126,7 +126,7 @@ class AnnouncementController(
         @RequestParam sale: Boolean?,
         @RequestParam trade: Boolean?,
         @PageableDefault(
-            size = 9
+            size = 12
         )pageable: Pageable
     ): Page<CleanAnnouncementView> {
         return announcementService.findByFilters(city, bookId, rent, sale, trade, pageable)
