@@ -6,6 +6,9 @@ import br.puc.projeto.rentabook.mapper.ChatViewMapper
 import br.puc.projeto.rentabook.mapper.CreateChatFormMapper
 import br.puc.projeto.rentabook.repository.ChatRepository
 import br.puc.projeto.rentabook.repository.UserRepository
+import br.puc.projeto.rentabook.utils.AuthenticationUtils
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 
@@ -23,6 +26,12 @@ class ChatService(
             chatRepository.save(createChatFormMapper.map(createChatForm)).run {
                 chatViewMapper.map(this)
             }
+        }
+    }
+
+    fun getAllChats(pageable: Pageable): Page<ChatView>{
+        return AuthenticationUtils.authenticate(userRepository){user ->
+            chatRepository.findByOwnerId(user.id!!, pageable)
         }
     }
 }

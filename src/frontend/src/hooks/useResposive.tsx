@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Dimensions } from "react-native"
 
-const useMediaQuery = (minWidth: number, maxWidth: number) => {
+export const useMediaQuery = (minWidth: number, maxWidth: number) => {
   const [width, setWidth] = useState(Dimensions.get('window').width)
   Dimensions.addEventListener('change', (e) => {
     const width = e.window.width;

@@ -6,6 +6,7 @@ import br.puc.projeto.rentabook.mapper.ChatMessageViewMapper
 import br.puc.projeto.rentabook.mapper.CreateChatMessageFormMapper
 import br.puc.projeto.rentabook.model.ChatMessage
 import br.puc.projeto.rentabook.repository.ChatMessageRepository
+import br.puc.projeto.rentabook.repository.ChatRepository
 import br.puc.projeto.rentabook.repository.UserRepository
 import br.puc.projeto.rentabook.utils.AuthenticationUtils
 import org.springframework.data.domain.Page
@@ -13,6 +14,7 @@ import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class ChatMessageService(
@@ -20,10 +22,13 @@ class ChatMessageService(
     private val chatMessageRepository: ChatMessageRepository,
     private val createChatMessageFormMapper: CreateChatMessageFormMapper,
     private val chatMessageViewMapper: ChatMessageViewMapper,
+    private val chatRepository: ChatRepository
 ) {
     fun createChatMessage(createChatMessageForm: CreateChatMessageForm): ChatMessageView {
         return AuthenticationUtils.authenticate(userRepository) {
             chatMessageRepository.save(createChatMessageFormMapper.map(createChatMessageForm)).run {
+                chat.latestMessageDate = LocalDateTime.now()
+                chatRepository.save(chat)
                 chatMessageViewMapper.map(this)
             }
         }

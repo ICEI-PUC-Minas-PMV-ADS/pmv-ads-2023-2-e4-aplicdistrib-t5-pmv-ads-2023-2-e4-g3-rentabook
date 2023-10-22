@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Image, TextInput, StyleSheet } from "react-native";
+import { View, Image, TextInput, StyleSheet, NativeSyntheticEvent, TextInputFocusEventData } from "react-native";
 import { GreyColor, InputLabelGreenColor, DarkGreen } from '../theme/colors';
 import Assets from '../theme/assets';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -13,6 +13,8 @@ type SearchInputProps = {
   placeholder?: string,
   style?: Object,
   onChange?: (value: string) => void,
+  onFocus?: ((e: NativeSyntheticEvent<TextInputFocusEventData>) => void),
+  onBlur?: ((e: NativeSyntheticEvent<TextInputFocusEventData>) => void)
 };
 
 /**
@@ -47,14 +49,8 @@ const SearchInputStyle = StyleSheet.create({
  * https://www.figma.com/file/2lR8urPO212OkkhvDTmmgF/Untitled?type=design&node-id=32-302&mode=design&t=G0WN8D6m416029bq-4
  */
 
-export default function SearchInput({ value = "", placeholder, style, onChange }: SearchInputProps) {
-  const [size, setSize] = React.useState<{ width?: number, height?: number }>({});
-
-  React.useEffect(() => {
-    Image.getSize(Assets.IcSearchIcon, (w, h) => {
-      setSize({ width: w * .6, height: h * .6 })
-    });
-  }, []);
+export default function SearchInput({ value, placeholder, style, onChange, onFocus, onBlur }: SearchInputProps) {
+  const [open, setOpen] = React.useState(false)
 
   return (
     <View style={style}>
@@ -64,8 +60,11 @@ export default function SearchInput({ value = "", placeholder, style, onChange }
           style={SearchInputStyle.input}
           placeholder={placeholder}
           placeholderTextColor='#777777'
-          defaultValue={value}
-          onChangeText={onChange} />
+          onChangeText={onChange}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          value={value}
+        />
       </View>
     </View>
   );

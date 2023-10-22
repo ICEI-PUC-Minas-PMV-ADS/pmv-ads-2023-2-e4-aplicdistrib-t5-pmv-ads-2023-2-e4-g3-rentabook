@@ -2,11 +2,12 @@ package br.puc.projeto.rentabook.dto
 
 import java.time.LocalDateTime
 
-data class AnnouncementView(
-    val id: String,
-    val book: EspecificVolumeGoogleBooksDTO,
+
+data class CleanAnnouncementView(
+    val id: String?,
+    val book: BookView,
     val ownerUser: PublicUserView,
-    val images: List<ImageView>,
+    val images: List<String?>,
     val description: String,
     val createdDate: LocalDateTime,
     val isAvailable: Boolean,
@@ -15,5 +16,5 @@ data class AnnouncementView(
     val trade: Boolean,
     val valueForSale: Double?,
     val valueForRent: Double?,
-    val location: PrivateAddressView,
+    val location: PublicAddressView,
 )
