@@ -20,6 +20,7 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.data.support.PageableExecutionUtils
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
+import java.text.Normalizer
 import java.util.function.LongSupplier
 import java.util.function.Supplier
 import kotlin.Exception
@@ -158,10 +159,6 @@ class AnnouncementService(
     ): Page<CleanAnnouncementView> {
         val query = Query().with(pageable)
 
-        if (!city.isNullOrBlank()) {
-            query.addCriteria(Criteria.where("locationCity").regex(city, "i"))
-        }
-
         if (!bookId.isNullOrBlank()) {
             query.addCriteria(Criteria.where("bookId").`is`(bookId))
         }
@@ -178,8 +175,15 @@ class AnnouncementService(
             query.addCriteria(Criteria.where("trade").`is`(trade))
         }
 
-        val results = mongoTemplate.find(query, Announcement::class.java)
+        var results = mongoTemplate.find(query, Announcement::class.java)
             .toList()
+
+        if (!city.isNullOrBlank()){
+            val sortedList = results.filter {
+                normalizeString(city) == normalizeString(it.location.city)
+            }
+            results = sortedList
+        }
 
         val supplier = fun(): Long { return mongoTemplate.count(query, Announcement::class.java) }
         return PageableExecutionUtils.getPage(results, pageable, supplier)
@@ -203,5 +207,13 @@ class AnnouncementService(
         val pageList = list.subList(startIndex, endIndex)
 
         return PageImpl(pageList, pageable, list.size.toLong())
+    }
+
+    fun normalizeString(s: String): String {
+        return Normalizer.normalize(s, Normalizer.Form.NFD)
+            .replace("[^\\p{ASCII}]".toRegex(), "")
+            .replace(" ","")
+            .lowercase()
+            .trim()
     }
 }

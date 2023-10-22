@@ -108,13 +108,12 @@ export default function Home() {
     )
   }
 
-  let timeOut: any = null
-  const handleSearch = (value: string) => {
-    clearTimeout(timeOut);
-    timeOut = setTimeout(async () => {
+
+  const handleSearch = async (value: string) => {
+    if (value != null && value != "") {
       const data = await bookService.searchBook(value)
       setbookData(data)
-    }, 700);
+    }
   }
 
   const handleBook = (item: BookView) => {
@@ -127,143 +126,149 @@ export default function Home() {
   return (
     <ResponsiveNavbar>
       <Desktop>
-        <View style={styleDesktop.container}>
-          <View style={styleDesktop.topBar}>
-            <View
-              style={styleDesktop.searchContainer}>
-              <SearchInput
-                placeholder="Pesquisar por livro..."
-                style={styleDesktop.searchBar}
-                onChange={(value) => {
-                  setSearchValue(value)
-                  setTimeout(() => {
+        <TouchableWithoutFeedback onPress={() => setSearchOpen(false)}>
+          <View style={styleDesktop.container}>
+            <View style={styleDesktop.topBar}>
+              <Pressable
+                style={styleDesktop.searchContainer}>
+                <SearchInput
+                  placeholder="Pesquisar por livro..."
+                  style={styleDesktop.searchBar}
+                  onChange={(value) => {
                     setBookId(null)
-                    setbookData(null)
-                    handleSearch(value), 1000
-                  })
-                }}
-                onFocus={() => {
-                  setSearchOpen(true)
-                }}
-                value={searchValue}
-              />
-              {
-                searchOpen &&
-                <Pressable onPress={() => setSearchOpen(false)} style={{
-                  width: 450,
-                  height: 450,
-                  backgroundColor: GreyColor,
-                  borderRadius: 3,
-                  shadowColor: '#171717',
-                  shadowOffset: { width: 2, height: 4 },
-                  shadowOpacity: 0.2,
-                  shadowRadius: 3,
-                  position: 'absolute',
-                  paddingTop: 60,
+                    setSearchValue(value)
+                  }}
+                  onFocus={() => {
+                    setSearchOpen(true)
+                  }}
+                  value={searchValue}
+                  onChangeDebounce={(value) => {
+                    handleSearch(value)
+                  }}
+                />
+                {
+                  searchOpen &&
+                  <Pressable onPress={() => setSearchOpen(false)} style={{
+                    width: 450,
+                    height: 450,
+                    backgroundColor: GreyColor,
+                    borderRadius: 3,
+                    shadowColor: '#171717',
+                    shadowOffset: { width: 2, height: 4 },
+                    shadowOpacity: 0.2,
+                    shadowRadius: 3,
+                    position: 'absolute',
+                    paddingTop: 60,
 
-                }}>
-                  <FlatList
-                    data={bookData?.content}
-                    keyExtractor={item => item.id}
-                    numColumns={1}
-                    renderItem={({ item }) => (
-                      <Pressable
-                        onPress={() => handleBook(item)}
-                        style={styleDesktop.searchItem}>
-                        <Image source={getUrlImage(item)} style={styleDesktop.bookImage} />
-                        <View style={styleDesktop.bookTexts}>
-                          <Text style={{ fontSize: 16 }}>{item.title?.slice(0, 35)}</Text>
-                          <Text>{item.authors == null ? "Autor desconhecido" : item.authors[0]?.slice(0, 35)}</Text>
-                          <Text>{item.publishedDate}</Text>
-                        </View>
-                      </Pressable>
-                    )}
-                  />
-                </Pressable>
-              }
-            </View>
-            <View style={styleDesktop.dropDownContainer}>
-              <Picker
-                style={styleDesktop.dropDown}
-                selectedValue={sort}
-                onValueChange={(itemValue, itemIndex) =>
-                  setSort(itemValue)
-                }>
-                <Picker.Item
-                  label={dropDownData[0].label} value={dropDownData[0].value} />
-                <Picker.Item
-                  label={dropDownData[1].label} value={dropDownData[1].value} />
-                {
-                  rentSort &&
-                  <>
-                    <Picker.Item
-                      label={dropDownData[2].label} value={dropDownData[2].value} />
-                    <Picker.Item
-                      label={dropDownData[3].label} value={dropDownData[3].value} />
-                  </>
+                  }}>
+                    <FlatList
+                      data={bookData?.content}
+                      keyExtractor={item => Math.random().toString()}
+                      numColumns={1}
+                      renderItem={({ item }) => (
+                        <Pressable
+                          onPress={() => handleBook(item)}
+                          style={styleDesktop.searchItem}>
+                          <Image source={getUrlImage(item)} style={styleDesktop.bookImage} />
+                          <View style={styleDesktop.bookTexts}>
+                            <Text style={{ fontSize: 16 }}>{item.title?.slice(0, 35)}</Text>
+                            <Text>{item.authors == null ? "Autor desconhecido" : item.authors[0]?.slice(0, 35)}</Text>
+                            <Text>{item.publishedDate}</Text>
+                          </View>
+                        </Pressable>
+                      )}
+                    />
+                  </Pressable>
                 }
-                {
-                  saleSort &&
-                  <Picker.Item
-                    label={dropDownData[4].label} value={dropDownData[4].value} />
-                }
-                {
-                  saleSort &&
-                  <Picker.Item
-                    label={dropDownData[5].label} value={dropDownData[5].value} />
-                }
-              </Picker>
-            </View>
-          </View>
-          <View style={styleDesktop.leftBar}>
-            <View style={styleDesktop.buttonsContainer}>
-              <Pressable style={styleDesktop.addressButtom}>
-                <View>
-                  <Text style={{ fontSize: 18, textAlign: 'center' }}>Localização</Text>
-                  <Text>Meu endereço</Text>
-                </View>
               </Pressable>
-              <Text style={{ fontSize: 18 }}>Filtrar por:</Text>
-              <PrimaryButton
-                style={{}}
-                activeStyle={sale}
-                onPress={() => setSale(!sale)}
-                label='Disponível para venda'
-              />
-              <PrimaryButton
-                style={{}}
-                activeStyle={rent}
-                onPress={() => setRent(!rent)}
-                label='Disponível para aluguel'
-              />
-              <PrimaryButton
-                style={{}}
-                activeStyle={trade}
-                onPress={() => setTrade(!trade)}
-                label='Disponível para troca'
-              />
+              <TouchableWithoutFeedback onPress={() => setSearchOpen(false)}>
+                <View style={styleDesktop.dropDownContainer}>
+                  <Picker
+                    style={styleDesktop.dropDown}
+                    selectedValue={sort}
+                    onValueChange={(itemValue, itemIndex) =>
+                      setSort(itemValue)
+                    }>
+                    <Picker.Item
+                      label={dropDownData[0].label} value={dropDownData[0].value} />
+                    <Picker.Item
+                      label={dropDownData[1].label} value={dropDownData[1].value} />
+                    {
+                      rentSort &&
+                      <>
+                        <Picker.Item
+                          label={dropDownData[2].label} value={dropDownData[2].value} />
+                        <Picker.Item
+                          label={dropDownData[3].label} value={dropDownData[3].value} />
+                      </>
+                    }
+                    {
+                      saleSort &&
+                      <Picker.Item
+                        label={dropDownData[4].label} value={dropDownData[4].value} />
+                    }
+                    {
+                      saleSort &&
+                      <Picker.Item
+                        label={dropDownData[5].label} value={dropDownData[5].value} />
+                    }
+                  </Picker>
+                </View>
+              </TouchableWithoutFeedback>
             </View>
+            <TouchableWithoutFeedback onPress={() => setSearchOpen(false)}>
+              <View style={styleDesktop.leftBar}>
+                <View style={styleDesktop.buttonsContainer}>
+                  <Pressable style={styleDesktop.addressButtom}>
+                    <View>
+                      <Text style={{ fontSize: 18, textAlign: 'center' }}>Localização</Text>
+                      <Text>Meu endereço</Text>
+                    </View>
+                  </Pressable>
+                  <Text style={{ fontSize: 18 }}>Filtrar por:</Text>
+                  <PrimaryButton
+                    style={{}}
+                    activeStyle={sale}
+                    onPress={() => setSale(!sale)}
+                    label='Disponível para venda'
+                  />
+                  <PrimaryButton
+                    style={{}}
+                    activeStyle={rent}
+                    onPress={() => setRent(!rent)}
+                    label='Disponível para aluguel'
+                  />
+                  <PrimaryButton
+                    style={{}}
+                    activeStyle={trade}
+                    onPress={() => setTrade(!trade)}
+                    label='Disponível para troca'
+                  />
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={() => setSearchOpen(false)}>
+              <View style={styleDesktop.addsContainer}>
+                {
+                  useMediaQuery(1025, 1300) &&
+                  <FlatList
+                    data={data?.content}
+                    numColumns={2}
+                    renderItem={({ item }) => renderItem(item)} />
+                }
+                {
+                  !useMediaQuery(1025, 1300) &&
+                  <FlatList
+                    data={data?.content}
+                    numColumns={3}
+                    renderItem={({ item }) => renderItem(item)} />
+                }
+              </View>
+            </TouchableWithoutFeedback>
           </View>
-          <View style={styleDesktop.addsContainer}>
-            {
-              useMediaQuery(1025, 1300) &&
-              <FlatList
-                data={data?.content}
-                numColumns={2}
-                renderItem={({ item }) => renderItem(item)} />
-            }
-            {
-              !useMediaQuery(1025, 1300) &&
-              <FlatList
-                data={data?.content}
-                numColumns={3}
-                renderItem={({ item }) => renderItem(item)} />
-            }
-          </View>
-        </View>
+        </TouchableWithoutFeedback>
       </Desktop>
     </ResponsiveNavbar >
-
   );
 }
 

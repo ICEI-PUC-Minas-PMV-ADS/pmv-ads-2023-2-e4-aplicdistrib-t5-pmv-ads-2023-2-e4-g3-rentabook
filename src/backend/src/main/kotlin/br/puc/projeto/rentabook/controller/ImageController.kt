@@ -24,7 +24,7 @@ class ImageController(
         return imageService.getImage(id).run {
             if(this == null){
                 val currentDirectory = System.getProperty("user.dir")
-                val image = File("$currentDirectory/src/main/kotlin/br/puc/projeto/rentabook/images/defaultImages/notFoundImage.jpg")
+                val image = File("$currentDirectory/src/backend/src/main/kotlin/br/puc/projeto/rentabook/images/defaultImages/notFoundImage.jpg")
                 val imageBytes = Files.readAllBytes(image.toPath())
                 response.contentType = "image/jpeg"
                 val output = response.outputStream

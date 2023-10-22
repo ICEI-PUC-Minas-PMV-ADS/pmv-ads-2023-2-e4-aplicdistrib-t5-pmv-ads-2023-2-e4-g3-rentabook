@@ -33,5 +33,5 @@ export const getValueSale = (item: CleanAnnouncementView) => (item.valueForSale 
 
 export const getFirstImageLink = (item: CleanAnnouncementView) => {
   const imageId = item.images[0] == null ? "noimage" : item.images[0]
-  return API + '/public/image/' + imageId
+  return API + '/public/image/' + '65353a2ab088dd1c05a30e80'
 }

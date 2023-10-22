@@ -10,7 +10,7 @@ export const announcementsService = {
     if (city != null) {
       query = query + `city=${city}&`
     }
-    if (bookId != null) {
+    if (bookId != null && bookId != "") {
       query = query + `bookId=${bookId}&`
     }
     if (rent != null) {

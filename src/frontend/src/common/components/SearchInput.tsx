@@ -3,6 +3,7 @@ import { View, Image, TextInput, StyleSheet, NativeSyntheticEvent, TextInputFocu
 import { GreyColor, InputLabelGreenColor, DarkGreen } from '../theme/colors';
 import Assets from '../theme/assets';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import useDebounce from '../../hooks/useDebounce';
 
 /**
  * Props
@@ -14,7 +15,8 @@ type SearchInputProps = {
   style?: Object,
   onChange?: (value: string) => void,
   onFocus?: ((e: NativeSyntheticEvent<TextInputFocusEventData>) => void),
-  onBlur?: ((e: NativeSyntheticEvent<TextInputFocusEventData>) => void)
+  onBlur?: ((e: NativeSyntheticEvent<TextInputFocusEventData>) => void),
+  onChangeDebounce?: (value: string) => void,
 };
 
 /**
@@ -49,8 +51,14 @@ const SearchInputStyle = StyleSheet.create({
  * https://www.figma.com/file/2lR8urPO212OkkhvDTmmgF/Untitled?type=design&node-id=32-302&mode=design&t=G0WN8D6m416029bq-4
  */
 
-export default function SearchInput({ value, placeholder, style, onChange, onFocus, onBlur }: SearchInputProps) {
-  const [open, setOpen] = React.useState(false)
+export default function SearchInput({ value, placeholder, style, onChange, onFocus, onBlur, onChangeDebounce }: SearchInputProps) {
+  const debounceChange = useDebounce(onChangeDebounce, 700)
+
+  React.useEffect(() => {
+    if (onChangeDebounce) {
+      debounceChange(value)
+    }
+  }, [value])
 
   return (
     <View style={style}>
