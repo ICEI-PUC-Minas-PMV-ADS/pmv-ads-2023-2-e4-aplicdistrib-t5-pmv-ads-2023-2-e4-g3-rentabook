@@ -1,14 +1,8 @@
 package br.puc.projeto.rentabook.controller
 
-import br.puc.projeto.rentabook.exception.NotFoundException
-import br.puc.projeto.rentabook.repository.ImageRepository
 import br.puc.projeto.rentabook.service.ImageService
-import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.servlet.http.HttpServletResponse
-import org.springframework.data.repository.findByIdOrNull
-import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
@@ -20,19 +14,17 @@ class ImageController(
     private val imageService: ImageService
 ) {
     @GetMapping("/public/image/{id}")
-    fun getImagem (@PathVariable id: String, response: HttpServletResponse): ResponseEntity<ByteArray> {
+    fun getImagem(@PathVariable id: String, response: HttpServletResponse): ResponseEntity<ByteArray> {
         return imageService.getImage(id).run {
-            if(this == null){
-                val currentDirectory = System.getProperty("user.dir")
-                val image = File("$currentDirectory/src/backend/src/main/kotlin/br/puc/projeto/rentabook/images/defaultImages/notFoundImage.jpg")
+            if (this == null) {
+                val image = File("/images/defaultImages/notFoundImage.jpg")
                 val imageBytes = Files.readAllBytes(image.toPath())
                 response.contentType = "image/jpeg"
                 val output = response.outputStream
                 output.write(imageBytes)
                 output.close()
                 ResponseEntity.ok().build()
-            }
-            else {
+            } else {
                 val image = File(this.path ?: throw Exception("Houve um problema ao encontrar o caminho da imagem"))
                 val imageBytes = Files.readAllBytes(image.toPath())
                 response.contentType = type

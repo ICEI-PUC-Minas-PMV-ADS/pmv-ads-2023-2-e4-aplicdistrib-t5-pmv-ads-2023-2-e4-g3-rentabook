@@ -19,13 +19,12 @@ class ImageService(
         return detectedAndValidateType(image).let { imageType ->
             imageRepository.save(Image()).run {
                 id as String
-                val currentDirectory = System.getProperty("user.dir")
                 val category = mapOf(
                     true to "users",
                     false to "announcements"
                 )
                 val categoryPath = category[userPhoto]
-                val uploadDir = File("$currentDirectory/src/backend/src/main/kotlin/br/puc/projeto/rentabook/images/$categoryPath")
+                val uploadDir = File("/images/$categoryPath")
                 if (!uploadDir.exists()) {
                     uploadDir.mkdirs()
                 }
