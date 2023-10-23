@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.mongodb.repository.MongoRepository
 
 interface ChatRepository : MongoRepository<Chat, String> {
-    fun findByOwnerId(id: String, pageable: Pageable): Page<ChatView>
+    fun findByOwnerIdOrLeadId(ownerId: String, leadId: String, pageable: Pageable): Page<Chat>
 }

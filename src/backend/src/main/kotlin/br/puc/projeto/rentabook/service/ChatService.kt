@@ -31,7 +31,11 @@ class ChatService(
 
     fun getAllChats(pageable: Pageable): Page<ChatView>{
         return AuthenticationUtils.authenticate(userRepository){user ->
-            chatRepository.findByOwnerId(user.id!!, pageable)
+            chatRepository.findByOwnerIdOrLeadId(user.id!!, user.id,pageable).run {
+                map { t ->
+                    chatViewMapper.map(t)
+                }
+            }
         }
     }
 }
