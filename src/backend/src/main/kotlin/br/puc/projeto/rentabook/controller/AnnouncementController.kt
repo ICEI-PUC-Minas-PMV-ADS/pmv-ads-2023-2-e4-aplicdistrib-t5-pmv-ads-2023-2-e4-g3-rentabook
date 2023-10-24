@@ -46,7 +46,7 @@ class AnnouncementController(
         name = "bearerAuth"
     )
     @PostMapping("/new")
-    @CacheEvict("Announcements")
+    @CacheEvict("Announcements", allEntries = true)
     fun createAnnouncement(@RequestBody createAnnouncementForm: CreateAnnouncementForm): AnnouncementView {
         return announcementService.createAnnouncement(createAnnouncementForm)
     }
@@ -102,7 +102,7 @@ class AnnouncementController(
     @SecurityRequirement(
         name = "bearerAuth"
     )
-    @CacheEvict("Announcements")
+    @CacheEvict("Announcements",allEntries = true)
     @PostMapping("/images/{id}")
     fun uploadImage(@RequestBody image: MultipartFile, @PathVariable id: String): AnnouncementView {
         return announcementService.uploadImage(image, id)
@@ -112,7 +112,7 @@ class AnnouncementController(
         name = "bearerAuth"
     )
     @DeleteMapping("/images")
-    @CacheEvict("Announcements")
+    @CacheEvict("Announcements", allEntries = true)
     fun deleteImage(@RequestBody form: DeleteImageAnnouncementForm): AnnouncementView {
         return announcementService.deleteImage(form)
     }
