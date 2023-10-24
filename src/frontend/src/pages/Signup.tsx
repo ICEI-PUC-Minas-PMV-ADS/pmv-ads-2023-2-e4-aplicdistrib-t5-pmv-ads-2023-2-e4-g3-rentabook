@@ -1,58 +1,79 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { AuthContext } from '../contexts/Auth/AuthContext';
 import { StackTypes } from '../routes/StackTypes';
 import Input from '../common/components/Input';
 import PrimaryButton from '../common/components/PrimaryButton';
 import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: "#E1DCC5",
-  },
-  input: {
-    margin: 10,
-  },
-  leftSection: {
-    flex: 1,
-    padding: 20,
-    justifyContent: 'center',
-  },
-  rightSection: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  welcomeText: {
-    fontSize: 24,
-    textAlign: 'center',
-  }
-});
-
 export default function Signup() {
   const auth = useContext(AuthContext);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigation = useNavigation<StackTypes>();
+  const [orientation, setOrientation] = useState(Dimensions.get('window').width > Dimensions.get('window').height ? 'LANDSCAPE' : 'PORTRAIT');
+  const navigation = useNavigation<StackTypes>()
+
+  useEffect(() => {
+    const onChange = ({ window: { width, height } }) => {
+      setOrientation(width > height ? 'LANDSCAPE' : 'PORTRAIT');
+    };
+
+    Dimensions.addEventListener("change", onChange);
+
+    return () => {
+      Dimensions.removeEventListener("change", onChange);
+    };
+  }, []);
 
   const handleSignup = async () => {
     if (name && email && password) {
-      const isRegistered = await auth.signup({ name, email, password });
-      if (isRegistered) {
-        navigation.navigate("Anúncios", {});
-      } else {
-        throw "Erro ao cadastrar o usuário";
+      try {
+        const isRegistered = await auth.signup({ name: name, email: email, password: password });
+        if (isRegistered) {
+          navigation.navigate("Anúncios", {})
+        } else throw new Error("Erro ao cadastrar o usuário");
+      } catch (error) {
+        console.error(error);
       }
     }
   }
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      flexDirection: orientation === 'LANDSCAPE' ? 'row' : 'column-reverse',
+      backgroundColor: "#E1DCC5",
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    inputSection: {
+      flexBasis: orientation === 'LANDSCAPE' ? '70%' : '75%',
+      padding: 20,
+      justifyContent: 'center',
+      maxWidth: 500,
+    },
+    welcomeSection: {
+      flexBasis: orientation === 'LANDSCAPE' ? '30%' : '25%',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    input: {
+      marginVertical: 20,
+      fontSize: 20,
+      height: 60,
+    },
+    welcomeText: {
+      fontSize: 24,
+      textAlign: 'center',
+    }
+  });
+
   return (
     <ResponsiveNavbar>
       <View style={styles.container}>
-        <View style={styles.leftSection}>
+        <View style={styles.inputSection}>
           <Input
             style={styles.input}
             value={name}
@@ -81,8 +102,8 @@ export default function Signup() {
             label='Continuar'
           />
         </View>
-        <View style={styles.rightSection}>
-          <Text style={styles.welcomeText}>Crie uma nova conta</Text>
+        <View style={styles.welcomeSection}>
+          <Text style={styles.welcomeText}>Bem-vindo ao Rentabook! Crie uma nova conta</Text>
         </View>
       </View>
     </ResponsiveNavbar>
