@@ -23,10 +23,9 @@ interface Message {
 }
 
 const ChatComponent = ({ chatId, currentUser }: ChatComponentProps) => {
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState<string>("");
   const [messages, setMessages] = useState<Message[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const flatListRef = useRef<FlatList | null>(null);
 
   useEffect(() => {
@@ -59,14 +58,16 @@ const ChatComponent = ({ chatId, currentUser }: ChatComponentProps) => {
       if (response.status === 200) {
         const data = await response.json();
         if (data && data.content) {
-          const chatMessages = data.content.map((item: any) => ({
+          const chatMessages: Message[] = data.content.map((item: any) => ({
             id: item.id,
             text: item.message,
             sender: item.sender.name,
             timestamp: item.latestMessageDate,
           }));
+
           setMessages(chatMessages);
 
+          // Role para a última mensagem após atualizar
           flatListRef.current?.scrollToEnd({ animated: true });
         }
       } else {
@@ -132,15 +133,17 @@ const ChatComponent = ({ chatId, currentUser }: ChatComponentProps) => {
             style={{
               flexDirection: "row",
               justifyContent:
-                item.sender === "currentUser" ? "flex-start" : "flex-end",
+                item.sender === currentUser ? "flex-end" : "flex-start",
             }}
           >
             <View
-              style={
-                item.sender === "currentUser"
-                  ? styles.messageReceived
-                  : styles.messageSent
-              }
+              style={[
+                styles.messageContainer,
+                {
+                  alignSelf:
+                    item.sender === currentUser ? "flex-end" : "flex-start",
+                },
+              ]}
             >
               <Text style={styles.messageText}>{item.text}</Text>
             </View>
@@ -151,12 +154,10 @@ const ChatComponent = ({ chatId, currentUser }: ChatComponentProps) => {
       />
       <View style={styles.inputContainer}>
         <TextInput
-          style={[styles.input, isFocused ? styles.inputFocused : null]}
+          style={styles.input}
           placeholder="Digite sua mensagem"
           value={message}
           onChangeText={setMessage}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
         />
         <TouchableOpacity style={styles.sendButton} onPress={handleSubmit}>
           <Text style={styles.sendButtonText}>Enviar</Text>
@@ -191,30 +192,13 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#97C7AF",
   },
-  inputFocused: {
-    borderColor: "#406C4B",
-    borderWidth: 2,
-    outline: "none",
-  },
-  messageSent: {
-    backgroundColor: "#F3EDD7",
+  messageContainer: {
     borderRadius: 10,
     marginTop: 5,
     marginBottom: 5,
-    marginRight: 10,
-    marginLeft: 50,
     padding: 10,
     maxWidth: "70%",
-  },
-  messageReceived: {
-    backgroundColor: "#F3EDD7",
-    borderRadius: 10,
-    marginTop: 5,
-    marginBottom: 5,
-    marginRight: 50,
-    marginLeft: 10,
-    padding: 10,
-    maxWidth: "70%",
+    backgroundColor: "#F3EDD7", // Cor de fundo padrão
   },
   messageText: {
     color: "#406C4B",
