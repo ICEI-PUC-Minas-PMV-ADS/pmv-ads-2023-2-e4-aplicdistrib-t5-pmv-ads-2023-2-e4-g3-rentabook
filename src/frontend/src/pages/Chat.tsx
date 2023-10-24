@@ -1,19 +1,27 @@
-import { View, StyleSheet, Text } from "react-native";
-import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
+import React, { useState } from "react";
+import { View, StyleSheet } from "react-native";
 
-const style = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#E1DCC5",
-  },
-});
+import ConversationsList from "../common/components/ConversationList";
+import ChatComponent from "../common/components/ChatComponent";
 
 export default function Chat() {
+  const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
+
+  const handleConversationSelect = (chatId: string | null) => {
+    setSelectedChatId(chatId);
+  };
+
   return (
-    <ResponsiveNavbar>
-      <View style={style.container}>
-        <Text>Mensagens</Text>
-      </View>
-    </ResponsiveNavbar>
+    <View style={styles.container}>
+      <ConversationsList onConversationSelect={handleConversationSelect} />
+      <ChatComponent chatId={selectedChatId} />
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: "row",
+  },
+});
