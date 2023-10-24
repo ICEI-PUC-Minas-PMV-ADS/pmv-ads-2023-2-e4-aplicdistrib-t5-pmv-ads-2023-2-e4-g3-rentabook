@@ -10,12 +10,14 @@ import br.puc.projeto.rentabook.utils.AuthenticationUtils
 import br.puc.projeto.rentabook.exception.NotFoundException
 import br.puc.projeto.rentabook.mapper.*
 import br.puc.projeto.rentabook.model.Announcement
+import br.puc.projeto.rentabook.utils.TextUtils
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.mongodb.core.query.TextCriteria
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.data.support.PageableExecutionUtils
 import org.springframework.stereotype.Service
@@ -157,7 +159,13 @@ class AnnouncementService(
         trade: Boolean?,
         pageable: Pageable
     ): Page<CleanAnnouncementView> {
-        val query = Query().with(pageable)
+
+        val query = Query()
+
+        if (!city.isNullOrBlank()) {
+            val normalizedCity = TextUtils.normalizeString(city)
+            query.addCriteria(Criteria.where("locationNormalizedCityName").regex(normalizedCity, "i"))
+        }
 
         if (!bookId.isNullOrBlank()) {
             query.addCriteria(Criteria.where("bookId").`is`(bookId))
@@ -174,18 +182,14 @@ class AnnouncementService(
         if (trade != null) {
             query.addCriteria(Criteria.where("trade").`is`(trade))
         }
+        val resultsTotal = mongoTemplate.find(query, Announcement::class.java)
+            .toList().size.toLong()
 
-        var results = mongoTemplate.find(query, Announcement::class.java)
+        val results = mongoTemplate.find(query.with(pageable), Announcement::class.java)
             .toList()
 
-        if (!city.isNullOrBlank()){
-            val sortedList = results.filter {
-                normalizeString(city) == normalizeString(it.location.city)
-            }
-            results = sortedList
-        }
+        val supplier = fun(): Long { return resultsTotal }
 
-        val supplier = fun(): Long { return mongoTemplate.count(query, Announcement::class.java) }
         return PageableExecutionUtils.getPage(results, pageable, supplier)
             .map { t -> cleanAnnouncementViewMapper.map(t) }
     }
@@ -209,11 +213,4 @@ class AnnouncementService(
         return PageImpl(pageList, pageable, list.size.toLong())
     }
 
-    fun normalizeString(s: String): String {
-        return Normalizer.normalize(s, Normalizer.Form.NFD)
-            .replace("[^\\p{ASCII}]".toRegex(), "")
-            .replace(" ","")
-            .lowercase()
-            .trim()
-    }
 }

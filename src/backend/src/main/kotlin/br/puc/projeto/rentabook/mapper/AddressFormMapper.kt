@@ -2,6 +2,7 @@ package br.puc.projeto.rentabook.mapper
 
 import br.puc.projeto.rentabook.dto.AddressForm
 import br.puc.projeto.rentabook.model.Address
+import br.puc.projeto.rentabook.utils.TextUtils
 import org.springframework.stereotype.Component
 
 @Component
@@ -15,7 +16,8 @@ class AddressFormMapper : Mapper<AddressForm, Address> {
             complement = t.complement,
             neighborhood = t.neighborhood,
             city = t.city,
-            state = t.state
+            state = t.state,
+            normalizedCityName = TextUtils.normalizeString(t.city)
         )
     }
 }
