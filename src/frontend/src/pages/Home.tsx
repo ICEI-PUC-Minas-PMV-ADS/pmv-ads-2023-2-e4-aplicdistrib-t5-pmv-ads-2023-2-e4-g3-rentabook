@@ -292,42 +292,46 @@ export default function Home() {
                     </View>
                   </View>
 
-                  {
-                    authContext.user &&
-                    <View style={styleDesktop.buttomContainerModal}>
-                      {
-                        authContext.defaultAddress != null &&
-                        <View style={styleDesktop.buttomContainerModal}>
-                          <PrimaryButton
-                            style={{ width: 180 }}
-                            activeStyle={false}
-                            onPress={() => {
-                              authContext.removeDefaultAddress()
-                              setIsVisible(false)
-                            }}
-                            label='Limpar'
-                          />
-                        </View>
-                      }
-                      <PrimaryButton
-                        style={{ width: 180 }}
-                        activeStyle={false}
-                        onPress={() => setIsVisible(false)}
-                        label='Cancelar'
-                      />
-                      <PrimaryButton
-                        style={{ width: 180 }}
-                        activeStyle={true}
-                        onPress={() => {
-                          if (selectedAddress) {
-                            authContext.setDefaultAddressLocalStorage(selectedAddress)
+
+                  <View style={styleDesktop.buttomContainerModal}>
+                    {
+                      authContext.defaultAddress != null &&
+                      <View style={styleDesktop.buttomContainerModal}>
+                        <PrimaryButton
+                          style={{ width: 180 }}
+                          activeStyle={false}
+                          onPress={() => {
+                            authContext.removeDefaultAddress()
                             setIsVisible(false)
-                          }
-                        }}
-                        label='Salvar alterações'
-                      />
-                    </View>
-                  }
+                          }}
+                          label='Limpar'
+                        />
+                      </View>
+                    }
+                    {
+                      authContext.user &&
+                      <>
+                        <PrimaryButton
+                          style={{ width: 180 }}
+                          activeStyle={false}
+                          onPress={() => setIsVisible(false)}
+                          label='Cancelar'
+                        />
+                        <PrimaryButton
+                          style={{ width: 180 }}
+                          activeStyle={true}
+                          onPress={() => {
+                            if (selectedAddress) {
+                              authContext.setDefaultAddressLocalStorage(selectedAddress)
+                              setIsVisible(false)
+                            }
+                          }}
+                          label='Salvar alterações'
+                        />
+                      </>
+                    }
+                  </View>
+
                 </Pressable>
               </View>
             </TouchableWithoutFeedback>

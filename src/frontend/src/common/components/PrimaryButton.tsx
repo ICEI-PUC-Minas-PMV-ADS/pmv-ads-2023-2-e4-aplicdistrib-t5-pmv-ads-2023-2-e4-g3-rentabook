@@ -26,6 +26,7 @@ const ButtonStyle = StyleSheet.create({
     paddingHorizontal: "10%",
     paddingVertical: "6%",
     alignItems: "center",
+    justifyContent: 'center',
     borderStyle: 'solid',
     borderWidth: 3,
     borderColor: PrimaryGreenColor,
