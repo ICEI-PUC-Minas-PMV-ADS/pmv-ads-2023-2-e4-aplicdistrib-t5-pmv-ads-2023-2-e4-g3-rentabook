@@ -6,7 +6,6 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
-  Image,
 } from "react-native";
 import { getToken } from "../../other/Storage";
 
@@ -27,6 +26,7 @@ const ChatComponent = ({ chatId, currentUser }: ChatComponentProps) => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const flatListRef = useRef<FlatList | null>(null);
 
   useEffect(() => {
@@ -66,7 +66,7 @@ const ChatComponent = ({ chatId, currentUser }: ChatComponentProps) => {
             timestamp: item.latestMessageDate,
           }));
           setMessages(chatMessages);
-          // Role para a última mensagem após atualizar
+
           flatListRef.current?.scrollToEnd({ animated: true });
         }
       } else {
@@ -151,13 +151,15 @@ const ChatComponent = ({ chatId, currentUser }: ChatComponentProps) => {
       />
       <View style={styles.inputContainer}>
         <TextInput
-          style={styles.input}
+          style={[styles.input, isFocused ? styles.inputFocused : null]}
           placeholder="Digite sua mensagem"
           value={message}
           onChangeText={setMessage}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
         />
-        <TouchableOpacity onPress={handleSubmit}>
-          <Image source={require("../assets/Send.png")} />
+        <TouchableOpacity style={styles.sendButton} onPress={handleSubmit}>
+          <Text style={styles.sendButtonText}>Enviar</Text>
         </TouchableOpacity>
       </View>
       {loading && <Text>Carregando...</Text>}
@@ -183,9 +185,16 @@ const styles = StyleSheet.create({
   input: {
     flex: 2,
     height: 40,
-    borderColor: "#ccc",
+    borderColor: "#97C7AF",
     borderWidth: 1,
-    padding: 10,
+    borderRadius: 5,
+    padding: 20,
+    backgroundColor: "#97C7AF",
+  },
+  inputFocused: {
+    borderColor: "#406C4B",
+    borderWidth: 2,
+    outline: "none",
   },
   messageSent: {
     backgroundColor: "#F3EDD7",
@@ -209,6 +218,16 @@ const styles = StyleSheet.create({
   },
   messageText: {
     color: "#406C4B",
+  },
+  sendButton: {
+    backgroundColor: "#406C4B",
+    padding: 10,
+    borderRadius: 5,
+    marginLeft: 5,
+  },
+  sendButtonText: {
+    color: "#F3EDD7",
+    textAlign: "center",
   },
 });
 

@@ -81,7 +81,6 @@ export default function ConversationsList({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Lista de Conversas</Text>
       <FlatList
         data={conversations}
         keyExtractor={(item) => item.id}
@@ -104,7 +103,6 @@ export default function ConversationsList({
               >
                 {item.owner.name} para {item.lead.name}
               </Text>
-              <Text>ID da Conversa: {item.id}</Text>
             </View>
           </TouchableOpacity>
         )}
@@ -124,7 +122,7 @@ const styles = StyleSheet.create({
   },
   conversationItem: {
     marginBottom: 10,
-    padding: 20,
+    padding: 30,
     width: "100%",
     flex: 1,
     backgroundColor: "#F3EDD7",

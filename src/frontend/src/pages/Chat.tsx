@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
+import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
 
-import ConversationsList from "../common/components/ConversationList"; // Corrigi o nome do arquivo
+import ConversationsList from "../common/components/ConversationList";
 import ChatComponent from "../common/components/ChatComponent";
 
 export default function Chat() {
@@ -12,10 +13,12 @@ export default function Chat() {
   };
 
   return (
-    <View style={styles.container}>
-      <ConversationsList onConversationSelect={handleConversationSelect} />
-      <ChatComponent chatId={selectedChatId} currentUser="Você" />
-    </View>
+    <ResponsiveNavbar>
+      <View style={styles.container}>
+        <ConversationsList onConversationSelect={handleConversationSelect} />
+        <ChatComponent chatId={selectedChatId} currentUser="Você" />
+      </View>
+    </ResponsiveNavbar>
   );
 }
 
