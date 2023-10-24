@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 
-import ConversationsList from "../common/components/ConversationList";
+import ConversationsList from "../common/components/ConversationList"; // Corrigi o nome do arquivo
 import ChatComponent from "../common/components/ChatComponent";
 
 export default function Chat() {
@@ -14,7 +14,7 @@ export default function Chat() {
   return (
     <View style={styles.container}>
       <ConversationsList onConversationSelect={handleConversationSelect} />
-      <ChatComponent chatId={selectedChatId} />
+      <ChatComponent chatId={selectedChatId} currentUser="Você" />
     </View>
   );
 }

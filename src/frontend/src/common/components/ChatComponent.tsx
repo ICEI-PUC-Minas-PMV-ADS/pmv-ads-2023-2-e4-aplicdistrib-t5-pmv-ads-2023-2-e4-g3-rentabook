@@ -13,6 +13,7 @@ import { getToken } from "../../other/Storage";
 type ChatComponentProps = {
   chatId: string | null;
   currentUser: string;
+  onConversationSelect?: (chatId: string | null) => void;
 };
 
 interface Message {
@@ -131,12 +132,12 @@ const ChatComponent = ({ chatId, currentUser }: ChatComponentProps) => {
             style={{
               flexDirection: "row",
               justifyContent:
-                item.sender === currentUser ? "flex-start" : "flex-end",
+                item.sender === "currentUser" ? "flex-start" : "flex-end",
             }}
           >
             <View
               style={
-                item.sender === currentUser
+                item.sender === "currentUser"
                   ? styles.messageReceived
                   : styles.messageSent
               }
