@@ -6,7 +6,9 @@ import br.puc.projeto.rentabook.model.User
 import org.springframework.stereotype.Component
 
 @Component
-class PrivateUserViewMapper: Mapper<User, PrivateUserView> {
+class PrivateUserViewMapper(
+    private val privateAddressViewMapper: PrivateAddressViewMapper
+): Mapper<User, PrivateUserView> {
     override fun map(t: User): PrivateUserView{
         return PrivateUserView(
             id = t.id,
@@ -15,7 +17,7 @@ class PrivateUserViewMapper: Mapper<User, PrivateUserView> {
             email = t.email,
             booksId = t.booksId,
             addresses = t.addresses.map { address ->
-                address.id
+                privateAddressViewMapper.map(address)
             }
         )
     }

@@ -9,5 +9,5 @@ data class PrivateUserView (
     var userImage: String?,
     val email: String,
     val booksId: List<String?>,
-    val addresses: List<String?>,
+    val addresses: List<PrivateAddressView>,
 )
