@@ -4,6 +4,8 @@ import { View, StyleSheet, Text, Button } from "react-native";
 import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
 import { AuthContext } from "../contexts/Auth/AuthContext";
 import { StackTypes } from "../routes/StackTypes";
+import React from "react";
+import ProfileBox from "../common/components/ProfileBox";
 
 
 const style = StyleSheet.create({
@@ -30,6 +32,7 @@ export default function Profile() {
   return (
     <ResponsiveNavbar>
       <View style={style.container}>
+        <ProfileBox />
         <Text>Meu Perfil</Text>
         <Button onPress={handleLogout} title="Logout" />
       </View>
