@@ -15,28 +15,53 @@ export default function Login() {
   const navigation = useNavigation<StackTypes>()
 
   useEffect(() => {
-    Dimensions.addEventListener("change", ({ window: { width, height } }) => {
+    const onChange = ({ window: { width, height } }) => {
       setOrientation(width > height ? 'LANDSCAPE' : 'PORTRAIT');
-    });
+    };
+
+    Dimensions.addEventListener("change", onChange);
+
+    return () => {
+      Dimensions.removeEventListener("change", onChange);
+    };
   }, []);
 
-  const style = StyleSheet.create({
+  const handleLogin = async () => {
+    if (email && password) {
+      try {
+        const isLogged = await auth.login({ email: email, password: password })
+        if (isLogged) {
+          navigation.navigate("Anúncios", {})
+        } else throw new Error("Erro ao logar o usuário");
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
+
+  const styles = StyleSheet.create({
     container: {
       flex: 1,
       flexDirection: orientation === 'LANDSCAPE' ? 'row' : 'column-reverse',
       backgroundColor: "#E1DCC5",
-    },
-    input: {
-      margin: 10,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     inputSection: {
-      flex: orientation === 'LANDSCAPE' ? 1 : 0.7,
+      flexBasis: orientation === 'LANDSCAPE' ? '70%' : '75%',
       padding: 20,
       justifyContent: 'center',
+      maxWidth: 500,
     },
     welcomeSection: {
-      flex: orientation === 'LANDSCAPE' ? 1 : 0.3,
+      flexBasis: orientation === 'LANDSCAPE' ? '30%' : '25%',
       justifyContent: 'center',
+      alignItems: 'center',
+    },
+    input: {
+      marginVertical: 20,
+      fontSize: 20,
+      height: 60,
     },
     welcomeText: {
       fontSize: 24,
@@ -44,42 +69,32 @@ export default function Login() {
     }
   });
 
-  const handleLogin = async () => {
-    if (email && password) {
-      const isLogged = await auth.login({ email: email, password: password })
-      if (isLogged) {
-        navigation.navigate("Anúncios", {})
-      } else throw "Erro ao logar o usuário"
-    }
-
-  }
-
   return (
     <ResponsiveNavbar>
-      <View style={style.container}>
-        <View style={style.inputSection}>
+      <View style={styles.container}>
+        <View style={styles.inputSection}>
           <Input
-            style={style.input}
+            style={styles.input}
             value={email}
             placeholder="Digite seu e-mail"
             label="Email"
             onChangeText={setEmail}
           />
           <Input
-            style={style.input}
+            style={styles.input}
             value={password}
             placeholder="Digite sua senha"
             label="Senha"
             onChangeText={setPassword}
           />
           <PrimaryButton
-            style={style.input}
+            style={styles.input}
             onPress={handleLogin}
             label='Entrar'
           />
         </View>
-        <View style={style.welcomeSection}>
-          <Text style={style.welcomeText}>Bem-vindo ao Rentabook!</Text>
+        <View style={styles.welcomeSection}>
+          <Text style={styles.welcomeText}>Bem-vindo ao Rentabook! Faça seu login</Text>
         </View>
       </View>
     </ResponsiveNavbar>

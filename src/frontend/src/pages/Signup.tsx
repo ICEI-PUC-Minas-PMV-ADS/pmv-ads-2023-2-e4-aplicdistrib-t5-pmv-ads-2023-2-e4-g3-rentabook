@@ -13,48 +13,62 @@ export default function Signup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [orientation, setOrientation] = useState(Dimensions.get('window').width > Dimensions.get('window').height ? 'LANDSCAPE' : 'PORTRAIT');
-  const navigation = useNavigation<StackTypes>();
+  const navigation = useNavigation<StackTypes>()
 
   useEffect(() => {
-    Dimensions.addEventListener("change", ({ window: { width, height } }) => {
+    const onChange = ({ window: { width, height } }) => {
       setOrientation(width > height ? 'LANDSCAPE' : 'PORTRAIT');
-    });
+    };
+
+    Dimensions.addEventListener("change", onChange);
+
+    return () => {
+      Dimensions.removeEventListener("change", onChange);
+    };
   }, []);
+
+  const handleSignup = async () => {
+    if (name && email && password) {
+      try {
+        const isRegistered = await auth.signup({ name: name, email: email, password: password });
+        if (isRegistered) {
+          navigation.navigate("Anúncios", {})
+        } else throw new Error("Erro ao cadastrar o usuário");
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
 
   const styles = StyleSheet.create({
     container: {
       flex: 1,
       flexDirection: orientation === 'LANDSCAPE' ? 'row' : 'column-reverse',
       backgroundColor: "#E1DCC5",
-    },
-    input: {
-      margin: 10,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     inputSection: {
-      flex: orientation === 'LANDSCAPE' ? 1 : 0.7,
+      flexBasis: orientation === 'LANDSCAPE' ? '70%' : '75%',
       padding: 20,
       justifyContent: 'center',
+      maxWidth: 500,
     },
     welcomeSection: {
-      flex: orientation === 'LANDSCAPE' ? 1 : 0.3,
+      flexBasis: orientation === 'LANDSCAPE' ? '30%' : '25%',
       justifyContent: 'center',
+      alignItems: 'center',
+    },
+    input: {
+      marginVertical: 20,
+      fontSize: 20,
+      height: 60,
     },
     welcomeText: {
       fontSize: 24,
       textAlign: 'center',
     }
   });
-
-  const handleSignup = async () => {
-    if (name && email && password) {
-      const isRegistered = await auth.signup({ name, email, password });
-      if (isRegistered) {
-        navigation.navigate("Anúncios", {});
-      } else {
-        throw "Erro ao cadastrar o usuário";
-      }
-    }
-  }
 
   return (
     <ResponsiveNavbar>
@@ -89,7 +103,7 @@ export default function Signup() {
           />
         </View>
         <View style={styles.welcomeSection}>
-          <Text style={styles.welcomeText}>Crie uma nova conta</Text>
+          <Text style={styles.welcomeText}>Bem-vindo ao Rentabook! Crie uma nova conta</Text>
         </View>
       </View>
     </ResponsiveNavbar>
