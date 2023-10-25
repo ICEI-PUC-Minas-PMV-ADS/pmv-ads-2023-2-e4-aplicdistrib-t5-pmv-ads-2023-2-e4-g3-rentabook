@@ -6,6 +6,7 @@ import { StackTypes } from '../routes/StackTypes';
 import Input from '../common/components/Input';
 import PrimaryButton from '../common/components/PrimaryButton';
 import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
+import ProfileBox from "../common/components/ProfileBox";
 
 export default function Login() {
   const auth = useContext(AuthContext);
@@ -20,9 +21,8 @@ export default function Login() {
     };
 
     Dimensions.addEventListener("change", onChange);
-
     return () => {
-      Dimensions.removeEventListener("change", onChange);
+      // Dimensions.removeEventListener("change", onChange);
     };
   }, []);
 

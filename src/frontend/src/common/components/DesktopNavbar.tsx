@@ -63,6 +63,24 @@ export default function DesktopNavbar() {
       <View style={style.navLinkContainer}>
         <View style={style.navLinks}>
           {
+            telaAtual == 'Perfil' &&
+            <Text
+              style={style.activeNavLink}
+              onPress={() => navigation.navigate('Meu Perfil', {})}
+            >
+              Perfil
+            </Text>
+          }
+          {
+            telaAtual != 'Perfil' &&
+            <Text
+              style={style.navLink}
+              onPress={() => navigation.navigate('Meu Perfil', {})}
+            >
+              Perfil
+            </Text>
+          }
+          {
             telaAtual == 'Anúncios' &&
             <Text
               style={style.activeNavLink}

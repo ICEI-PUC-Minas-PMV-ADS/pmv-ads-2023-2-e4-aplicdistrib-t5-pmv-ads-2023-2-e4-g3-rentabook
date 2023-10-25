@@ -10,6 +10,7 @@ import Chat from '../pages/Chat';
 import Signup from '../pages/Signup';
 import { AlreadyLogged } from '../contexts/Auth/AlreadyLogged';
 import AnnouncementsDetails from '../pages/AnnouncementsDetails';
+import React from 'react';
 
 
 const Stack = createNativeStackNavigator<AppParamsList>();
@@ -30,6 +31,7 @@ export default function Router() {
         screenOptions={{
           headerShown: false, animation: 'none'
         }}>
+        <Stack.Screen name={profile} component={Profile} />
         <Stack.Screen name={home} component={Home} />
         <Stack.Screen name={announcementsDetails} component={AnnouncementsDetails} />
         <Stack.Screen name={myAnnouncements}>
@@ -47,13 +49,13 @@ export default function Router() {
             </AlreadyLogged>
           )}
         </Stack.Screen>
-        <Stack.Screen name={profile}>
+        {/* <Stack.Screen name={profile}>
           {() => (
             <RequireAuth>
               <Profile />
             </RequireAuth>
           )}
-        </Stack.Screen>
+        </Stack.Screen> */}
         <Stack.Screen name={chat}>
           {() => (
             <RequireAuth>
