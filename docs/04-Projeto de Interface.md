@@ -11,7 +11,7 @@ Visão geral da interação do usuário pelas telas do sistema e protótipo inte
 
 O diagrama abaixo ilustra o fluxo geral da aplicação. Em algumas telas o usuário pode encontrar funcionalidade que podem ser personalizadas com filtros para exibir conteúdo específico.
 
-![Diagrama de Fluxo](img/diagrama_de_fluxo2.png)
+![Diagrama de Fluxo](img/diagrama_de_fluxo3.png)
 
 ## Wireframes
 
