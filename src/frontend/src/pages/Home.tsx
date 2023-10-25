@@ -4,7 +4,7 @@ import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
 import SearchInput from "../common/components/SearchInput";
 import { Picker } from '@react-native-picker/picker';
 import PrimaryButton from "../common/components/PrimaryButton";
-import { BlackColor, DarkGreen, GreenLight, GreyColor, PrimaryGreenColor, WhiteColor } from "../common/theme/colors";
+import { DarkGreen, GreenLight, GreyColor, PrimaryGreenColor, WhiteColor } from "../common/theme/colors";
 import { Desktop } from "../hooks/useResposive";
 import { announcementsService } from "../services/announcementsService";
 import { Page } from "../types/Page";
@@ -23,6 +23,8 @@ import Input from "../common/components/Input";
 import { useViaCep } from "../hooks/useViaCep";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import { useNavigation } from "@react-navigation/native";
+import { StackTypes } from "../routes/StackTypes";
 
 export default function Home() {
   const authContext = useContext(AuthContext)
@@ -48,6 +50,7 @@ export default function Home() {
   const tradeOption = trade ? true : null
   const saleOption = sale ? true : null
   const [searchOpen, setSearchOpen] = useState(false);
+  const navigation = useNavigation<StackTypes>()
 
 
   useEffect(() => {
@@ -111,30 +114,34 @@ export default function Home() {
 
   const renderItem = (item: CleanAnnouncementView) => {
     return (
-      <Pressable key={item.id} style={styleDesktop.card}>
-        <Image source={getFirstImageLink(item)} style={styleDesktop.image} />
-        <Text style={styleDesktop.cardTitle}>
-          {item.book.title}
-        </Text>
-        <View style={styleDesktop.available}>
-          <Ionicons name="checkmark-circle" size={20} style={{ color: PrimaryGreenColor }} />
-          <Text style={styleDesktop.availableText}>{avaliableText(item)}</Text>
-        </View>
-        {
-          item.rent &&
-          <View style={styleDesktop.price}>
-            <Text style={styleDesktop.priceTitle}>Alugar</Text>
-            <Text style={styleDesktop.priceText}>{getValueRent(item)}</Text>
-          </View>
+      <>
+        {data != null &&
+          <Pressable key={item.id} style={styleDesktop.card} onPress={() => navigation.navigate('Detalhes do anúncio', { announcement: item })}>
+            <Image source={getFirstImageLink(item)} style={styleDesktop.image} />
+            <Text style={styleDesktop.cardTitle}>
+              {item.book.title}
+            </Text>
+            <View style={styleDesktop.available}>
+              <Ionicons name="checkmark-circle" size={20} style={{ color: PrimaryGreenColor }} />
+              <Text style={styleDesktop.availableText}>{avaliableText(item)}</Text>
+            </View>
+            {
+              item.rent &&
+              <View style={styleDesktop.price}>
+                <Text style={styleDesktop.priceTitle}>Alugar</Text>
+                <Text style={styleDesktop.priceText}>{getValueRent(item)}</Text>
+              </View>
+            }
+            {
+              item.sale &&
+              <View style={styleDesktop.price}>
+                <Text style={styleDesktop.priceTitle}>Comprar</Text>
+                <Text style={styleDesktop.priceText}>{getValueSale(item)}</Text>
+              </View>
+            }
+          </Pressable>
         }
-        {
-          item.sale &&
-          <View style={styleDesktop.price}>
-            <Text style={styleDesktop.priceTitle}>Comprar</Text>
-            <Text style={styleDesktop.priceText}>{getValueSale(item)}</Text>
-          </View>
-        }
-      </Pressable>
+      </>
     )
   }
 
