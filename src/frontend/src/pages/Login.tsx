@@ -8,16 +8,22 @@ import PrimaryButton from '../common/components/PrimaryButton';
 import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
 import * as yup from 'yup';
 
+const validateLoginForm = async (email, password) => {
+  const validationSchema = yup.object().shape({
+    email: yup.string().email("E-mail inválido").required("E-mail é obrigatório"),
+    password: yup.string().required("Senha é obrigatória"),
+  });
+
+  return validationSchema.validate({ email, password }, { abortEarly: false });
+};
+
 export default function Login() {
   const auth = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [orientation, setOrientation] = useState(Dimensions.get('window').width > Dimensions.get('window').height ? 'LANDSCAPE' : 'PORTRAIT');
   const navigation = useNavigation<StackTypes>();
-  const [validationErrors, setValidationErrors] = useState({
-    email: '',
-    password: '',
-  });
+  const [validationErrors, setValidationErrors] = useState({ email: '', password: '' });
   const [loginError, setLoginError] = useState('');
 
   useEffect(() => {
@@ -32,44 +38,19 @@ export default function Login() {
     };
   }, []);
 
-  const validationSchema = yup.object().shape({
-    email: yup.string().email("E-mail inválido").required("E-mail é obrigatório"),
-    password: yup.string().required("Senha é obrigatória"),
-  });
+  const handleInputChange = (field, value) => {
+    setValidationErrors({ ...validationErrors, [field]: '' });
 
-  const handleLogin = async () => {
-    try {
-      await validationSchema.validate(
-        {
-          email,
-          password,
-        },
-        { abortEarly: false }
-      );
-
-      const isAuthenticated = await auth.login({ email, password });
-
-      if (isAuthenticated) {
-        navigation.navigate("Anúncios", {});
-      } else {
-        setLoginError("Credenciais inválidas");
-        clearValidationErrors();
-      }
-    } catch (error) {
-      if (error instanceof yup.ValidationError) {
-        handleValidationErrors(error);
-      } else {
-        console.error(error);
-        setLoginError("Ocorreu um erro no login. Verifique suas credenciais e tente novamente.");
-      }
+    if (field === 'email') {
+      setEmail(value);
+    } else if (field === 'password') {
+      setPassword(value);
     }
   };
 
   const handleValidationErrors = (error) => {
-    const errors = {
-      email: '',
-      password: '',
-    };
+    const errors = { email: '', password: '' };
+
     error.inner.forEach((e) => {
       if (e.path === 'email') {
         errors.email = e.message;
@@ -78,14 +59,12 @@ export default function Login() {
         errors.password = e.message;
       }
     });
+
     setValidationErrors(errors);
   };
 
   const clearValidationErrors = () => {
-    setValidationErrors({
-      email: '',
-      password: '',
-    });
+    setValidationErrors({ email: '', password: '' });
   };
 
   const styles = StyleSheet.create({
@@ -125,6 +104,28 @@ export default function Login() {
     },
   });
 
+  const handleLogin = async () => {
+    try {
+      await validateLoginForm(email, password);
+
+      const isAuthenticated = await auth.login({ email, password });
+
+      if (isAuthenticated) {
+        navigation.navigate("Anúncios", {});
+      } else {
+        setLoginError("Credenciais inválidas");
+        clearValidationErrors();
+      }
+    } catch (error) {
+      if (error instanceof yup.ValidationError) {
+        handleValidationErrors(error);
+      } else {
+        console.error(error);
+        setLoginError("Ocorreu um erro no login. Verifique suas credenciais e tente novamente.");
+      }
+    }
+  };
+
   return (
     <ResponsiveNavbar>
       <View style={styles.container}>
@@ -134,22 +135,18 @@ export default function Login() {
             value={email}
             placeholder="Digite seu e-mail"
             label="Email"
-            onChangeText={setEmail}
+            onChangeText={(value) => handleInputChange('email', value)}
           />
-          {validationErrors.email ? (
-            <Text style={styles.errorText}>{validationErrors.email}</Text>
-          ) : null}
+          {validationErrors.email && <Text style={styles.errorText}>{validationErrors.email}</Text>}
           <Input
             style={styles.input}
             value={password}
             placeholder="Digite sua senha"
             label="Senha"
-            onChangeText={setPassword}
+            onChangeText={(value) => handleInputChange('password', value)}
             secureTextEntry={true}
           />
-          {validationErrors.password ? (
-            <Text style={styles.errorText}>{validationErrors.password}</Text>
-          ) : null}
+          {validationErrors.password && <Text style={styles.errorText}>{validationErrors.password}</Text>}
           {loginError && <Text style={styles.errorText}>{loginError}</Text>}
           <PrimaryButton
             style={styles.input}
