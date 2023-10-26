@@ -1,70 +1,85 @@
-import React, { useContext, useState, useEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
+import React, { useContext, useState } from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import * as yup from 'yup';
 import { AuthContext } from '../contexts/Auth/AuthContext';
-import { StackTypes } from '../routes/StackTypes';
 import Input from '../common/components/Input';
 import PrimaryButton from '../common/components/PrimaryButton';
 import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
-import * as yup from 'yup';
-
-const validateLoginForm = async (email, password) => {
-  const validationSchema = yup.object().shape({
-    email: yup.string().email("E-mail inválido").required("E-mail é obrigatório"),
-    password: yup.string().required("Senha é obrigatória"),
-  });
-
-  return validationSchema.validate({ email, password }, { abortEarly: false });
-};
 
 export default function Login() {
-  const auth = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
+  const navigation = useNavigation();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [orientation, setOrientation] = useState(Dimensions.get('window').width > Dimensions.get('window').height ? 'LANDSCAPE' : 'PORTRAIT');
-  const navigation = useNavigation<StackTypes>();
-  const [validationErrors, setValidationErrors] = useState({ email: '', password: '' });
-  const [loginError, setLoginError] = useState('');
 
-  useEffect(() => {
-    const onChange = ({ window: { width, height } }) => {
-      setOrientation(width > height ? 'LANDSCAPE' : 'PORTRAIT');
-    };
+  const [validationErrors, setValidationErrors] = useState({
+    email: '',
+    password: '',
+  });
 
-    Dimensions.addEventListener("change", onChange);
-
-    return () => {
-      Dimensions.removeEventListener("change", onChange);
-    };
-  }, []);
+  const [orientation, setOrientation] = useState(
+    Dimensions.get('window').width > Dimensions.get('window').height
+      ? 'LANDSCAPE'
+      : 'PORTRAIT'
+  );
 
   const handleInputChange = (field, value) => {
-    setValidationErrors({ ...validationErrors, [field]: '' });
-
-    if (field === 'email') {
-      setEmail(value);
-    } else if (field === 'password') {
-      setPassword(value);
+    const errors = { ...validationErrors };
+    delete errors[field];
+    setValidationErrors(errors);
+    switch (field) {
+      case 'email':
+        setEmail(value);
+        break;
+      case 'password':
+        setPassword(value);
+        break;
+      default:
+        break;
     }
   };
 
-  const handleValidationErrors = (error) => {
-    const errors = { email: '', password: '' };
+  const handleLogin = async () => {
+    try {
+      const validationSchema = yup.object().shape({
+        email: yup.string().email("E-mail inválido").required("E-mail é obrigatório"),
+        password: yup.string().required("Senha é obrigatória"),
+      });
 
-    error.inner.forEach((e) => {
-      if (e.path === 'email') {
-        errors.email = e.message;
+      await validationSchema.validate(
+        {
+          email,
+          password,
+        },
+        { abortEarly: false }
+      );
+
+      const isAuthenticated = await authContext.login({ email, password });
+
+      if (isAuthenticated) {
+        setEmail('');
+        setPassword('');
+        setValidationErrors({
+          email: '',
+          password: '',
+        });
+        navigation.navigate('Home');
+      } else {
+        throw new Error("Credenciais inválidas");
       }
-      if (e.path === 'password') {
-        errors.password = e.message;
+    } catch (error) {
+      if (error instanceof yup.ValidationError) {
+        const errors = error.inner.reduce((acc, e) => {
+          acc[e.path] = e.message;
+          return acc;
+        }, {});
+        setValidationErrors(errors);
+      } else {
+        console.error(error);
       }
-    });
-
-    setValidationErrors(errors);
-  };
-
-  const clearValidationErrors = () => {
-    setValidationErrors({ email: '', password: '' });
+    }
   };
 
   const styles = StyleSheet.create({
@@ -97,34 +112,8 @@ export default function Login() {
       fontSize: 24,
       textAlign: 'center',
       margin: 20,
-    },
-    errorText: {
-      color: 'red',
-      marginBottom: 10,
-    },
-  });
-
-  const handleLogin = async () => {
-    try {
-      await validateLoginForm(email, password);
-
-      const isAuthenticated = await auth.login({ email, password });
-
-      if (isAuthenticated) {
-        navigation.navigate("Anúncios", {});
-      } else {
-        setLoginError("Credenciais inválidas");
-        clearValidationErrors();
-      }
-    } catch (error) {
-      if (error instanceof yup.ValidationError) {
-        handleValidationErrors(error);
-      } else {
-        console.error(error);
-        setLoginError("Ocorreu um erro no login. Verifique suas credenciais e tente novamente.");
-      }
     }
-  };
+  });
 
   return (
     <ResponsiveNavbar>
@@ -136,8 +125,9 @@ export default function Login() {
             placeholder="Digite seu e-mail"
             label="Email"
             onChangeText={(value) => handleInputChange('email', value)}
+            error={validationErrors.email}
           />
-          {validationErrors.email && <Text style={styles.errorText}>{validationErrors.email}</Text>}
+          {validationErrors.email && <Text style={{ color: 'red' }}>{validationErrors.email}</Text>}
           <Input
             style={styles.input}
             value={password}
@@ -145,9 +135,9 @@ export default function Login() {
             label="Senha"
             onChangeText={(value) => handleInputChange('password', value)}
             secureTextEntry={true}
+            error={validationErrors.password}
           />
-          {validationErrors.password && <Text style={styles.errorText}>{validationErrors.password}</Text>}
-          {loginError && <Text style={styles.errorText}>{loginError}</Text>}
+          {validationErrors.password && <Text style={{ color: 'red' }}>{validationErrors.password}</Text>}
           <PrimaryButton
             style={styles.input}
             onPress={handleLogin}
@@ -155,7 +145,7 @@ export default function Login() {
           />
         </View>
         <View style={styles.welcomeSection}>
-          <Text style={styles.welcomeText}>Bem-vindo de volta! Faça login na sua conta</Text>
+          <Text style={styles.welcomeText}>Bem-vindo de volta! Faça o login na sua conta</Text>
         </View>
       </View>
     </ResponsiveNavbar>
