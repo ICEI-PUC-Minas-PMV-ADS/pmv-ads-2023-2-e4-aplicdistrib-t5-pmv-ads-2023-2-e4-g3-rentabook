@@ -2,6 +2,7 @@ import { useApi } from "../hooks/useApi";
 import { LoginForm } from "../types/LoginForm";
 import { RegisterForm } from "../types/RegisterForm";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { UpdateUserForm } from "../types/UpdateUserForm";
 
 
 export const userService = {
@@ -33,6 +34,15 @@ export const userService = {
       }
     })
     return response.data;
+  },
+
+  updatePrivateUser: async (form: UpdateUserForm) => {
+    const token = await AsyncStorage.getItem('authToken')
+    const json = JSON.stringify(form)
+    const response = await useApi.post("/user/updateProfile",json, {
+      headers: {'Content-Type': 'application/json' }
+    })
+    return response.data
   },
 
   logout: async () => {

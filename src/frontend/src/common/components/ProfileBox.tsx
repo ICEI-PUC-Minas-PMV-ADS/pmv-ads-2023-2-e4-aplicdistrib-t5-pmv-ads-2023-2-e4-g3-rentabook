@@ -1,9 +1,12 @@
-import React, { useState } from "react";
-import { View, StyleSheet, Image, Text } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, Image, Text, Alert } from "react-native";
 import "../theme/colors"
-import { BlackColor, DarkGreen, GreenLight, WhiteColor } from "../theme/colors";
+import { DarkGreen, GreenLight, WhiteColor } from "../theme/colors";
 import Input from "./Input";
 import PrimaryButton from "./PrimaryButton";
+import { UpdateUserForm } from "../../types/UpdateUserForm";
+import { userService } from "../../services/userService";
+
 const style = StyleSheet.create({
     container: {
       flex: 1,
@@ -13,7 +16,7 @@ const style = StyleSheet.create({
       borderRadius: 8,
       marginHorizontal: 25,
       marginVertical: 10,
-      width: 500,
+      width: 550,
       padding: 10,
     
     },
@@ -27,19 +30,19 @@ const style = StyleSheet.create({
     input: {
         marginHorizontal: 30,
         marginVerdical: 10,
-        width: 450,
+        width: 400,
         height: 80,
         color: DarkGreen,
         
     },
     box: {
         
-        
-
     },
     titulo : {
+        margin:0,
+        padding:0,
         alignSelf: "flex-start",
-        marginLeft: 20,
+        marginLeft: 10,
         fontSize: 35,
         color: DarkGreen,
     },
@@ -51,15 +54,31 @@ const style = StyleSheet.create({
         
     }
   });
-export default function ProfileBox() {
-    const [email, setEmail] = useState('')
-    const [Nome, setNome] = useState('')
-    const [password, setPassword] = useState('')
+
+  type ProfileBoxProps ={
+    nome? : string ,
+    email? : string,
+    imagem?: string | null
+
+  }
+export default function ProfileBox({nome , email , imagem}: ProfileBoxProps) {
+    const [pEmail, setPEmail] = useState(email)
+    const [pNome, setPNome] = useState(nome)
+   
+    useEffect ( () => {
+    
+    },[pEmail, pNome,])
+
+    function updateWindow () {
+
+        
+    }
+
     return (
         <View style={style.container}>
             <Image
                 style={style.image}
-                source={require('../assets/notFound.jpg')}
+                source={imagem ?? require('../assets/notFound.jpg')}
                 alt="Foto de Perfil."
             /> 
             <Text style={style.titulo} >Meu Perfil</Text>
@@ -67,32 +86,25 @@ export default function ProfileBox() {
            
             <Input
                 style={style.input}
-                value={Nome}
+                value={nome}
                 placeholder="Digite seu Nome"
                 label="Nome"
-                onChangeText={setNome}
+                editable={false}
+                
             />
             <Input
                 style={style.input}
                 value={email}
                 placeholder="Digite seu e-mail"
                 label="Email"
-                onChangeText={setEmail}
+                editable={false}
             />
-            <Input
-                style={style.input}
-                value={password}
-                placeholder="Digite sua Senha"
-                label="Senha"
-                onChangeText={setPassword}
-            />
+       
             </View>
             <PrimaryButton
              style={style.button}
-             label="Enviar Informações" 
-             onPress={function (): void {
-                throw new Error("Function not implemented.");
-                }} 
+                label="Editar Perfil"
+                onPress={updateWindow}
             />
       
 
