@@ -30,6 +30,28 @@ export default function Signup() {
       : 'PORTRAIT'
   );
 
+  const handleInputChange = (field, value) => {
+    const errors = { ...validationErrors };
+    delete errors[field];
+    setValidationErrors(errors);
+    switch (field) {
+      case 'name':
+        setName(value);
+        break;
+      case 'email':
+        setEmail(value);
+        break;
+      case 'password':
+        setPassword(value);
+        break;
+      case 'confirmPassword':
+        setConfirmPassword(value);
+        break;
+      default:
+        break;
+    }
+  };
+
   useEffect(() => {
     const onChange = ({ window: { width, height } }) => {
       setOrientation(width > height ? 'LANDSCAPE' : 'PORTRAIT');
@@ -74,16 +96,25 @@ export default function Signup() {
       const isRegistered = await authContext.signup({ name, email, password });
 
       if (isRegistered) {
-        navigation.navigate("Anúncios", {});
+        setName('');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+        setValidationErrors({
+          name: '',
+          email: '',
+          password: '',
+          confirmPassword: '',
+        });
       } else {
         throw new Error("Erro ao cadastrar o usuário");
       }
     } catch (error) {
       if (error instanceof yup.ValidationError) {
-        const errors = {};
-        error.inner.forEach((e) => {
-          errors[e.path] = e.message;
-        });
+        const errors = error.inner.reduce((acc, e) => {
+          acc[e.path] = e.message;
+          return acc;
+        }, {});
         setValidationErrors(errors);
       } else {
         console.error(error);
@@ -133,7 +164,8 @@ export default function Signup() {
             value={name}
             placeholder="Digite seu nome"
             label="Nome"
-            onChangeText={setName}
+            onChangeText={(value) => handleInputChange('name', value)}
+            error={validationErrors.name}
           />
           {validationErrors.name && <Text style={{ color: 'red' }}>{validationErrors.name}</Text>}
           <Input
@@ -141,7 +173,8 @@ export default function Signup() {
             value={email}
             placeholder="Digite seu e-mail"
             label="Email"
-            onChangeText={setEmail}
+            onChangeText={(value) => handleInputChange('email', value)}
+            error={validationErrors.email}
           />
           {validationErrors.email && <Text style={{ color: 'red' }}>{validationErrors.email}</Text>}
           <Input
@@ -149,8 +182,9 @@ export default function Signup() {
             value={password}
             placeholder="Digite sua senha"
             label="Senha"
-            onChangeText={setPassword}
+            onChangeText={(value) => handleInputChange('password', value)}
             secureTextEntry={true}
+            error={validationErrors.password}
           />
           {validationErrors.password && <Text style={{ color: 'red' }}>{validationErrors.password}</Text>}
           <Input
@@ -158,8 +192,9 @@ export default function Signup() {
             value={confirmPassword}
             placeholder="Confirme sua senha"
             label="Confirme a senha"
-            onChangeText={setConfirmPassword}
+            onChangeText={(value) => handleInputChange('confirmPassword', value)}
             secureTextEntry={true}
+            error={validationErrors.confirmPassword}
           />
           {validationErrors.confirmPassword && <Text style={{ color: 'red' }}>{validationErrors.confirmPassword}</Text>}
           <PrimaryButton
