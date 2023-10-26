@@ -2,14 +2,12 @@ package br.puc.projeto.rentabook.service
 
 import br.puc.projeto.rentabook.dto.*
 import br.puc.projeto.rentabook.model.Rating
-import br.puc.projeto.rentabook.repository.AnnouncementRepository
-import br.puc.projeto.rentabook.repository.RatingRepository
-import br.puc.projeto.rentabook.repository.RentRepository
-import br.puc.projeto.rentabook.repository.UserRepository
 import br.puc.projeto.rentabook.utils.AuthenticationUtils
 import br.puc.projeto.rentabook.exception.NotFoundException
 import br.puc.projeto.rentabook.mapper.*
+import br.puc.projeto.rentabook.model.Address
 import br.puc.projeto.rentabook.model.Announcement
+import br.puc.projeto.rentabook.repository.*
 import br.puc.projeto.rentabook.utils.TextUtils
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
@@ -39,7 +37,8 @@ class AnnouncementService(
     private val ratingRepository: RatingRepository,
     private val imageService: ImageService,
     private val mongoTemplate: MongoTemplate,
-    private val cleanAnnouncementViewMapper: CleanAnnouncementViewMapper
+    private val cleanAnnouncementViewMapper: CleanAnnouncementViewMapper,
+    private val addressRepository: AddressRepository
 ) {
 
     fun findAll(pageable: Pageable): Page<AnnouncementView> {
@@ -164,7 +163,13 @@ class AnnouncementService(
 
         if (!city.isNullOrBlank()) {
             val normalizedCity = TextUtils.normalizeString(city)
-            query.addCriteria(Criteria.where("locationNormalizedCityName").regex(normalizedCity, "i"))
+            val addressesIds = addressRepository.findByNormalizedCityNameContaining(normalizedCity).map {
+                it.id
+            }
+            val criteriaList = addressesIds.map {
+                Criteria.where("locationId").`is`(it)
+            }
+            query.addCriteria(Criteria().orOperator(criteriaList))
         }
 
         if (!bookId.isNullOrBlank()) {
