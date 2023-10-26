@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
 
   const [user, setUser] = useState<PrivateUser | null>(null)
   const [defaultAddress, setDefaultAddress] = useState<PrivateAddress | null>(null)
+  const [infosLoaded, setInfosLoaded] = useState(false)
 
   useEffect(() => {
     const validarToken = async () => {
@@ -27,23 +28,28 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
           setUser(null)
           setDefaultAddress(null)
           AsyncStorage.removeItem('defaultAddress')
+          setInfosLoaded(true)
         })
         const firstAddress = userData.addresses[0]
         if (userData) {
           setUser(userData)
+
           if (firstAddress != null) {
             if (defaultAddressLocalStorage) {
               const address = JSON.parse(defaultAddressLocalStorage)
               setDefaultAddress(address)
+              setInfosLoaded(true)
+
             }
             else {
               const json = JSON.stringify(firstAddress)
               setDefaultAddress(firstAddress)
               AsyncStorage.setItem('defaultAddress', json)
+              setInfosLoaded(true)
             }
           }
         }
-      }
+      } else setInfosLoaded(true)
     }
     validarToken()
   }, []);
@@ -60,6 +66,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
         setDefaultAddress(userData.addresses[0])
         AsyncStorage.setItem('defaultAddress', json)
       }
+      setInfosLoaded(true)
       return true;
     }
     return false;
@@ -83,6 +90,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
       setToken(data.token)
       const userData = await userService.getPrivateUser()
       setUser(userData)
+      setInfosLoaded(true)
       return true;
     }
     return false;
@@ -106,7 +114,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
 
 
   return (
-    <AuthContext.Provider value={{ user, defaultAddress, login, logout, signup, setDefaultAddressLocalStorage, removeDefaultAddress }}>
+    <AuthContext.Provider value={{ user, defaultAddress, login, logout, signup, setDefaultAddressLocalStorage, removeDefaultAddress, infosLoaded }}>
       {children}
     </AuthContext.Provider>
   )

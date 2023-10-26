@@ -66,15 +66,15 @@ export default function Home() {
 
   useEffect(() => {
     setLoading(true)
-    const announcements = async () => {
-
-      const adds = await announcementsService.getAnnouncements(city, bookId, rentOption, tradeOption, saleOption, sort, page)
-      setData(adds)
-      setLoading(false)
+    if (authContext.infosLoaded) {
+      const announcements = async () => {
+        const adds = await announcementsService.getAnnouncements(city, bookId, rentOption, tradeOption, saleOption, sort, page)
+        setData(adds)
+        setLoading(false)
+      }
+      announcements()
     }
-    announcements()
-
-  }, [city, bookId, rentOption, tradeOption, saleOption, page, sort])
+  }, [city, bookId, rentOption, tradeOption, saleOption, page, sort, authContext.infosLoaded])
 
   useEffect(() => {
     if (rent == false && sale == false && trade == false) {
