@@ -48,7 +48,8 @@ export default function Signup() {
       .required("Senha é obrigatória"),
     confirmPassword: yup
       .string()
-      .oneOf([yup.ref('password'), null], 'As senhas não correspondem'),
+      .oneOf([yup.ref('password'), null], 'As senhas não correspondem')
+      .required("Confirmação de senha é obrigatória"),
   });
 
   const handleSignup = async () => {
@@ -72,7 +73,6 @@ export default function Signup() {
       }
     } catch (error) {
       if (error instanceof yup.ValidationError) {
-        // Atualize os erros de validação com mensagens específicas para cada campo
         const errors = {};
         error.inner.forEach((e) => {
           errors[e.path] = e.message;
