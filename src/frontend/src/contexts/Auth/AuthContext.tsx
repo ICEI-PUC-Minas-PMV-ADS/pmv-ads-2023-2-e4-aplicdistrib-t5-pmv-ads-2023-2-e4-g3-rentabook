@@ -13,6 +13,8 @@ export type AuthContextType = {
   setDefaultAddressLocalStorage: (address: PrivateAddress) => void;
   removeDefaultAddress: () => void;
   infosLoaded: boolean
+  registrationForm: RegisterForm | null;
+  registrationErrors: string[];
 };
 
 export const AuthContext = createContext<AuthContextType>(null!);
