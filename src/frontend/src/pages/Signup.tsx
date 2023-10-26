@@ -1,27 +1,34 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import * as yup from 'yup';
 import { AuthContext } from '../contexts/Auth/AuthContext';
 import { StackTypes } from '../routes/StackTypes';
 import Input from '../common/components/Input';
 import PrimaryButton from '../common/components/PrimaryButton';
 import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
-import * as yup from 'yup';
 
 export default function Signup() {
-  const auth = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
+  const navigation = useNavigation<StackTypes>();
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [orientation, setOrientation] = useState(Dimensions.get('window').width > Dimensions.get('window').height ? 'LANDSCAPE' : 'PORTRAIT');
-  const navigation = useNavigation<StackTypes>();
+
   const [validationErrors, setValidationErrors] = useState({
     name: '',
     email: '',
     password: '',
     confirmPassword: '',
   });
+
+  const [orientation, setOrientation] = useState(
+    Dimensions.get('window').width > Dimensions.get('window').height
+      ? 'LANDSCAPE'
+      : 'PORTRAIT'
+  );
 
   useEffect(() => {
     const onChange = ({ window: { width, height } }) => {
@@ -64,7 +71,7 @@ export default function Signup() {
         { abortEarly: false }
       );
 
-      const isRegistered = await auth.signup({ name, email, password });
+      const isRegistered = await authContext.signup({ name, email, password });
 
       if (isRegistered) {
         navigation.navigate("Anúncios", {});
@@ -128,9 +135,7 @@ export default function Signup() {
             label="Nome"
             onChangeText={setName}
           />
-          {validationErrors.name ? (
-            <Text style={{ color: 'red' }}>{validationErrors.name}</Text>
-          ) : null}
+          {validationErrors.name && <Text style={{ color: 'red' }}>{validationErrors.name}</Text>}
           <Input
             style={styles.input}
             value={email}
@@ -138,9 +143,7 @@ export default function Signup() {
             label="Email"
             onChangeText={setEmail}
           />
-          {validationErrors.email ? (
-            <Text style={{ color: 'red' }}>{validationErrors.email}</Text>
-          ) : null}
+          {validationErrors.email && <Text style={{ color: 'red' }}>{validationErrors.email}</Text>}
           <Input
             style={styles.input}
             value={password}
@@ -149,9 +152,7 @@ export default function Signup() {
             onChangeText={setPassword}
             secureTextEntry={true}
           />
-          {validationErrors.password ? (
-            <Text style={{ color: 'red' }}>{validationErrors.password}</Text>
-          ) : null}
+          {validationErrors.password && <Text style={{ color: 'red' }}>{validationErrors.password}</Text>}
           <Input
             style={styles.input}
             value={confirmPassword}
@@ -160,9 +161,7 @@ export default function Signup() {
             onChangeText={setConfirmPassword}
             secureTextEntry={true}
           />
-          {validationErrors.confirmPassword ? (
-            <Text style={{ color: 'red' }}>{validationErrors.confirmPassword}</Text>
-          ) : null}
+          {validationErrors.confirmPassword && <Text style={{ color: 'red' }}>{validationErrors.confirmPassword}</Text>}
           <PrimaryButton
             style={styles.input}
             onPress={handleSignup}
