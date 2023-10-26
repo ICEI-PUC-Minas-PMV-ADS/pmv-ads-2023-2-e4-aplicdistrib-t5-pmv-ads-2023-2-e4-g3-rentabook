@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, Text, Pressable, FlatList, TouchableWithoutFeedback, Modal, ScrollView, ActivityIndicator } from "react-native";
+import { View, StyleSheet, Text, Pressable, FlatList, TouchableWithoutFeedback, Modal, ScrollView, ActivityIndicator, SafeAreaView } from "react-native";
 import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
 import SearchInput from "../common/components/SearchInput";
 import { Picker } from '@react-native-picker/picker';
 import PrimaryButton from "../common/components/PrimaryButton";
 import { DarkGreen, GreenLight, GreyColor, PrimaryGreenColor, WhiteColor } from "../common/theme/colors";
-import { Desktop } from "../hooks/useResposive";
+import { Desktop, Mobile, MobileAndTablet } from "../hooks/useResposive";
 import { announcementsService } from "../services/announcementsService";
 import { Page } from "../types/Page";
 import { CleanAnnouncementView } from "../types/CleanAnnouncementView";
@@ -67,7 +67,6 @@ export default function Home() {
   useEffect(() => {
     setLoading(true)
     const announcements = async () => {
-      console.log(page)
       const adds = await announcementsService.getAnnouncements(city, bookId, rentOption, tradeOption, saleOption, sort, page)
       setData(adds)
       setLoading(false)
@@ -229,291 +228,301 @@ export default function Home() {
 
   return (
     <ResponsiveNavbar>
-      <Desktop>
-        <>
-          {
-            loading == true &&
-            <View style={{
-              backgroundColor: 'rgba(0,0,0,0.5)',
-              zIndex: 21,
-              width: '100%',
-              top: 84,
-              height: '88.6%',
-              position: 'absolute',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              <ActivityIndicator size="large" color={GreenLight} />
-            </View>
-          }
-          <Modal transparent={true} onRequestClose={() => setIsVisible(false)} visible={isVisible}>
-            <TouchableWithoutFeedback onPress={() => setIsVisible(false)} style={{ flex: 1, width: '100%', height: '100%', }}>
-              <View style={styleDesktop.modalView}>
-                <Pressable style={styleDesktop.modalWindow}>
-                  <View>
-                    <Text style={styleDesktop.modalTitle}>Selecione o seu endereço</Text>
-                    <Text>Você poderá ver os anúncios mais pertos de você</Text>
-                  </View>
-                  {
-                    authContext.user &&
+      <>
+        <Desktop>
+          <>
+            {
+              loading == true &&
+              <View style={{
+                backgroundColor: 'rgba(0,0,0,0.5)',
+                zIndex: 21,
+                width: '100%',
+                top: 84,
+                height: '88.6%',
+                position: 'absolute',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <ActivityIndicator size="large" color={GreenLight} />
+              </View>
+            }
+            <Modal transparent={true} onRequestClose={() => setIsVisible(false)} visible={isVisible}>
+              <TouchableWithoutFeedback onPress={() => setIsVisible(false)} style={{ flex: 1, width: '100%', height: '100%', }}>
+                <View style={styleDesktop.modalView}>
+                  <Pressable style={styleDesktop.modalWindow}>
                     <View>
-                      <Text style={styleDesktop.modalTitle}>Em um dos seus endereços</Text>
-                      <ScrollView style={styleDesktop.modalScroll}>
-                        <FlatList data={authContext.user?.addresses} renderItem={({ item }) => {
-                          if (item) {
-                            return (<RenderAddress item={item} />)
-                          }
-                          else return <></>
-                        }
-                        } />
-                      </ScrollView>
+                      <Text style={styleDesktop.modalTitle}>Selecione o seu endereço</Text>
+                      <Text>Você poderá ver os anúncios mais pertos de você</Text>
                     </View>
-                  }
-                  <View>
-                    {
-                      authContext.user != null &&
-                      <Text style={styleDesktop.modalTitle}>Em outro lugar</Text>
-                    }
-                    <View style={styleDesktop.modalInputContainer}>
-                      <View style={{ width: '50%' }}>
-                        <Input
-                          error={inputError}
-                          label="Código de Endereçamento Postal"
-                          style={{ width: '100%' }}
-                          onChangeText={(value) => {
-                            setInputValue(value)
-                            setInputError(false)
-                          }}
-                          messageError={messageError}
-                          value={inputValue} />
-                      </View>
-                      <View style={{ marginLeft: 15, flex: 1, alignItems: 'baseline', justifyContent: 'center', flexDirection: 'column' }}>
-                        <PrimaryButton
-                          style={{ width: 100 }}
-                          activeStyle={true}
-                          onPress={() => handleCep()}
-                          label='Usar'
-                        />
-                      </View>
-
-                    </View>
-                  </View>
-
-
-                  <View style={styleDesktop.buttomContainerModal}>
-                    {
-                      authContext.defaultAddress != null &&
-                      <View style={styleDesktop.buttomContainerModal}>
-                        <PrimaryButton
-                          style={{ width: 180 }}
-                          activeStyle={false}
-                          onPress={() => {
-                            authContext.removeDefaultAddress()
-                            setIsVisible(false)
-                          }}
-                          label='Limpar'
-                        />
-                      </View>
-                    }
                     {
                       authContext.user &&
-                      <>
-                        <PrimaryButton
-                          style={{ width: 180 }}
-                          activeStyle={false}
-                          onPress={() => setIsVisible(false)}
-                          label='Cancelar'
-                        />
-                        <PrimaryButton
-                          style={{ width: 180 }}
-                          activeStyle={true}
-                          onPress={() => {
-                            if (selectedAddress) {
-                              authContext.setDefaultAddressLocalStorage(selectedAddress)
-                              setIsVisible(false)
+                      <View>
+                        <Text style={styleDesktop.modalTitle}>Em um dos seus endereços</Text>
+                        <ScrollView style={styleDesktop.modalScroll}>
+                          <FlatList data={authContext.user?.addresses} renderItem={({ item }) => {
+                            if (item) {
+                              return (<RenderAddress item={item} />)
                             }
-                          }}
-                          label='Salvar alterações'
-                        />
-                      </>
+                            else return <></>
+                          }
+                          } />
+                        </ScrollView>
+                      </View>
                     }
-                  </View>
-
-                </Pressable>
-              </View>
-            </TouchableWithoutFeedback>
-          </Modal>
-          <TouchableWithoutFeedback onPress={() => setSearchOpen(false)}>
-            <View style={styleDesktop.container}>
-              <View style={styleDesktop.topBar}>
-                <Pressable
-                  style={styleDesktop.searchContainer}>
-                  <SearchInput
-                    placeholder="Pesquisar por livro..."
-                    style={styleDesktop.searchBar}
-                    onChange={(value) => {
-                      setBookId(null)
-                      setSearchValue(value)
-                    }}
-                    onFocus={() => {
-                      setSearchOpen(true)
-                    }}
-                    value={searchValue}
-                    onChangeDebounce={(value) => {
-                      handleSearch(value)
-                    }}
-                  />
-                  {
-                    searchOpen &&
-                    <Pressable onPress={() => setSearchOpen(false)} style={{
-                      width: 450,
-                      height: 450,
-                      backgroundColor: GreyColor,
-                      borderRadius: 3,
-                      shadowColor: '#171717',
-                      shadowOffset: { width: 2, height: 4 },
-                      shadowOpacity: 0.2,
-                      shadowRadius: 3,
-                      position: 'absolute',
-                      paddingTop: 60,
-
-                    }}>
-                      <FlatList
-                        data={bookData?.content}
-                        keyExtractor={item => Math.random().toString()}
-                        numColumns={1}
-                        renderItem={({ item }) => (
-                          <Pressable
-                            onPress={() => handleBook(item)}
-                            style={styleDesktop.searchItem}>
-                            <Image source={getUrlImage(item)} style={styleDesktop.bookImage} />
-                            <View style={styleDesktop.bookTexts}>
-                              <Text style={{ fontSize: 16 }}>{item.title?.slice(0, 35)}</Text>
-                              <Text>{item.authors == null ? "Autor desconhecido" : item.authors[0]?.slice(0, 35)}</Text>
-                              <Text>{item.publishedDate}</Text>
-                            </View>
-                          </Pressable>
-                        )}
-                      />
-                    </Pressable>
-                  }
-                </Pressable>
-                <TouchableWithoutFeedback onPress={() => setSearchOpen(false)}>
-                  <View style={styleDesktop.dropDownContainer}>
-                    <Picker
-                      style={styleDesktop.dropDown}
-                      selectedValue={sort}
-                      onValueChange={(itemValue, itemIndex) =>
-                        setSort(itemValue)
-                      }>
-                      <Picker.Item
-                        label={dropDownData[0].label} value={dropDownData[0].value} />
-                      <Picker.Item
-                        label={dropDownData[1].label} value={dropDownData[1].value} />
+                    <View>
                       {
-                        rentSort &&
+                        authContext.user != null &&
+                        <Text style={styleDesktop.modalTitle}>Em outro lugar</Text>
+                      }
+                      <View style={styleDesktop.modalInputContainer}>
+                        <View style={{ width: '50%' }}>
+                          <Input
+                            error={inputError}
+                            label="Código de Endereçamento Postal"
+                            style={{ width: '100%' }}
+                            onChangeText={(value) => {
+                              setInputValue(value)
+                              setInputError(false)
+                            }}
+                            messageError={messageError}
+                            value={inputValue} />
+                        </View>
+                        <View style={{ marginLeft: 15, flex: 1, alignItems: 'baseline', justifyContent: 'center', flexDirection: 'column' }}>
+                          <PrimaryButton
+                            style={{ width: 100 }}
+                            activeStyle={true}
+                            onPress={() => handleCep()}
+                            label='Usar'
+                          />
+                        </View>
+
+                      </View>
+                    </View>
+
+
+                    <View style={styleDesktop.buttomContainerModal}>
+                      {
+                        authContext.defaultAddress != null &&
+                        <View style={styleDesktop.buttomContainerModal}>
+                          <PrimaryButton
+                            style={{ width: 180 }}
+                            activeStyle={false}
+                            onPress={() => {
+                              authContext.removeDefaultAddress()
+                              setIsVisible(false)
+                            }}
+                            label='Limpar'
+                          />
+                        </View>
+                      }
+                      {
+                        authContext.user &&
                         <>
-                          <Picker.Item
-                            label={dropDownData[2].label} value={dropDownData[2].value} />
-                          <Picker.Item
-                            label={dropDownData[3].label} value={dropDownData[3].value} />
+                          <PrimaryButton
+                            style={{ width: 180 }}
+                            activeStyle={false}
+                            onPress={() => setIsVisible(false)}
+                            label='Cancelar'
+                          />
+                          <PrimaryButton
+                            style={{ width: 180 }}
+                            activeStyle={true}
+                            onPress={() => {
+                              if (selectedAddress) {
+                                authContext.setDefaultAddressLocalStorage(selectedAddress)
+                                setIsVisible(false)
+                              }
+                            }}
+                            label='Salvar alterações'
+                          />
                         </>
                       }
-                      {
-                        saleSort &&
-                        <Picker.Item
-                          label={dropDownData[4].label} value={dropDownData[4].value} />
-                      }
-                      {
-                        saleSort &&
-                        <Picker.Item
-                          label={dropDownData[5].label} value={dropDownData[5].value} />
-                      }
-                    </Picker>
-                  </View>
-                </TouchableWithoutFeedback>
-              </View>
-              <TouchableWithoutFeedback onPress={() => setSearchOpen(false)}>
-                <View style={styleDesktop.leftBar}>
-                  <View style={styleDesktop.buttonsContainer}>
-                    <Pressable onPress={() => setIsVisible(true)} style={styleDesktop.addressButtom}>
-                      <View>
-                        <Text style={{ fontSize: 18, textAlign: 'center' }}>Localização</Text>
-                        <Text>{authContext.defaultAddress == null ? "Selecionar localização" : authContext.defaultAddress.city}</Text>
-                      </View>
-                    </Pressable>
-                    <Text style={{ fontSize: 18 }}>Filtrar por:</Text>
-                    <PrimaryButton
-                      style={{}}
-                      activeStyle={sale}
-                      onPress={() => setSale(!sale)}
-                      label='Disponível para venda'
-                    />
-                    <PrimaryButton
-                      style={{}}
-                      activeStyle={rent}
-                      onPress={() => setRent(!rent)}
-                      label='Disponível para aluguel'
-                    />
-                    <PrimaryButton
-                      style={{}}
-                      activeStyle={trade}
-                      onPress={() => setTrade(!trade)}
-                      label='Disponível para troca'
-                    />
-                  </View>
+                    </View>
+
+                  </Pressable>
                 </View>
               </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={() => setSearchOpen(false)}>
-                <>
-                  {
-                    data != null && data?.content.length == 0 &&
-                    <View style={[styleDesktop.addsContainer, { alignItems: 'center', justifyContent: 'center' }]}>
-                      <Text style={styleDesktop.modalTitle}>Nenhum anúncio encontrado para a sua cidade ou para os filtros selecionados</Text>
+            </Modal>
+            <TouchableWithoutFeedback onPress={() => setSearchOpen(false)}>
+              <View style={styleDesktop.container}>
+                <View style={styleDesktop.topBar}>
+                  <Pressable
+                    style={styleDesktop.searchContainer}>
+                    <SearchInput
+                      placeholder="Pesquisar por livro..."
+                      style={styleDesktop.searchBar}
+                      onChange={(value) => {
+                        setBookId(null)
+                        setSearchValue(value)
+                      }}
+                      onFocus={() => {
+                        setSearchOpen(true)
+                      }}
+                      value={searchValue}
+                      onChangeDebounce={(value) => {
+                        handleSearch(value)
+                      }}
+                    />
+                    {
+                      searchOpen &&
+                      <Pressable onPress={() => setSearchOpen(false)} style={{
+                        width: 450,
+                        height: 450,
+                        backgroundColor: GreyColor,
+                        borderRadius: 3,
+                        shadowColor: '#171717',
+                        shadowOffset: { width: 2, height: 4 },
+                        shadowOpacity: 0.2,
+                        shadowRadius: 3,
+                        position: 'absolute',
+                        paddingTop: 60,
+
+                      }}>
+                        <FlatList
+                          data={bookData?.content}
+                          keyExtractor={item => Math.random().toString()}
+                          numColumns={1}
+                          renderItem={({ item }) => (
+                            <Pressable
+                              onPress={() => handleBook(item)}
+                              style={styleDesktop.searchItem}>
+                              <Image source={getUrlImage(item)} style={styleDesktop.bookImage} />
+                              <View style={styleDesktop.bookTexts}>
+                                <Text style={{ fontSize: 16 }}>{item.title?.slice(0, 35)}</Text>
+                                <Text>{item.authors == null ? "Autor desconhecido" : item.authors[0]?.slice(0, 35)}</Text>
+                                <Text>{item.publishedDate}</Text>
+                              </View>
+                            </Pressable>
+                          )}
+                        />
+                      </Pressable>
+                    }
+                  </Pressable>
+                  <TouchableWithoutFeedback onPress={() => setSearchOpen(false)}>
+                    <View style={styleDesktop.dropDownContainer}>
+                      <Picker
+                        style={styleDesktop.dropDown}
+                        selectedValue={sort}
+                        onValueChange={(itemValue, itemIndex) =>
+                          setSort(itemValue)
+                        }>
+                        <Picker.Item
+                          label={dropDownData[0].label} value={dropDownData[0].value} />
+                        <Picker.Item
+                          label={dropDownData[1].label} value={dropDownData[1].value} />
+                        {
+                          rentSort &&
+                          <>
+                            <Picker.Item
+                              label={dropDownData[2].label} value={dropDownData[2].value} />
+                            <Picker.Item
+                              label={dropDownData[3].label} value={dropDownData[3].value} />
+                          </>
+                        }
+                        {
+                          saleSort &&
+                          <Picker.Item
+                            label={dropDownData[4].label} value={dropDownData[4].value} />
+                        }
+                        {
+                          saleSort &&
+                          <Picker.Item
+                            label={dropDownData[5].label} value={dropDownData[5].value} />
+                        }
+                      </Picker>
+                    </View>
+                  </TouchableWithoutFeedback>
+                </View>
+                <TouchableWithoutFeedback onPress={() => setSearchOpen(false)}>
+                  <View style={styleDesktop.leftBar}>
+                    <View style={styleDesktop.buttonsContainer}>
+                      <Pressable onPress={() => setIsVisible(true)} style={styleDesktop.addressButtom}>
+                        <View>
+                          <Text style={{ fontSize: 18, textAlign: 'center' }}>Localização</Text>
+                          <Text>{authContext.defaultAddress == null ? "Selecionar localização" : authContext.defaultAddress.city}</Text>
+                        </View>
+                      </Pressable>
+                      <Text style={{ fontSize: 18 }}>Filtrar por:</Text>
                       <PrimaryButton
-                        style={{ width: 180, marginTop: 20 }}
-                        activeStyle={true}
-                        onPress={() => {
-                          authContext.removeDefaultAddress()
-                          setBookId(null)
-                          setCity(null)
-                          setRent(false)
-                          setSale(false)
-                          setTrade(false)
-                          //page(null)
-                          setSort(dropDownData[0].value)
-                        }}
-                        label='Limpar filtros'
+                        style={{}}
+                        activeStyle={sale}
+                        onPress={() => setSale(!sale)}
+                        label='Disponível para venda'
+                      />
+                      <PrimaryButton
+                        style={{}}
+                        activeStyle={rent}
+                        onPress={() => setRent(!rent)}
+                        label='Disponível para aluguel'
+                      />
+                      <PrimaryButton
+                        style={{}}
+                        activeStyle={trade}
+                        onPress={() => setTrade(!trade)}
+                        label='Disponível para troca'
                       />
                     </View>
-                  }
-                  <View style={styleDesktop.addsContainer}>
-                    {
-                      useMediaQuery(1025, 1300) &&
-                      <FlatList
-                        data={data?.content}
-                        numColumns={2}
-                        renderItem={({ item }) => renderItem(item)}
-                        ListFooterComponent={() => RenderPagination()} />
-                    }
-                    {
-                      !useMediaQuery(1025, 1300) &&
-                      <FlatList
-                        data={data?.content}
-                        numColumns={3}
-                        renderItem={({ item }) => renderItem(item)}
-                        ListFooterComponent={() => RenderPagination()} />
-                    }
-
-
-
                   </View>
-                </>
-              </TouchableWithoutFeedback>
-            </View>
-          </TouchableWithoutFeedback>
-        </>
-      </Desktop>
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={() => setSearchOpen(false)}>
+                  <>
+                    {
+                      data != null && data?.content.length == 0 &&
+                      <View style={[styleDesktop.addsContainer, { alignItems: 'center', justifyContent: 'center' }]}>
+                        <Text style={styleDesktop.modalTitle}>Nenhum anúncio encontrado para a sua cidade ou para os filtros selecionados</Text>
+                        <PrimaryButton
+                          style={{ width: 180, marginTop: 20 }}
+                          activeStyle={true}
+                          onPress={() => {
+                            authContext.removeDefaultAddress()
+                            setBookId(null)
+                            setCity(null)
+                            setRent(false)
+                            setSale(false)
+                            setTrade(false)
+                            //page(null)
+                            setSort(dropDownData[0].value)
+                          }}
+                          label='Limpar filtros'
+                        />
+                      </View>
+                    }
+                    <View style={styleDesktop.addsContainer}>
+                      {
+                        useMediaQuery(1025, 1300) &&
+                        <FlatList
+                          data={data?.content}
+                          numColumns={2}
+                          renderItem={({ item }) => renderItem(item)}
+                          ListFooterComponent={() => RenderPagination()} />
+                      }
+                      {
+                        !useMediaQuery(1025, 1300) &&
+                        <FlatList
+                          data={data?.content}
+                          numColumns={3}
+                          renderItem={({ item }) => renderItem(item)}
+                          ListFooterComponent={() => RenderPagination()} />
+                      }
+
+
+
+                    </View>
+                  </>
+                </TouchableWithoutFeedback>
+              </View>
+            </TouchableWithoutFeedback>
+          </>
+        </Desktop>
+        <MobileAndTablet>
+          <SafeAreaView>
+            <FlatList
+              data={data?.content}
+              numColumns={1}
+              renderItem={({ item }) => renderItem(item)} />
+          </SafeAreaView>
+        </MobileAndTablet>
+      </>
     </ResponsiveNavbar >
   );
 }

@@ -9,7 +9,7 @@ import Profile from '../pages/Profile';
 import Chat from '../pages/Chat';
 import Signup from '../pages/Signup';
 import { AlreadyLogged } from '../contexts/Auth/AlreadyLogged';
-import AnnouncementsDetails from '../pages/AnnouncementsDetails';
+import AnnouncementsDetails from '../pages/AnnouncementDetails'
 import React from 'react';
 
 
