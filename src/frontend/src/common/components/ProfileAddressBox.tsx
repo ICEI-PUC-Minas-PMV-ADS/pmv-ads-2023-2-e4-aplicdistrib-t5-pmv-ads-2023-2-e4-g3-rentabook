@@ -77,13 +77,7 @@ export default function ProfileAddressBox ({enderecos}:ProfileAddressBoxProps) {
     },[]) 
 
     useEffect(() => {
-      setCep()
-      setRua()
-      setNumero()
-      setComplemento()
-      setBairro()
-      setCidade()
-      setEstado()
+
       
     },[enderecoSelecionado])
     
