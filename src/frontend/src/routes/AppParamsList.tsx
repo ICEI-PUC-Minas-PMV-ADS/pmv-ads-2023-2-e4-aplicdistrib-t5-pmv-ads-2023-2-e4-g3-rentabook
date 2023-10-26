@@ -1,3 +1,5 @@
+import { CleanAnnouncementView } from "../types/CleanAnnouncementView";
+
 export type AppParamsList = {
   'Anúncios': {};
   'Profile' : {};
@@ -7,4 +9,5 @@ export type AppParamsList = {
   'Meu Perfil': {};
   'Mensagens': {};
   'Entrar': {};
+  'Detalhes do anúncio': { announcement: CleanAnnouncementView }
 }

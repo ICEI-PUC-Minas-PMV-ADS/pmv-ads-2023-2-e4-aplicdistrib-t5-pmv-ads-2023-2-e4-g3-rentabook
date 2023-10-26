@@ -9,6 +9,7 @@ import Profile from '../pages/Profile';
 import Chat from '../pages/Chat';
 import Signup from '../pages/Signup';
 import { AlreadyLogged } from '../contexts/Auth/AlreadyLogged';
+import AnnouncementsDetails from '../pages/AnnouncementDetails'
 import React from 'react';
 
 
@@ -20,16 +21,19 @@ const login = 'Entrar'
 const profile = 'Meu Perfil'
 const chat = 'Mensagens'
 const signup = 'Criar Conta'
+const announcementsDetails = 'Detalhes do anúncio'
 
 export default function Router() {
   return (<>
     <NavigationContainer>
       <Stack.Navigator
+        initialRouteName={home}
         screenOptions={{
           headerShown: false, animation: 'none'
         }}>
         <Stack.Screen name={profile} component={Profile} />
         <Stack.Screen name={home} component={Home} />
+        <Stack.Screen name={announcementsDetails} component={AnnouncementsDetails} />
         <Stack.Screen name={myAnnouncements}>
           {() => (
             <RequireAuth>
