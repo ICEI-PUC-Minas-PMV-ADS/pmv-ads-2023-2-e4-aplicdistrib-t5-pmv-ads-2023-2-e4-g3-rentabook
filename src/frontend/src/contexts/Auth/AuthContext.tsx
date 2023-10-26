@@ -12,6 +12,8 @@ export type AuthContextType = {
   signup: (form: RegisterForm) => Promise<boolean>;
   setDefaultAddressLocalStorage: (address: PrivateAddress) => void;
   removeDefaultAddress: () => void;
+  registrationForm: RegisterForm | null;
+  registrationErrors: string[];
 };
 
 export const AuthContext = createContext<AuthContextType>(null!);
