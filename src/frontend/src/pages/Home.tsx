@@ -67,6 +67,7 @@ export default function Home() {
   useEffect(() => {
     setLoading(true)
     const announcements = async () => {
+
       const adds = await announcementsService.getAnnouncements(city, bookId, rentOption, tradeOption, saleOption, sort, page)
       setData(adds)
       setLoading(false)
