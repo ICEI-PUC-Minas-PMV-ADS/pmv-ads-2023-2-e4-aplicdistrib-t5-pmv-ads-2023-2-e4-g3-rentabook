@@ -22,12 +22,13 @@ export const announcementsService = {
     if (sale != null) {
       query = query + `sale=${sale}&`
     }
-    if (sort != null) {
-      query = query + `sort=${sort}&`
+    if (sort != null && sort != "") {
+      query = query + `${sort}&`
     }
     if (page != null) {
       query = query + `page=${page}&`
     }
+    console.log(query)
     const response = await useApi.get(query)
     return response.data;
   }
