@@ -20,7 +20,7 @@ export default function AnnouncementsDetailsMobile({ announcement }: { announcem
   const [isVisible, setIsVisible] = useState(false);
   const authContext = useContext(AuthContext)
 
-  const style = StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       backgroundColor: "#E1DCC5",
       flex: 1,
@@ -121,19 +121,19 @@ export default function AnnouncementsDetailsMobile({ announcement }: { announcem
   })
 
   return (
-    <SafeAreaView style={style.container}>
+    <SafeAreaView style={styles.container}>
       <Modal transparent={true} onRequestClose={() => setIsVisible(false)} visible={isVisible}>
         <TouchableWithoutFeedback onPress={() => setIsVisible(false)} style={{ flex: 1, width: '100%', height: '100%', }}>
-          <View style={style.modalView}>
+          <View style={styles.modalView}>
             <Pressable>
-              <View style={style.modalWindow}>
-                <Text style={style.goBackText}>Selecione o tipo da negociação</Text>
+              <View style={styles.modalWindow}>
+                <Text style={styles.goBackText}>Selecione o tipo da negociação</Text>
                 <View style={{ flexDirection: 'column', gap: 20, marginTop: 20, alignItems: 'center', marginBottom: 20 }}>
                   {
                     announcement.rent == true &&
                     <PrimaryButton
                       onPress={() => { setIsVisible(true) }}
-                      style={style.buttom}
+                      style={styles.buttom}
                       label='Aluguel'
                     />
                   }
@@ -141,7 +141,7 @@ export default function AnnouncementsDetailsMobile({ announcement }: { announcem
                     announcement.sale == true &&
                     <PrimaryButton
                       onPress={() => { setIsVisible(true) }}
-                      style={style.buttom}
+                      style={styles.buttom}
                       label='Compra'
                     />
                   }
@@ -149,7 +149,7 @@ export default function AnnouncementsDetailsMobile({ announcement }: { announcem
                     announcement.trade == true &&
                     <PrimaryButton
                       onPress={() => { setIsVisible(true) }}
-                      style={style.buttom}
+                      style={styles.buttom}
                       label='Troca'
                     />
                   }
@@ -161,21 +161,21 @@ export default function AnnouncementsDetailsMobile({ announcement }: { announcem
       </Modal>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Pressable onPress={() => navigation.goBack()}>
-          <View style={style.goBackContainer} >
+          <View style={styles.goBackContainer} >
             <Ionicons name='arrow-back' size={35} color={DarkGreen} />
-            <Text style={style.goBackText}>Voltar</Text>
+            <Text style={styles.goBackText}>Voltar</Text>
           </View>
 
         </Pressable>
-        <View style={style.infosContainer}>
-          <View style={style.locationStars}>
-            <View style={style.locationContainer}>
+        <View style={styles.infosContainer}>
+          <View style={styles.locationStars}>
+            <View style={styles.locationContainer}>
               <Ionicons name='location' size={18} color={DarkGreen} />
               <Text>{announcement.location.city}/{announcement.location.state}</Text>
             </View>
-            <View style={style.ratingContainer}>
+            <View style={styles.ratingContainer}>
               <Text>4.0</Text>
-              <View style={style.starsContainer}>
+              <View style={styles.starsContainer}>
                 <Ionicons name='star' size={18} color={PrimaryGreenColor} />
                 <Ionicons name='star' size={18} color={PrimaryGreenColor} />
                 <Ionicons name='star' size={18} color={PrimaryGreenColor} />
@@ -186,12 +186,12 @@ export default function AnnouncementsDetailsMobile({ announcement }: { announcem
             </View>
           </View>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', width: '100%' }}>
-            <Text style={style.title}>{announcement.book.title}</Text>
+            <Text style={styles.title}>{announcement.book.title}</Text>
           </View>
           {
             announcement.images != null &&
             <>
-              <View style={style.carouselContainer}>
+              <View style={styles.carouselContainer}>
                 <Carousel size={300} listImages={announcement.images} />
               </View>
             </>
@@ -201,22 +201,22 @@ export default function AnnouncementsDetailsMobile({ announcement }: { announcem
               {
                 announcement.rent &&
                 <View >
-                  <Text style={style.text}>Alugar</Text>
-                  <Text style={style.priceText}>{getValueRent(announcement)}</Text>
+                  <Text style={styles.text}>Alugar</Text>
+                  <Text style={styles.priceText}>{getValueRent(announcement)}</Text>
                 </View>
               }
               {
                 announcement.sale &&
                 <View>
-                  <Text style={style.text}>Comprar</Text>
-                  <Text style={style.priceText}>{getValueSale(announcement)}</Text>
+                  <Text style={styles.text}>Comprar</Text>
+                  <Text style={styles.priceText}>{getValueSale(announcement)}</Text>
                 </View>
               }
-              <View style={style.available}>
+              <View style={styles.available}>
                 <Ionicons name="checkmark-circle" size={20} style={{ color: PrimaryGreenColor }} />
-                <Text style={style.availableText}>{avaliableText(announcement)}</Text>
+                <Text style={styles.availableText}>{avaliableText(announcement)}</Text>
               </View>
-              <View style={style.buttomContainer}>
+              <View style={styles.buttomContainer}>
                 <PrimaryButton
                   onPress={() => {
                     if (authContext.user != null) {
@@ -226,7 +226,7 @@ export default function AnnouncementsDetailsMobile({ announcement }: { announcem
                       navigation.navigate('Entrar', {})
                     }
                   }}
-                  style={style.buttom}
+                  style={styles.buttom}
                   label='Negociar'
                 />
               </View>
@@ -234,7 +234,7 @@ export default function AnnouncementsDetailsMobile({ announcement }: { announcem
           }
           {
             announcement.isAvailable == false &&
-            <Text style={[{ marginBottom: 20 }, style.notText]}>Este anúncio não está diponível para negociação no momento</Text>
+            <Text style={[{ marginBottom: 20 }, styles.notText]}>Este anúncio não está diponível para negociação no momento</Text>
           }
 
           <View style={{ marginTop: 20, gap: 10 }}>
@@ -242,28 +242,28 @@ export default function AnnouncementsDetailsMobile({ announcement }: { announcem
             {
               announcement.description &&
               <View style={{ marginBottom: 40 }}>
-                <Text style={style.text}>Descrição do anúncio:</Text>
+                <Text style={styles.text}>Descrição do anúncio:</Text>
                 <Text>{announcement.description}</Text>
               </View>
             }
 
-            <Text style={style.text}>Informações sobre o livro</Text>
+            <Text style={styles.text}>Informações sobre o livro</Text>
 
             {
               announcement.book.authors != null && announcement.book.authors[0] != null &&
-              <Text><Text style={style.greenText}>Autor: </Text>{announcement.book.authors}</Text>
+              <Text><Text style={styles.greenText}>Autor: </Text>{announcement.book.authors}</Text>
             }
             {
               announcement.book.publishedDate != null &&
-              <Text><Text style={style.greenText}>Data de publicação: </Text>{announcement.book.publishedDate}</Text>
+              <Text><Text style={styles.greenText}>Data de publicação: </Text>{announcement.book.publishedDate}</Text>
             }
             {
               announcement.book.description != null &&
-              <Text><Text style={style.greenText}>Descrição do livro: </Text>{announcement.book.description}</Text>
+              <Text><Text style={styles.greenText}>Descrição do livro: </Text>{announcement.book.description}</Text>
             }
             {
               announcement.book.pageCount != null &&
-              <Text><Text style={style.greenText}>Número de páginas: </Text>{announcement.book.pageCount}</Text>
+              <Text><Text style={styles.greenText}>Número de páginas: </Text>{announcement.book.pageCount}</Text>
             }
           </View>
         </View>
