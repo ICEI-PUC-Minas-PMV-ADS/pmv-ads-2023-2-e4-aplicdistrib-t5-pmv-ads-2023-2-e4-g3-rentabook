@@ -175,6 +175,7 @@ export default function HomeMobile({ loading, inputValue, setInputValue, inputEr
           <Header />
           <View style={styles.infosContainer}>
             <FlatList nestedScrollEnabled
+              showsVerticalScrollIndicator={false}
               data={announcementsData}
               numColumns={2}
               style={{ padding: 20 }}
