@@ -29,9 +29,26 @@ const ChatComponent = ({ chatId, currentUser }: ChatComponentProps) => {
   const flatListRef = useRef<FlatList | null>(null);
 
   useEffect(() => {
+    let scheduledFetchChatMessages: NodeJS.Timeout | undefined
+
+    const timedFetchChatMessages = () => {
+      scheduledFetchChatMessages = setTimeout(() => {
+        if (chatId) { fetchChatMessages(chatId); }
+        timedFetchChatMessages();
+      }, 10000);
+    }
+
     if (chatId) {
       fetchChatMessages(chatId);
+      timedFetchChatMessages();
     }
+
+    return () => {
+      if (scheduledFetchChatMessages) {
+        clearTimeout(scheduledFetchChatMessages)
+      }
+      scheduledFetchChatMessages = undefined;
+    };
   }, [chatId]);
 
   const fetchChatMessages = async (chatId: string) => {

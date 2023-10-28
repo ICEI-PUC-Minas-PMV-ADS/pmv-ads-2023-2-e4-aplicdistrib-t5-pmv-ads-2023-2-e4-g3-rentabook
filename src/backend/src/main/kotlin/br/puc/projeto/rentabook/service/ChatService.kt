@@ -8,6 +8,7 @@ import br.puc.projeto.rentabook.repository.ChatRepository
 import br.puc.projeto.rentabook.repository.UserRepository
 import br.puc.projeto.rentabook.utils.AuthenticationUtils
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
@@ -32,9 +33,9 @@ class ChatService(
     fun getAllChats(pageable: Pageable): Page<ChatView>{
         return AuthenticationUtils.authenticate(userRepository){user ->
             chatRepository.findByOwnerIdOrLeadId(user.id!!, user.id,pageable).run {
-                map { t ->
-                    chatViewMapper.map(t)
-                }
+                val chats = filter { it.active }
+                val chatsList = chats.map { t -> chatViewMapper.map(t) }.toList()
+                PageImpl(chatsList, pageable, chatsList.size.toLong())
             }
         }
     }

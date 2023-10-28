@@ -40,7 +40,6 @@ export default function Chat() {
         console.error("Erro ao buscar os dados do usuário:", error);
       }
     }
-
     fetchTokenAndUserData();
   }, []);
 

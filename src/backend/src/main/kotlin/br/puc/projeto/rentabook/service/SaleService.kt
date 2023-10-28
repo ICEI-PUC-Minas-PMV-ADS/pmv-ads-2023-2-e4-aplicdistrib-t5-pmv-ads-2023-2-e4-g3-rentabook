@@ -11,10 +11,7 @@ import br.puc.projeto.rentabook.mapper.SaleFormMapper
 import br.puc.projeto.rentabook.mapper.SaleViewMapper
 import br.puc.projeto.rentabook.model.Rent
 import br.puc.projeto.rentabook.model.Sale
-import br.puc.projeto.rentabook.repository.AnnouncementRepository
-import br.puc.projeto.rentabook.repository.RentRepository
-import br.puc.projeto.rentabook.repository.SaleRepository
-import br.puc.projeto.rentabook.repository.UserRepository
+import br.puc.projeto.rentabook.repository.*
 import br.puc.projeto.rentabook.utils.AuthenticationUtils
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
@@ -37,6 +34,7 @@ class SaleService(
     private val saleFormMapper: SaleFormMapper,
     private val userRepository: UserRepository,
     private val announcementRepository: AnnouncementRepository,
+    private val chatRepository: ChatRepository,
 ) {
 
     fun create(form: SaleForm): SaleView {
@@ -98,6 +96,8 @@ class SaleService(
             if (sale.cancelled && sale.accepted) {
                 throw IllegalStateException("Esta venda não foi cancelada e não pode ser desfeita")
             }
+            sale.chat.active = false
+            chatRepository.save(sale.chat)
             sale.announcement.isAvailable = true
             announcementRepository.save(sale.announcement)
             sale.cancelled = true
@@ -115,6 +115,8 @@ class SaleService(
             if (sale.cancelled && sale.accepted) {
                 throw IllegalStateException("Esta venda não foi cancelada e não pode ser desfeita")
             }
+            sale.chat.active = false
+            chatRepository.save(sale.chat)
             sale.announcement.isAvailable = false
             announcementRepository.save(sale.announcement)
             sale.accepted = true
