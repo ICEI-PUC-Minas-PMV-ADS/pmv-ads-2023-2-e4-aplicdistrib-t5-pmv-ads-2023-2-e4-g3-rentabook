@@ -11,6 +11,7 @@ import Signup from '../pages/Signup';
 import { AlreadyLogged } from '../contexts/Auth/AlreadyLogged';
 import AnnouncementsDetails from '../pages/AnnouncementDetails'
 import React from 'react';
+import SearchMobile from '../pages/Home/SearchMobile';
 
 
 const Stack = createNativeStackNavigator<AppParamsList>();
@@ -22,6 +23,7 @@ const profile = 'Meu Perfil'
 const chat = 'Mensagens'
 const signup = 'Criar Conta'
 const announcementsDetails = 'Detalhes do anúncio'
+const searchMobile = 'Pesquisar por livro'
 
 export default function Router() {
   return (<>

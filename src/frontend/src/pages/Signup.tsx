@@ -152,6 +152,11 @@ export default function Signup() {
       fontSize: 24,
       textAlign: 'center',
       margin: 20,
+    },
+    buttom:{
+      height: 45,
+      width: 340,
+      marginTop: 20
     }
   });
 
@@ -198,7 +203,7 @@ export default function Signup() {
           />
           {validationErrors.confirmPassword && <Text style={{ color: 'red' }}>{validationErrors.confirmPassword}</Text>}
           <PrimaryButton
-            style={styles.input}
+            style={styles.buttom}
             onPress={handleSignup}
             label="Continuar"
           />
