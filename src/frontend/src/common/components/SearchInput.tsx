@@ -53,7 +53,7 @@ const SearchInputStyle = StyleSheet.create({
  */
 
 export default function SearchInput({ value, placeholder, style, onChange, onFocus, onBlur, onChangeDebounce, iconActive = true }: SearchInputProps) {
-  const debounceChange = useDebounce(onChangeDebounce, 700)
+  const debounceChange = useDebounce(onChangeDebounce, 500)
 
   React.useEffect(() => {
     if (onChangeDebounce) {

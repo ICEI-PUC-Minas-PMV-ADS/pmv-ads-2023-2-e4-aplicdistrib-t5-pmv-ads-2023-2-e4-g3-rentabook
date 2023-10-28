@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { View, StyleSheet, Text, Pressable, FlatList, TouchableWithoutFeedback, Modal, ScrollView, ActivityIndicator, } from "react-native";
+import { View, StyleSheet, Text, Pressable, FlatList, TouchableWithoutFeedback, Modal, ActivityIndicator, } from "react-native";
 import SearchInput from "../../common/components/SearchInput";
 import { Picker } from '@react-native-picker/picker';
 import PrimaryButton from "../../common/components/PrimaryButton";
@@ -16,10 +16,10 @@ import { PrivateAddress } from "../../types/PrivateAddress";
 import Input from "../../common/components/Input";
 import { useNavigation } from "@react-navigation/native";
 import { StackTypes } from "../../routes/StackTypes";
-import { HomeProps } from "../../types/HomeProps";
+import { HomeContext } from "../../contexts/Home/HomeContext";
 
-export default function HomeDesktop({ loading, inputValue, setInputValue, inputError, setInputError, messageError, selectedAddress, setSelectedAddress, isVisible, setIsVisible, searchValue, setSearchValue, sort, setSort, rentSort, saleSort, rent, setRent, trade, setTrade, sale, setSale, bookData, data, setCity, setBookId, page, setPage, searchOpen, setSearchOpen, handleSearch, handleCep, handleBook, announcementsData, loadAnnouncements, listLoading }: HomeProps) {
-
+export default function HomeDesktop() {
+  const { loadingAnnouncements, inputCepValue, setInputCepValue, inputCepError, setInputCepError, cepMessageError, selectedAddress, setSelectedAddress, addressModalIsVisible, setAddressModalIsVisible, inputSearchValue, setInputSearchValue, querySort, setQuerySort, rentActiveInDropDown, saleActiveInDropDown, searchByRentIsActive, setSearchByRentIsActive, searchByTradeIsActive, setSearchByTradeIsActive, searchBySaleIsActive, setSearchBySaleIsActive, bookResponse, announcementsResponse, setBookIdForSearch, searchModalIsVisible, setSearchModalIsVisible, handleSearch, handleCep, handleBook, announcementsData, loadAnnouncements, annoucementsInfiniteListIsLoading, cleanFilters, loadingBooks } = useContext(HomeContext)
   const navigation = useNavigation<StackTypes>()
   const authContext = useContext(AuthContext)
 
@@ -38,7 +38,7 @@ export default function HomeDesktop({ loading, inputValue, setInputValue, inputE
           item.id != selectedAddress?.id &&
           <Ionicons name="radio-button-off" size={20} color={PrimaryGreenColor} />
         }
-        <View style={styles.addressDescription}>
+        <View>
           <Text>{item?.street}</Text>
           <Text>CEP:{item?.cep} - {item?.city}, {item?.state}</Text>
         </View>
@@ -49,7 +49,7 @@ export default function HomeDesktop({ loading, inputValue, setInputValue, inputE
   const renderItem = (item: CleanAnnouncementView) => {
     return (
       <>
-        {data != null &&
+        {announcementsResponse != null &&
           <Pressable key={item.id} style={styles.card} onPress={() => navigation.navigate('Detalhes do anúncio', { announcement: item })}>
             <Image source={getFirstImageLink(item)} style={styles.image} />
             <Text style={styles.cardTitle}>
@@ -80,7 +80,7 @@ export default function HomeDesktop({ loading, inputValue, setInputValue, inputE
   }
 
   const loaderFooter = () => {
-    if (listLoading == false) return <></>
+    if (annoucementsInfiniteListIsLoading == false) return <></>
     return (
       <View style={{ padding: 20 }}>
         <ActivityIndicator size="large" color={PrimaryGreenColor} />
@@ -91,7 +91,7 @@ export default function HomeDesktop({ loading, inputValue, setInputValue, inputE
   return (
     <>
       {
-        loading == true &&
+        loadingAnnouncements == true &&
         <View style={{
           backgroundColor: 'rgba(0,0,0,0.5)',
           zIndex: 21,
@@ -106,10 +106,10 @@ export default function HomeDesktop({ loading, inputValue, setInputValue, inputE
         </View>
       }
       {
-        
+
       }
-      <Modal transparent={true} onRequestClose={() => setIsVisible(false)} visible={isVisible}>
-        <TouchableWithoutFeedback onPress={() => setIsVisible(false)} style={{ flex: 1, width: '100%', height: '100%', }}>
+      <Modal transparent={true} onRequestClose={() => setAddressModalIsVisible(false)} visible={addressModalIsVisible}>
+        <TouchableWithoutFeedback onPress={() => setAddressModalIsVisible(false)} style={{ flex: 1, width: '100%', height: '100%', }}>
           <View style={styles.modalView}>
             <Pressable style={styles.modalWindow}>
               <View>
@@ -120,15 +120,15 @@ export default function HomeDesktop({ loading, inputValue, setInputValue, inputE
                 authContext.user &&
                 <View>
                   <Text style={styles.modalTitle}>Em um dos seus endereços</Text>
-                  <ScrollView style={styles.modalScroll}>
-                    <FlatList data={authContext.user?.addresses} renderItem={({ item }) => {
+                  <FlatList
+                    style={styles.modalScroll}
+                    data={authContext.user?.addresses} renderItem={({ item }) => {
                       if (item) {
                         return (<RenderAddress item={item} />)
                       }
                       else return <></>
                     }
                     } />
-                  </ScrollView>
                 </View>
               }
               <View>
@@ -139,19 +139,19 @@ export default function HomeDesktop({ loading, inputValue, setInputValue, inputE
                 <View style={styles.modalInputContainer}>
                   <View style={{ width: '50%' }}>
                     <Input
-                      error={inputError}
+                      error={inputCepError}
                       label="Código de Endereçamento Postal"
                       style={{ width: '100%' }}
                       onChangeText={(value) => {
-                        setInputValue(value)
-                        setInputError(false)
+                        setInputCepValue(value)
+                        setInputCepError(false)
                       }}
-                      messageError={messageError}
-                      value={inputValue} />
+                      messageError={cepMessageError}
+                      value={inputCepValue} />
                   </View>
                   <View style={{ marginLeft: 15, flex: 1, alignItems: 'baseline', justifyContent: 'center', flexDirection: 'column' }}>
                     <PrimaryButton
-                      style={{ width: 100 }}
+                      style={{ width: 100, height: 40 }}
                       activeStyle={true}
                       onPress={() => handleCep()}
                       label='Usar'
@@ -167,11 +167,11 @@ export default function HomeDesktop({ loading, inputValue, setInputValue, inputE
                   authContext.defaultAddress != null &&
                   <View style={styles.buttomContainerModal}>
                     <PrimaryButton
-                      style={{ width: 180 }}
+                      style={{ width: 180, height: 50 }}
                       activeStyle={false}
                       onPress={() => {
                         authContext.removeDefaultAddress()
-                        setIsVisible(false)
+                        setAddressModalIsVisible(false)
                       }}
                       label='Limpar'
                     />
@@ -181,18 +181,18 @@ export default function HomeDesktop({ loading, inputValue, setInputValue, inputE
                   authContext.user &&
                   <>
                     <PrimaryButton
-                      style={{ width: 180 }}
+                      style={{ width: 180, height: 50 }}
                       activeStyle={false}
-                      onPress={() => setIsVisible(false)}
+                      onPress={() => setAddressModalIsVisible(false)}
                       label='Cancelar'
                     />
                     <PrimaryButton
-                      style={{ width: 180 }}
+                      style={{ width: 180, height: 50 }}
                       activeStyle={true}
                       onPress={() => {
                         if (selectedAddress) {
                           authContext.setDefaultAddressLocalStorage(selectedAddress)
-                          setIsVisible(false)
+                          setAddressModalIsVisible(false)
                         }
                       }}
                       label='Salvar alterações'
@@ -205,7 +205,7 @@ export default function HomeDesktop({ loading, inputValue, setInputValue, inputE
           </View>
         </TouchableWithoutFeedback>
       </Modal>
-      <TouchableWithoutFeedback onPress={() => setSearchOpen(false)}>
+      <TouchableWithoutFeedback onPress={() => setSearchModalIsVisible(false)}>
         <View style={styles.container}>
           <View style={styles.topBar}>
             <Pressable
@@ -214,20 +214,20 @@ export default function HomeDesktop({ loading, inputValue, setInputValue, inputE
                 placeholder="Pesquisar por livro..."
                 style={styles.searchBar}
                 onChange={(value) => {
-                  setBookId(null)
-                  setSearchValue(value)
+                  setBookIdForSearch(null)
+                  setInputSearchValue(value)
                 }}
                 onFocus={() => {
-                  setSearchOpen(true)
+                  setSearchModalIsVisible(true)
                 }}
-                value={searchValue}
+                value={inputSearchValue}
                 onChangeDebounce={(value) => {
                   handleSearch(value)
                 }}
               />
               {
-                searchOpen &&
-                <Pressable onPress={() => setSearchOpen(false)} style={{
+                searchModalIsVisible &&
+                <Pressable onPress={() => setSearchModalIsVisible(false)} style={{
                   width: 450,
                   height: 450,
                   backgroundColor: GreyColor,
@@ -240,15 +240,29 @@ export default function HomeDesktop({ loading, inputValue, setInputValue, inputE
                   paddingTop: 60,
 
                 }}>
+                  {loadingBooks == true &&
+                    <View style={{
+                      backgroundColor: 'rgba(0,0,0,0.5)',
+                      zIndex: 30,
+                      width: 450,
+                      height: 390,
+                      position: 'absolute',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      <ActivityIndicator size="large" color={GreenLight} />
+                    </View>
+                  }
                   <FlatList
-                    data={bookData?.content}
+                    data={bookResponse?.content}
                     keyExtractor={item => Math.random().toString()}
                     numColumns={1}
                     renderItem={({ item }) => (
                       <Pressable
                         onPress={() => {
-                          setSearchOpen(false)
-                          handleBook(item)}}
+                          setSearchModalIsVisible(false)
+                          handleBook(item)
+                        }}
                         style={styles.searchItem}>
                         <Image source={getUrlImage(item)} style={styles.bookImage} />
                         <View style={styles.bookTexts}>
@@ -262,13 +276,13 @@ export default function HomeDesktop({ loading, inputValue, setInputValue, inputE
                 </Pressable>
               }
             </Pressable>
-            <TouchableWithoutFeedback onPress={() => setSearchOpen(false)}>
+            <TouchableWithoutFeedback onPress={() => setSearchModalIsVisible(false)}>
               <View style={styles.dropDownContainer}>
                 <Picker
                   style={styles.dropDown}
-                  selectedValue={sort}
+                  selectedValue={querySort}
                   onValueChange={(itemValue, itemIndex) => {
-                    setSort(itemValue)
+                    setQuerySort(itemValue)
                   }
 
 
@@ -278,7 +292,7 @@ export default function HomeDesktop({ loading, inputValue, setInputValue, inputE
                   <Picker.Item
                     label={dropDownData[1].label} value={dropDownData[1].value} />
                   {
-                    rentSort &&
+                    rentActiveInDropDown &&
                     <>
                       <Picker.Item
                         label={dropDownData[2].label} value={dropDownData[2].value} />
@@ -287,7 +301,7 @@ export default function HomeDesktop({ loading, inputValue, setInputValue, inputE
                     </>
                   }
                   {
-                    saleSort &&
+                    saleActiveInDropDown &&
                     <>
                       <Picker.Item
                         label={dropDownData[4].label} value={dropDownData[4].value} />
@@ -299,10 +313,10 @@ export default function HomeDesktop({ loading, inputValue, setInputValue, inputE
               </View>
             </TouchableWithoutFeedback>
           </View>
-          <TouchableWithoutFeedback onPress={() => setSearchOpen(false)}>
+          <TouchableWithoutFeedback onPress={() => setSearchModalIsVisible(false)}>
             <View style={styles.leftBar}>
               <View style={styles.buttonsContainer}>
-                <Pressable onPress={() => setIsVisible(true)} style={styles.addressButtom}>
+                <Pressable onPress={() => setAddressModalIsVisible(true)} style={styles.addressButtom}>
                   <View>
                     <Text style={{ fontSize: 18, textAlign: 'center' }}>Localização</Text>
                     <Text>{authContext.defaultAddress == null ? "Selecionar localização" : authContext.defaultAddress.city}</Text>
@@ -310,45 +324,36 @@ export default function HomeDesktop({ loading, inputValue, setInputValue, inputE
                 </Pressable>
                 <Text style={{ fontSize: 18 }}>Filtrar por:</Text>
                 <PrimaryButton
-                  style={{}}
-                  activeStyle={sale}
-                  onPress={() => setSale(!sale)}
+                  style={{ height: 60 }}
+                  activeStyle={searchBySaleIsActive}
+                  onPress={() => setSearchBySaleIsActive(!searchBySaleIsActive)}
                   label='Disponível para compra'
                 />
                 <PrimaryButton
-                  style={{}}
-                  activeStyle={rent}
-                  onPress={() => setRent(!rent)}
+                  style={{ height: 60 }}
+                  activeStyle={searchByRentIsActive}
+                  onPress={() => setSearchByRentIsActive(!searchByRentIsActive)}
                   label='Disponível para aluguel'
                 />
                 <PrimaryButton
-                  style={{}}
-                  activeStyle={trade}
-                  onPress={() => setTrade(!trade)}
+                  style={{ height: 60 }}
+                  activeStyle={searchByTradeIsActive}
+                  onPress={() => setSearchByTradeIsActive(!searchByTradeIsActive)}
                   label='Disponível para troca'
                 />
               </View>
             </View>
           </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={() => setSearchOpen(false)}>
+          <TouchableWithoutFeedback onPress={() => setSearchModalIsVisible(false)}>
             <>
               {
                 announcementsData.length == 0 &&
                 <View style={[styles.addsContainer, { alignItems: 'center', justifyContent: 'center' }]}>
                   <Text style={styles.modalTitle}>Nenhum anúncio encontrado para a sua cidade ou para os filtros selecionados</Text>
                   <PrimaryButton
-                    style={{ width: 180, marginTop: 20 }}
+                    style={{ width: 180, marginTop: 20, height: 50 }}
                     activeStyle={true}
-                    onPress={() => {
-                      authContext.removeDefaultAddress()
-                      setBookId(null)
-                      setCity(null)
-                      setRent(false)
-                      setSale(false)
-                      setTrade(false)
-                      setPage(0)
-                      setSort(dropDownData[0].value)
-                    }}
+                    onPress={() => { cleanFilters() }}
                     label='Limpar filtros'
                   />
                 </View>
@@ -497,12 +502,6 @@ const styles = StyleSheet.create({
     gap: 5,
     alignSelf: 'center'
   },
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
-  },
   modalView: {
     alignItems: 'center',
     flex: 1,
@@ -534,9 +533,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 10
-  },
-  addressDescription: {
-
   },
   modalInputContainer: {
     padding: 10,

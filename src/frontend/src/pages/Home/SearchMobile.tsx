@@ -1,26 +1,20 @@
-import { View, Pressable, Text, StyleSheet, TextInput, SafeAreaView, FlatList } from "react-native";
+import { useContext } from 'react'
+import { View, Pressable, Text, StyleSheet, ActivityIndicator, SafeAreaView, FlatList } from "react-native";
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { DarkGreen, GreyColor } from "../../common/theme/colors";
-import { BookView } from "../../types/BookView";
-import { Page } from "../../types/Page";
+import { DarkGreen, GreyColor, GreenLight } from "../../common/theme/colors";
 import SearchInput from "../../common/components/SearchInput";
 import { Image } from "expo-image";
 import { getUrlImage } from "../../common/utils/bookUtils";
+import { HomeContext } from "../../contexts/Home/HomeContext";
 
-export default function SearchMobile({ setSearchOpen, bookData, setBookId, setSearchValue, searchValue, handleSearch, handleBook }: {
-  setSearchOpen: React.Dispatch<React.SetStateAction<boolean>>,
-  bookData: Page<BookView> | null,
-  setBookId: React.Dispatch<React.SetStateAction<string | null>>,
-  setSearchValue: React.Dispatch<React.SetStateAction<string>>,
-  searchValue: string,
-  handleSearch: (value: string) => Promise<void>,
-  handleBook: (item: BookView) => void
+export default function SearchMobile() {
 
-}) {
+  const { inputSearchValue, setInputSearchValue, bookResponse, setBookIdForSearch, setSearchModalIsVisible, handleSearch, handleBook, loadingBooks } = useContext(HomeContext)
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topBar}>
-        <Pressable onPress={() => setSearchOpen(false)}>
+        <Pressable onPress={() => setSearchModalIsVisible(false)}>
           <Ionicons name='arrow-back' size={35} color={DarkGreen} />
         </Pressable>
         <SearchInput
@@ -29,47 +23,59 @@ export default function SearchMobile({ setSearchOpen, bookData, setBookId, setSe
           placeholder="Pesquisar por livro..."
           onChange={(value) => {
 
-            setSearchValue(value)
+            setInputSearchValue(value)
           }}
-          onFocus={() => {
-            setSearchOpen(true)
-          }}
-          value={searchValue}
+          value={inputSearchValue}
           onChangeDebounce={(value) => {
             handleSearch(value)
           }}
         />
         {
-          searchValue != "" &&
+          inputSearchValue != "" &&
           <Pressable onPress={() => {
-            setSearchValue("")
-            setBookId(null)
-            setSearchOpen(false)
+            setInputSearchValue("")
+            setBookIdForSearch(null)
+            setSearchModalIsVisible(false)
           }}>
             <Ionicons name='close' size={35} color={DarkGreen} />
           </Pressable>
         }
       </View>
-      <FlatList
-        data={bookData?.content}
-        keyExtractor={item => Math.random().toString()}
-        numColumns={1}
-        renderItem={({ item }) => (
-          <Pressable
-            onPress={() => {
-              handleBook(item)
-              setSearchOpen(false)
-            }}
-            style={styles.searchItem}>
-            <Image source={getUrlImage(item)} style={styles.bookImage} />
-            <View style={styles.bookTexts}>
-              <Text style={{ fontSize: 16 }}>{item.title?.slice(0, 35)}</Text>
-              <Text>{item.authors == null ? "Autor desconhecido" : item.authors[0]?.slice(0, 35)}</Text>
-              <Text>{item.publishedDate}</Text>
-            </View>
-          </Pressable>
-        )}
-      />
+      <View style={{ flex: 1 }}>
+        {loadingBooks == true &&
+          <View style={{
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            zIndex: 30,
+            width: '100%',
+            height: '100%',
+            position: 'absolute',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <ActivityIndicator size="large" color={GreenLight} />
+          </View>
+        }
+        <FlatList
+          data={bookResponse?.content}
+          keyExtractor={item => Math.random().toString()}
+          numColumns={1}
+          renderItem={({ item }) => (
+            <Pressable
+              onPress={() => {
+                handleBook(item)
+                setSearchModalIsVisible(false)
+              }}
+              style={styles.searchItem}>
+              <Image source={getUrlImage(item)} style={styles.bookImage} />
+              <View style={styles.bookTexts}>
+                <Text style={{ fontSize: 16 }}>{item.title?.slice(0, 35)}</Text>
+                <Text>{item.authors == null ? "Autor desconhecido" : item.authors[0]?.slice(0, 35)}</Text>
+                <Text>{item.publishedDate}</Text>
+              </View>
+            </Pressable>
+          )}
+        />
+      </View>
     </SafeAreaView>
 
   )

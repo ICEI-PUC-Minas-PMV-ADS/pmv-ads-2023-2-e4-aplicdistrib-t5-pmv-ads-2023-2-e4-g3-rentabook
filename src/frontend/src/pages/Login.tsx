@@ -112,6 +112,11 @@ export default function Login() {
       fontSize: 24,
       textAlign: 'center',
       margin: 20,
+    },
+    buttom: {
+      height: 45,
+      width: 340,
+      marginTop: 20
     }
   });
 
@@ -139,7 +144,7 @@ export default function Login() {
           />
           {validationErrors.password && <Text style={{ color: 'red' }}>{validationErrors.password}</Text>}
           <PrimaryButton
-            style={styles.input}
+            style={styles.buttom}
             onPress={handleLogin}
             label="Entrar"
           />

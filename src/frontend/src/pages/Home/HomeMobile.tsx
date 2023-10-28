@@ -1,59 +1,36 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { View, StyleSheet, Text, Pressable, FlatList, TouchableWithoutFeedback, Modal, ScrollView, ActivityIndicator, SafeAreaView } from "react-native";
 import SearchInput from "../../common/components/SearchInput";
-import { DarkGreen, GreenLight, GreyColor, PrimaryGreenColor, WhiteColor } from "../../common/theme/colors";
+import { DarkGreen, GreenLight, PrimaryGreenColor, WhiteColor } from "../../common/theme/colors";
 import { CleanAnnouncementView } from "../../types/CleanAnnouncementView";
 import { useMediaQuery } from "../../hooks/useResposive";
 import { Image } from 'expo-image';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import dropDownData from "../../data/dropDownData.json"
 import { avaliableText, getFirstImageLink, getValueRent, getValueSale } from "../../common/utils/annoucementsUtils";
-import { getUrlImage } from "../../common/utils/bookUtils";
 import { AuthContext } from "../../contexts/Auth/AuthContext";
-import { PrivateAddress } from "../../types/PrivateAddress";
 import { useNavigation } from "@react-navigation/native";
 import { StackTypes } from "../../routes/StackTypes";
-import { HomeProps } from "../../types/HomeProps";
 import SearchMobile from "./SearchMobile";
 import LocationMobile from "./LocationMobile";
+import PrimaryButton from "../../common/components/PrimaryButton";
+import { HomeContext } from "../../contexts/Home/HomeContext";
 
-export default function HomeMobile({ loading, inputValue, setInputValue, inputError, setInputError, messageError, selectedAddress, setSelectedAddress, searchValue, setSearchValue, sort, setSort, rentSort, saleSort, rent, setRent, trade, setTrade, sale, setSale, bookData, data, setCity, setBookId, page, setPage, handleSearch, handleCep, handleBook, announcementsData, listLoading, loadAnnouncements, setIsVisible, isVisible }: HomeProps) {
+export default function HomeMobile() {
+
+  const { loadingAnnouncements, addressModalIsVisible, setAddressModalIsVisible, inputSearchValue, setInputSearchValue, querySort, setQuerySort, rentActiveInDropDown, saleActiveInDropDown, searchByRentIsActive, setSearchByRentIsActive, searchByTradeIsActive, setSearchByTradeIsActive, searchBySaleIsActive, setSearchBySaleIsActive, announcementsResponse, setBookIdForSearch, announcementsData, loadAnnouncements, annoucementsInfiniteListIsLoading, setSearchModalIsVisible, searchModalIsVisible, cleanFilters } = useContext(HomeContext)
 
   const navigation = useNavigation<StackTypes>()
   const authContext = useContext(AuthContext)
   const [open, setOpen] = useState(false)
   const [selectedSort, setSelectedSort] = useState("Mais recente")
   const [filterVisible, setFilterVisible] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-
-
-  const RenderAddress = ({ item }: { item: PrivateAddress }) => {
-    const [isHover, setIsHover] = useState(false)
-    return (
-      <Pressable onPress={() => setSelectedAddress(item)} onHoverIn={() => setIsHover(true)} onHoverOut={() => setIsHover(false)} style={[isHover && {
-        backgroundColor: GreyColor
-      }, styles.addressItem]}>
-        {
-          item.id == selectedAddress?.id &&
-          <Ionicons name="radio-button-on" size={20} color={PrimaryGreenColor} />
-        }
-        {
-          item.id != selectedAddress?.id &&
-          <Ionicons name="radio-button-off" size={20} color={PrimaryGreenColor} />
-        }
-        <View>
-          <Text>{item?.street}</Text>
-          <Text>CEP:{item?.cep} - {item?.city}, {item?.state}</Text>
-        </View>
-      </Pressable>
-    )
-  }
 
 
   const renderItem = (item: CleanAnnouncementView) => {
     return (
       <>
-        {data != null &&
+        {announcementsResponse != null &&
           <Pressable key={item.id} style={styles.card} onPress={() => navigation.navigate('Detalhes do anúncio', { announcement: item })}>
             <Image source={getFirstImageLink(item)} style={styles.image} />
             <Text style={styles.cardTitle}>
@@ -86,7 +63,7 @@ export default function HomeMobile({ loading, inputValue, setInputValue, inputEr
   const renderLongItem = (item: CleanAnnouncementView) => {
     return (
       <>
-        {data != null &&
+        {announcementsResponse != null &&
           <Pressable key={item.id} style={styles.longCard} onPress={() => navigation.navigate('Detalhes do anúncio', { announcement: item })}>
             <Image source={getFirstImageLink(item)} style={styles.smallImage} />
             <View style={{ flex: 1 }}>
@@ -120,26 +97,40 @@ export default function HomeMobile({ loading, inputValue, setInputValue, inputEr
     )
   }
 
+  const contentEmpyt = () => {
+    return (
+      <View style={{ alignItems: 'center', justifyContent: 'center', padding: 40 }}>
+        <Text style={styles.modalTitle}>Nenhum anúncio encontrado para a sua cidade ou para os filtros selecionados</Text>
+        <PrimaryButton
+          style={{ width: 180, marginTop: 20, height: 50 }}
+          activeStyle={true}
+          onPress={() => { cleanFilters() }}
+          label='Limpar filtros'
+        />
+      </View>
+    )
+  }
+
   const Header = () => {
     return (
       <View>
         <View style={styles.topBar}>
           <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
-            <SearchInput value={searchValue}
+            <SearchInput value={inputSearchValue}
               style={{ width: '95%' }}
-              onFocus={() => { setSearchOpen(true) }} />
+              onFocus={() => { setSearchModalIsVisible(true) }} />
             {
-              searchValue != "" &&
+              inputSearchValue != "" &&
               <Pressable onPress={() => {
-                setSearchValue("")
-                setBookId(null)
-                setSearchOpen(false)
+                setInputSearchValue("")
+                setBookIdForSearch(null)
+                setSearchModalIsVisible(false)
               }}>
                 <Ionicons name='close' size={35} color={DarkGreen} />
               </Pressable>
             }
           </View>
-          <Pressable onPress={() => setIsVisible(true)} style={styles.locationContainer}>
+          <Pressable onPress={() => setAddressModalIsVisible(true)} style={styles.locationContainer}>
             <Ionicons name='location' size={18} color={DarkGreen} />
             <Text style={styles.locationText}>{authContext.defaultAddress == null ? "Selecionar localização" : authContext.defaultAddress.city}</Text>
             <Ionicons name='chevron-forward' size={18} color={DarkGreen} />
@@ -147,7 +138,7 @@ export default function HomeMobile({ loading, inputValue, setInputValue, inputEr
         </View>
         <Pressable onPress={() => setFilterVisible(true)} style={styles.filterContainer}>
           <View>
-            <Text style={styles.filterContainerText}>{data?.totalElements} resultados</Text>
+            <Text style={styles.filterContainerText}>{announcementsResponse?.totalElements} resultados</Text>
           </View>
           <View style={{ flexDirection: 'row', gap: 10 }}>
             <Text style={styles.filterContainerText}>Filtros</Text>
@@ -159,7 +150,7 @@ export default function HomeMobile({ loading, inputValue, setInputValue, inputEr
   }
 
   const loaderFooter = () => {
-    if (listLoading == false) return <></>
+    if (annoucementsInfiniteListIsLoading == false) return <></>
     return (
       <View style={{ padding: 20 }}>
         <ActivityIndicator size="large" color={PrimaryGreenColor} />
@@ -167,44 +158,19 @@ export default function HomeMobile({ loading, inputValue, setInputValue, inputEr
     )
   }
 
-  const cleanFilters = () => {
-    setRent(false)
-    setSale(false)
-    setTrade(false)
-    setPage(0)
-    setSort(dropDownData[0].value)
-    setSelectedSort(dropDownData[0].label)
-  }
 
   return (
     <>
       {
-        searchOpen &&
-        <SearchMobile setSearchOpen={setSearchOpen}
-          bookData={bookData}
-          setSearchValue={setSearchValue}
-          handleBook={handleBook}
-          handleSearch={handleSearch}
-          setBookId={setBookId}
-          searchValue={searchValue}
-        />
+        searchModalIsVisible &&
+        <SearchMobile />
       }
       {
-        isVisible &&
-        <LocationMobile
-          selectedAddress={selectedAddress}
-          setSelectedAddress={setSelectedAddress}
-          inputError={inputError}
-          setIsVisible={setIsVisible}
-          setInputValue={setInputValue}
-          setInputError={setInputError}
-          messageError={messageError}
-          inputValue={inputValue}
-          handleCep={handleCep}
-        />
+        addressModalIsVisible &&
+        <LocationMobile />
       }
       <SafeAreaView style={styles.container}>
-        {loading &&
+        {loadingAnnouncements &&
           <View style={{
             backgroundColor: 'rgba(0,0,0,0.5)',
             zIndex: 30,
@@ -221,7 +187,7 @@ export default function HomeMobile({ loading, inputValue, setInputValue, inputEr
           <TouchableWithoutFeedback onPress={() => setFilterVisible(false)} style={{ flex: 1, width: '100%', height: '100%', }}>
             <SafeAreaView style={styles.modalView}>
               <Pressable style={styles.modalWindow}>
-                {loading &&
+                {loadingAnnouncements &&
                   <View style={{
                     backgroundColor: 'rgba(0,0,0,0.5)',
                     zIndex: 30,
@@ -256,108 +222,121 @@ export default function HomeMobile({ loading, inputValue, setInputValue, inputEr
 
                         <Pressable onPress={() => {
                           setSelectedSort(dropDownData[0].label)
-                          setSort(dropDownData[0].value)
+                          setQuerySort(dropDownData[0].value)
                           setOpen(false)
                         }
                         } style={styles.dropDownItem}>
                           <Text >
                             {dropDownData[0].label}
                           </Text>
-                          <Ionicons name={dropDownData[0].value == sort ? "radio-button-on" : "radio-button-off"} size={25} color={PrimaryGreenColor} />
+                          <Ionicons name={dropDownData[0].value == querySort ? "radio-button-on" : "radio-button-off"} size={25} color={PrimaryGreenColor} />
                         </Pressable>
 
                         <Pressable onPress={() => {
                           setSelectedSort(dropDownData[1].label)
-                          setSort(dropDownData[1].value)
+                          setQuerySort(dropDownData[1].value)
                           setOpen(false)
                         }
                         } style={styles.dropDownItem}>
                           <Text >
                             {dropDownData[1].label}
                           </Text>
-                          <Ionicons name={dropDownData[1].value == sort ? "radio-button-on" : "radio-button-off"} size={25} color={PrimaryGreenColor} />
+                          <Ionicons name={dropDownData[1].value == querySort ? "radio-button-on" : "radio-button-off"} size={25} color={PrimaryGreenColor} />
                         </Pressable>
                         {
-                          rentSort &&
+                          rentActiveInDropDown &&
                           <>
                             <Pressable onPress={() => {
                               setSelectedSort(dropDownData[2].label)
-                              setSort(dropDownData[2].value)
+                              setQuerySort(dropDownData[2].value)
                               setOpen(false)
                             }
                             } style={styles.dropDownItem}>
                               <Text >
                                 {dropDownData[2].label}
                               </Text>
-                              <Ionicons name={dropDownData[2].value == sort ? "radio-button-on" : "radio-button-off"} size={25} color={PrimaryGreenColor} />
+                              <Ionicons name={dropDownData[2].value == querySort ? "radio-button-on" : "radio-button-off"} size={25} color={PrimaryGreenColor} />
                             </Pressable>
 
                             <Pressable onPress={() => {
                               setSelectedSort(dropDownData[3].label)
-                              setSort(dropDownData[3].value)
+                              setQuerySort(dropDownData[3].value)
                               setOpen(false)
                             }
                             } style={styles.dropDownItem}>
                               <Text >
                                 {dropDownData[3].label}
                               </Text>
-                              <Ionicons name={dropDownData[3].value == sort ? "radio-button-on" : "radio-button-off"} size={25} color={PrimaryGreenColor} />
+                              <Ionicons name={dropDownData[3].value == querySort ? "radio-button-on" : "radio-button-off"} size={25} color={PrimaryGreenColor} />
                             </Pressable>
                           </>
                         }
                         {
-                          saleSort &&
+                          saleActiveInDropDown &&
                           <>
                             <Pressable onPress={() => {
                               setSelectedSort(dropDownData[4].label)
-                              setSort(dropDownData[4].value)
+                              setQuerySort(dropDownData[4].value)
                               setOpen(false)
                             }
                             } style={styles.dropDownItem}>
                               <Text >
                                 {dropDownData[4].label}
                               </Text>
-                              <Ionicons name={dropDownData[4].value == sort ? "radio-button-on" : "radio-button-off"} size={25} color={PrimaryGreenColor} />
+                              <Ionicons name={dropDownData[4].value == querySort ? "radio-button-on" : "radio-button-off"} size={25} color={PrimaryGreenColor} />
                             </Pressable>
 
                             <Pressable onPress={() => {
                               setSelectedSort(dropDownData[5].label)
-                              setSort(dropDownData[5].value)
+                              setQuerySort(dropDownData[5].value)
                               setOpen(false)
                             }
                             } style={styles.dropDownItem}>
                               <Text >
                                 {dropDownData[5].label}
                               </Text>
-                              <Ionicons name={dropDownData[5].value == sort ? "radio-button-on" : "radio-button-off"} size={25} color={PrimaryGreenColor} />
+                              <Ionicons name={dropDownData[5].value == querySort ? "radio-button-on" : "radio-button-off"} size={25} color={PrimaryGreenColor} />
                             </Pressable>
                           </>
                         }
                       </>
                     }
-                    <Pressable onPress={() => setSale(!sale)} style={styles.dropDownSelectedItem}>
+                    <Pressable onPress={() => {
+                      setSearchBySaleIsActive(!searchBySaleIsActive)
+                      setSelectedSort("Mais recente")
+                    }}
+                      style={styles.dropDownSelectedItem}>
                       <View>
                         <Text style={styles.greenText}>
                           Disponível para compra
                         </Text>
                       </View>
-                      <Ionicons name={sale == true ? 'checkbox' : 'square-outline'} size={25} color={PrimaryGreenColor} />
+                      <Ionicons name={searchBySaleIsActive == true ? 'checkbox' : 'square-outline'} size={25} color={PrimaryGreenColor} />
                     </Pressable>
-                    <Pressable onPress={() => setRent(!rent)} style={styles.dropDownSelectedItem}>
+                    <Pressable
+                      onPress={() => {
+                        setSearchByRentIsActive(!searchByRentIsActive)
+                        setSelectedSort("Mais recente")
+                      }}
+                      style={styles.dropDownSelectedItem}>
                       <View>
                         <Text style={styles.greenText}>
                           Disponível para aluguel
                         </Text>
                       </View>
-                      <Ionicons name={rent == true ? 'checkbox' : 'square-outline'} size={25} color={PrimaryGreenColor} />
+                      <Ionicons name={searchByRentIsActive == true ? 'checkbox' : 'square-outline'} size={25} color={PrimaryGreenColor} />
                     </Pressable>
-                    <Pressable onPress={() => setTrade(!trade)} style={styles.dropDownSelectedItem}>
+                    <Pressable onPress={() => {
+                      setSearchByTradeIsActive(!searchByTradeIsActive)
+                      setSelectedSort("Mais recente")
+                    }}
+                      style={styles.dropDownSelectedItem}>
                       <View>
                         <Text style={styles.greenText}>
                           Disponível para troca
                         </Text>
                       </View>
-                      <Ionicons name={trade == true ? 'checkbox' : 'square-outline'} size={25} color={PrimaryGreenColor} />
+                      <Ionicons name={searchByTradeIsActive == true ? 'checkbox' : 'square-outline'} size={25} color={PrimaryGreenColor} />
                     </Pressable>
                   </Pressable>
                 </ScrollView>
@@ -365,6 +344,7 @@ export default function HomeMobile({ loading, inputValue, setInputValue, inputEr
             </SafeAreaView>
           </TouchableWithoutFeedback>
         </Modal>
+
 
         {
           useMediaQuery(0, 700) &&
@@ -375,6 +355,7 @@ export default function HomeMobile({ loading, inputValue, setInputValue, inputEr
             renderItem={({ item }) => renderLongItem(item)}
             onEndReached={loadAnnouncements}
             onEndReachedThreshold={0.1}
+            ListEmptyComponent={() => contentEmpyt()}
             ListFooterComponent={() => loaderFooter()}
             ListHeaderComponent={() => Header()}
           />
@@ -392,6 +373,7 @@ export default function HomeMobile({ loading, inputValue, setInputValue, inputEr
                 renderItem={({ item }) => renderItem(item)}
                 onEndReached={loadAnnouncements}
                 onEndReachedThreshold={0.1}
+                ListEmptyComponent={() => contentEmpyt()}
                 ListFooterComponent={() => loaderFooter()}
               />
             </View>
@@ -528,14 +510,6 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontSize: 20
-  },
-  addressItem: {
-    padding: 10,
-    gap: 15,
-    borderRadius: 5,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 10
   },
   dropDownItem: {
     justifyContent: 'space-between',
