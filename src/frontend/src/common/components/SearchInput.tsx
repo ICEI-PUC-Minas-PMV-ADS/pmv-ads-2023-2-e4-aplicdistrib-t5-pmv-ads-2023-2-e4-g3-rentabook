@@ -17,6 +17,7 @@ type SearchInputProps = {
   onFocus?: ((e: NativeSyntheticEvent<TextInputFocusEventData>) => void),
   onBlur?: ((e: NativeSyntheticEvent<TextInputFocusEventData>) => void),
   onChangeDebounce?: (value: string) => void,
+  iconActive?: boolean
 };
 
 /**
@@ -51,7 +52,7 @@ const SearchInputStyle = StyleSheet.create({
  * https://www.figma.com/file/2lR8urPO212OkkhvDTmmgF/Untitled?type=design&node-id=32-302&mode=design&t=G0WN8D6m416029bq-4
  */
 
-export default function SearchInput({ value, placeholder, style, onChange, onFocus, onBlur, onChangeDebounce }: SearchInputProps) {
+export default function SearchInput({ value, placeholder, style, onChange, onFocus, onBlur, onChangeDebounce, iconActive = true }: SearchInputProps) {
   const debounceChange = useDebounce(onChangeDebounce, 700)
 
   React.useEffect(() => {
@@ -63,7 +64,10 @@ export default function SearchInput({ value, placeholder, style, onChange, onFoc
   return (
     <View style={style}>
       <View style={SearchInputStyle.inputContainer}>
-        <Ionicons name="search" size={35} color={DarkGreen} style={{ marginLeft: 5 }} />
+        {
+          iconActive &&
+          <Ionicons name="search" size={35} color={DarkGreen} style={{ marginLeft: 5 }} />
+        }
         <TextInput
           style={SearchInputStyle.input}
           placeholder={placeholder}

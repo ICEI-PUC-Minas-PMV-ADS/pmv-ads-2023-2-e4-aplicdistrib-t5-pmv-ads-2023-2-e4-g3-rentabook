@@ -12,7 +12,6 @@ import { getValueRent, getValueSale } from '../../common/utils/annoucementsUtils
 import PrimaryButton from '../../common/components/PrimaryButton'
 import Carousel from '../../common/components/Carousel'
 import { CleanAnnouncementView } from '../../types/CleanAnnouncementView'
-import { lightGreen } from '@mui/material/colors'
 import { AuthContext } from '../../contexts/Auth/AuthContext'
 
 export default function AnnouncementsDetailsMobile({ announcement }: { announcement: CleanAnnouncementView }) {
@@ -31,7 +30,8 @@ export default function AnnouncementsDetailsMobile({ announcement }: { announcem
       backgroundColor: GreenLight,
       marginBottom: 20,
       width: '100%',
-      height: 65,
+      paddingTop: 20,
+      height: 75,
       paddingHorizontal: 20
     },
     goBackText: {

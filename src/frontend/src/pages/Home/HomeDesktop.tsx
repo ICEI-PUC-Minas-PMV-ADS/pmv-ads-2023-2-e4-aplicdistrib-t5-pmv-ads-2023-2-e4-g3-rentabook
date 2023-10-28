@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { View, StyleSheet, Text, Pressable, FlatList, TouchableWithoutFeedback, Modal, ScrollView, ActivityIndicator, } from "react-native";
 import SearchInput from "../../common/components/SearchInput";
 import { Picker } from '@react-native-picker/picker';
@@ -14,8 +14,6 @@ import { getUrlImage } from "../../common/utils/bookUtils";
 import { AuthContext } from "../../contexts/Auth/AuthContext";
 import { PrivateAddress } from "../../types/PrivateAddress";
 import Input from "../../common/components/Input";
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
 import { useNavigation } from "@react-navigation/native";
 import { StackTypes } from "../../routes/StackTypes";
 import { HomeProps } from "../../types/HomeProps";
@@ -106,6 +104,9 @@ export default function HomeDesktop({ loading, inputValue, setInputValue, inputE
         }}>
           <ActivityIndicator size="large" color={GreenLight} />
         </View>
+      }
+      {
+        
       }
       <Modal transparent={true} onRequestClose={() => setIsVisible(false)} visible={isVisible}>
         <TouchableWithoutFeedback onPress={() => setIsVisible(false)} style={{ flex: 1, width: '100%', height: '100%', }}>
@@ -245,7 +246,9 @@ export default function HomeDesktop({ loading, inputValue, setInputValue, inputE
                     numColumns={1}
                     renderItem={({ item }) => (
                       <Pressable
-                        onPress={() => handleBook(item)}
+                        onPress={() => {
+                          setSearchOpen(false)
+                          handleBook(item)}}
                         style={styles.searchItem}>
                         <Image source={getUrlImage(item)} style={styles.bookImage} />
                         <View style={styles.bookTexts}>
@@ -264,8 +267,11 @@ export default function HomeDesktop({ loading, inputValue, setInputValue, inputE
                 <Picker
                   style={styles.dropDown}
                   selectedValue={sort}
-                  onValueChange={(itemValue, itemIndex) =>
+                  onValueChange={(itemValue, itemIndex) => {
                     setSort(itemValue)
+                  }
+
+
                   }>
                   <Picker.Item
                     label={dropDownData[0].label} value={dropDownData[0].value} />
@@ -282,13 +288,12 @@ export default function HomeDesktop({ loading, inputValue, setInputValue, inputE
                   }
                   {
                     saleSort &&
-                    <Picker.Item
-                      label={dropDownData[4].label} value={dropDownData[4].value} />
-                  }
-                  {
-                    saleSort &&
-                    <Picker.Item
-                      label={dropDownData[5].label} value={dropDownData[5].value} />
+                    <>
+                      <Picker.Item
+                        label={dropDownData[4].label} value={dropDownData[4].value} />
+                      <Picker.Item
+                        label={dropDownData[5].label} value={dropDownData[5].value} />
+                    </>
                   }
                 </Picker>
               </View>

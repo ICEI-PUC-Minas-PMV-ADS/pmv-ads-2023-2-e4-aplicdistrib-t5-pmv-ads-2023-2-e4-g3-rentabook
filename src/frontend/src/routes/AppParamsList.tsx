@@ -1,13 +1,14 @@
 import { CleanAnnouncementView } from "../types/CleanAnnouncementView";
 
 export type AppParamsList = {
-  'Anúncios': {};
-  'Profile' : {};
+  'Anúncios': { searchBookId?: string | null, bookName?: string | null };
+  'Profile': {};
   'Meus Anúncios': {};
   RequireAuth: {};
   'Criar Conta': {};
   'Meu Perfil': {};
   'Mensagens': {};
   'Entrar': {};
-  'Detalhes do anúncio': { announcement: CleanAnnouncementView }
+  'Detalhes do anúncio': { announcement: CleanAnnouncementView };
+  'Pesquisar por livro': {};
 }

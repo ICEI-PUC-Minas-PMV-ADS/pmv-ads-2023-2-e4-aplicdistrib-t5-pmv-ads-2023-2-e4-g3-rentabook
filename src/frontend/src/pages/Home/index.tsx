@@ -13,7 +13,7 @@ import { useViaCep } from "../../hooks/useViaCep";
 import HomeDesktop from "./HomeDesktop";
 import HomeMobile from "./HomeMobile";
 
-export default function Home() {
+export default function Home({ searchBookId, bookName }: { searchBookId?: string | null, bookName?: string | null }) {
   const authContext = useContext(AuthContext)
   const [loading, setLoading] = useState(true)
   const [listLoading, setListLoading] = useState(false)
@@ -40,6 +40,13 @@ export default function Home() {
   const saleOption = sale ? true : null
   const [searchOpen, setSearchOpen] = useState(false);
 
+  if (searchBookId) {
+    setBookId(searchBookId)
+    if (bookName) {
+      setSearchValue(bookName)
+    }
+  }
+
 
   useEffect(() => {
     setSelectedAddress(authContext.defaultAddress)
@@ -55,7 +62,6 @@ export default function Home() {
   const loadAnnouncements = async (filtersChanged: boolean = false) => {
     if (authContext.infosLoaded) {
       if (filtersChanged == true) {
-        console.log('filtrou')
         const adds: Page<CleanAnnouncementView> = await announcementsService.getAnnouncements(city, bookId, rentOption, tradeOption, saleOption, sort, 0)
         setPage(0)
         setData(adds)
@@ -165,7 +171,6 @@ export default function Home() {
 
   const handleBook = (item: BookView) => {
     setBookId(item.id)
-    setSearchOpen(false)
     setSearchValue(item.title as string)
   }
 

@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, Text, Pressable, FlatList, TouchableWithoutFeedback, Modal, ScrollView, ActivityIndicator, SafeAreaView } from "react-native";
 import SearchInput from "../../common/components/SearchInput";
-import { Picker } from '@react-native-picker/picker';
-import PrimaryButton from "../../common/components/PrimaryButton";
 import { DarkGreen, GreenLight, GreyColor, PrimaryGreenColor, WhiteColor } from "../../common/theme/colors";
 import { CleanAnnouncementView } from "../../types/CleanAnnouncementView";
 import { useMediaQuery } from "../../hooks/useResposive";
@@ -13,18 +11,20 @@ import { avaliableText, getFirstImageLink, getValueRent, getValueSale } from "..
 import { getUrlImage } from "../../common/utils/bookUtils";
 import { AuthContext } from "../../contexts/Auth/AuthContext";
 import { PrivateAddress } from "../../types/PrivateAddress";
-import Input from "../../common/components/Input";
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
 import { useNavigation } from "@react-navigation/native";
 import { StackTypes } from "../../routes/StackTypes";
 import { HomeProps } from "../../types/HomeProps";
-import { lightGreen } from "@mui/material/colors";
+import SearchMobile from "./SearchMobile";
+import LocationMobile from "./LocationMobile";
 
-export default function HomeMobile({ loading, inputValue, setInputValue, inputError, setInputError, messageError, selectedAddress, setSelectedAddress, isVisible, setIsVisible, searchValue, setSearchValue, sort, setSort, rentSort, saleSort, rent, setRent, trade, setTrade, sale, setSale, bookData, data, setCity, setBookId, page, setPage, searchOpen, setSearchOpen, handleSearch, handleCep, handleBook, announcementsData, listLoading, loadAnnouncements }: HomeProps) {
+export default function HomeMobile({ loading, inputValue, setInputValue, inputError, setInputError, messageError, selectedAddress, setSelectedAddress, searchValue, setSearchValue, sort, setSort, rentSort, saleSort, rent, setRent, trade, setTrade, sale, setSale, bookData, data, setCity, setBookId, page, setPage, handleSearch, handleCep, handleBook, announcementsData, listLoading, loadAnnouncements, setIsVisible, isVisible }: HomeProps) {
 
   const navigation = useNavigation<StackTypes>()
   const authContext = useContext(AuthContext)
+  const [open, setOpen] = useState(false)
+  const [selectedSort, setSelectedSort] = useState("Mais recente")
+  const [filterVisible, setFilterVisible] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
 
   const RenderAddress = ({ item }: { item: PrivateAddress }) => {
@@ -41,7 +41,7 @@ export default function HomeMobile({ loading, inputValue, setInputValue, inputEr
           item.id != selectedAddress?.id &&
           <Ionicons name="radio-button-off" size={20} color={PrimaryGreenColor} />
         }
-        <View style={styles.addressDescription}>
+        <View>
           <Text>{item?.street}</Text>
           <Text>CEP:{item?.cep} - {item?.city}, {item?.state}</Text>
         </View>
@@ -124,14 +124,28 @@ export default function HomeMobile({ loading, inputValue, setInputValue, inputEr
     return (
       <View>
         <View style={styles.topBar}>
-          <SearchInput />
-          <Pressable style={styles.locationContainer}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
+            <SearchInput value={searchValue}
+              style={{ width: '95%' }}
+              onFocus={() => { setSearchOpen(true) }} />
+            {
+              searchValue != "" &&
+              <Pressable onPress={() => {
+                setSearchValue("")
+                setBookId(null)
+                setSearchOpen(false)
+              }}>
+                <Ionicons name='close' size={35} color={DarkGreen} />
+              </Pressable>
+            }
+          </View>
+          <Pressable onPress={() => setIsVisible(true)} style={styles.locationContainer}>
             <Ionicons name='location' size={18} color={DarkGreen} />
             <Text style={styles.locationText}>{authContext.defaultAddress == null ? "Selecionar localização" : authContext.defaultAddress.city}</Text>
             <Ionicons name='chevron-forward' size={18} color={DarkGreen} />
           </Pressable>
         </View>
-        <Pressable style={styles.filterContainer}>
+        <Pressable onPress={() => setFilterVisible(true)} style={styles.filterContainer}>
           <View>
             <Text style={styles.filterContainerText}>{data?.totalElements} resultados</Text>
           </View>
@@ -153,42 +167,239 @@ export default function HomeMobile({ loading, inputValue, setInputValue, inputEr
     )
   }
 
-  return (
-    <SafeAreaView style={styles.container}>
+  const cleanFilters = () => {
+    setRent(false)
+    setSale(false)
+    setTrade(false)
+    setPage(0)
+    setSort(dropDownData[0].value)
+    setSelectedSort(dropDownData[0].label)
+  }
 
+  return (
+    <>
       {
-        useMediaQuery(0, 700) &&
-        <FlatList
-          data={announcementsData}
-          numColumns={1}
-          style={{ width: '100%' }}
-          renderItem={({ item }) => renderLongItem(item)}
-          onEndReached={loadAnnouncements}
-          onEndReachedThreshold={0.1}
-          ListFooterComponent={() => loaderFooter()}
-          ListHeaderComponent={() => Header()}
+        searchOpen &&
+        <SearchMobile setSearchOpen={setSearchOpen}
+          bookData={bookData}
+          setSearchValue={setSearchValue}
+          handleBook={handleBook}
+          handleSearch={handleSearch}
+          setBookId={setBookId}
+          searchValue={searchValue}
         />
       }
       {
-        useMediaQuery(700, 1000) &&
-        <>
-          <Header />
-          <View style={styles.infosContainer}>
-            <FlatList nestedScrollEnabled
-              showsVerticalScrollIndicator={false}
-              data={announcementsData}
-              numColumns={2}
-              style={{ padding: 20 }}
-              renderItem={({ item }) => renderItem(item)}
-              onEndReached={loadAnnouncements}
-              onEndReachedThreshold={0.1}
-              ListFooterComponent={() => loaderFooter()}
-            />
-          </View>
-        </>
+        isVisible &&
+        <LocationMobile
+          selectedAddress={selectedAddress}
+          setSelectedAddress={setSelectedAddress}
+          inputError={inputError}
+          setIsVisible={setIsVisible}
+          setInputValue={setInputValue}
+          setInputError={setInputError}
+          messageError={messageError}
+          inputValue={inputValue}
+          handleCep={handleCep}
+        />
       }
+      <SafeAreaView style={styles.container}>
+        {loading &&
+          <View style={{
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            zIndex: 30,
+            width: '100%',
+            height: '100%',
+            position: 'absolute',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <ActivityIndicator size="large" color={GreenLight} />
+          </View>
+        }
+        <Modal transparent={true} onRequestClose={() => setFilterVisible(false)} visible={filterVisible}>
+          <TouchableWithoutFeedback onPress={() => setFilterVisible(false)} style={{ flex: 1, width: '100%', height: '100%', }}>
+            <SafeAreaView style={styles.modalView}>
+              <Pressable style={styles.modalWindow}>
+                {loading &&
+                  <View style={{
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    zIndex: 30,
+                    width: '100%',
+                    height: '100%',
+                    position: 'absolute',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <ActivityIndicator size="large" color={GreenLight} />
+                  </View>
+                }
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 15, paddingTop: 25 }}>
+                  <Text style={styles.modalTitle}>Filtrar por:</Text>
+                  <Text onPress={() => cleanFilters()} style={styles.greenText}>Limpar filtros</Text>
+                </View>
+                <ScrollView>
+                  <Pressable>
+                    <Pressable onPress={() => setOpen(!open)} style={styles.dropDownSelectedItem}>
+                      <View>
+                        <Text>Ordenar por:</Text>
+                        <Text style={styles.greenText}>
+                          {selectedSort}
+                        </Text>
+                      </View>
+                      <Ionicons name={open == true ? 'chevron-up' : 'chevron-down'} size={25} color={PrimaryGreenColor} />
+                    </Pressable>
 
-    </SafeAreaView>
+                    {
+                      open == true &&
+                      <>
+
+                        <Pressable onPress={() => {
+                          setSelectedSort(dropDownData[0].label)
+                          setSort(dropDownData[0].value)
+                          setOpen(false)
+                        }
+                        } style={styles.dropDownItem}>
+                          <Text >
+                            {dropDownData[0].label}
+                          </Text>
+                          <Ionicons name={dropDownData[0].value == sort ? "radio-button-on" : "radio-button-off"} size={25} color={PrimaryGreenColor} />
+                        </Pressable>
+
+                        <Pressable onPress={() => {
+                          setSelectedSort(dropDownData[1].label)
+                          setSort(dropDownData[1].value)
+                          setOpen(false)
+                        }
+                        } style={styles.dropDownItem}>
+                          <Text >
+                            {dropDownData[1].label}
+                          </Text>
+                          <Ionicons name={dropDownData[1].value == sort ? "radio-button-on" : "radio-button-off"} size={25} color={PrimaryGreenColor} />
+                        </Pressable>
+                        {
+                          rentSort &&
+                          <>
+                            <Pressable onPress={() => {
+                              setSelectedSort(dropDownData[2].label)
+                              setSort(dropDownData[2].value)
+                              setOpen(false)
+                            }
+                            } style={styles.dropDownItem}>
+                              <Text >
+                                {dropDownData[2].label}
+                              </Text>
+                              <Ionicons name={dropDownData[2].value == sort ? "radio-button-on" : "radio-button-off"} size={25} color={PrimaryGreenColor} />
+                            </Pressable>
+
+                            <Pressable onPress={() => {
+                              setSelectedSort(dropDownData[3].label)
+                              setSort(dropDownData[3].value)
+                              setOpen(false)
+                            }
+                            } style={styles.dropDownItem}>
+                              <Text >
+                                {dropDownData[3].label}
+                              </Text>
+                              <Ionicons name={dropDownData[3].value == sort ? "radio-button-on" : "radio-button-off"} size={25} color={PrimaryGreenColor} />
+                            </Pressable>
+                          </>
+                        }
+                        {
+                          saleSort &&
+                          <>
+                            <Pressable onPress={() => {
+                              setSelectedSort(dropDownData[4].label)
+                              setSort(dropDownData[4].value)
+                              setOpen(false)
+                            }
+                            } style={styles.dropDownItem}>
+                              <Text >
+                                {dropDownData[4].label}
+                              </Text>
+                              <Ionicons name={dropDownData[4].value == sort ? "radio-button-on" : "radio-button-off"} size={25} color={PrimaryGreenColor} />
+                            </Pressable>
+
+                            <Pressable onPress={() => {
+                              setSelectedSort(dropDownData[5].label)
+                              setSort(dropDownData[5].value)
+                              setOpen(false)
+                            }
+                            } style={styles.dropDownItem}>
+                              <Text >
+                                {dropDownData[5].label}
+                              </Text>
+                              <Ionicons name={dropDownData[5].value == sort ? "radio-button-on" : "radio-button-off"} size={25} color={PrimaryGreenColor} />
+                            </Pressable>
+                          </>
+                        }
+                      </>
+                    }
+                    <Pressable onPress={() => setSale(!sale)} style={styles.dropDownSelectedItem}>
+                      <View>
+                        <Text style={styles.greenText}>
+                          Disponível para compra
+                        </Text>
+                      </View>
+                      <Ionicons name={sale == true ? 'checkbox' : 'square-outline'} size={25} color={PrimaryGreenColor} />
+                    </Pressable>
+                    <Pressable onPress={() => setRent(!rent)} style={styles.dropDownSelectedItem}>
+                      <View>
+                        <Text style={styles.greenText}>
+                          Disponível para aluguel
+                        </Text>
+                      </View>
+                      <Ionicons name={rent == true ? 'checkbox' : 'square-outline'} size={25} color={PrimaryGreenColor} />
+                    </Pressable>
+                    <Pressable onPress={() => setTrade(!trade)} style={styles.dropDownSelectedItem}>
+                      <View>
+                        <Text style={styles.greenText}>
+                          Disponível para troca
+                        </Text>
+                      </View>
+                      <Ionicons name={trade == true ? 'checkbox' : 'square-outline'} size={25} color={PrimaryGreenColor} />
+                    </Pressable>
+                  </Pressable>
+                </ScrollView>
+              </Pressable>
+            </SafeAreaView>
+          </TouchableWithoutFeedback>
+        </Modal>
+
+        {
+          useMediaQuery(0, 700) &&
+          <FlatList
+            data={announcementsData}
+            numColumns={1}
+            style={{ width: '100%' }}
+            renderItem={({ item }) => renderLongItem(item)}
+            onEndReached={loadAnnouncements}
+            onEndReachedThreshold={0.1}
+            ListFooterComponent={() => loaderFooter()}
+            ListHeaderComponent={() => Header()}
+          />
+        }
+        {
+          useMediaQuery(700, 1000) &&
+          <>
+            <Header />
+            <View style={styles.infosContainer}>
+              <FlatList nestedScrollEnabled
+                showsVerticalScrollIndicator={false}
+                data={announcementsData}
+                numColumns={2}
+                style={{ padding: 20 }}
+                renderItem={({ item }) => renderItem(item)}
+                onEndReached={loadAnnouncements}
+                onEndReachedThreshold={0.1}
+                ListFooterComponent={() => loaderFooter()}
+              />
+            </View>
+          </>
+        }
+
+      </SafeAreaView>
+    </>
   )
 }
 
@@ -199,9 +410,10 @@ const styles = StyleSheet.create({
   },
   topBar: {
     backgroundColor: GreenLight,
-    paddingVertical: 20,
+    paddingBottom: 20,
+    paddingTop: 30,
     width: '100%',
-    height: 130,
+    height: 145,
     paddingHorizontal: 20, gap: 20
   },
   filterContainer: {
@@ -226,51 +438,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center'
   },
-  searchContainer: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    width: 450
-  },
   locationText: {
     color: DarkGreen,
     fontSize: 16
-  },
-  dropDownContainer: {
-    width: 180,
-  },
-  dropDown: {
-    borderWidth: 0,
-    borderRadius: 3,
-    height: 50,
-    fontSize: 16,
-    paddingHorizontal: 8
-  },
-  buttonsContainer: {
-    width: 220,
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    gap: 20
-  },
-  leftBar: {
-    position: 'absolute',
-    left: 40,
-    top: 40
-  },
-  addressButtom: {
-    borderRadius: 50,
-    backgroundColor: WhiteColor,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    alignItems: "center",
-    borderStyle: 'solid',
-    borderWidth: 3,
-    borderColor: PrimaryGreenColor,
-  },
-  addsContainer: {
-    alignSelf: 'flex-end',
-    width: '72.5%',
-    marginTop: 20,
-    flex: 1
   },
   card: {
     width: 300,
@@ -279,7 +449,6 @@ const styles = StyleSheet.create({
     marginRight: 40,
     marginBottom: 40,
     gap: 10
-
   },
   longCard: {
     width: '100%',
@@ -291,7 +460,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: GreenLight,
     alignItems: 'center'
-
   },
   image: {
     width: '90%',
@@ -340,49 +508,23 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: PrimaryGreenColor
   },
-  bookImage: {
-    height: '100%',
-    width: '20%',
-    borderRadius: 5
-  },
-  searchItem: {
-    flexDirection: 'row',
-    width: '100%',
-    height: 100,
-    padding: 5
-  },
-  bookTexts: {
-    marginLeft: 10,
-    flexDirection: 'column',
-    gap: 5,
-    alignSelf: 'center'
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
-  },
   modalView: {
-    alignItems: 'center',
+    alignItems: 'flex-end',
     flex: 1,
     justifyContent: 'center',
     backgroundColor: 'rgba(0,0,0,0.5)',
+    height: '100%',
     zIndex: 20
 
   },
   modalWindow: {
-    width: '50%',
+    width: '70%',
+    height: '100%',
     backgroundColor: WhiteColor,
     borderRadius: 3,
     position: 'absolute',
-    padding: 40,
     flexDirection: 'column',
-    justifyContent: 'space-between',
     gap: 15
-  },
-  buttomContainerModal: {
-    flexDirection: 'row', justifyContent: 'flex-end', gap: 10
   },
   modalTitle: {
     fontSize: 20
@@ -395,24 +537,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10
   },
-  addressDescription: {
-
-  },
-  modalInputContainer: {
-    padding: 10,
-    borderRadius: 5,
+  dropDownItem: {
+    justifyContent: 'space-between',
     flexDirection: 'row',
-    marginTop: 10,
-    borderWidth: 1,
-    borderColor: '#d3d3d3'
+    height: 60,
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderColor: 'rgb(211, 211, 211)',
+    paddingHorizontal: 15,
+    backgroundColor: '#ececec'
   },
-  modalScroll: {
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 10,
-    borderWidth: 1,
-    borderColor: '#d3d3d3',
-    height: 150
+  dropDownSelectedItem: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    height: 60,
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderColor: 'rgb(211, 211, 211)',
+    paddingHorizontal: 15
+  },
+  greenText: {
+    color: PrimaryGreenColor
   }
 
 });

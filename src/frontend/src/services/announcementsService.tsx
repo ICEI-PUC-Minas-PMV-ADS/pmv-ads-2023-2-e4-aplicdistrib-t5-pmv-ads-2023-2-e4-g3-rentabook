@@ -28,7 +28,6 @@ export const announcementsService = {
     if (page != null) {
       query = query + `page=${page}&`
     }
-    console.log(query)
     const response = await useApi.get(query)
     return response.data;
   }
