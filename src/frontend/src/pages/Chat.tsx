@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, SafeAreaView } from "react-native";
 import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
 import ConversationsList from "../common/components/ConversationList";
 import ChatComponent from "../common/components/ChatComponent";
+import Banner from "../common/components/Banner";
 import { getToken } from "../other/Storage";
 
 export default function Chat() {
@@ -43,22 +44,60 @@ export default function Chat() {
     fetchTokenAndUserData();
   }, []);
 
+  const handleAccept = () => {
+    // Lógica de aceitação do anúncio
+    console.log("Anúncio aceito com sucesso.");
+    // Aqui você pode atualizar o estado ou fazer qualquer ação necessária após a aceitação
+  };
+
+  const handleCancel = () => {
+    // Lógica de cancelamento do anúncio
+    console.log("Anúncio cancelado com sucesso.");
+    // Aqui você pode atualizar o estado ou fazer qualquer ação necessária após o cancelamento
+  };
+
   return (
-    <ResponsiveNavbar>
-      <View style={styles.container}>
-        <ConversationsList onConversationSelect={handleConversationSelect} />
-        <ChatComponent
-          chatId={selectedChatId}
-          currentUser={currentUser ?? ""}
-        />
-      </View>
-    </ResponsiveNavbar>
+    <SafeAreaView style={styles.container}>
+      <ResponsiveNavbar>
+        <View style={styles.contentContainer}>
+          <View style={styles.conversationsListContainer}>
+            <ConversationsList
+              onConversationSelect={handleConversationSelect}
+            />
+          </View>
+          <View style={styles.chatContainer}>
+            {selectedChatId && (
+              <>
+                <Banner
+                  actionType="complete"
+                  onAccept={handleAccept}
+                  onCancel={handleCancel}
+                />
+                <ChatComponent
+                  chatId={selectedChatId}
+                  currentUser={currentUser ?? ""}
+                />
+              </>
+            )}
+          </View>
+        </View>
+      </ResponsiveNavbar>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  contentContainer: {
+    flex: 1,
     flexDirection: "row",
+  },
+  conversationsListContainer: {
+    width: "30%", // Definindo a largura para 80% da tela
+  },
+  chatContainer: {
+    flex: 1,
   },
 });

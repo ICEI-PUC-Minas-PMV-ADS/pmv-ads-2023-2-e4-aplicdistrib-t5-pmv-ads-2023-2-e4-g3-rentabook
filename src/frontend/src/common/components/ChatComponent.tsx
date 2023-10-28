@@ -150,6 +150,7 @@ const ChatComponent = ({ chatId, currentUser }: ChatComponentProps) => {
           </View>
         )}
         inverted
+        contentContainerStyle={{ paddingBottom: 20, marginTop: 20 }}
         ref={(ref) => (flatListRef.current = ref)}
       />
       <View style={styles.inputContainer}>
@@ -194,11 +195,13 @@ const styles = StyleSheet.create({
   },
   messageContainer: {
     borderRadius: 10,
+    marginLeft: 20,
+    marginRight: 20,
     marginTop: 5,
     marginBottom: 5,
     padding: 10,
     maxWidth: "70%",
-    backgroundColor: "#F3EDD7", // Cor de fundo padrão
+    backgroundColor: "#F3EDD7",
   },
   messageText: {
     color: "#406C4B",
