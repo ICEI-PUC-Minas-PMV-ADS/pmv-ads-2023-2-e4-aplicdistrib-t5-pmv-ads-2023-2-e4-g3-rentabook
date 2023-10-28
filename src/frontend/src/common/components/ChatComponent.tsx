@@ -29,14 +29,16 @@ const ChatComponent = ({ chatId, currentUser }: ChatComponentProps) => {
   const flatListRef = useRef<FlatList | null>(null);
 
   useEffect(() => {
-    let scheduledFetchChatMessages: NodeJS.Timeout | undefined
+    let scheduledFetchChatMessages: NodeJS.Timeout | undefined;
 
     const timedFetchChatMessages = () => {
       scheduledFetchChatMessages = setTimeout(() => {
-        if (chatId) { fetchChatMessages(chatId); }
+        if (chatId) {
+          fetchChatMessages(chatId);
+        }
         timedFetchChatMessages();
       }, 10000);
-    }
+    };
 
     if (chatId) {
       fetchChatMessages(chatId);
@@ -45,7 +47,7 @@ const ChatComponent = ({ chatId, currentUser }: ChatComponentProps) => {
 
     return () => {
       if (scheduledFetchChatMessages) {
-        clearTimeout(scheduledFetchChatMessages)
+        clearTimeout(scheduledFetchChatMessages);
       }
       scheduledFetchChatMessages = undefined;
     };
@@ -84,7 +86,6 @@ const ChatComponent = ({ chatId, currentUser }: ChatComponentProps) => {
 
           setMessages(chatMessages);
 
-          // Role para a última mensagem após atualizar
           flatListRef.current?.scrollToEnd({ animated: true });
         }
       } else {
@@ -128,9 +129,9 @@ const ChatComponent = ({ chatId, currentUser }: ChatComponentProps) => {
 
       if (response.status === 200) {
         console.log("Mensagem enviada com sucesso.");
-        // Limpar o campo de mensagem após o envio
+
         setMessage("");
-        // Recarregar as mensagens após o envio
+
         fetchChatMessages(chatId);
       } else {
         console.error("Erro ao enviar mensagem");

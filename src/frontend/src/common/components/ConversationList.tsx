@@ -10,9 +10,9 @@ import { useNavigation } from "@react-navigation/native";
 import { getToken } from "../../other/Storage";
 import { format, parseISO } from "date-fns";
 
-export let typeId: string | null = null; // Exportando a variável typeId
-export let selectedItemContent: string | null = null; // Exportando a variável selectedItemContent
-export let selectedItemContentType: "rent" | "sale" | "trade" | null = null; // Exportando o tipo da selectedItemContent
+export let typeId: string | null = null;
+export let selectedItemContent: string | null = null;
+export let selectedItemContentType: "rent" | "sale" | "trade" | null = null;
 
 type Conversation = {
   id: string;
@@ -83,15 +83,15 @@ export default function ConversationsList({
           if (updatedConversations[0].sale !== null) {
             selectedItemContent = updatedConversations[0].sale;
             typeId = updatedConversations[0].sale;
-            selectedItemContentType = "sale"; // Definindo tipo aqui
+            selectedItemContentType = "sale";
           } else if (updatedConversations[0].trade !== null) {
             selectedItemContent = updatedConversations[0].trade;
             typeId = updatedConversations[0].trade;
-            selectedItemContentType = "trade"; // Definindo tipo aqui
+            selectedItemContentType = "trade"; //
           } else if (updatedConversations[0].rent !== null) {
             selectedItemContent = updatedConversations[0].rent;
             typeId = updatedConversations[0].rent;
-            selectedItemContentType = "rent"; // Definindo tipo aqui
+            selectedItemContentType = "rent";
           }
         }
       } else {
@@ -109,15 +109,15 @@ export default function ConversationsList({
     if (conversation.sale !== null) {
       selectedItemContent = conversation.sale;
       typeId = conversation.sale;
-      selectedItemContentType = "sale"; // Definindo tipo aqui
+      selectedItemContentType = "sale";
     } else if (conversation.trade !== null) {
       selectedItemContent = conversation.trade;
       typeId = conversation.trade;
-      selectedItemContentType = "trade"; // Definindo tipo aqui
+      selectedItemContentType = "trade";
     } else if (conversation.rent !== null) {
       selectedItemContent = conversation.rent;
       typeId = conversation.rent;
-      selectedItemContentType = "rent"; // Definindo tipo aqui
+      selectedItemContentType = "rent";
     }
   };
 
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#F3EDD7",
-    width: "100%", // Adjust the width here to your desired percentage or value
+    width: "100%",
   },
   conversationItem: {
     marginBottom: 10,

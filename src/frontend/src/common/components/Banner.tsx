@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 8,
     height: "13%",
-    width: "100%", // Ocupa 100% da largura
+    width: "100%",
   },
   bannerText: {
     fontSize: 12,
