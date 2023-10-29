@@ -24,12 +24,6 @@ export default function Signup() {
     confirmPassword: '',
   });
 
-  const [orientation, setOrientation] = useState(
-    Dimensions.get('window').width > Dimensions.get('window').height
-      ? 'LANDSCAPE'
-      : 'PORTRAIT'
-  );
-
   const handleInputChange = (field, value) => {
     const errors = { ...validationErrors };
     delete errors[field];
@@ -52,15 +46,33 @@ export default function Signup() {
     }
   };
 
+  const updateOrientation = () => {
+    setOrientation(
+      Dimensions.get('window').width > Dimensions.get('window').height
+        ? 'LANDSCAPE'
+        : 'PORTRAIT'
+    );
+  };
+
+  const [orientation, setOrientation] = useState(
+    Dimensions.get('window').width > Dimensions.get('window').height
+      ? 'LANDSCAPE'
+      : 'PORTRAIT'
+  );
+
   useEffect(() => {
-    const onChange = ({ window: { width, height } }) => {
-      setOrientation(width > height ? 'LANDSCAPE' : 'PORTRAIT');
+    const changeOrientation = () => {
+      setOrientation(
+        Dimensions.get('window').width > Dimensions.get('window').height
+          ? 'LANDSCAPE'
+          : 'PORTRAIT'
+      );
     };
 
-    Dimensions.addEventListener("change", onChange);
+    Dimensions.addEventListener("change", changeOrientation);
 
     return () => {
-      Dimensions.removeEventListener("change", onChange);
+      Dimensions.removeEventListener("change", changeOrientation);
     };
   }, []);
 

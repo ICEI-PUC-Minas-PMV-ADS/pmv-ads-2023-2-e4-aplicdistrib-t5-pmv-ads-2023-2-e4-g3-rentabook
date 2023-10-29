@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import * as yup from 'yup';
@@ -19,12 +19,6 @@ export default function Login() {
     password: '',
   });
 
-  const [orientation, setOrientation] = useState(
-    Dimensions.get('window').width > Dimensions.get('window').height
-      ? 'LANDSCAPE'
-      : 'PORTRAIT'
-  );
-
   const handleInputChange = (field, value) => {
     const errors = { ...validationErrors };
     delete errors[field];
@@ -40,6 +34,36 @@ export default function Login() {
         break;
     }
   };
+
+  const updateOrientation = () => {
+    setOrientation(
+      Dimensions.get('window').width > Dimensions.get('window').height
+        ? 'LANDSCAPE'
+        : 'PORTRAIT'
+    );
+  };
+
+  const [orientation, setOrientation] = useState(
+    Dimensions.get('window').width > Dimensions.get('window').height
+      ? 'LANDSCAPE'
+      : 'PORTRAIT'
+  );
+
+  useEffect(() => {
+    const changeOrientation = () => {
+      setOrientation(
+        Dimensions.get('window').width > Dimensions.get('window').height
+          ? 'LANDSCAPE'
+          : 'PORTRAIT'
+      );
+    };
+
+    Dimensions.addEventListener("change", changeOrientation);
+
+    return () => {
+      Dimensions.removeEventListener("change", changeOrientation);
+    };
+  }, []);
 
   const handleLogin = async () => {
     try {
@@ -113,7 +137,7 @@ export default function Login() {
       textAlign: 'center',
       margin: 20,
     },
-    buttom: {
+    button: {
       height: 45,
       width: 340,
       marginTop: 20
@@ -144,7 +168,7 @@ export default function Login() {
           />
           {validationErrors.password && <Text style={{ color: 'red' }}>{validationErrors.password}</Text>}
           <PrimaryButton
-            style={styles.buttom}
+            style={styles.button}
             onPress={handleLogin}
             label="Entrar"
           />
