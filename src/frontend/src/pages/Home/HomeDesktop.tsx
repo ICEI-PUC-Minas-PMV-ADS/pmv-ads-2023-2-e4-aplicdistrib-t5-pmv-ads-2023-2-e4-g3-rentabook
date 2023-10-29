@@ -210,21 +210,34 @@ export default function HomeDesktop() {
           <View style={styles.topBar}>
             <Pressable
               style={styles.searchContainer}>
-              <SearchInput
-                placeholder="Pesquisar por livro..."
-                style={styles.searchBar}
-                onChange={(value) => {
-                  setBookIdForSearch(null)
-                  setInputSearchValue(value)
-                }}
-                onFocus={() => {
-                  setSearchModalIsVisible(true)
-                }}
-                value={inputSearchValue}
-                onChangeDebounce={(value) => {
-                  handleSearch(value)
-                }}
-              />
+              <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', zIndex: 5 }}>
+                <SearchInput
+                  placeholder="Pesquisar por livro..."
+                  style={styles.searchBar}
+                  onChange={(value) => {
+                    setBookIdForSearch(null)
+                    setInputSearchValue(value)
+                  }}
+                  onFocus={() => {
+                    setSearchModalIsVisible(true)
+                  }}
+                  value={inputSearchValue}
+                  onChangeDebounce={(value) => {
+                    handleSearch(value)
+                  }}
+                />
+                {
+                  inputSearchValue != "" &&
+                  <Pressable onPress={() => {
+                    setInputSearchValue("")
+                    setBookIdForSearch(null)
+                    setSearchModalIsVisible(false)
+                  }}>
+                    <Ionicons name='close' size={35} color={DarkGreen} />
+                  </Pressable>
+                }
+              </View>
+
               {
                 searchModalIsVisible &&
                 <Pressable onPress={() => setSearchModalIsVisible(false)} style={{

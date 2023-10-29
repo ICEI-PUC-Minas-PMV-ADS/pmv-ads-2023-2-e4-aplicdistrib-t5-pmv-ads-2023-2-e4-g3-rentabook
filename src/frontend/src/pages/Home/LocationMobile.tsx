@@ -14,9 +14,10 @@ export default function LocationMobile() {
 
   const { inputCepValue, setInputCepValue, inputCepError, setInputCepError, cepMessageError, selectedAddress, setSelectedAddress, setAddressModalIsVisible, handleCep } = useContext(HomeContext)
 
-  const [openMyAddresses, setOpenMyAddresses] = useState(false)
-  const [openOtherLocation, setOpenOtherLocation] = useState(false)
+
   const authContext = useContext(AuthContext)
+  const [openOtherLocation, setOpenOtherLocation] = useState(authContext.user == null ? true : false)
+  const [openMyAddresses, setOpenMyAddresses] = useState(authContext.user != null ? true : false)
   const navigation = useNavigation<StackTypes>()
 
   return (
@@ -84,15 +85,12 @@ export default function LocationMobile() {
             </>
           }
           <View>
-            {
-              authContext.user != null &&
-              <Pressable onPress={() => setOpenOtherLocation(!openOtherLocation)} style={styles.dropDownSelectedItem}>
-                <View>
-                  <Text style={styles.fontDropTitle}>Em outro lugar</Text>
-                </View>
-                <Ionicons name={openOtherLocation == true ? 'chevron-up' : 'chevron-down'} size={25} color={PrimaryGreenColor} />
-              </Pressable>
-            }
+            <Pressable onPress={() => setOpenOtherLocation(!openOtherLocation)} style={styles.dropDownSelectedItem}>
+              <View>
+                <Text style={styles.fontDropTitle}>Em outro lugar</Text>
+              </View>
+              <Ionicons name={openOtherLocation == true ? 'chevron-up' : 'chevron-down'} size={25} color={PrimaryGreenColor} />
+            </Pressable>
             {
               openOtherLocation == true &&
               <View style={styles.modalInputContainer}>
@@ -121,32 +119,32 @@ export default function LocationMobile() {
 
           </View>
 
-
-          <View style={styles.buttomContainerModal}>
-            {
-              authContext.user &&
-              <>
-                <PrimaryButton
-                  style={{ width: 180, height: 50 }}
-                  activeStyle={false}
-                  onPress={() => setAddressModalIsVisible(false)}
-                  label='Cancelar'
-                />
-                <PrimaryButton
-                  style={{ width: 180, height: 50 }}
-                  activeStyle={true}
-                  onPress={() => {
-                    if (selectedAddress) {
-                      authContext.setDefaultAddressLocalStorage(selectedAddress)
-                      setAddressModalIsVisible(false)
-                    }
-                  }}
-                  label='Salvar alterações'
-                />
-              </>
-            }
-          </View>
         </ScrollView>
+        <View style={styles.buttomContainerModal}>
+          {
+            authContext.user &&
+            <>
+              <PrimaryButton
+                style={{ width: 180, height: 50 }}
+                activeStyle={false}
+                onPress={() => setAddressModalIsVisible(false)}
+                label='Cancelar'
+              />
+              <PrimaryButton
+                style={{ width: 180, height: 50 }}
+                activeStyle={true}
+                onPress={() => {
+                  if (selectedAddress) {
+                    authContext.setDefaultAddressLocalStorage(selectedAddress)
+                    setAddressModalIsVisible(false)
+                  }
+                }}
+                label='Salvar alterações'
+              />
+            </>
+          }
+        </View>
+
       </KeyboardAvoidingView>
     </SafeAreaView>
 

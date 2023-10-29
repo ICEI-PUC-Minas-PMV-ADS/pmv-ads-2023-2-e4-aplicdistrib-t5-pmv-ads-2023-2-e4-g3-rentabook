@@ -16,4 +16,6 @@ export type CleanAnnouncementView = {
     "valueForRent": Double | null,
     "valueForSale": Double | null
     "location": PublicAddressView
+    "averageStars": number,
+    "totalRatings": number
 }
