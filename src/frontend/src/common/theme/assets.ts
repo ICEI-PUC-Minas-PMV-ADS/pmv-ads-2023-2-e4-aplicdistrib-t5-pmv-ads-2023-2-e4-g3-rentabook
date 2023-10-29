@@ -1,5 +1,5 @@
 export default {
-  IcDropdownArrow: '/images/svg/ic_dropdown_arrow.svg',
-  IcSearchIcon: '/images/svg/ic_search_icon.svg',
-  IcCheckbox: '/images/svg/ic_checkbox.svg',
+  IcDropdownArrow: require('../assets/svgs/ic_dropdown_arrow.svg'),
+  IcSearchIcon: require('../assets/svgs/ic_search_icon.svg'),
+  IcCheckbox: require('../assets/svgs/ic_checkbox.svg'),
 }

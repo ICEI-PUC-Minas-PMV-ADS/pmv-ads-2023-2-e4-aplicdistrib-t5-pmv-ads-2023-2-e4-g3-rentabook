@@ -11,8 +11,8 @@ type PrimaryButtonProps = {
   label: string,
   style?: Object,
   textStyle?: Object,
+  activeStyle?: boolean,
   onPress: () => void,
-  activeStyle?: boolean
 };
 
 /**
@@ -65,7 +65,6 @@ export default function PrimaryButton({ label, style, onPress, textStyle, active
       setCurrentStyle(ButtonStyle.notActiveStyle)
       setCurrentTextStyle(ButtonStyle.notActiveText)
     }
-
   }, [activeStyle])
 
   return (

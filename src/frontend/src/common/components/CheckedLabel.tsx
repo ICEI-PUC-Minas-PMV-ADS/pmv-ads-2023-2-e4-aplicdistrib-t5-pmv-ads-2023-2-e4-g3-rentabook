@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Image, Text, StyleSheet } from "react-native";
-import { InputLabelGreenColor } from '../theme/colors';
+import { BlackColor } from '../theme/colors';
 import Assets from '../theme/assets';
 
 /**
@@ -25,7 +25,7 @@ const CheckedLabelStyle = StyleSheet.create({
   },
   label: {
     borderRadius: 12,
-    color: InputLabelGreenColor,
+    color: BlackColor,
     fontSize: 14,
     marginBottom: 4,
     marginStart: 8,

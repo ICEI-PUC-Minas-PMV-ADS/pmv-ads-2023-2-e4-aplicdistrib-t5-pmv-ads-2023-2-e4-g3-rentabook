@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, StyleSheet, KeyboardTypeOptions } from "react-native";
 import { GreyColor, InputLabelGreenColor } from '../theme/colors';
 
 /**
@@ -11,13 +11,14 @@ type InputProps = {
   width?: number,
   height?: number,
   label: string,
+  keyboardType?: KeyboardTypeOptions,
   placeholder?: string,
   style?: Object,
   secureTextEntry?: boolean,
   onChangeText?: (value: string) => void,
   error?: boolean,
   messageError?: string,
-  editable?: boolean 
+  editable?: boolean
 };
 
 /**
@@ -45,18 +46,19 @@ const InputStyle = StyleSheet.create({
  * https://www.figma.com/file/2lR8urPO212OkkhvDTmmgF/Untitled?type=design&node-id=32-256&mode=design&t=ZkwebBuGnnQ715v7-4
  */
 
-export default function Input({ style, value = "", label, placeholder, secureTextEntry, onChangeText, error = false, messageError = "", editable = true }: InputProps) {
+export default function Input({ style, value = "", label, placeholder, keyboardType, secureTextEntry, onChangeText, error = false, messageError = "", editable = true }: InputProps) {
   return (
     <View style={style}>
       <Text style={InputStyle.label}>{label}</Text>
       <View style={InputStyle.inputContainer}>
         <TextInput
           style={[error && { borderColor: 'red', borderWidth: 2 }, InputStyle.input]}
+          keyboardType={keyboardType}
           secureTextEntry={secureTextEntry}
           placeholder={placeholder}
-          onChangeText={onChangeText}
-          defaultValue={value}
-          editable = {editable}
+          onChangeText={(value) => onChangeText?.(value)}
+          value={value}
+          editable={editable}
         />
       </View>
       <Text style={[error == true && { fontSize: 14, color: 'red', opacity: 1 }, error == false && { opacity: 0 }]}>{messageError}</Text>

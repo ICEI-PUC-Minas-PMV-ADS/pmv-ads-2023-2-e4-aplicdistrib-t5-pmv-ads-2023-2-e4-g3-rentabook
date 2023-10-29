@@ -1,4 +1,6 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useApi } from "../hooks/useApi";
+import { AnnouncementView } from './../pages/MyAnnouncements/components/AnnouncementView';
 
 export const announcementsService = {
 
@@ -30,6 +32,69 @@ export const announcementsService = {
     }
     const response = await useApi.get(query)
     return response.data;
-  }
+  },
 
+  getMyOwnAnnouncements: async (page: number | null) => {
+    let query = "/announcements/own";
+    if (page) { query += `?page=${page}`; }
+
+    const token = await AsyncStorage.getItem('authToken');
+    const response = await useApi.get(query, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    return response.data;
+  },
+
+  createAnnouncement: async ({
+    bookId,
+    description,
+    valueForSale,
+    valueForRent,
+    locationId,
+    rent,
+    trade,
+    sale,
+  }: {
+    bookId: string,
+    description: string,
+    valueForSale?: string | null,
+    valueForRent?: string | null,
+    locationId: string,
+    rent: boolean,
+    trade: boolean,
+    sale: boolean,
+  }) => {
+    const body = {
+      bookId,
+      description,
+      valueForSale,
+      valueForRent,
+      locationId,
+      rent,
+      trade,
+      sale,
+    };
+    const jsonBody = JSON.stringify(body);
+    const token = await AsyncStorage.getItem('authToken');
+    const response = await useApi.post("/announcements/new", jsonBody, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json; chatset=utf-8",
+      }
+    });
+    return response.data;
+  },
+
+  getAnnouncementById: async (announcementId: string) => {
+    const token = await AsyncStorage.getItem('authToken');
+    const response = await useApi.get(`/announcements/clean/${announcementId}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json; chatset=utf-8",
+      }
+    });
+    return response.data;
+  },
 }

@@ -94,6 +94,25 @@ class AnnouncementService(
         }
     }
 
+    fun findAnnouncementById(announcementId: String): CleanAnnouncementView {
+        return AuthenticationUtils.authenticate(userRepository) { user ->
+            cleanAnnouncementViewMapper.map(announcementRepository.findById(announcementId)
+                .orElseThrow { throw java.lang.Exception("Invalid announcement id!") })
+        }
+    }
+
+    fun findAllOwn(pageable: Pageable) : Page<CleanAnnouncementView> {
+        return AuthenticationUtils.authenticate(userRepository) { user ->
+            val announcements = announcementRepository.findAllByOwnerUser_Id(user.id!!, pageable)
+                .toList()
+
+            val supplier = fun(): Long { return announcements.size.toLong() }
+
+            PageableExecutionUtils.getPage(announcements, pageable, supplier)
+                .map { t -> cleanAnnouncementViewMapper.map(t) }
+        }
+    }
+
     fun findAllUsersBooksAvailableToNegotiate(pageable: Pageable): Page<AnnouncementView> {
         return AuthenticationUtils.authenticate(userRepository) {
             val announcementList = announcementRepository.findAllByIsAvailableTrue(pageable)
