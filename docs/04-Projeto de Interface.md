@@ -15,15 +15,54 @@ O diagrama abaixo ilustra o fluxo geral da aplicação. Em algumas telas o usuá
 
 ## Wireframes
 
-![Exemplo de Wireframe](img/wireframe-example.png)
 
-São protótipos usados em design de interface para sugerir a estrutura de um site web e seu relacionamentos entre suas páginas. Um wireframe web é uma ilustração semelhante do layout de elementos fundamentais na interface.
- 
-> **Links Úteis**:
-> - [Protótipos vs Wireframes](https://www.nngroup.com/videos/prototypes-vs-wireframes-ux-projects/)
-> - [Ferramentas de Wireframes](https://rockcontent.com/blog/wireframes/)
-> - [MarvelApp](https://marvelapp.com/developers/documentation/tutorials/)
-> - [Figma](https://www.figma.com/)
-> - [Adobe XD](https://www.adobe.com/br/products/xd.html#scroll)
-> - [Axure](https://www.axure.com/edu) (Licença Educacional)
-> - [InvisionApp](https://www.invisionapp.com/) (Licença Educacional)
+
+Este repositório contém 12 wireframes que representam a interface de usuário do nosso projeto. Cada imagem de wireframe é uma representação visual de uma parte específica do projeto. 
+
+## Cadastro
+
+<img src="[URL_DA_IMAGEM_1](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/Register.png)" width="400">
+
+## Login
+
+<img src="[URL_DA_IMAGEM_2](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/Login.png)" width="400">
+
+## Wireframe 3
+
+<img src="URL_DA_IMAGEM_3" width="400">
+
+## Wireframe 4
+
+<img src="URL_DA_IMAGEM_4" width="400">
+
+## Wireframe 5
+
+<img src="URL_DA_IMAGEM_5" width="400">
+
+## Wireframe 6
+
+<img src="URL_DA_IMAGEM_6" width="400">
+
+## Wireframe 7
+
+<img src="URL_DA_IMAGEM_7" width="400">
+
+## Wireframe 8
+
+<img src="URL_DA_IMAGEM_8" width="400">
+
+## Wireframe 9
+
+<img src="URL_DA_IMAGEM_9" width="400">
+
+## Wireframe 10
+
+<img src="URL_DA_IMAGEM_10" width="400">
+
+## Wireframe 11
+
+<img src="URL_DA_IMAGEM_11" width="400">
+
+## Wireframe 12
+
+<img src="URL_DA_IMAGEM_12" width="400">
