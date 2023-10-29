@@ -15,54 +15,42 @@ O diagrama abaixo ilustra o fluxo geral da aplicação. Em algumas telas o usuá
 
 ## Wireframes
 
+## Tamplate padrão Desktop
 
-
-Este repositório contém 12 wireframes que representam a interface de usuário do nosso projeto. Cada imagem de wireframe é uma representação visual de uma parte específica do projeto. 
+<img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/baseTemplate.png" width="600">
 
 ## Cadastro
 
-<img src="[URL_DA_IMAGEM_1](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/Register.png)" width="400">
+<img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/Register.png" width="600">
 
 ## Login
 
-<img src="[URL_DA_IMAGEM_2](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/Login.png)" width="400">
+<img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/Login.png" width="600">
 
-## Wireframe 3
+## Anúncios
 
-<img src="URL_DA_IMAGEM_3" width="400">
+<img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/announcements.png" width="600">
 
-## Wireframe 4
+<img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/announcements%202.png" width="600">
 
-<img src="URL_DA_IMAGEM_4" width="400">
+## Modal de compra, venda e troca
 
-## Wireframe 5
+<img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/announcementsAluguelOuCompra.png" width="600">
 
-<img src="URL_DA_IMAGEM_5" width="400">
+## Meus Anúncios
 
-## Wireframe 6
+<img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/myAnnouncements.png" width="600">
 
-<img src="URL_DA_IMAGEM_6" width="400">
+<img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/detalheDeAnuncio.png" width="600">
 
-## Wireframe 7
+<img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/detalheDeAnuncio%202.png" width="600">
 
-<img src="URL_DA_IMAGEM_7" width="400">
+## Chat
 
-## Wireframe 8
+<img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/Chat.png" width="600">
 
-<img src="URL_DA_IMAGEM_8" width="400">
+<img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/Chat-1.png" width="600">
 
-## Wireframe 9
+## Perfil
 
-<img src="URL_DA_IMAGEM_9" width="400">
-
-## Wireframe 10
-
-<img src="URL_DA_IMAGEM_10" width="400">
-
-## Wireframe 11
-
-<img src="URL_DA_IMAGEM_11" width="400">
-
-## Wireframe 12
-
-<img src="URL_DA_IMAGEM_12" width="400">
+<img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/profile.png" width="600">
