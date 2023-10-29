@@ -165,7 +165,7 @@ export default function Signup() {
       textAlign: 'center',
       margin: 20,
     },
-    buttom:{
+    button:{
       height: 45,
       width: 340,
       marginTop: 20
@@ -215,7 +215,7 @@ export default function Signup() {
           />
           {validationErrors.confirmPassword && <Text style={{ color: 'red' }}>{validationErrors.confirmPassword}</Text>}
           <PrimaryButton
-            style={styles.buttom}
+            style={styles.button}
             onPress={handleSignup}
             label="Continuar"
           />
