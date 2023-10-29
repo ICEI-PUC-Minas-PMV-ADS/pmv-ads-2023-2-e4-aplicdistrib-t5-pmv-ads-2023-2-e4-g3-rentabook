@@ -56,8 +56,8 @@ class AddressService(
                 address.id == id
             }
             if (findedAddress != null) {
-                addressRepository.deleteById(id)
                 userService.deleteAddress(id)
+                addressRepository.deleteById(id)
             } else throw NotFoundException("Endereço não encontrado!")
         }
     }

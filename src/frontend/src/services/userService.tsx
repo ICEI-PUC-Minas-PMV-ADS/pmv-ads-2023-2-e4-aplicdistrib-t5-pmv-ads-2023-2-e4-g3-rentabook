@@ -2,7 +2,6 @@ import { useApi } from "../hooks/useApi";
 import { LoginForm } from "../types/LoginForm";
 import { RegisterForm } from "../types/RegisterForm";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { UpdateUserForm } from "../types/UpdateUserForm";
 
 
 export const userService = {
@@ -36,14 +35,35 @@ export const userService = {
     return response.data;
   },
 
-  updatePrivateUser: async (form: UpdateUserForm) => {
+  getPrivateUserImage: async (id: string) => {
+    const response = await useApi.get(`/public/image/${id}`)
+    return response.data;
+  },
+
+  updatePrivateUser: async (nome: string) => {
     const token = await AsyncStorage.getItem('authToken')
-    const json = JSON.stringify(form)
+    const json = JSON.stringify({'name': nome})
     const response = await useApi.post("/user/updateProfile",json, {
-      headers: {'Content-Type': 'application/json' }
+      headers: {
+        'Authorization':`Bearer ${token}`,
+        'Content-Type': 'application/json' 
+      }
     })
     return response.data
   },
+
+  updatePrivateUserImage: async (image: FormData) => {
+    const token = await AsyncStorage.getItem('authToken')
+    const response = await useApi.post("/user/image",image, {
+      headers: {
+        'Authorization':`Bearer ${token}`,
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    return response.data
+  },
+
+
 
   logout: async () => {
     const body = JSON.stringify({})
