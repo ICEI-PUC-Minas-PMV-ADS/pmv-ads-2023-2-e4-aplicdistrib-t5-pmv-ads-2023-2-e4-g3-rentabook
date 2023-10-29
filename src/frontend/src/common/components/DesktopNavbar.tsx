@@ -54,6 +54,17 @@ export default function DesktopNavbar() {
   const navigation = useNavigation<StackTypes>()
   const authContext = React.useContext(AuthContext)
   const telaAtual = useRoute().name
+  const auth = React.useContext(AuthContext)
+
+  const handleLogout = async () => {
+    if (auth.user) {
+      const logout = await auth.logout()
+      if (logout) {
+        navigation.navigate("Anúncios", {})
+      }
+    }
+  }
+
 
   return (
     <View style={style.navbar}>
@@ -61,25 +72,8 @@ export default function DesktopNavbar() {
         <Image source={Icone} style={style.icon} />
       </TouchableOpacity>
       <View style={style.navLinkContainer}>
+        {authContext.user && <Text style={style.navLink} onPress={handleLogout}> Logout</Text>}
         <View style={style.navLinks}>
-          {
-            telaAtual == 'Perfil' &&
-            <Text
-              style={style.activeNavLink}
-              onPress={() => navigation.navigate('Meu Perfil', {})}
-            >
-              Perfil
-            </Text>
-          }
-          {
-            telaAtual != 'Perfil' &&
-            <Text
-              style={style.navLink}
-              onPress={() => navigation.navigate('Meu Perfil', {})}
-            >
-              Perfil
-            </Text>
-          }
           {
             telaAtual == 'Anúncios' &&
             <Text
@@ -100,6 +94,7 @@ export default function DesktopNavbar() {
           }
           {authContext.user &&
             <>
+
               {
                 telaAtual == 'Meus Anúncios' &&
                 <Text
@@ -168,6 +163,7 @@ export default function DesktopNavbar() {
             </>
           }
         </View>
+
         {authContext.user &&
           <TouchableOpacity onPress={() => navigation.navigate('Meu Perfil', {})}>
             <Image source={IconeDois} style={style.icon} />

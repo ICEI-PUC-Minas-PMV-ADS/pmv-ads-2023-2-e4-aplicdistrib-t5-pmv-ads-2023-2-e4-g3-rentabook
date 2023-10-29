@@ -8,10 +8,7 @@ import br.puc.projeto.rentabook.mapper.TradeFormMapper
 import br.puc.projeto.rentabook.mapper.TradeViewMapper
 import br.puc.projeto.rentabook.model.Sale
 import br.puc.projeto.rentabook.model.Trade
-import br.puc.projeto.rentabook.repository.AnnouncementRepository
-import br.puc.projeto.rentabook.repository.SaleRepository
-import br.puc.projeto.rentabook.repository.TradeRepository
-import br.puc.projeto.rentabook.repository.UserRepository
+import br.puc.projeto.rentabook.repository.*
 import br.puc.projeto.rentabook.utils.AuthenticationUtils
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
@@ -33,6 +30,7 @@ class TradeService(
     private val tradeFormMapper: TradeFormMapper,
     private val userRepository: UserRepository,
     private val announcementRepository: AnnouncementRepository,
+    private val chatRepository: ChatRepository,
 ) {
 
     fun create(form: TradeForm): TradeView {
@@ -94,6 +92,8 @@ class TradeService(
             if (trade.cancelled && trade.accepted) {
                 throw IllegalStateException("Esta troca não foi cancelada e não pode ser desfeita")
             }
+            trade.chat.active = false
+            chatRepository.save(trade.chat)
             trade.announcement.isAvailable = true
             announcementRepository.save(trade.announcement)
             trade.cancelled = true
@@ -111,6 +111,8 @@ class TradeService(
             if (trade.cancelled && trade.accepted) {
                 throw IllegalStateException("Esta troca não foi cancelada e não pode ser desfeita")
             }
+            trade.chat.active = false
+            chatRepository.save(trade.chat)
             trade.announcement.isAvailable = false
             announcementRepository.save(trade.announcement)
             trade.accepted = true
