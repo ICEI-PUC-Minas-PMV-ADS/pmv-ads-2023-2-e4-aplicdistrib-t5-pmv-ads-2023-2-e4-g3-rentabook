@@ -8,17 +8,17 @@ import org.springframework.stereotype.Component
 
 @Component
 class RatingViewMapper(
-    private val userRepository: UserRepository,
     private val publicUserViewMapper: PublicUserViewMapper,
+    private val cleanAnnouncementViewMapper: CleanAnnouncementViewMapper
 ) : Mapper<Rating, RatingView> {
     override fun map(t: Rating): RatingView {
-        val authentication = SecurityContextHolder.getContext().authentication
-        val lead = userRepository.findByEmail(authentication.name) ?: throw Exception("Usuário que ira alugar não localizado!")
         return RatingView(
-            id = t.id ?: throw Exception("Id de avaliação inválido!"),
-            ownerUser = publicUserViewMapper.map(lead),
+            id = t.id,
+            announcement = cleanAnnouncementViewMapper.map(t.announcement),
+            idNegotiation = t.idNegotiation,
             message = t.message,
-            feedback = t.feedback,
-        )
+            negotiation = t.negotiation,
+            owner = publicUserViewMapper.map(t.owner),
+            stars = t.stars)
     }
 }

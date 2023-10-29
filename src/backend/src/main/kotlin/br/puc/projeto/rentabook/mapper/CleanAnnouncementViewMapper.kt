@@ -2,6 +2,7 @@ package br.puc.projeto.rentabook.mapper
 
 import br.puc.projeto.rentabook.dto.CleanAnnouncementView
 import br.puc.projeto.rentabook.model.Announcement
+import br.puc.projeto.rentabook.repository.RatingRepository
 import br.puc.projeto.rentabook.service.BookService
 import org.springframework.stereotype.Component
 
@@ -9,9 +10,18 @@ import org.springframework.stereotype.Component
 class CleanAnnouncementViewMapper(
     private val bookService: BookService,
     private val publicUserViewMapper: PublicUserViewMapper,
-    private val publicAddressViewMapper: PublicAddressViewMapper
+    private val publicAddressViewMapper: PublicAddressViewMapper,
+    private val ratingRepository: RatingRepository
 ): Mapper<Announcement, CleanAnnouncementView>  {
     override fun map(t: Announcement): CleanAnnouncementView {
+        val ratings = ratingRepository.findByAnnouncementId(t.id!!)
+        var totalStars: Int = 0
+        ratings.forEach{r ->
+            totalStars += r.stars
+        }
+        val averageStars = totalStars / ratings.size
+
+
         return CleanAnnouncementView(
             id = t.id,
             book = bookService.findById(t.bookId),
@@ -27,7 +37,9 @@ class CleanAnnouncementViewMapper(
             sale = t.sale,
             trade = t.trade,
             valueForSale = t.valueForSale,
-            valueForRent = t.valueForRent
+            valueForRent = t.valueForRent,
+            averageStars = averageStars,
+            totalRatings = ratings.size
         )
     }
 

@@ -44,6 +44,8 @@ class SecurityConfig(
                 authorize(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/announcements/find"), permitAll)
                 authorize(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/public/image/{id}"), permitAll)
                 authorize(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/public/address/{id}"), permitAll)
+                authorize(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/announcements/public/{id}"), permitAll)
+                authorize(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/rating/announcement/{id}"), permitAll)
                 authorize(anyRequest, authenticated)
             }
             sessionManagement {
