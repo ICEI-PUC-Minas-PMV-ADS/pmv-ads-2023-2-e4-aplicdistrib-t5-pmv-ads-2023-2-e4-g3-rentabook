@@ -182,7 +182,6 @@ const ChatComponent = ({ chatId, currentUser }: ChatComponentProps) => {
           <Text style={styles.sendButtonText}>Enviar</Text>
         </TouchableOpacity>
       </View>
-      {loading && <Text>Carregando...</Text>}
     </View>
   );
 };

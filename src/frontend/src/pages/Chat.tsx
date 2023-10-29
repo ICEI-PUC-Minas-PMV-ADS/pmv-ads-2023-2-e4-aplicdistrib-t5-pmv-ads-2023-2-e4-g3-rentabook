@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, SafeAreaView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+  Text,
+} from "react-native";
 import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
 import ConversationsList from "../common/components/ConversationList";
 import ChatComponent from "../common/components/ChatComponent";
@@ -9,9 +15,15 @@ import { getToken } from "../other/Storage";
 export default function Chat() {
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<string | null>(null);
+  const [conversationsListHidden, setConversationsListHidden] = useState(false);
 
   const handleConversationSelect = (chatId: string | null) => {
     setSelectedChatId(chatId);
+    setConversationsListHidden(true); // Automatically hide the ConversationsList
+  };
+
+  const toggleConversationsList = () => {
+    setConversationsListHidden(!conversationsListHidden);
   };
 
   useEffect(() => {
@@ -59,11 +71,6 @@ export default function Chat() {
     <SafeAreaView style={styles.container}>
       <ResponsiveNavbar>
         <View style={styles.contentContainer}>
-          <View style={styles.conversationsListContainer}>
-            <ConversationsList
-              onConversationSelect={handleConversationSelect}
-            />
-          </View>
           <View style={styles.chatContainer}>
             {selectedChatId && (
               <>
@@ -79,7 +86,27 @@ export default function Chat() {
               </>
             )}
           </View>
+          <View
+            style={[
+              styles.conversationsListContainer,
+              conversationsListHidden && styles.hiddenConversationsList,
+            ]}
+          >
+            <ConversationsList
+              onConversationSelect={handleConversationSelect}
+            />
+          </View>
         </View>
+        <TouchableOpacity
+          style={styles.toggleButton}
+          onPress={toggleConversationsList}
+        >
+          <Text style={styles.toggleButtonText}>
+            {conversationsListHidden
+              ? "Show Conversations"
+              : "Hide Conversations"}
+          </Text>
+        </TouchableOpacity>
       </ResponsiveNavbar>
     </SafeAreaView>
   );
@@ -93,10 +120,32 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
   },
-  conversationsListContainer: {
-    width: "30%", // Definindo a largura para 80% da tela
-  },
   chatContainer: {
     flex: 1,
+    position: "relative",
+  },
+  chatContainerFull: {
+    flex: 1,
+    width: "100%",
+  },
+  conversationsListContainer: {
+    width: "100%",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    bottom: 0,
+  },
+  hiddenConversationsList: {
+    display: "none",
+  },
+  toggleButton: {
+    backgroundColor: "#406C4B",
+    padding: 10,
+    borderRadius: 5,
+    margin: 10,
+    alignItems: "center",
+  },
+  toggleButtonText: {
+    color: "#F3EDD7",
   },
 });
