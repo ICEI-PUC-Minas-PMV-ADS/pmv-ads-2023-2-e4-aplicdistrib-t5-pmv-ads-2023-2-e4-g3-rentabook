@@ -35,3 +35,7 @@ export const getFirstImageLink = (item: CleanAnnouncementView) => {
   const imageId = item.images[0] == null ? "noimage" : item.images[0]
   return API + '/public/image/' + imageId
 }
+
+export const getImageLink = (id: string) => {
+  return API + '/public/image/' + id
+}

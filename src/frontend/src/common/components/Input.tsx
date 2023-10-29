@@ -16,7 +16,8 @@ type InputProps = {
   secureTextEntry?: boolean,
   onChangeText?: (value: string) => void,
   error?: boolean,
-  messageError?: string
+  messageError?: string,
+  editable?: boolean 
 };
 
 /**
@@ -44,7 +45,7 @@ const InputStyle = StyleSheet.create({
  * https://www.figma.com/file/2lR8urPO212OkkhvDTmmgF/Untitled?type=design&node-id=32-256&mode=design&t=ZkwebBuGnnQ715v7-4
  */
 
-export default function Input({ style, value = "", label, placeholder, secureTextEntry, onChangeText, error = false, messageError = "" }: InputProps) {
+export default function Input({ style, value = "", label, placeholder, secureTextEntry, onChangeText, error = false, messageError = "", editable = true }: InputProps) {
   return (
     <View style={style}>
       <Text style={InputStyle.label}>{label}</Text>
@@ -55,6 +56,7 @@ export default function Input({ style, value = "", label, placeholder, secureTex
           placeholder={placeholder}
           onChangeText={onChangeText}
           defaultValue={value}
+          editable = {editable}
         />
       </View>
       <Text style={[error == true && { fontSize: 14, color: 'red', opacity: 1 }, error == false && { opacity: 0 }]}>{messageError}</Text>

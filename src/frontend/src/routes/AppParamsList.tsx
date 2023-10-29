@@ -1,10 +1,17 @@
+import { CleanAnnouncementView } from "../types/CleanAnnouncementView";
+
 export type AppParamsList = {
-  Anúncios: {};
-  "Meus Anúncios": {};
+
+  'Anúncios': { searchBookId?: string | null, bookName?: string | null };
+  'Profile': {};
+  'Meus Anúncios': {};
   RequireAuth: {};
-  "Criar Conta": {};
-  "Meu Perfil": {};
-  Mensagens: {};
-  Entrar: {};
-  Chat: { chatId: string };
-};
+  'Criar Conta': {};
+  'Meu Perfil': {};
+  'Mensagens': {};
+  'Entrar': {};
+  'Detalhes do anúncio': { announcement: CleanAnnouncementView };
+  'Pesquisar por livro': {};
+   Chat: { chatId: string };     
+}
+

@@ -2,31 +2,31 @@
   {
     "id": 1,
     "label": "Mais recente",
-    "value": "&sort=createdDate,desc"
+    "value": "sort=createdDate,desc"
   },
   {
     "id": 2,
     "label": "Mais antigo",
-    "value": "&sort=createdDate,asc"
+    "value": "sort=createdDate,asc"
   },
   {
     "id": 3,
     "label": "Menor Preço de Aluguel",
-    "value": "&sort=rent,desc&sort=valueForRent,asc"
+    "value": "sort=rent,desc&sort=valueForRent,asc"
   },
   {
     "id": 4,
     "label": "Maior Preço de Aluguel",
-    "value": "&sort=rent,desc&sort=valueForRent,desc"
+    "value": "sort=rent,desc&sort=valueForRent,desc"
   },
   {
     "id": 5,
     "label": "Menor Preço de Compra",
-    "value": "&sort=sale,desc&sort=valueForSale,asc"
+    "value": "sort=sale,desc&sort=valueForSale,asc"
   },
   {
     "id": 6,
     "label": "Maior Preço de Compra",
-    "value": "&sort=sale,desc&sort=valueForSale,desc"
+    "value": "sort=sale,desc&sort=valueForSale,desc"
   }
 ]

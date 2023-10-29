@@ -23,8 +23,6 @@ const ButtonStyle = StyleSheet.create({
   background: {
     borderRadius: 8,
     backgroundColor: PrimaryGreenColor,
-    paddingHorizontal: "10%",
-    paddingVertical: "6%",
     alignItems: "center",
     justifyContent: 'center',
     borderStyle: 'solid',
@@ -36,9 +34,8 @@ const ButtonStyle = StyleSheet.create({
     fontSize: 16,
   },
   notActiveStyle: {
-    paddingHorizontal: "10%",
-    paddingVertical: "6%",
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: WhiteColor,
     borderRadius: 8,
     borderStyle: 'solid',

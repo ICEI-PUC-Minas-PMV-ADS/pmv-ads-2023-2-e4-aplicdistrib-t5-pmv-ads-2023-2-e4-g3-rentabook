@@ -2,14 +2,12 @@ package br.puc.projeto.rentabook.service
 
 import br.puc.projeto.rentabook.dto.*
 import br.puc.projeto.rentabook.model.Rating
-import br.puc.projeto.rentabook.repository.AnnouncementRepository
-import br.puc.projeto.rentabook.repository.RatingRepository
-import br.puc.projeto.rentabook.repository.RentRepository
-import br.puc.projeto.rentabook.repository.UserRepository
 import br.puc.projeto.rentabook.utils.AuthenticationUtils
 import br.puc.projeto.rentabook.exception.NotFoundException
 import br.puc.projeto.rentabook.mapper.*
+import br.puc.projeto.rentabook.model.Address
 import br.puc.projeto.rentabook.model.Announcement
+import br.puc.projeto.rentabook.repository.*
 import br.puc.projeto.rentabook.utils.TextUtils
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
@@ -21,6 +19,7 @@ import org.springframework.data.mongodb.core.query.TextCriteria
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.data.support.PageableExecutionUtils
 import org.springframework.stereotype.Service
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.multipart.MultipartFile
 import java.text.Normalizer
 import java.util.function.LongSupplier
@@ -39,7 +38,8 @@ class AnnouncementService(
     private val ratingRepository: RatingRepository,
     private val imageService: ImageService,
     private val mongoTemplate: MongoTemplate,
-    private val cleanAnnouncementViewMapper: CleanAnnouncementViewMapper
+    private val cleanAnnouncementViewMapper: CleanAnnouncementViewMapper,
+    private val addressRepository: AddressRepository
 ) {
 
     fun findAll(pageable: Pageable): Page<AnnouncementView> {
@@ -104,22 +104,22 @@ class AnnouncementService(
         }
     }
 
-    fun giveBackRent(giveBackForm: GiveBackForm) {
-        return AuthenticationUtils.authenticate(userRepository) {
-            val rent =
-                rentRepository.findById(giveBackForm.id).orElseThrow { throw Exception("Id de aluguel invalido!") }
-            rent.rating = ratingRepository.save(
-                Rating(
-                    ownerUser = it,
-                    message = giveBackForm.ratingMessage,
-                    feedback = giveBackForm.ratingFeedback,
-                )
-            )
-            rent.announcement.isAvailable = true
-            announcementRepository.save(rent.announcement)
-            rentRepository.save(rent)
-        }
-    }
+//    fun giveBackRent(giveBackForm: GiveBackForm) {
+//        return AuthenticationUtils.authenticate(userRepository) {
+//            val rent =
+//                rentRepository.findById(giveBackForm.id).orElseThrow { throw Exception("Id de aluguel invalido!") }
+//            rent.rating = ratingRepository.save(
+//                Rating(
+//                    ownerUser = it,
+//                    message = giveBackForm.ratingMessage,
+//                    feedback = giveBackForm.ratingFeedback,
+//                )
+//            )
+//            rent.announcement.isAvailable = true
+//            announcementRepository.save(rent.announcement)
+//            rentRepository.save(rent)
+//        }
+//    }
 
     fun uploadImage(image: MultipartFile, announcementId: String): AnnouncementView {
         return AuthenticationUtils.authenticate(userRepository) { user ->
@@ -157,6 +157,7 @@ class AnnouncementService(
         rent: Boolean?,
         sale: Boolean?,
         trade: Boolean?,
+        onlyAvailable: Boolean? = true,
         pageable: Pageable
     ): Page<CleanAnnouncementView> {
 
@@ -164,7 +165,13 @@ class AnnouncementService(
 
         if (!city.isNullOrBlank()) {
             val normalizedCity = TextUtils.normalizeString(city)
-            query.addCriteria(Criteria.where("locationNormalizedCityName").regex(normalizedCity, "i"))
+            val addressesIds = addressRepository.findByNormalizedCityNameContaining(normalizedCity).map {
+                it.id
+            }
+            val criteriaList = addressesIds.map {
+                Criteria.where("locationId").`is`(it)
+            }
+            query.addCriteria(Criteria().orOperator(criteriaList))
         }
 
         if (!bookId.isNullOrBlank()) {
@@ -181,6 +188,10 @@ class AnnouncementService(
 
         if (trade != null) {
             query.addCriteria(Criteria.where("trade").`is`(trade))
+        }
+
+        if(onlyAvailable == true){
+            query.addCriteria(Criteria.where("isAvailable").`is`(true))
         }
         val resultsTotal = mongoTemplate.find(query, Announcement::class.java)
             .toList().size.toLong()
@@ -211,6 +222,10 @@ class AnnouncementService(
         val pageList = list.subList(startIndex, endIndex)
 
         return PageImpl(pageList, pageable, list.size.toLong())
+    }
+
+    fun getPublicAnnouncementsDetail(id: String): CleanAnnouncementView {
+        return cleanAnnouncementViewMapper.map(findById(id))
     }
 
 }

@@ -23,5 +23,5 @@ data class Announcement(
     val valueForSale: Double?,
     val valueForRent: Double?,
     @DBRef
-    val location: Address,
+    val location: Address
 )
