@@ -4,6 +4,7 @@ export type AppParamsList = {
   'Anúncios': { searchBookId?: string | null, bookName?: string | null };
   'Profile': {};
   'Meus Anúncios': {};
+  'Criar Anúncio': { announcementId?: string };
   RequireAuth: {};
   'Criar Conta': {};
   'Meu Perfil': {};

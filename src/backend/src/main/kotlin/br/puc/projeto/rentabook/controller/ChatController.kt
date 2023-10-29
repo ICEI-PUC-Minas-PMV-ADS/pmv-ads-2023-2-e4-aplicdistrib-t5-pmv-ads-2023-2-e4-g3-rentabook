@@ -47,6 +47,4 @@ class ChatController(
     ): Page<ChatView> {
         return chatService.getAllChats(pageable)
     }
-
-
 }

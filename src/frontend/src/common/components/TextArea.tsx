@@ -37,7 +37,7 @@ export default function TextArea({ style, value, placeholder, onChange }: TextAr
   return (
     <View style={style}>
       <TextInput
-        style={TextAreaStyle.input}
+        style={[TextAreaStyle.input, style]}
         multiline={true}
         placeholder={placeholder}
         onChangeText={(cvalue) => {

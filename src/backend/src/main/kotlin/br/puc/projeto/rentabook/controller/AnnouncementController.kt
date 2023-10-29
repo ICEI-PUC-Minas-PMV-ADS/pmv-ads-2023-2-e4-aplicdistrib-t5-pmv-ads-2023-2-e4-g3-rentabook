@@ -4,6 +4,7 @@ import br.puc.projeto.rentabook.dto.*
 import br.puc.projeto.rentabook.service.AnnouncementService
 import br.puc.projeto.rentabook.service.RatingService
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import jakarta.websocket.server.PathParam
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.domain.Page
@@ -40,6 +41,18 @@ class AnnouncementController(
     }
 
     /**
+     * Busca uma anuncio
+     */
+
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
+    @GetMapping("/clean/{id}")
+    fun getAnnouncementCleanView(@PathVariable id: String): CleanAnnouncementView {
+        return announcementService.findAnnouncementById(id)
+    }
+
+    /**
      * Cria um novo anuncio.
      */
     @SecurityRequirement(
@@ -49,6 +62,16 @@ class AnnouncementController(
     @CacheEvict("Announcements", allEntries = true)
     fun createAnnouncement(@RequestBody createAnnouncementForm: CreateAnnouncementForm): AnnouncementView {
         return announcementService.createAnnouncement(createAnnouncementForm)
+    }
+
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
+    @GetMapping("/own")
+    fun getMyOwnAnnouncementsAvailable(
+        @PageableDefault(size = 12) pageable: Pageable
+    ): Page<CleanAnnouncementView> {
+        return announcementService.findAllOwn(pageable)
     }
 
     @SecurityRequirement(

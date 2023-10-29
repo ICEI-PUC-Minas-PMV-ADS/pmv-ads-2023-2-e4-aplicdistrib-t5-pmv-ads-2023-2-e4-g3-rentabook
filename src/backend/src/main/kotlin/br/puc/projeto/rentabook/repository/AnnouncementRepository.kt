@@ -11,5 +11,6 @@ interface AnnouncementRepository : MongoRepository<Announcement, String> {
     fun findAllByRentTrue(pageable: Pageable): Page<Announcement>
     fun findAllByTradeTrue(pageable: Pageable): Page<Announcement>
     fun findAllBySaleTrue(pageable: Pageable): Page<Announcement>
+    fun findAllByOwnerUser_Id(id: String, pageable: Pageable): Page<Announcement>
 
 }

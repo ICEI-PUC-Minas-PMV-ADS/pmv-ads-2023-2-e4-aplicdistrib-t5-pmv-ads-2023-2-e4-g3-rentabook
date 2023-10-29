@@ -9,7 +9,7 @@ import { DestructiveColor, WhiteColor } from '../theme/colors';
 type DestructiveButtonProps = {
   label: string,
   style?: Object,
-  onClick: () => void,
+  onPress: () => void,
 };
 
 /**
@@ -36,9 +36,9 @@ const DestructiveButtonStyle = StyleSheet.create({
  * https://www.figma.com/file/2lR8urPO212OkkhvDTmmgF/Untitled?type=design&node-id=32-258&mode=design&t=ZkwebBuGnnQ715v7-4
  */
 
-export default function DestructiveButton({ label, style, onClick }: DestructiveButtonProps) {
+export default function DestructiveButton({ label, style, onPress }: DestructiveButtonProps) {
   return (
-    <Pressable onPress={() => onClick()}>
+    <Pressable onPress={() => onPress()}>
       <View style={[DestructiveButtonStyle.background, style]}>
         <Text style={DestructiveButtonStyle.text}>{label}</Text>
       </View>
