@@ -9,6 +9,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { getToken } from "../../other/Storage";
 import { format, parseISO } from "date-fns";
+import { useMediaQuery, Mobile, Desktop } from "../../hooks/useResposive"; // Importe a lógica de media query
 
 export let typeId: string | null = null;
 export let selectedItemContent: string | null = null;
@@ -128,48 +129,98 @@ export default function ConversationsList({
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={conversations}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() => handleConversationPress(item)}
-            style={[
-              styles.conversationItem,
-              selectedItem === item.id && {
-                backgroundColor: "#406C4B",
-              },
-            ]}
-          >
-            <View>
-              <Text
-                style={[
-                  styles.conversationText,
-                  selectedItem === item.id && { color: "#F3EDD7" },
-                ]}
-              >
-                {item.owner.name} para {item.lead.name}
-              </Text>
-              <Text
-                style={[
-                  styles.transactionType,
-                  selectedItem === item.id && { color: "#F3EDD7" },
-                ]}
-              >
-                Tipo de Transação: {selectedItemContent}
-              </Text>
-              <Text
-                style={[
-                  styles.latestMessageDate,
-                  selectedItem === item.id && { color: "#F3EDD7" },
-                ]}
-              >
-                Última mensagem em: {formatMessageDate(item.latestMessageDate)}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        )}
-      />
+      <Mobile>
+        {/* Renderize apenas em dispositivos móveis */}
+        <FlatList
+          data={conversations}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              onPress={() => handleConversationPress(item)}
+              style={[
+                styles.conversationItem,
+                selectedItem === item.id && {
+                  backgroundColor: "#406C4B",
+                },
+              ]}
+            >
+              <View>
+                <Text
+                  style={[
+                    styles.conversationText,
+                    selectedItem === item.id && { color: "#F3EDD7" },
+                  ]}
+                >
+                  {item.owner.name} para {item.lead.name}
+                </Text>
+                <Text
+                  style={[
+                    styles.transactionType,
+                    selectedItem === item.id && { color: "#F3EDD7" },
+                  ]}
+                >
+                  Tipo de Transação: {selectedItemContent}
+                </Text>
+                <Text
+                  style={[
+                    styles.latestMessageDate,
+                    selectedItem === item.id && { color: "#F3EDD7" },
+                  ]}
+                >
+                  Última mensagem em:{" "}
+                  {formatMessageDate(item.latestMessageDate)}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+      </Mobile>
+      <Desktop>
+        {/* Renderize apenas em dispositivos desktop */}
+        <FlatList
+          data={conversations}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              onPress={() => handleConversationPress(item)}
+              style={[
+                styles.conversationItem,
+                selectedItem === item.id && {
+                  backgroundColor: "#406C4B",
+                },
+              ]}
+            >
+              <View>
+                <Text
+                  style={[
+                    styles.conversationText,
+                    selectedItem === item.id && { color: "#F3EDD7" },
+                  ]}
+                >
+                  {item.owner.name} para {item.lead.name}
+                </Text>
+                <Text
+                  style={[
+                    styles.transactionType,
+                    selectedItem === item.id && { color: "#F3EDD7" },
+                  ]}
+                >
+                  Tipo de Transação: {selectedItemContent}
+                </Text>
+                <Text
+                  style={[
+                    styles.latestMessageDate,
+                    selectedItem === item.id && { color: "#F3EDD7" },
+                  ]}
+                >
+                  Última mensagem em:{" "}
+                  {formatMessageDate(item.latestMessageDate)}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+      </Desktop>
     </View>
   );
 }
