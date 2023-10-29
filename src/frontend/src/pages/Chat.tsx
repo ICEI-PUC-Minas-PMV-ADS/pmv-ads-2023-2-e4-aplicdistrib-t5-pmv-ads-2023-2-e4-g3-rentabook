@@ -70,43 +70,45 @@ export default function Chat() {
   return (
     <SafeAreaView style={styles.container}>
       <ResponsiveNavbar>
-        <View style={styles.contentContainer}>
-          <View style={styles.chatContainer}>
-            {selectedChatId && (
-              <>
-                <Banner
-                  actionType="complete"
-                  onAccept={handleAccept}
-                  onCancel={handleCancel}
-                />
-                <ChatComponent
-                  chatId={selectedChatId}
-                  currentUser={currentUser ?? ""}
-                />
-              </>
-            )}
+        <React.Fragment>
+          <View style={styles.contentContainer}>
+            <View style={styles.chatContainer}>
+              {selectedChatId && (
+                <>
+                  <Banner
+                    actionType="complete"
+                    onAccept={handleAccept}
+                    onCancel={handleCancel}
+                  />
+                  <ChatComponent
+                    chatId={selectedChatId}
+                    currentUser={currentUser ?? ""}
+                  />
+                </>
+              )}
+            </View>
+            <View
+              style={[
+                styles.conversationsListContainer,
+                conversationsListHidden && styles.hiddenConversationsList,
+              ]}
+            >
+              <ConversationsList
+                onConversationSelect={handleConversationSelect}
+              />
+            </View>
           </View>
-          <View
-            style={[
-              styles.conversationsListContainer,
-              conversationsListHidden && styles.hiddenConversationsList,
-            ]}
+          <TouchableOpacity
+            style={styles.toggleButton}
+            onPress={toggleConversationsList}
           >
-            <ConversationsList
-              onConversationSelect={handleConversationSelect}
-            />
-          </View>
-        </View>
-        <TouchableOpacity
-          style={styles.toggleButton}
-          onPress={toggleConversationsList}
-        >
-          <Text style={styles.toggleButtonText}>
-            {conversationsListHidden
-              ? "Show Conversations"
-              : "Hide Conversations"}
-          </Text>
-        </TouchableOpacity>
+            <Text style={styles.toggleButtonText}>
+              {conversationsListHidden
+                ? "Show Conversations"
+                : "Hide Conversations"}
+            </Text>
+          </TouchableOpacity>
+        </React.Fragment>
       </ResponsiveNavbar>
     </SafeAreaView>
   );
@@ -115,6 +117,7 @@ export default function Chat() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#F3EDD7",
   },
   contentContainer: {
     flex: 1,

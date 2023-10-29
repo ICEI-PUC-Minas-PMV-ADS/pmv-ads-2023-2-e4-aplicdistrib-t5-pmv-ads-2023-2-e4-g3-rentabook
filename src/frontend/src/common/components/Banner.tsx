@@ -14,6 +14,7 @@ type BannerProps = {
 
 const Banner: React.FC<BannerProps> = ({ actionType, onAccept, onCancel }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [operationStatus, setOperationStatus] = useState<string | null>(null);
 
   useEffect(() => {
     async function checkAuthentication() {
@@ -40,16 +41,19 @@ const Banner: React.FC<BannerProps> = ({ actionType, onAccept, onCancel }) => {
 
   const handleAccept = async () => {
     if (!isAuthenticated) {
+      setOperationStatus("Usuário não autenticado.");
       console.error("Usuário não autenticado.");
       return;
     }
 
     if (announcementType === "Tipo não especificado") {
+      setOperationStatus("Tipo de anúncio ausente.");
       console.error("Tipo de anúncio ausente.");
       return;
     }
 
     if (announcementId === null) {
+      setOperationStatus("ID de anúncio ausente.");
       console.error("ID de anúncio ausente.");
       return;
     }
@@ -68,30 +72,40 @@ const Banner: React.FC<BannerProps> = ({ actionType, onAccept, onCancel }) => {
     })
       .then((response) => {
         if (response.status === 200) {
+          setOperationStatus(
+            `Anúncio de ${announcementType} aceito com sucesso.`
+          );
           console.log(`Anúncio de ${announcementType} aceito com sucesso.`);
           onAccept();
         } else {
+          setOperationStatus(
+            `Falha ao aceitar o anúncio de ${announcementType}.`
+          );
           console.error(`Falha ao aceitar o anúncio de ${announcementType}.`);
           onCancel();
         }
       })
       .catch((error) => {
+        setOperationStatus("Erro na requisição.");
         console.error("Erro na requisição:", error);
       });
   };
 
   const handleCancel = async () => {
     if (!isAuthenticated) {
+      setOperationStatus("Usuário não autenticado.");
       console.error("Usuário não autenticado.");
       return;
     }
 
     if (announcementType === "Tipo não especificado") {
+      setOperationStatus("Tipo de anúncio ausente.");
       console.error("Tipo de anúncio ausente.");
       return;
     }
 
     if (announcementId === null) {
+      setOperationStatus("ID de anúncio ausente.");
       console.error("ID de anúncio ausente.");
       return;
     }
@@ -110,20 +124,30 @@ const Banner: React.FC<BannerProps> = ({ actionType, onAccept, onCancel }) => {
     })
       .then((response) => {
         if (response.status === 200) {
+          setOperationStatus(
+            `Anúncio de ${announcementType} cancelado com sucesso.`
+          );
           console.log(`Anúncio de ${announcementType} cancelado com sucesso.`);
           onCancel();
         } else {
+          setOperationStatus(
+            `Falha ao cancelar o anúncio de ${announcementType}.`
+          );
           console.error(`Falha ao cancelar o anúncio de ${announcementType}.`);
           onAccept();
         }
       })
       .catch((error) => {
+        setOperationStatus("Erro na requisição.");
         console.error("Erro na requisição:", error);
       });
   };
 
   return (
     <View style={styles.banner}>
+      {operationStatus && (
+        <Text style={styles.operationStatusText}>{operationStatus}</Text>
+      )}
       <Text style={styles.bannerText}>
         Deseja {actionType === "complete" ? "aceitar" : "cancelar"} este anúncio
         de {announcementType}?
@@ -151,17 +175,22 @@ const styles = StyleSheet.create({
     backgroundColor: "#F3EDD7",
     padding: 10,
     borderRadius: 8,
-    height: "13%",
+    height: "20%",
     width: "100%",
   },
   bannerText: {
     fontSize: 12,
     marginBottom: 10,
   },
+  operationStatusText: {
+    color: "green",
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    height: "60%",
+    height: "50%",
     width: "55%",
   },
   button: {
