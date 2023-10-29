@@ -28,6 +28,7 @@ class ChatMessageService(
         return AuthenticationUtils.authenticate(userRepository) {
             chatMessageRepository.save(createChatMessageFormMapper.map(createChatMessageForm)).run {
                 chat.latestMessageDate = LocalDateTime.now()
+                chat.messages.add(this)
                 chatRepository.save(chat)
                 chatMessageViewMapper.map(this)
             }

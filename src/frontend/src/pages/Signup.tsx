@@ -24,12 +24,6 @@ export default function Signup() {
     confirmPassword: '',
   });
 
-  const [orientation, setOrientation] = useState(
-    Dimensions.get('window').width > Dimensions.get('window').height
-      ? 'LANDSCAPE'
-      : 'PORTRAIT'
-  );
-
   const handleInputChange = (field, value) => {
     const errors = { ...validationErrors };
     delete errors[field];
@@ -52,15 +46,33 @@ export default function Signup() {
     }
   };
 
+  const updateOrientation = () => {
+    setOrientation(
+      Dimensions.get('window').width > Dimensions.get('window').height
+        ? 'LANDSCAPE'
+        : 'PORTRAIT'
+    );
+  };
+
+  const [orientation, setOrientation] = useState(
+    Dimensions.get('window').width > Dimensions.get('window').height
+      ? 'LANDSCAPE'
+      : 'PORTRAIT'
+  );
+
   useEffect(() => {
-    const onChange = ({ window: { width, height } }) => {
-      setOrientation(width > height ? 'LANDSCAPE' : 'PORTRAIT');
+    const changeOrientation = () => {
+      setOrientation(
+        Dimensions.get('window').width > Dimensions.get('window').height
+          ? 'LANDSCAPE'
+          : 'PORTRAIT'
+      );
     };
 
-    Dimensions.addEventListener("change", onChange);
+    Dimensions.addEventListener("change", changeOrientation);
 
     return () => {
-      Dimensions.removeEventListener("change", onChange);
+      Dimensions.removeEventListener("change", changeOrientation);
     };
   }, []);
 
@@ -153,7 +165,7 @@ export default function Signup() {
       textAlign: 'center',
       margin: 20,
     },
-    buttom:{
+    button:{
       height: 45,
       width: 340,
       marginTop: 20
@@ -203,7 +215,7 @@ export default function Signup() {
           />
           {validationErrors.confirmPassword && <Text style={{ color: 'red' }}>{validationErrors.confirmPassword}</Text>}
           <PrimaryButton
-            style={styles.buttom}
+            style={styles.button}
             onPress={handleSignup}
             label="Continuar"
           />

@@ -1,6 +1,6 @@
 export type PrivateAddress = {
-  id: string,
-  name: string,
+  id?: string,
+  name?: string,
   cep: string,
   street: string,
   number: string,

@@ -7,6 +7,7 @@ import br.puc.projeto.rentabook.mapper.RentFormMapper
 import br.puc.projeto.rentabook.mapper.RentViewMapper
 import br.puc.projeto.rentabook.model.Rent
 import br.puc.projeto.rentabook.repository.AnnouncementRepository
+import br.puc.projeto.rentabook.repository.ChatRepository
 import br.puc.projeto.rentabook.repository.RentRepository
 import br.puc.projeto.rentabook.repository.UserRepository
 import br.puc.projeto.rentabook.utils.AuthenticationUtils
@@ -29,6 +30,7 @@ class RentService(
     private val rentFormMapper: RentFormMapper,
     private val userRepository: UserRepository,
     private val announcementRepository: AnnouncementRepository,
+    private val chatRepository: ChatRepository,
 ) {
 
     fun create(form: RentForm): RentView {
@@ -107,6 +109,8 @@ class RentService(
             if (rent.cancelled && rent.accepted) {
                 throw IllegalStateException("Esta aluguel não foi cancelada e não pode ser desfeita")
             }
+            rent.chat.active = false
+            chatRepository.save(rent.chat)
             rent.announcement.isAvailable = true
             announcementRepository.save(rent.announcement)
             rent.accepted = true

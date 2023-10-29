@@ -111,10 +111,14 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     AsyncStorage.removeItem('defaultAddress')
   }
 
-
+  const loadUserData = async () => {
+    const userData = await userService.getPrivateUser()
+    setUser(userData)
+    return userData
+  }
 
   return (
-    <AuthContext.Provider value={{ user, defaultAddress, login, logout, signup, setDefaultAddressLocalStorage, removeDefaultAddress, infosLoaded }}>
+    <AuthContext.Provider value={{ user, defaultAddress, login, logout, signup, setDefaultAddressLocalStorage, loadUserData, removeDefaultAddress, infosLoaded }}>
       {children}
     </AuthContext.Provider>
   )

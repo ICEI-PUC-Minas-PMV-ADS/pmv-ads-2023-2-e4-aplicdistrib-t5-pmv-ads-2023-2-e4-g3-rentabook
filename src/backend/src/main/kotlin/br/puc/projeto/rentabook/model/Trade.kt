@@ -21,8 +21,6 @@ data class Trade (
     @DBRef
     val lead: User, // Usuario interessado em trocar o livro.
     @DBRef
-    var rating: Rating? = null,
-    @DBRef
     val chat: Chat,
     var accepted: Boolean = false,
     var cancelled: Boolean = false,
