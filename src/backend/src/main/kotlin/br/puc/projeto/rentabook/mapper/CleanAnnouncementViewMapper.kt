@@ -12,14 +12,16 @@ class CleanAnnouncementViewMapper(
     private val publicUserViewMapper: PublicUserViewMapper,
     private val publicAddressViewMapper: PublicAddressViewMapper,
     private val ratingRepository: RatingRepository
-): Mapper<Announcement, CleanAnnouncementView>  {
+) : Mapper<Announcement, CleanAnnouncementView> {
     override fun map(t: Announcement): CleanAnnouncementView {
         val ratings = ratingRepository.findByAnnouncementId(t.id!!)
         var totalStars: Int = 0
-        ratings.forEach{r ->
+        ratings.forEach { r ->
             totalStars += r.stars
         }
-        val averageStars = totalStars / ratings.size
+        val averageStars = if (ratings.isNotEmpty()) {
+            totalStars / ratings.size
+        } else 0
 
 
         return CleanAnnouncementView(
