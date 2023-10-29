@@ -17,4 +17,6 @@ data class CleanAnnouncementView(
     val valueForSale: Double?,
     val valueForRent: Double?,
     val location: PublicAddressView,
+    val averageStars: Int,
+    val totalRatings: Int
 )

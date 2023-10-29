@@ -1,16 +1,16 @@
 package br.puc.projeto.rentabook.model
 
-import br.puc.projeto.rentabook.dto.PublicUserView
-import org.springframework.data.mongodb.core.mapping.DBRef
+import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
-import java.time.LocalDate
-import java.time.LocalTime
 
 @Document("ratings")
 data class Rating(
+    @Id
     val id: String? = null,
-    @DBRef
-    val ownerUser: User,
-    val message: String,
-    val feedback: Boolean
+    val owner: User,
+    val announcement: Announcement,
+    val negotiation: Negotiations,
+    val idNegotiation: String,
+    val stars: Int,
+    val message: String?
 )

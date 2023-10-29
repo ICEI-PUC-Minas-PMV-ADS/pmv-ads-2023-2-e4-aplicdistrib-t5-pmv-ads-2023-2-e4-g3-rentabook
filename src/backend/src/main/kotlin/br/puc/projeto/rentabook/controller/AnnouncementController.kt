@@ -1,6 +1,7 @@
 package br.puc.projeto.rentabook.controller
 
 import br.puc.projeto.rentabook.dto.*
+import br.puc.projeto.rentabook.mapper.CleanAnnouncementViewMapper
 import br.puc.projeto.rentabook.service.AnnouncementService
 import br.puc.projeto.rentabook.service.RatingService
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -94,15 +95,15 @@ class AnnouncementController(
     @SecurityRequirement(
         name = "bearerAuth"
     )
-    @PostMapping("/give_back")
-    fun giveBackRent(@RequestBody giveBackForm: GiveBackForm) {
-        return announcementService.giveBackRent(giveBackForm)
-    }
+//    @PostMapping("/give_back")
+//    fun giveBackRent(@RequestBody giveBackForm: GiveBackForm) {
+//        return announcementService.giveBackRent(giveBackForm)
+//    }
 
     @SecurityRequirement(
         name = "bearerAuth"
     )
-    @CacheEvict("Announcements",allEntries = true)
+    @CacheEvict("Announcements", allEntries = true)
     @PostMapping("/images/{id}")
     fun uploadImage(@RequestBody image: MultipartFile, @PathVariable id: String): AnnouncementView {
         return announcementService.uploadImage(image, id)
@@ -125,11 +126,12 @@ class AnnouncementController(
         @RequestParam rent: Boolean?,
         @RequestParam sale: Boolean?,
         @RequestParam trade: Boolean?,
+        @RequestParam onlyAvailable: Boolean?,
         @PageableDefault(
             size = 12
-        )pageable: Pageable
+        ) pageable: Pageable
     ): Page<CleanAnnouncementView> {
-        return announcementService.findByFilters(city, bookId, rent, sale, trade, pageable)
+        return announcementService.findByFilters(city, bookId, rent, sale, trade, onlyAvailable, pageable)
     }
 
     @SecurityRequirement(
@@ -142,6 +144,12 @@ class AnnouncementController(
         return announcementService.detailService(id)
     }
 
+    @GetMapping("public/{id}")
+    fun getPublicAnnouncementsDetail(
+        @RequestParam id: String
+    ): CleanAnnouncementView {
+        return announcementService.getPublicAnnouncementsDetail(id)
+    }
     @SecurityRequirement(
         name = "bearerAuth"
     )

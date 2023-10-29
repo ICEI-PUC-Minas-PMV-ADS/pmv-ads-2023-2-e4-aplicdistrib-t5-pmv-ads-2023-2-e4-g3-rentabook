@@ -19,6 +19,7 @@ import org.springframework.data.mongodb.core.query.TextCriteria
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.data.support.PageableExecutionUtils
 import org.springframework.stereotype.Service
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.multipart.MultipartFile
 import java.text.Normalizer
 import java.util.function.LongSupplier
@@ -103,22 +104,22 @@ class AnnouncementService(
         }
     }
 
-    fun giveBackRent(giveBackForm: GiveBackForm) {
-        return AuthenticationUtils.authenticate(userRepository) {
-            val rent =
-                rentRepository.findById(giveBackForm.id).orElseThrow { throw Exception("Id de aluguel invalido!") }
-            rent.rating = ratingRepository.save(
-                Rating(
-                    ownerUser = it,
-                    message = giveBackForm.ratingMessage,
-                    feedback = giveBackForm.ratingFeedback,
-                )
-            )
-            rent.announcement.isAvailable = true
-            announcementRepository.save(rent.announcement)
-            rentRepository.save(rent)
-        }
-    }
+//    fun giveBackRent(giveBackForm: GiveBackForm) {
+//        return AuthenticationUtils.authenticate(userRepository) {
+//            val rent =
+//                rentRepository.findById(giveBackForm.id).orElseThrow { throw Exception("Id de aluguel invalido!") }
+//            rent.rating = ratingRepository.save(
+//                Rating(
+//                    ownerUser = it,
+//                    message = giveBackForm.ratingMessage,
+//                    feedback = giveBackForm.ratingFeedback,
+//                )
+//            )
+//            rent.announcement.isAvailable = true
+//            announcementRepository.save(rent.announcement)
+//            rentRepository.save(rent)
+//        }
+//    }
 
     fun uploadImage(image: MultipartFile, announcementId: String): AnnouncementView {
         return AuthenticationUtils.authenticate(userRepository) { user ->
@@ -156,6 +157,7 @@ class AnnouncementService(
         rent: Boolean?,
         sale: Boolean?,
         trade: Boolean?,
+        onlyAvailable: Boolean? = true,
         pageable: Pageable
     ): Page<CleanAnnouncementView> {
 
@@ -187,6 +189,10 @@ class AnnouncementService(
         if (trade != null) {
             query.addCriteria(Criteria.where("trade").`is`(trade))
         }
+
+        if(onlyAvailable == true){
+            query.addCriteria(Criteria.where("isAvailable").`is`(true))
+        }
         val resultsTotal = mongoTemplate.find(query, Announcement::class.java)
             .toList().size.toLong()
 
@@ -216,6 +222,10 @@ class AnnouncementService(
         val pageList = list.subList(startIndex, endIndex)
 
         return PageImpl(pageList, pageable, list.size.toLong())
+    }
+
+    fun getPublicAnnouncementsDetail(id: String): CleanAnnouncementView {
+        return cleanAnnouncementViewMapper.map(findById(id))
     }
 
 }
