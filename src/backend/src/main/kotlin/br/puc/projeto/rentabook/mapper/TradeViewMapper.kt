@@ -24,7 +24,7 @@ class TradeViewMapper(
             else null
         }
         return TradeView(
-            id = t.id ?: throw Exception("Registro de troca não localizado!"),
+            id = t.id,
             announcement = announcementViewMapper.map(t.announcement),
             ownerUser = publicUserViewMapper.map(t.ownerUser),
             createData = t.createData,

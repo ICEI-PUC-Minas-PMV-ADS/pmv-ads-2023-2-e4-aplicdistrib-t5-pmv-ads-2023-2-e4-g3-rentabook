@@ -360,7 +360,7 @@ export default function HomeDesktop() {
           <TouchableWithoutFeedback onPress={() => setSearchModalIsVisible(false)}>
             <>
               {
-                announcementsData.length == 0 &&
+                announcementsData.length == 0 && loadingAnnouncements == false &&
                 <View style={[styles.addsContainer, { alignItems: 'center', justifyContent: 'center' }]}>
                   <Text style={styles.modalTitle}>Nenhum anúncio encontrado para a sua cidade ou para os filtros selecionados</Text>
                   <PrimaryButton

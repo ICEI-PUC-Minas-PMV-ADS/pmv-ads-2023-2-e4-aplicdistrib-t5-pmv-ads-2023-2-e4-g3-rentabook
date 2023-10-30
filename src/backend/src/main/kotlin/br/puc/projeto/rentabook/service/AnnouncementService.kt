@@ -95,7 +95,7 @@ class AnnouncementService(
     }
 
     fun findAnnouncementById(announcementId: String): CleanAnnouncementView {
-        return AuthenticationUtils.authenticate(userRepository) { user ->
+        return AuthenticationUtils.authenticate(userRepository) {
             cleanAnnouncementViewMapper.map(announcementRepository.findById(announcementId)
                 .orElseThrow { throw java.lang.Exception("Invalid announcement id!") })
         }
