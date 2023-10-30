@@ -12,8 +12,8 @@ type PrimaryButtonProps = {
   label: string,
   style?: Object,
   textStyle?: Object,
-  onPress: () => void,
   activeStyle?: boolean,
+  onPress: () => void,
   radioButtom?: boolean,
   radioButtomOn?: boolean
 };
@@ -70,7 +70,6 @@ export default function PrimaryButton({ label, style, onPress, textStyle, active
       setCurrentStyle(ButtonStyle.notActiveStyle)
       setCurrentTextStyle(ButtonStyle.notActiveText)
     }
-
   }, [activeStyle])
 
   return (

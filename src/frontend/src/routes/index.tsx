@@ -1,5 +1,5 @@
 import Home from '../pages/Home';
-import MyAnnouncements from '../pages/MyAnnoucements';
+import MyAnnouncements from '../pages/MyAnnouncements';
 import { NavigationContainer } from '@react-navigation/native';
 import { AppParamsList } from './AppParamsList';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -12,12 +12,14 @@ import { AlreadyLogged } from '../contexts/Auth/AlreadyLogged';
 import AnnouncementsDetails from '../pages/AnnouncementDetails'
 import React from 'react';
 import SearchMobile from '../pages/Home/SearchMobile';
+import { CreateAnnouncement } from '../pages/CreateAnnouncement';
 
 
 const Stack = createNativeStackNavigator<AppParamsList>();
 
 const home = 'Anúncios'
 const myAnnouncements = 'Meus Anúncios'
+const createAnnouncement = 'Criar Anúncio'
 const login = 'Entrar'
 const profile = 'Meu Perfil'
 const chat = 'Chat'
@@ -41,8 +43,14 @@ export default function Router() {
             <RequireAuth>
               <MyAnnouncements />
             </RequireAuth>
-          )
-          }
+          )}
+        </Stack.Screen>
+        <Stack.Screen name={createAnnouncement}>
+          {() => (
+            <RequireAuth>
+              <CreateAnnouncement />
+            </RequireAuth>
+          )}
         </Stack.Screen>
         <Stack.Screen name={login}>
           {() => (
