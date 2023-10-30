@@ -99,15 +99,20 @@ export default function HomeMobile() {
 
   const contentEmpyt = () => {
     return (
-      <View style={{ alignItems: 'center', justifyContent: 'center', padding: 40 }}>
-        <Text style={styles.modalTitle}>Nenhum anúncio encontrado para a sua cidade ou para os filtros selecionados</Text>
-        <PrimaryButton
-          style={{ width: 180, marginTop: 20, height: 50 }}
-          activeStyle={true}
-          onPress={() => { cleanFilters() }}
-          label='Limpar filtros'
-        />
-      </View>
+      <>
+        {
+          loadingAnnouncements == false &&
+          <View style={{ alignItems: 'center', justifyContent: 'center', padding: 40 }}>
+            <Text style={styles.modalTitle}>Nenhum anúncio encontrado para a sua cidade ou para os filtros selecionados</Text>
+            <PrimaryButton
+              style={{ width: 180, marginTop: 20, height: 50 }}
+              activeStyle={true}
+              onPress={() => { cleanFilters() }}
+              label='Limpar filtros'
+            />
+          </View>
+        }
+      </>
     )
   }
 

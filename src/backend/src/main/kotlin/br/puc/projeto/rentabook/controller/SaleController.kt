@@ -19,7 +19,6 @@ class SaleController(
     @SecurityRequirement(
         name = "bearerAuth"
     )
-    @CacheEvict("Announcements", allEntries = true)
     @PostMapping("/create")
     fun create(@RequestBody form: SaleForm): SaleView {
         return saleService.create(form)
@@ -28,7 +27,6 @@ class SaleController(
     @SecurityRequirement(
         name = "bearerAuth"
     )
-    @CacheEvict("Announcements", allEntries = true)
     @GetMapping("/{id}")
     fun get(@PathVariable id: String): SaleView? {
         return saleService.get(id)
@@ -53,7 +51,6 @@ class SaleController(
     @SecurityRequirement(
         name = "bearerAuth"
     )
-    @CacheEvict("Announcements", allEntries = true)
     @PutMapping("/{id}/cancel")
     fun cancel(@PathVariable id: String): SaleView {
         return saleService.cancel(id)
@@ -62,7 +59,6 @@ class SaleController(
     @SecurityRequirement(
         name = "bearerAuth"
     )
-    @CacheEvict("Announcements", allEntries = true)
     @PutMapping("/{id}/complete")
     fun complete(@PathVariable id: String): SaleView {
         return saleService.complete(id)

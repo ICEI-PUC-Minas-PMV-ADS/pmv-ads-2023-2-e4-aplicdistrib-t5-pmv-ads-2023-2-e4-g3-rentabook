@@ -17,7 +17,6 @@ class TradeController(
     @SecurityRequirement(
         name = "bearerAuth"
     )
-    @CacheEvict("Announcements", allEntries = true)
     @PostMapping("/create")
     fun create(@RequestBody form: TradeForm): TradeView {
         return tradeService.create(form)
@@ -50,7 +49,6 @@ class TradeController(
     @SecurityRequirement(
         name = "bearerAuth"
     )
-    @CacheEvict("Announcements", allEntries = true)
     @PutMapping("{id}/cancel")
     fun cancel(@PathVariable id: String): TradeView {
         return tradeService.cancel(id)
@@ -59,7 +57,6 @@ class TradeController(
     @SecurityRequirement(
         name = "bearerAuth"
     )
-    @CacheEvict("Announcements", allEntries = true)
     @PutMapping("{id}/complete")
     fun complete(@PathVariable id: String): TradeView {
         return tradeService.complete(id)

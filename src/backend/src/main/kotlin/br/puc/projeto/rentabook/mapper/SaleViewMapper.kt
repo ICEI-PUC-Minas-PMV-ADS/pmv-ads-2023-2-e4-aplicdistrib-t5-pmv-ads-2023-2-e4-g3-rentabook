@@ -22,7 +22,7 @@ class SaleViewMapper(
             else null
         }
         return SaleView(
-            id = t.id ?: throw Exception("Registro de venda não localizado!"),
+            id = t.id,
             announcement = announcementViewMapper.map(t.announcement),
             ownerUser = publicUserViewMapper.map(t.ownerUser),
             createData = t.createData,
