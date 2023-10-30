@@ -167,7 +167,7 @@ export default function HomeDesktop() {
                   authContext.defaultAddress != null &&
                   <View style={styles.buttomContainerModal}>
                     <PrimaryButton
-                      style={{ width: 180, height: 50 }}
+                      style={{ width: 140, height: 50 }}
                       activeStyle={false}
                       onPress={() => {
                         authContext.removeDefaultAddress()
@@ -181,13 +181,13 @@ export default function HomeDesktop() {
                   authContext.user &&
                   <>
                     <PrimaryButton
-                      style={{ width: 180, height: 50 }}
+                      style={{ width: 140, height: 50 }}
                       activeStyle={false}
                       onPress={() => setAddressModalIsVisible(false)}
                       label='Cancelar'
                     />
                     <PrimaryButton
-                      style={{ width: 180, height: 50 }}
+                      style={{ width: 140, height: 50 }}
                       activeStyle={true}
                       onPress={() => {
                         if (selectedAddress) {

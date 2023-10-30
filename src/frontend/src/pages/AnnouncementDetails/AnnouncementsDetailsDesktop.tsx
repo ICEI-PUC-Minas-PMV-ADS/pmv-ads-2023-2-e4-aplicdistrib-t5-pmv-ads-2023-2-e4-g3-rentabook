@@ -1,11 +1,8 @@
 import { useState, useContext } from 'react'
-import { RouteProp, useRoute, useNavigation } from "@react-navigation/native"
-import { AppParamsList } from "../../routes/AppParamsList"
-import ResponsiveNavbar from "../../common/components/ResponsiveNavbar"
-import { View, Text, StyleSheet, Pressable, Dimensions, ScrollView, Modal, TouchableWithoutFeedback, SafeAreaView } from "react-native"
+import { useNavigation } from "@react-navigation/native"
+import { View, Text, StyleSheet, Pressable, Dimensions, ScrollView, Modal, TouchableWithoutFeedback, SafeAreaView, ActivityIndicator } from "react-native"
 import { StackTypes } from "../../routes/StackTypes"
-import { Desktop } from "../../hooks/useResposive"
-import { DarkGreen, PrimaryGreenColor, WhiteColor } from "../../common/theme/colors"
+import { DarkGreen, GreenLight, PrimaryGreenColor, WhiteColor } from "../../common/theme/colors"
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { avaliableText } from "../../common/utils/annoucementsUtils"
 import { getValueRent, getValueSale } from '../../common/utils/annoucementsUtils'
@@ -14,6 +11,14 @@ import Carousel from '../../common/components/Carousel'
 import { CleanAnnouncementView } from '../../types/CleanAnnouncementView'
 import { AuthContext } from '../../contexts/Auth/AuthContext'
 import Ratings from './Ratings'
+import Input from '../../common/components/Input'
+import { rentService } from '../../services/rentService'
+import { NegotiationForm } from '../../types/NegotiationForm'
+import { tradeService } from '../../services/tradeService'
+import { saleService } from '../../services/saleService'
+import { RentView } from '../../types/RentView'
+import { TradeView } from '../../types/TradeView'
+import { SaleView } from '../../types/SaleView'
 
 export default function AnnouncementsDetailsDesktop({ announcement }: { announcement: CleanAnnouncementView }) {
   const authContext = useContext(AuthContext)
@@ -24,9 +29,103 @@ export default function AnnouncementsDetailsDesktop({ announcement }: { announce
   })
 
   const [openRatings, setOpenRatings] = useState(false)
+  const [inputDaysRent, setInputDaysRent] = useState("1")
+  const [inputDaysError, setInputDaysError] = useState(false)
+  const [daysMessageError, setDaysMessageError] = useState("Insira uma quantidade de dias em número válida")
+  const [rentButtomActive, setRentButtomActive] = useState(false)
+  const [saleButtomActive, setSaleButtomActive] = useState(false)
+  const [tradeButtomActive, setTradeButtomActive] = useState(false)
+  const [totalValueNegotiation, setTotalValueNegotiation] = useState(0.0)
+  const [error, setError] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [errorOwnAd, setErrorOwnAd] = useState(false)
+
+  const handleButtonActive = (name: string) => {
+    if (name == "rent") {
+      setRentButtomActive(true)
+      setSaleButtomActive(false)
+      setTradeButtomActive(false)
+      if (announcement.valueForRent != null && validateInput(inputDaysRent)) setTotalValueNegotiation(announcement.valueForRent * parseInt(inputDaysRent))
+    }
+    if (name == "sale") {
+      setRentButtomActive(false)
+      setSaleButtomActive(true)
+      setTradeButtomActive(false)
+      if (announcement.valueForSale != null) setTotalValueNegotiation(announcement.valueForSale)
+    }
+    if (name == "trade") {
+      setRentButtomActive(false)
+      setSaleButtomActive(false)
+      setTradeButtomActive(true)
+      setTotalValueNegotiation(0)
+    }
+  }
+
+  const validateInput = (value: string) => {
+    const regex = /^\d+$/;
+    if (value == "") {
+      setInputDaysError(true)
+      setDaysMessageError("O campo não pode estar vazio")
+      return false
+    }
+    else if (!regex.test(value) && value != "") {
+      setInputDaysError(true)
+      setDaysMessageError("Digite um número de dias inteiros válido")
+      return false
+    } else return true
+  }
+
+  const handleDays = (value: string) => {
+    const num = parseInt(value)
+    setInputDaysError(false)
+    if (validateInput(value) && announcement.valueForRent != null) setTotalValueNegotiation(announcement.valueForRent * num)
+  }
+
+  const handleNegotiation = async () => {
+    const negotiation: NegotiationForm = {
+      announcementId: announcement.id,
+      value: totalValueNegotiation
+    }
+    if (rentButtomActive == true && validateInput(inputDaysRent)) {
+      setLoading(true)
+      await rentService.create(negotiation).then((data) => {
+        const rent: RentView = data.data
+        setIsVisible(false)
+        setLoading(false)
+        navigation.navigate("Chat", { chatId: rent.chat.id })
+      }).catch(() => {
+        setLoading(false)
+        setError(true)
+      })
+    }
+    if (tradeButtomActive == true) {
+      console.log("entrou")
+      setLoading(true)
+      await tradeService.create(negotiation).then((data) => {
+        const trade: TradeView = data.data
+        setIsVisible(false)
+        setLoading(false)
+        navigation.navigate("Chat", { chatId: trade.chat.id })
+      }).catch(() => {
+        setLoading(false)
+        setError(true)
+      })
+    }
+    if (saleButtomActive == true) {
+      setLoading(true)
+      await saleService.create(negotiation).then((data) => {
+        const sale: SaleView = data.data
+        setIsVisible(false)
+        setLoading(false)
+        navigation.navigate("Chat", { chatId: sale.chat.id })
+      }).catch(() => {
+        setLoading(false)
+        setError(true)
+      })
+    }
 
 
-
+  }
 
   return (
     <>
@@ -38,35 +137,98 @@ export default function AnnouncementsDetailsDesktop({ announcement }: { announce
       <Modal transparent={true} onRequestClose={() => setIsVisible(false)} visible={isVisible}>
         <TouchableWithoutFeedback onPress={() => setIsVisible(false)} style={{ flex: 1, width: '100%', height: '100%', }}>
           <View style={styles.modalView}>
+            {loading &&
+              <View style={[{
+                backgroundColor: 'rgba(0,0,0,0.5)',
+                zIndex: 30,
+                width: 750,
+                height: 450,
+                position: 'absolute',
+                justifyContent: 'center',
+                borderRadius: 5,
+                alignSelf: 'center'
+              }]}>
+                <ActivityIndicator size="large" color={GreenLight} />
+              </View>
+            }
             <Pressable>
               <View style={styles.modalWindow}>
-                <Text style={styles.goBackText}>Selecione o tipo da negociação</Text>
-                <View style={{ flexDirection: 'row', gap: 20, marginTop: 20, justifyContent: 'center' }}>
+
+                <View>
+                  <Pressable onPress={() => { setIsVisible(false) }} style={{ marginBottom: 40, flexDirection: 'row', alignItems: 'center', gap: 15, width: 640 }} >
+                    <Ionicons name='arrow-back' size={35} color={PrimaryGreenColor} />
+                    <Text style={{ fontSize: 25 }}>Criar negociação</Text>
+                  </Pressable>
+                  <Text style={{ fontSize: 18 }}>Selecione o tipo da negociação:</Text>
+                  <View style={{ flexDirection: 'row', gap: 20, marginTop: 20, justifyContent: 'center', marginBottom: 20 }}>
+
+                    {
+                      announcement.rent == true &&
+                      <PrimaryButton
+                        onPress={() => { handleButtonActive("rent") }}
+                        style={styles.buttom}
+                        label='Aluguel'
+                        radioButtom={true}
+                        activeStyle={rentButtomActive}
+                        radioButtomOn={rentButtomActive}
+                      />
+                    }
+                    {
+                      announcement.sale == true &&
+                      <PrimaryButton
+                        onPress={() => { handleButtonActive("sale") }}
+                        style={styles.buttom}
+                        label='Compra'
+                        radioButtom={true}
+                        activeStyle={saleButtomActive}
+                        radioButtomOn={saleButtomActive}
+                      />
+                    }
+                    {
+                      announcement.trade == true &&
+                      <PrimaryButton
+                        onPress={() => { handleButtonActive("trade") }}
+                        style={styles.buttom}
+                        label='Troca'
+                        activeStyle={tradeButtomActive}
+                        radioButtom={true}
+                        radioButtomOn={tradeButtomActive}
+                      />
+                    }
+                  </View>
                   {
-                    announcement.rent == true &&
-                    <PrimaryButton
-                      onPress={() => { setIsVisible(true) }}
-                      style={styles.buttom}
-                      label='Aluguel'
-                    />
-                  }
-                  {
-                    announcement.sale == true &&
-                    <PrimaryButton
-                      onPress={() => { setIsVisible(true) }}
-                      style={styles.buttom}
-                      label='Compra'
-                    />
-                  }
-                  {
-                    announcement.trade == true &&
-                    <PrimaryButton
-                      onPress={() => { setIsVisible(true) }}
-                      style={styles.buttom}
-                      label='Troca'
-                    />
+                    rentButtomActive &&
+                    <View style={styles.modalInputContainer}>
+                      <View style={{ width: '100%' }}>
+                        <Input
+                          error={inputDaysError}
+                          label="Quantidade de dias para aluguel"
+                          style={{ width: '100%' }}
+                          onChangeText={(value) => {
+                            setInputDaysRent(value)
+                            handleDays(value)
+                          }}
+                          messageError={daysMessageError}
+                          value={inputDaysRent} />
+                      </View>
+                    </View>
                   }
                 </View>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', gap: 40, alignItems: 'center' }}>
+                  <Text style={{ fontSize: 25, color: PrimaryGreenColor }}>Total: R${totalValueNegotiation.toFixed(2)}</Text>
+                  <PrimaryButton
+                    onPress={() => { handleNegotiation() }}
+                    style={styles.buttom}
+                    label='Confirmar'
+                  />
+
+                </View>
+                {
+                  error &&
+                  <Text style={{ color: "red" }}>Não foi possível realizar a operação. Tente novamente mais tarde.</Text>
+                }
+
+
               </View>
             </Pressable>
           </View>
@@ -131,11 +293,15 @@ export default function AnnouncementsDetailsDesktop({ announcement }: { announce
                         <Ionicons name="checkmark-circle" size={20} style={{ color: PrimaryGreenColor }} />
                         <Text style={styles.availableText}>{avaliableText(announcement)}</Text>
                       </View>
-                      <View style={{ flexDirection: 'row', gap: 20, marginTop: 20 }}>
+                      <View style={{ gap: 20, marginTop: 20 }}>
                         <PrimaryButton
                           onPress={() => {
                             if (authContext.user != null) {
-                              setIsVisible(true)
+                              if (announcement.ownerUser.id == authContext.user.id) {
+                                setErrorOwnAd(true)
+                              } else {
+                                setIsVisible(true)
+                              }
                             }
                             else {
                               navigation.navigate('Entrar', {})
@@ -144,6 +310,11 @@ export default function AnnouncementsDetailsDesktop({ announcement }: { announce
                           style={styles.buttom}
                           label='Negociar'
                         />
+                        {
+                          errorOwnAd &&
+                          <Text style={{ color: "red" }}>Não é possível negociar em seu próprio anúncio.</Text>
+                        }
+
                       </View>
                     </>
                   }
@@ -255,22 +426,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   modalView: {
-    flex: 1,
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
     backgroundColor: 'rgba(0,0,0,0.5)',
     zIndex: 20,
-    justifyContent: 'center'
-
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   modalWindow: {
-    alignSelf: 'center',
     width: 750,
+    height: 450,
     backgroundColor: WhiteColor,
-    borderRadius: 3,
-    position: 'absolute',
+    borderRadius: 5,
     padding: 40,
     flexDirection: 'column',
-    justifyContent: 'space-between',
-    gap: 15
+    alignItems: 'center',
+    gap: 15,
+    justifyContent: 'space-between'
   },
   available: {
     flexDirection: 'row',
@@ -282,5 +455,8 @@ const styles = StyleSheet.create({
   },
   greenText: {
     color: DarkGreen
+  },
+  modalInputContainer: {
+    flexDirection: 'row'
   }
 })

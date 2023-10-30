@@ -6,10 +6,11 @@ import { AuthContext } from '../contexts/Auth/AuthContext';
 import Input from '../common/components/Input';
 import PrimaryButton from '../common/components/PrimaryButton';
 import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
+import { StackTypes } from "../routes/StackTypes";
 
 export default function Login() {
   const authContext = useContext(AuthContext);
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackTypes>()
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -89,7 +90,7 @@ export default function Login() {
           email: '',
           password: '',
         });
-        navigation.navigate('Home');
+        navigation.navigate("Anúncios", {});
       } else {
         throw new Error("Credenciais inválidas");
       }

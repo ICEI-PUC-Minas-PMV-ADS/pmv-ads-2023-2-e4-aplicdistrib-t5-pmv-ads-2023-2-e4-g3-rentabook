@@ -115,13 +115,13 @@ export default function DesktopNavbar() {
               }
               {
                 telaAtual == 'Mensagens' &&
-                <Text style={style.activeNavLink} onPress={() => navigation.navigate('Mensagens', {})}>
+                <Text style={style.activeNavLink} onPress={() => navigation.navigate('Chat', {})}>
                   Mensagens
                 </Text>
               }
               {
                 telaAtual != 'Mensagens' &&
-                <Text style={style.navLink} onPress={() => navigation.navigate('Mensagens', {})}>
+                <Text style={style.navLink} onPress={() => navigation.navigate('Chat', {})}>
                   Mensagens
                 </Text>
               }

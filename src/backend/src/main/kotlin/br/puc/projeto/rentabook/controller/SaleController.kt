@@ -19,6 +19,7 @@ class SaleController(
     @SecurityRequirement(
         name = "bearerAuth"
     )
+    @CacheEvict("Announcements", allEntries = true)
     @PostMapping("/create")
     fun create(@RequestBody form: SaleForm): SaleView {
         return saleService.create(form)

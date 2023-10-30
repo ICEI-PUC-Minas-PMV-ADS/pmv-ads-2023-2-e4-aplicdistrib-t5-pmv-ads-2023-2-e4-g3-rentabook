@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Pressable, View, Text, StyleSheet } from "react-native";
 import { PrimaryGreenColor, WhiteColor } from '../theme/colors';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 
 /**
@@ -13,6 +14,8 @@ type PrimaryButtonProps = {
   textStyle?: Object,
   activeStyle?: boolean,
   onPress: () => void,
+  radioButtom?: boolean,
+  radioButtomOn?: boolean
 };
 
 /**
@@ -21,10 +24,11 @@ type PrimaryButtonProps = {
 
 const ButtonStyle = StyleSheet.create({
   background: {
+    flexDirection: 'row',
     borderRadius: 8,
     backgroundColor: PrimaryGreenColor,
     alignItems: "center",
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     borderStyle: 'solid',
     borderWidth: 3,
     borderColor: PrimaryGreenColor,
@@ -34,8 +38,9 @@ const ButtonStyle = StyleSheet.create({
     fontSize: 16,
   },
   notActiveStyle: {
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     backgroundColor: WhiteColor,
     borderRadius: 8,
     borderStyle: 'solid',
@@ -53,7 +58,7 @@ const ButtonStyle = StyleSheet.create({
  * https://www.figma.com/file/2lR8urPO212OkkhvDTmmgF/Untitled?type=design&node-id=32-259&mode=design&t=ZkwebBuGnnQ715v7-4
  */
 
-export default function PrimaryButton({ label, style, onPress, textStyle, activeStyle = true }: PrimaryButtonProps) {
+export default function PrimaryButton({ label, style, onPress, textStyle, activeStyle = true, radioButtom = false, radioButtomOn = true }: PrimaryButtonProps) {
   const [currentStyle, setCurrentStyle]: [any, any] = React.useState(ButtonStyle.background)
   const [currentTextStyle, setCurrentTextStyle]: [any, any] = React.useState(ButtonStyle.text)
 
@@ -71,6 +76,14 @@ export default function PrimaryButton({ label, style, onPress, textStyle, active
     <Pressable onPress={onPress}>
       <View style={[currentStyle, style]}>
         <Text style={[currentTextStyle, textStyle]}>{label}</Text>
+        {
+          radioButtom == true && activeStyle == true &&
+          <Ionicons name={radioButtomOn ? "radio-button-on" : "radio-button-off"} color={WhiteColor} size={25} />
+        }
+        {
+          radioButtom == true && activeStyle == false &&
+          <Ionicons name={radioButtomOn ? "radio-button-on" : "radio-button-off"} color={PrimaryGreenColor} size={25} />
+        }
       </View>
     </Pressable>
   );

@@ -14,13 +14,14 @@ import Carousel from '../../common/components/Carousel'
 import { CleanAnnouncementView } from '../../types/CleanAnnouncementView'
 import { AuthContext } from '../../contexts/Auth/AuthContext'
 import Ratings from './Ratings'
+import NegotiationMobile from './NegotiationMobile'
 
 export default function AnnouncementsDetailsMobile({ announcement }: { announcement: CleanAnnouncementView }) {
   const navigation = useNavigation<StackTypes>()
-  const [isVisible, setIsVisible] = useState(false);
   const authContext = useContext(AuthContext)
   const [openRatings, setOpenRatings] = useState(false)
-
+  const [openNegotiation, setOpenNegotiation] = useState(false)
+  const [errorOwnAd, setErrorOwnAd] = useState(false)
 
 
   return (
@@ -29,44 +30,11 @@ export default function AnnouncementsDetailsMobile({ announcement }: { announcem
         openRatings == true &&
         <Ratings announcement={announcement} openRatings={openRatings} setOpenRatings={setOpenRatings} />
       }
+      {
+        openNegotiation == true &&
+        <NegotiationMobile announcement={announcement} setOpenNegotiatiton={setOpenNegotiation} />
+      }
       <SafeAreaView style={styles.container}>
-        <Modal transparent={true} onRequestClose={() => setIsVisible(false)} visible={isVisible}>
-          <TouchableWithoutFeedback onPress={() => setIsVisible(false)} style={{ flex: 1, width: '100%', height: '100%', }}>
-            <View style={styles.modalView}>
-              <Pressable>
-                <View style={styles.modalWindow}>
-                  <Text style={styles.goBackText}>Selecione o tipo da negociação</Text>
-                  <View style={{ flexDirection: 'column', gap: 20, marginTop: 20, alignItems: 'center', marginBottom: 20 }}>
-                    {
-                      announcement.rent == true &&
-                      <PrimaryButton
-                        onPress={() => { setIsVisible(true) }}
-                        style={styles.buttom}
-                        label='Aluguel'
-                      />
-                    }
-                    {
-                      announcement.sale == true &&
-                      <PrimaryButton
-                        onPress={() => { setIsVisible(true) }}
-                        style={styles.buttom}
-                        label='Compra'
-                      />
-                    }
-                    {
-                      announcement.trade == true &&
-                      <PrimaryButton
-                        onPress={() => { setIsVisible(true) }}
-                        style={styles.buttom}
-                        label='Troca'
-                      />
-                    }
-                  </View>
-                </View>
-              </Pressable>
-            </View>
-          </TouchableWithoutFeedback>
-        </Modal>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Pressable onPress={() => navigation.goBack()}>
             <View style={styles.goBackContainer} >
@@ -132,7 +100,12 @@ export default function AnnouncementsDetailsMobile({ announcement }: { announcem
                   <PrimaryButton
                     onPress={() => {
                       if (authContext.user != null) {
-                        setIsVisible(true)
+
+                        if (announcement.ownerUser.id == authContext.user.id) {
+                          setErrorOwnAd(true)
+                        } else {
+                          setOpenNegotiation(true)
+                        }
                       }
                       else {
                         navigation.navigate('Entrar', {})
@@ -141,6 +114,10 @@ export default function AnnouncementsDetailsMobile({ announcement }: { announcem
                     style={styles.buttom}
                     label='Negociar'
                   />
+                  {
+                    errorOwnAd &&
+                    <Text style={{ color: "red" }}>Não é possível negociar em seu próprio anúncio.</Text>
+                  }
                 </View>
               </>
             }
@@ -237,7 +214,7 @@ const styles = StyleSheet.create({
     width: 300
   },
   buttomContainer: {
-    flexDirection: 'row', marginTop: 20, width: '100%', justifyContent: 'center'
+    marginTop: 20, width: '100%', alignItems: 'center'
   },
   ratingContainer: {
     flexDirection: 'row',
