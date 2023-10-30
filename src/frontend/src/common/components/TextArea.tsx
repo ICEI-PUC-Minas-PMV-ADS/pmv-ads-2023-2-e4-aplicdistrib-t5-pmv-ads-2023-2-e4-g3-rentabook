@@ -44,7 +44,7 @@ export default function TextArea({ style, value, placeholder, onChange }: TextAr
           onChange?.(cvalue);
           setInputValue(cvalue);
         }}
-        defaultValue={inputValue ?? placeholder} />
+        value={value} />
     </View>
   );
 }

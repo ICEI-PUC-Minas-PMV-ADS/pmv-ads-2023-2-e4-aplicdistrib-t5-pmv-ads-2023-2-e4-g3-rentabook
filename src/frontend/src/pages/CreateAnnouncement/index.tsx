@@ -291,6 +291,7 @@ export function CreateAnnouncement({ }: CreateAnnouncementProps) {
                   <TextArea
                     style={{ height: 200 }}
                     onChange={(value) => setDescription(value)}
+                    value={description}
                     placeholder="Digite a descrição do produto" />
                 </View>
               </View>
