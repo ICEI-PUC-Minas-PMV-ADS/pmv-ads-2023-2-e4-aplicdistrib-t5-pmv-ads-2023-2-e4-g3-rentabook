@@ -2,6 +2,7 @@ package br.puc.projeto.rentabook.mapper
 
 import br.puc.projeto.rentabook.dto.TradeView
 import br.puc.projeto.rentabook.model.Trade
+import br.puc.projeto.rentabook.repository.RatingRepository
 import br.puc.projeto.rentabook.service.RatingService
 import org.springframework.stereotype.Component
 
@@ -11,11 +12,17 @@ class TradeViewMapper(
     private val publicUserViewMapper: PublicUserViewMapper,
     private val ratingViewMapper: RatingViewMapper,
     private val chatViewMapper: ChatViewMapper,
-    private val ratingService: RatingService
+    private val ratingRepository: RatingRepository,
 ): Mapper<Trade, TradeView> {
 
 
     override fun map(t: Trade): TradeView {
+        val rating = ratingRepository.findByIdNegotiation(t.id!!).run {
+            if (this != null) {
+                ratingViewMapper.map(this)
+            }
+            else null
+        }
         return TradeView(
             id = t.id ?: throw Exception("Registro de troca não localizado!"),
             announcement = announcementViewMapper.map(t.announcement),
@@ -25,7 +32,7 @@ class TradeViewMapper(
             endDate = t.endDate,
             value = t.value,
             lead = publicUserViewMapper.map(t.lead),
-            rating = ratingService.getRatingByNegotiation(t.id),
+            rating = rating,
             chat = chatViewMapper.map(t.chat),
             accepted = t.accepted,
             cancelled = t.cancelled,

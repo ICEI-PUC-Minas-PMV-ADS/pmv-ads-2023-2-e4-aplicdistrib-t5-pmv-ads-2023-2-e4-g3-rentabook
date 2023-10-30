@@ -84,7 +84,7 @@ export default function MobileNavbar() {
             telaAtual == 'Mensagens' &&
             <Pressable
               style={style.linkContainer}
-              onPress={() => navigation.navigate('Mensagens', {})}>
+              onPress={() => navigation.navigate('Chat', {})}>
               <Ionicons name='chatbox-ellipses' size={28} color={DarkGreen} />
               <Text style={style.activeNavLink}>Mensagens</Text>
             </Pressable>
@@ -93,7 +93,7 @@ export default function MobileNavbar() {
             telaAtual != 'Mensagens' &&
             <Pressable
               style={style.linkContainer}
-              onPress={() => navigation.navigate('Mensagens', {})}>
+              onPress={() => navigation.navigate('Chat', {})}>
               <Ionicons name='chatbox-ellipses-outline' size={28} color={PrimaryGreenColor} />
               <Text style={style.navLink}>Mensagens</Text>
             </Pressable>

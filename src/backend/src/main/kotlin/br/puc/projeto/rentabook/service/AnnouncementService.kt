@@ -189,10 +189,13 @@ class AnnouncementService(
         if (trade != null) {
             query.addCriteria(Criteria.where("trade").`is`(trade))
         }
-
-        if(onlyAvailable == true){
+        if (onlyAvailable == false) {
+            query.addCriteria(Criteria.where("isAvailable").`is`(false))
+        } else {
             query.addCriteria(Criteria.where("isAvailable").`is`(true))
         }
+
+
         val resultsTotal = mongoTemplate.find(query, Announcement::class.java)
             .toList().size.toLong()
 

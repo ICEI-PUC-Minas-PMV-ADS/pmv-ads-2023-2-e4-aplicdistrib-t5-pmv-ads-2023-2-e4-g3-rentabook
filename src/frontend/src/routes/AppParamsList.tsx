@@ -8,10 +8,9 @@ export type AppParamsList = {
   RequireAuth: {};
   'Criar Conta': {};
   'Meu Perfil': {};
-  'Mensagens': {};
   'Entrar': {};
   'Detalhes do anúncio': { announcement: CleanAnnouncementView };
   'Pesquisar por livro': {};
-   Chat: { chatId: string };     
+   "Chat": { chatId?: string };     
 }
 
