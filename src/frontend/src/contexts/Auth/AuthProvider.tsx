@@ -30,8 +30,9 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
           AsyncStorage.removeItem('defaultAddress')
           setInfosLoaded(true)
         })
-        const firstAddress = userData.addresses[0]
+        
         if (userData) {
+          const firstAddress = userData.addresses[0]
           setUser(userData)
 
           if (firstAddress != null) {

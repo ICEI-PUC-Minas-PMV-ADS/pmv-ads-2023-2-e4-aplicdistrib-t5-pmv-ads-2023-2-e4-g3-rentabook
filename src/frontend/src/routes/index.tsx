@@ -25,7 +25,6 @@ const profile = 'Meu Perfil'
 const chat = 'Chat'
 const signup = 'Criar Conta'
 const announcementsDetails = 'Detalhes do anúncio'
-const searchMobile = 'Pesquisar por livro'
 
 export default function Router() {
   return (<>
