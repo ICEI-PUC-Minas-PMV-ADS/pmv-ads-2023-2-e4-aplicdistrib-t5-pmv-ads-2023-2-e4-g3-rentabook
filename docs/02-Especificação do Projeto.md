@@ -15,8 +15,7 @@ Com base na análise das personas forma identificadas as seguintes histórias de
 |  Ana  |  ter acesso a uma lista com livros que possam ser negociados com outros usuários  |  ter acesso a outros livros sem gastar dinheiro | 		
 |  Luíza  |  ter acesso a um chat  |  me comunicar com outro usuário no momento da negociação |	 
 |  Luíza  |  ser notificada quando um livro for solicitado para aluguel ou compra  |  que a negociação seja rápida e satisfatória | 
-|  Luíza  |  solicitar o cancelamento de um processo de venda ou aluguel de um livro  |  impedir maiores contratempos quando a negociação não for possível | 
-|  Luíza  |  denunciar um usuário  |  que a comunidade de usuários possa identificar um usuário mal-intencionado |			 
+|  Luíza  |  solicitar o cancelamento de um processo de venda ou aluguel de um livro  |  impedir maiores contratempos quando a negociação não for possível |		 
 |  Luíza  |  possibilitar de trocar livros com outros usuários  |  ter acesso a outros livros sem gastar dinheiro | 
 |  Luíza  |  ser notificado quando alguma transação que me envolva sofrer atualização  |  me planejar minha rotina para algum evento que possa surgir | 
 |  Flávio  |  pesquisar por um livro específico  |  facilitar minha busca por livros do meu interesse |  
@@ -41,18 +40,17 @@ Com base na análise das personas forma identificadas as seguintes histórias de
 |RF-007| Exibir ao usuário uma lista de livros disponíveis para troca, venda ou aluguel | ALTA | 
 |RF-008| Permitir aos usuários trocarem mensagens via chat | MÉDIA |
 |RF-009| Notificar ao usuário quando um de seus livros forem solicitados para aluguel, compra ou troca | BAIXA | 
-|RF-010| Permitir ao usuário cancelar uma venda, aluguel ou troca de um livro | ALTA |
-|RF-011| Permitir ao usuário denunciar outro usuário | BAIXA | 
-|RF-012| Notificar ao usuário quando suas negociações forem atualizadas | BAIXA | 
-|RF-013| Permitir ao usuário pesquisar por um livro específico | MÉDIA |
-|RF-014| Permitir ao usuário filtrar a lista de livros disponiveis para negociação | MÉDIA |
-|RF-015| Permitir ao usuário cadastrar seus livros | ALTA |
-|RF-016| Permitir ao usuário disponibilizar seus livros para negociação (aluguel, troca e venda) | ALTA |
-|RF-017| Permitir ao usuário anexar fotos do livro ao seu anúncio | MÉDIA |
-|RF-018| Listar ao usuário seus livros em negociação  | ALTA |
-|RF-019| Permitir ao usuário filtrar a lista com seus livros em negociação | MÉDIA |
-|RF-020| Permitir ver detalhes sobre uma negociação em específico | ALTA |
-|RF-021| Permitir aos usuários avaliar as negociações de livro realizadas | MÉDIA |
+|RF-010| Permitir ao usuário cancelar uma venda, aluguel ou troca de um livro | ALTA | 
+|RF-011| Notificar ao usuário quando suas negociações forem atualizadas | BAIXA | 
+|RF-012| Permitir ao usuário pesquisar por um livro específico | MÉDIA |
+|RF-013| Permitir ao usuário filtrar a lista de livros disponiveis para negociação | MÉDIA |
+|RF-014| Permitir ao usuário cadastrar seus livros | ALTA |
+|RF-015| Permitir ao usuário disponibilizar seus livros para negociação (aluguel, troca e venda) | ALTA |
+|RF-016| Permitir ao usuário anexar fotos do livro ao seu anúncio | MÉDIA |
+|RF-017| Listar ao usuário seus livros em negociação  | ALTA |
+|RF-018| Permitir ao usuário filtrar a lista com seus livros em negociação | MÉDIA |
+|RF-019| Permitir ver detalhes sobre uma negociação em específico | ALTA |
+|RF-020| Permitir aos usuários avaliar as negociações de livro realizadas | MÉDIA |
 
 
 ### Requisitos não Funcionais
