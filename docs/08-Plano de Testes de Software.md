@@ -312,3 +312,141 @@ Esta página é responsável pelo processo de login de usuários existentes na a
             </tr>
         </tbody>
     </table>
+
+## Plano de Testes de criação de anuncio.
+#### Responsável: Vitor Alexandre
+
+Esta página é responsável pelo processo de login de usuários existentes na aplicação. Os usuários podem inserir seu e-mail e senha para acessar suas contas.
+
+<table>
+	<thead>
+		<tr>
+			<th>Casos de Teste</th>
+			<th>Requisitos Associados</th>
+			<th>Objetivo do Teste</th>
+			<th>Passos</th>
+			<th>Critérios de Êxito</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>CT-04</td>
+			<td>RF-014 - Permitir ao usuário cadastrar e disponibilizar seus livros para negociação (aluguel, troca e venda)</td>
+			<td>Garantir que o usuário consiga cadastrar um livro para negociação</td>
+			<td>
+				<ol>
+					<li>Considerando um usuário devidamente logado.</li>
+					<li>A partir da pagina meus anuncios, o usuário deve clicar no botão cadastrar livro.</li>
+					<li>Após prencher corretamente as informações necessarias:</li>
+					<li>Escolher o tipo de negociação</li>
+					<li>Escolher o livro a ser negociado</li>
+					<li>Escolher o endereço de negociação</li>
+					<li>Prencher as informações com os valores caso necessario</li>
+					<li>Quando todas as informações necessarias forem prenchidas, o botão criar ficara ativo.</li>
+					<li>Clicar no botão criar.</li>
+				</ol>
+			</td>
+			<td>O sistema deve emitir uma mensagem confirmando o procedimento.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Plano de Testes de cadastro de fotos dos livros.
+#### Responsável: Vitor Alexandre
+
+Esta página é responsável pelo processo de login de usuários existentes na aplicação. Os usuários podem inserir seu e-mail e senha para acessar suas contas.
+
+<table>
+	<thead>
+		<tr>
+			<th>Casos de Teste</th>
+			<th>Requisitos Associados</th>
+			<th>Objetivo do Teste</th>
+			<th>Passos</th>
+			<th>Critérios de Êxito</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>CT-05</td>
+			<td>RF-016 - Listar ao usuário seus livros em negociação</td>
+			<td>Garantir que o usuário consiga cadastrar uma foto de um livro</td>
+			<td>
+				<ol>
+					<li>Considerando um usuário devidamente logado.</li>
+					<li>Deve haver pelo menos um livro cadastrado.</li>
+					<li>O usuário deve clicar no botão "Editar" no card do livro</li>
+					<li>Na pagina de edição o usuário deve clicar em "select file"</li>
+					<li>Apos escolher a foto a ser cadastrada o usuário deve clicar no botão "Salvar"</li>
+				</ol>
+			</td>
+			<td>O sistema deve emitir uma mensagem confirmando o procedimento.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Plano de Testes da listagem dos livros em negociação.
+#### Responsável: Vitor Alexandre
+
+Esta página é responsável pelo processo de login de usuários existentes na aplicação. Os usuários podem inserir seu e-mail e senha para acessar suas contas.
+
+<table>
+	<thead>
+		<tr>
+			<th>Casos de Teste</th>
+			<th>Requisitos Associados</th>
+			<th>Objetivo do Teste</th>
+			<th>Passos</th>
+			<th>Critérios de Êxito</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>CT-06</td>
+			<td>RF-017 - Listar ao usuário seus livros em negociação</td>
+			<td>Garantir que o usuário consiga ver seus livros em negociação</td>
+			<td>
+				<ol>
+					<li>Considerando um usuário devidamente logado.</li>
+					<li>Deve haver pelo menos um livro cadastrado.</li>
+					<li>O usuário deve acessar a pagina "Meus anuncios".</li>
+				</ol>
+			</td>
+			<td>O sistema deve exibir os livros cadastrados para negociação.</td>
+		</tr>
+	</tbody>
+</table>
+	
+## Plano de Testes do filtro de livros em negociação.
+#### Responsável: Vitor Alexandre
+
+Esta página é responsável pelo processo de login de usuários existentes na aplicação. Os usuários podem inserir seu e-mail e senha para acessar suas contas.
+
+<table>
+	<thead>
+		<tr>
+			<th>Casos de Teste</th>
+			<th>Requisitos Associados</th>
+			<th>Objetivo do Teste</th>
+			<th>Passos</th>
+			<th>Critérios de Êxito</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>CT-07</td>
+			<td>RF-018	Permitir ao usuário filtrar a lista com seus livros em negociação</td>
+			<td>Garantir que o usuário consiga ver seus livros em negociação</td>
+			<td>
+				<ol>
+					<li>Considerando um usuário devidamente logado.</li>
+					<li>Deve haver pelo menos dois livros cadastrados.</li>
+					<li>O usuário deve acessar a pagina "Meus anuncios".</li>
+					<li>O usuário deve alterar a ordenção dos livros para qualquer opção.</li>
+					<li>O usuário deve digitar parte do nome de algum livro.</li>
+				</ol>
+			</td>
+			<td>O sistema deve exibir os livros cadastrados de acordo com o filtro selecionado.</td>
+		</tr>
+	</tbody>
+</table>
