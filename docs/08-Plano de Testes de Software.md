@@ -469,7 +469,7 @@ Está página é responsavel pelo envio de mensagens, listagem dos chats e Confi
 	<tbody>
 		<tr>
 			<td>CT-08</td>
-			<td>RF-018	Permitir aos usuários trocarem mensagens via chat.</td>
+			<td>RF-08	Permitir aos usuários trocarem mensagens via chat.</td>
 			<td>Verificar se há êxito no envio de mensagens entre usuários.</td>
 			<td>
 				<ol>
@@ -484,6 +484,26 @@ critérios de êxito.</li>
 				</ol>
 			</td>
 			<td>A mensagem deve ser enviada com êxito e recebida pelo seu destinatário.</td>
+		</tr>
+  </tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>CT-09</td>
+			<td>RF-010	Permitir ao usuário cancelar ou aceitar uma venda, aluguel ou troca de um livro.</td>
+			<td>Verificar se o cancelamento ou confirmação da venda, aluguel ou troca de livro ocorre corretamente.</td>
+			<td>
+				<ol>
+					<li>Acessar o navegador.</li>
+					<li>Informar o endereço do site.</li>
+					<li>Realizar o login.</li>
+					<li>No menu de navegação, acessar "Mensagens".</li>
+					<li>Escolher um dos chats, na lista de conversas.</li>
+					<li>Caso o usuário seja o proprietário da negociação deve haver um banner.</li>
+					<li>No banner, clique no botão cancelar ou aceitar.</li>
+				</ol>
+			</td>
+			<td>A venda deve ser cancelada ou confirmada e a conversa automaticamente é apagada.</td>
 		</tr>
 	</tbody>
 </table>
