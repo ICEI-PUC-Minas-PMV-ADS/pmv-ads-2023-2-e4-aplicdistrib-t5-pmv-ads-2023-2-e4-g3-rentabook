@@ -44,8 +44,7 @@ Com base na análise das personas forma identificadas as seguintes histórias de
 |RF-011| Notificar ao usuário quando suas negociações forem atualizadas | BAIXA | 
 |RF-012| Permitir ao usuário pesquisar por um livro específico | MÉDIA |
 |RF-013| Permitir ao usuário filtrar a lista de livros disponiveis para negociação | MÉDIA |
-|RF-014| Permitir ao usuário cadastrar seus livros | ALTA |
-|RF-015| Permitir ao usuário disponibilizar seus livros para negociação (aluguel, troca e venda) | ALTA |
+|RF-014| Permitir ao usuário cadastrar e disponibilizar seus livros para negociação (aluguel, troca e venda) | ALTA |
 |RF-016| Permitir ao usuário anexar fotos do livro ao seu anúncio | MÉDIA |
 |RF-017| Listar ao usuário seus livros em negociação  | ALTA |
 |RF-018| Permitir ao usuário filtrar a lista com seus livros em negociação | MÉDIA |
