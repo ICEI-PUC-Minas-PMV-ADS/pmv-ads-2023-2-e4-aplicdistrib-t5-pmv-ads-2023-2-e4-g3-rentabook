@@ -50,6 +50,7 @@ export const announcementsService = {
   createAnnouncement: async ({
     bookId,
     description,
+    images,
     valueForSale,
     valueForRent,
     locationId,
@@ -59,6 +60,7 @@ export const announcementsService = {
   }: {
     bookId: string,
     description: string,
+    images: string[],
     valueForSale?: string | null,
     valueForRent?: string | null,
     locationId: string,
@@ -69,6 +71,7 @@ export const announcementsService = {
     const body = {
       bookId,
       description,
+      images,
       valueForSale,
       valueForRent,
       locationId,
@@ -87,12 +90,66 @@ export const announcementsService = {
     return response.data;
   },
 
+  updateAnnouncement: async (announcementId: string, {
+    bookId,
+    description,
+    images,
+    valueForSale,
+    valueForRent,
+    locationId,
+    rent,
+    trade,
+    sale,
+  }: {
+    bookId: string,
+    description: string,
+    images: string[],
+    valueForSale?: string | null,
+    valueForRent?: string | null,
+    locationId: string,
+    rent: boolean,
+    trade: boolean,
+    sale: boolean,
+  }) => {
+    const body = {
+      bookId,
+      description,
+      images,
+      valueForSale,
+      valueForRent,
+      locationId,
+      rent,
+      trade,
+      sale,
+    };
+    const jsonBody = JSON.stringify(body);
+    const token = await AsyncStorage.getItem('authToken');
+    const response = await useApi.post(`/announcements/${announcementId}`, jsonBody, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json; chatset=utf-8",
+      }
+    });
+    return response.data;
+  },
+
   getAnnouncementById: async (announcementId: string) => {
     const token = await AsyncStorage.getItem('authToken');
     const response = await useApi.get(`/announcements/clean/${announcementId}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         "Content-Type": "application/json; chatset=utf-8",
+      }
+    });
+    return response.data;
+  },
+
+  uploadImage: async (formData: FormData) => {
+    const token = await AsyncStorage.getItem('authToken');
+    const response = await useApi.post(`/image/upload`, formData, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        "Content-Type": "multipart/form-data; chatset=utf-8",
       }
     });
     return response.data;

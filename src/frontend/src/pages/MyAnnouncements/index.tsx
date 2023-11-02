@@ -1,8 +1,8 @@
 import { View, StyleSheet, Text, ScrollView } from "react-native";
-import ResponsiveNavbar from "../../common/components/ResponsiveNavbar";
 import { MyAnnouncementsProvider } from "./contexts";
 import { LeftBar } from "./components/LeftBar";
 import { RightContent } from "./components/RightContent";
+import ResponsiveNavbar from "../../common/components/ResponsiveNavbar";
 
 /**
  * MyAnnouncements

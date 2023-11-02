@@ -8,7 +8,7 @@ import org.springframework.web.reactive.function.client.WebClient
 
 @Repository
 class BookRepository {
-    private val token = "AIzaSyCfBGJ3jofECYAoqnZZrqPPez93NEHHKR4"
+    private val token = "AIzaSyAdsxhRY_5VYrACcoCBccxw4zn5JpZlC5k"
     private val message = "Houve um erro ao comunicar com o GoogleBooks"
 
     fun findById(id: String): EspecificVolumeGoogleBooksDTO {

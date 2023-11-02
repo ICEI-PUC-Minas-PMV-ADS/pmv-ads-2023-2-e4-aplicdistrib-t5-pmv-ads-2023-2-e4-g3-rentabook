@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, Platform, ScrollView, StyleSheet } from "react-native";
+import { Image } from 'expo-image';
 import ResponsiveNavbar from "../../common/components/ResponsiveNavbar";
 import PrimaryButton from "../../common/components/PrimaryButton";
 import SearchInput from "../../common/components/SearchInput";
 import { PrimaryGreenColor, WhiteColor } from "../../common/theme/colors";
 import Dropdown from "../../common/components/Dropdown";
-import Input from "../../common/components/Input";
 import TextArea from "../../common/components/TextArea";
-import DestructiveButton from "../../common/components/DestructiveButton";
 import { AuthContext } from '../../contexts/Auth/AuthContext';
 import { PrivateAddress } from '../../types/PrivateAddress';
 import { BookView } from '../../types/BookView';
@@ -18,6 +17,8 @@ import { announcementsService } from '../../services/announcementsService';
 import CurrencyInput from '../../common/components/CurrencyInput';
 import { CleanAnnouncementView } from '../../types/CleanAnnouncementView';
 import { AppParamsList } from '../../routes/AppParamsList';
+import { getImageLink } from '../../common/utils/annoucementsUtils';
+import DestructiveButton from '../../common/components/DestructiveButton';
 
 /**
  * CreateAnnouncementProps
@@ -47,6 +48,7 @@ export function CreateAnnouncement({ }: CreateAnnouncementProps) {
   const [selectedBook, setSelectedBook] = React.useState<BookView | null>(null);
   const [validateInput, setValidateInput] = React.useState(false);
   const [description, setDescription] = React.useState('');
+  const [uploadedFiles, setUploadedFiles] = React.useState<File[]>([]);
   const auth = React.useContext(AuthContext);
 
   React.useEffect(() => {
@@ -142,192 +144,310 @@ export function CreateAnnouncement({ }: CreateAnnouncementProps) {
   }, [selectedBook, rent, rentValue, sale, saleValue, trade, selectedAddress]);
 
   const handleSaveAnnouncement = async () => {
-    await announcementsService.createAnnouncement({
-      bookId: selectedBook!!.id!!,
-      description: description,
-      locationId: selectedAddress!!.id!!,
-      valueForRent: rentValue,
-      valueForSale: saleValue,
-      rent: rent,
-      trade: trade,
-      sale: sale,
-    });
-    navigation.navigate("Meus Anúncios", {});
+    /**
+     * Upload images
+     */
+
+    const uploadedImagesResponse: string[] = [];
+    for (let i = 0; i < uploadedFiles.length; i++) {
+      const formData = new FormData();
+      formData.append("image", uploadedFiles[i])
+      const response = await announcementsService.uploadImage(formData);
+      uploadedImagesResponse.push(response.id);
+    }
+
+    /**
+     * Create/Update announcement
+     */
+
+    if (announcement) {
+      await announcementsService.updateAnnouncement(announcement.id, {
+        bookId: selectedBook!!.id!!,
+        images: [...announcement.images, ...uploadedImagesResponse],
+        description: description,
+        locationId: selectedAddress!!.id!!,
+        valueForRent: rentValue,
+        valueForSale: saleValue,
+        rent: rent,
+        trade: trade,
+        sale: sale,
+      });
+    } else {
+      await announcementsService.createAnnouncement({
+        bookId: selectedBook!!.id!!,
+        images: uploadedImagesResponse,
+        description: description,
+        locationId: selectedAddress!!.id!!,
+        valueForRent: rentValue,
+        valueForSale: saleValue,
+        rent: rent,
+        trade: trade,
+        sale: sale,
+      });
+    }
+    if (Platform.OS === 'web') {
+      if (confirm('Anuncio criado com sucesso!')) {
+        navigation.navigate("Meus Anúncios", {});
+      }
+    }
+    setUploadedFiles([]);
   };
+
+  /**
+   * Upload file
+   */
+
+  const uploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const _uploadedFiles: File[] = [];
+      for (let i = 0; i < event.target.files.length; i++) {
+        _uploadedFiles.push(event.target.files[i]);
+      }
+      setUploadedFiles(_uploadedFiles);
+    }
+  };
+
+  const UploadFileInput = React.useMemo(() => {
+    if (Platform.OS === 'web') {
+      return (
+        <input
+          id="fileInput"
+          type="file"
+          accept="image/*"
+          multiple={true}
+          style={{ display: 'none' }}
+          onChange={(evt) => uploadFile(evt)} />
+      );
+    }
+  }, [Platform.OS]);
 
   return (
     <ResponsiveNavbar>
       <View style={styles.container}>
-        <View style={styles.contentContainer}>
-          <View style={styles.form}>
-            <View style={styles.left}>
-              <View>
-                <Text>Escolha o tipo:</Text>
-                <View style={{ flexDirection: 'row', paddingVertical: 10 }}>
-                  <PrimaryButton
-                    label="Venda"
-                    style={{ paddingHorizontal: 10, paddingVertical: 5 }}
-                    activeStyle={sale}
-                    onPress={() => { setSale((sale) => !sale) }} />
-
-                  <View style={{ width: 10 }} />
-
-                  <PrimaryButton
-                    label="Troca"
-                    style={{ paddingHorizontal: 10, paddingVertical: 5 }}
-                    activeStyle={trade}
-                    onPress={() => { setTrade((trade) => !trade) }} />
-
-                  <View style={{ width: 10 }} />
-
-                  <PrimaryButton
-                    label="Aluguel"
-                    style={{ paddingHorizontal: 10, paddingVertical: 5 }}
-                    activeStyle={rent}
-                    onPress={() => { setRent((rent) => !rent) }} />
-                </View>
-              </View>
-
-              <View style={{ height: 30 }} />
-
-              <View>
-                <Text>Escolha o livro:</Text>
-                <View style={styles.selectContainer}>
-                  <View style={{ flexDirection: 'row' }}>
-                    <SearchInput
-                      style={{ flex: 1 }}
-                      onChange={(value) => setSearchTerm(value)}
-                      placeholder="Pesquisar por livro" />
+        <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} >
+          <View style={styles.contentContainer}>
+            <View style={styles.form}>
+              <View style={styles.left}>
+                <View>
+                  <Text>Escolha o tipo:</Text>
+                  <View style={{ flexDirection: 'row', paddingVertical: 10 }}>
+                    <PrimaryButton
+                      label="Venda"
+                      style={{ paddingHorizontal: 10, paddingVertical: 5 }}
+                      activeStyle={sale}
+                      onPress={() => { setSale((sale) => !sale) }} />
 
                     <View style={{ width: 10 }} />
 
                     <PrimaryButton
-                      label='Buscar'
-                      style={{ paddingHorizontal: 16, paddingVertical: 12 }}
-                      onPress={() => { handleSearch() }} />
-                  </View>
-
-                  <View style={{ height: 20 }} />
-
-                  {books?.length > 0 &&
-                    <View style={{ width: '100%' }}>
-                      <Dropdown
-                        style={{ flex: 1 }}
-                        placeholder="Selecione seu livro"
-                        items={books}
-                        onSelect={(bookView) => setSelectedBook(bookView)}
-                        getValue={(item) => item.title ?? ""}>
-                        {(item) => <View style={{ padding: 8, backgroundColor: WhiteColor }}><Text>{item.title}</Text></View>}
-                      </Dropdown>
-                    </View>
-                  }
-
-                  <View style={{ height: 20 }} />
-
-                  <View style={{ flexDirection: 'row' }}>
-                    <View
-                      style={{
-                        flex: 1,
-                        backgroundColor: PrimaryGreenColor,
-                        paddingVertical: 12,
-                        paddingHorizontal: 8,
-                        borderRadius: 8,
-                      }}>
-                      <Text>{selectedBook?.title ? selectedBook.title : " "}</Text>
-                    </View>
-                  </View>
-                </View>
-              </View>
-            </View>
-
-            <View style={{ width: 20 }} />
-
-            <View style={styles.right}>
-              <View>
-                <Text>Endereço e valor:</Text>
-                <View style={styles.buttonContainer}>
-
-                  <View style={{ width: '100%' }}>
-                    <Dropdown
-                      style={{ flex: 1 }}
-                      placeholder="Selecione seu endereço"
-                      items={userAddresses}
-                      value={selectedAddress}
-                      onSelect={(item) => setSelectedAddress(item)}
-                      getValue={(item) => item.name}>
-                      {(item) => <View style={{ padding: 8, backgroundColor: WhiteColor }}><Text>{item.name}</Text></View>}
-                    </Dropdown>
-                  </View>
-
-                  <View style={{ height: 20 }} />
-
-                  <View style={{ flexDirection: 'row', width: '100%' }}>
-                    <CurrencyInput
-                      style={{ flex: 1 }}
-                      placeholder="Digite o valor de venda"
-                      editable={sale}
-                      value={saleValue}
-                      onChangeText={(value) => setSaleValue(value)}
-                      label="Valor de venda"
-                    />
+                      label="Troca"
+                      style={{ paddingHorizontal: 10, paddingVertical: 5 }}
+                      activeStyle={trade}
+                      onPress={() => { setTrade((trade) => !trade) }} />
 
                     <View style={{ width: 10 }} />
 
-                    <CurrencyInput
-                      style={{ flex: 1 }}
-                      placeholder="Digite o valor da diaria"
-                      editable={rent}
-                      value={rentValue}
-                      onChangeText={(value) => setRentValue(value)}
-                      label="Valor da aluguel(diaria)"
-                    />
+                    <PrimaryButton
+                      label="Aluguel"
+                      style={{ paddingHorizontal: 10, paddingVertical: 5 }}
+                      activeStyle={rent}
+                      onPress={() => { setRent((rent) => !rent) }} />
+                  </View>
+                </View>
+
+                <View style={{ height: 30 }} />
+
+                <View>
+                  <Text>Escolha o livro:</Text>
+                  <View style={styles.selectContainer}>
+                    <View style={{ flexDirection: 'row' }}>
+                      <SearchInput
+                        style={{ flex: 1 }}
+                        onChange={(value) => setSearchTerm(value)}
+                        placeholder="Pesquisar por livro" />
+
+                      <View style={{ width: 10 }} />
+
+                      <PrimaryButton
+                        label='Buscar'
+                        style={{ paddingHorizontal: 16, paddingVertical: 12 }}
+                        onPress={() => { handleSearch() }} />
+                    </View>
+
+                    <View style={{ height: 20 }} />
+
+                    {books?.length > 0 &&
+                      <View style={{ width: '100%' }}>
+                        <Dropdown
+                          style={{ flex: 1 }}
+                          placeholder="Selecione seu livro"
+                          items={books}
+                          onSelect={(bookView) => setSelectedBook(bookView)}
+                          getValue={(item) => item.title ?? ""}>
+                          {(item) => <View style={{ padding: 8, backgroundColor: WhiteColor }}><Text>{item.title}</Text></View>}
+                        </Dropdown>
+                      </View>
+                    }
+
+                    <View style={{ height: 20 }} />
+
+                    <View style={{ flexDirection: 'row' }}>
+                      <View
+                        style={{
+                          flex: 1,
+                          backgroundColor: PrimaryGreenColor,
+                          paddingVertical: 12,
+                          paddingHorizontal: 8,
+                          borderRadius: 8,
+                        }}>
+                        <Text>{selectedBook?.title ? selectedBook.title : " "}</Text>
+                      </View>
+                    </View>
                   </View>
                 </View>
               </View>
 
-              <View>
-                <Text>Descrição:</Text>
-                <View style={styles.buttonContainer}>
-                  <TextArea
-                    style={{ height: 200 }}
-                    onChange={(value) => setDescription(value)}
-                    value={description}
-                    placeholder="Digite a descrição do produto" />
+              <View style={{ width: 20 }} />
+
+              <View style={styles.right}>
+                <View>
+                  <Text>Endereço e valor:</Text>
+                  <View style={styles.buttonContainer}>
+
+                    <View style={{ width: '100%' }}>
+                      <Dropdown
+                        style={{ flex: 1 }}
+                        placeholder="Selecione seu endereço"
+                        items={userAddresses}
+                        value={selectedAddress}
+                        onSelect={(item) => setSelectedAddress(item)}
+                        getValue={(item) => item.name ?? ""}>
+                        {(item) => <View style={{ padding: 8, backgroundColor: WhiteColor }}><Text>{item.name}</Text></View>}
+                      </Dropdown>
+                    </View>
+
+                    <View style={{ height: 20 }} />
+
+                    <View style={{ flexDirection: 'row', width: '100%' }}>
+                      <CurrencyInput
+                        style={{ flex: 1 }}
+                        placeholder="Digite o valor de venda"
+                        editable={sale}
+                        value={saleValue}
+                        onChangeText={(value) => { setSaleValue(value) }}
+                        label="Valor de venda"
+                      />
+
+                      <View style={{ width: 10 }} />
+
+                      <CurrencyInput
+                        style={{ flex: 1 }}
+                        placeholder="Digite o valor da diaria"
+                        editable={rent}
+                        value={rentValue}
+                        onChangeText={(value) => setRentValue(value)}
+                        label="Valor da aluguel(diaria)"
+                      />
+                    </View>
+                  </View>
+                </View>
+
+                <View>
+                  <Text>Descrição:</Text>
+                  <View style={styles.buttonContainer}>
+                    <TextArea
+                      style={{ height: 200 }}
+                      onChange={(value) => setDescription(value)}
+                      value={description}
+                      placeholder="Digite a descrição do produto" />
+                  </View>
                 </View>
               </View>
             </View>
-          </View>
 
-          <View style={{ paddingVertical: 20 }}>
-            <Text>Upload imagem da capa:</Text>
-            <View style={{ width: '100%', height: 200, justifyContent: 'center', alignItems: 'center', borderColor: '#a8a8a8', borderWidth: 1, marginTop: 20 }}>
-              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ fontSize: 18 }}>Faça upload de suas imagens aqui</Text>
-                <View style={{ height: 20 }} />
-                <PrimaryButton
-                  label="Select file"
-                  style={{ width: 200 }}
-                  onPress={() => { }} />
+            <View style={{ paddingVertical: 20 }}>
+              {announcement && announcement.images && announcement.images?.length > 0 && (
+                <View style={{ width: '100%' }}>
+                  <Text>Imagens:</Text>
+                  <View style={{ flexDirection: 'row', width: '100%', height: 200, borderColor: '#a8a8a8', borderWidth: 1, marginTop: 20 }}>
+                    <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+                      <View style={{ flexDirection: 'row', height: 200, padding: 5 }}>
+                        {
+                          announcement.images.map((file, index) => {
+                            return (
+                              <Image
+                                key={index}
+                                source={getImageLink(file)}
+                                style={{ width: 180, height: 180, margin: 5 }} />
+                            );
+                          })
+                        }
+                      </View>
+                    </ScrollView>
+                  </View>
+                  <View style={{ height: 20 }} />
+                </View>
+              )}
+
+              <Text>Upload imagem da capa:</Text>
+              <View style={{ width: '100%', height: 200, justifyContent: 'center', alignItems: 'center', borderColor: '#a8a8a8', borderWidth: 1, marginTop: 20 }}>
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                  {UploadFileInput}
+                  <Text style={{ fontSize: 18 }}>Faça upload de suas imagens aqui</Text>
+                  <View style={{ height: 20 }} />
+                  <PrimaryButton
+                    label="Select file"
+                    style={{ width: 200 }}
+                    onPress={() => {
+                      if (Platform.OS === "web") {
+                        const fileInput = document.getElementById("fileInput")
+                        fileInput!.click();
+                      }
+                    }} />
+                </View>
               </View>
+
+              {uploadedFiles.length > 0 && (
+                <View style={{ width: '100%' }}>
+                  <View style={{ height: 20 }} />
+                  <Text>Preview:</Text>
+                  <View style={{ flexDirection: 'row', width: '100%', height: 200, borderColor: '#a8a8a8', borderWidth: 1, marginTop: 20 }}>
+                    <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+                      <View style={{ flexDirection: 'row', height: 200, padding: 5 }}>
+                        {
+                          uploadedFiles.map((file, index) => {
+                            return (
+                              <Image
+                                key={index}
+                                source={{ uri: URL.createObjectURL(file) }}
+                                style={{ width: 180, height: 180, margin: 5 }} />
+                            );
+                          })
+                        }
+                      </View>
+                    </ScrollView>
+                  </View>
+                </View>
+              )}
+            </View>
+
+            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
+              <DestructiveButton
+                label="Voltar"
+                onPress={() => { navigation.navigate("Meus Anúncios", {}) }} />
+
+              <PrimaryButton
+                label={announcement ? "Salvar" : "Criar"}
+                style={{ paddingHorizontal: 16, paddingVertical: 12 }}
+                activeStyle={validateInput}
+                onPress={() => {
+                  if (validateInput) {
+                    handleSaveAnnouncement()
+                  }
+                }} />
             </View>
           </View>
-
-          <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
-            <DestructiveButton
-              label="Voltar"
-              onPress={() => { navigation.navigate("Meus Anúncios", {}) }} />
-
-            <PrimaryButton
-              label="Criar"
-              style={{ paddingHorizontal: 16, paddingVertical: 12 }}
-              activeStyle={validateInput}
-              onPress={() => {
-                if (validateInput) {
-                  handleSaveAnnouncement()
-                }
-              }} />
-          </View>
-        </View>
+        </ScrollView>
       </View>
     </ResponsiveNavbar>
   );
@@ -356,6 +476,11 @@ const styles = StyleSheet.create({
   },
   right: {
     width: '50%',
+  },
+  preview: {
+    width: 200,
+    height: 200,
+    resizeMode: 'contain',
   },
   buttonContainer: {
     flexDirection: 'column',

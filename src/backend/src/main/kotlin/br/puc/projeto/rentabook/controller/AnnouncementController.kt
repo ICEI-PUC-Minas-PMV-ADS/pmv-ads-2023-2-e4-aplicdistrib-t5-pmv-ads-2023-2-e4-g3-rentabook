@@ -65,6 +65,18 @@ class AnnouncementController(
         return announcementService.createAnnouncement(createAnnouncementForm)
     }
 
+    /**
+     * Atualiza um anuncio.
+     */
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
+    @CacheEvict("Announcements", allEntries = true)
+    @PostMapping("/{id}")
+    fun createAnnouncement(@PathVariable id: String, @RequestBody createAnnouncementForm: CreateAnnouncementForm): AnnouncementView {
+        return announcementService.updateAnnouncement(id, createAnnouncementForm)
+    }
+
     @SecurityRequirement(
         name = "bearerAuth"
     )
