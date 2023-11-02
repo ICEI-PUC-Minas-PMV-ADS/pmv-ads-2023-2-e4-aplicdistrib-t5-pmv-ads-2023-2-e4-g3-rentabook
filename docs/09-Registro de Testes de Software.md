@@ -50,9 +50,20 @@ O teste foi executado com sucesso conforme demonstra as evidencias.
 
 <img src="/docs/img/ct_07_pagina_2.png" />
 
-## Avaliação
+## CT-08 - Garantir que o usuário envie mensagens.
 
-Discorra sobre os resultados do teste. Ressaltando pontos fortes e fracos identificados na solução. Comente como o grupo pretende atacar esses pontos nas próximas iterações. Apresente as falhas detectadas e as melhorias geradas a partir dos resultados obtidos nos testes.
+O teste foi executado com sucesso.
 
-> **Links Úteis**:
-> - [Ferramentas de Test para Java Script](https://geekflare.com/javascript-unit-testing/)
+O usuário deve escolher uma das conversas clicando em "Mostrar conversas".
+
+<img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/1f.PNG" />
+<img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/1f2.PNG" />
+
+Após o usuário enviar uma mensagem, automaticamente a conversa é atualizada e a mensagem exibida no chat.
+
+<img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/1d2.PNG" />
+
+O destinatário recebeu a mensagem.
+
+<img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/fsss.PNG" />
+
