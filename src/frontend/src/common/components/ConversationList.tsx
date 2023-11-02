@@ -9,11 +9,12 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { getToken } from "../../other/Storage";
 import { format, parseISO } from "date-fns";
-import { useMediaQuery, Mobile, Desktop } from "../../hooks/useResposive"; // Importe a lógica de media query
+import { useMediaQuery, Mobile, Desktop } from "../../hooks/useResposive";
 
 export let typeId: string | null = null;
 export let selectedItemContent: string | null = null;
 export let selectedItemContentType: "rent" | "sale" | "trade" | null = null;
+export let ownerID: string | null = null;
 
 type Conversation = {
   id: string;
@@ -67,15 +68,19 @@ export default function ConversationsList({
 
       if (response.status === 200) {
         const data = await response.json();
-        const updatedConversations = data.content.map((conversation: any) => ({
-          id: conversation.id,
-          owner: conversation.owner,
-          lead: conversation.lead,
-          latestMessageDate: conversation.latestMessageDate,
-          sale: conversation.sale,
-          trade: conversation.trade,
-          rent: conversation.rent,
-        }));
+        const updatedConversations = data.content.map((conversation: any) => {
+          ownerID = conversation.owner.id;
+
+          return {
+            id: conversation.id,
+            owner: conversation.owner,
+            lead: conversation.lead,
+            latestMessageDate: conversation.latestMessageDate,
+            sale: conversation.sale,
+            trade: conversation.trade,
+            rent: conversation.rent,
+          };
+        });
         setConversations(updatedConversations);
 
         if (updatedConversations.length > 0) {
@@ -130,7 +135,6 @@ export default function ConversationsList({
   return (
     <View style={styles.container}>
       <Mobile>
-        {/* Renderize apenas em dispositivos móveis */}
         <FlatList
           data={conversations}
           keyExtractor={(item) => item.id}
@@ -176,7 +180,6 @@ export default function ConversationsList({
         />
       </Mobile>
       <Desktop>
-        {/* Renderize apenas em dispositivos desktop */}
         <FlatList
           data={conversations}
           keyExtractor={(item) => item.id}
