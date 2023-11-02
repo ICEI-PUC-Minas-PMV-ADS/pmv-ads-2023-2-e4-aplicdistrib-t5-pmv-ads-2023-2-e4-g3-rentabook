@@ -507,7 +507,7 @@ Está página é responsavel pelo envio de mensagens, listagem dos chats e Confi
 	</tbody>
  <tbody>
 		<tr>
-			<td>CT-11</td>
+			<td>CT-10</td>
 			<td>RF-09	Permitir ao usuário visualizar uma lista de todas as suas conversas com outros usuários.</td>
 			<td>Verificar se a listagem das conversas ocorrem corretamente.</td>
 			<td>
