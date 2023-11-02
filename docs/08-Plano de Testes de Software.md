@@ -436,7 +436,7 @@ Esta página é responsável pelo processo de login de usuários existentes na a
 		<tr>
 			<td>CT-07</td>
 			<td>RF-018	Permitir ao usuário filtrar a lista com seus livros em negociação</td>
-			<td>Garantir que o usuário consiga ver seus livros em negociação</td>
+			<td>Garantir que o usuário consiga filtrar seus livros em negociação</td>
 			<td>
 				<ol>
 					<li>Considerando um usuário devidamente logado.</li>
