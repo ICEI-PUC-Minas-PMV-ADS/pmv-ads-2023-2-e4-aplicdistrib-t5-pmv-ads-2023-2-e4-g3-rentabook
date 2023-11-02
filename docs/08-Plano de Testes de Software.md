@@ -478,13 +478,12 @@ Está página é responsavel pelo envio de mensagens, listagem dos chats e Confi
 					<li>Realizar o login.</li>
 					<li>No menu de navegação, acessar "Mensagens".</li>
 					<li>Escolher um dos chats, na lista de conversas.</li>
-					<li>Clicar na caixa de texto para enviar mensagens, digitar uma mensagem e envia-la
-
-critérios de êxito.</li>
+					<li>Clicar na caixa de texto para enviar mensagens, digitar uma mensagem e envia-la.</li>
 				</ol>
 			</td>
 			<td>A mensagem deve ser enviada com êxito e recebida pelo seu destinatário.</td>
 		</tr>
+  
   </tr>
 	</thead>
 	<tbody>
