@@ -8,39 +8,39 @@ Relatório com as evidências dos testes de software realizados no sistema pela 
 
 O teste foi executado com sucesso conforme demonstra as evidencias.
 
-<img src="/docs/img/ct_04_pagina_1" />
+<img src="/docs/img/ct_04_pagina_1.png" />
 
-<img src="/docs/img/ct_04_pagina_2" />
+<img src="/docs/img/ct_04_pagina_2.png" />
 
-<img src="/docs/img/ct_04_pagina_3" />
+<img src="/docs/img/ct_04_pagina_3.png" />
 
-<img src="/docs/img/ct_04_pagina_4" />
+<img src="/docs/img/ct_04_pagina_4.png" />
 
-<img src="/docs/img/ct_04_pagina_5" />
+<img src="/docs/img/ct_04_pagina_5.png" />
 
 ## CT-05 - Garantir que o usuário consiga cadastrar uma foto de um livro
 
 O teste foi executado com sucesso conforme demonstra as evidencias.
 
-<img src="/docs/img/ct_05_pagina_1" />
+<img src="/docs/img/ct_05_pagina_1.png" />
 
-<img src="/docs/img/ct_05_pagina_2" />
+<img src="/docs/img/ct_05_pagina_2.png" />
 
-<img src="/docs/img/ct_05_pagina_3" />
+<img src="/docs/img/ct_05_pagina_3.png" />
 
 ## CT-06 - Garantir que o usuário consiga ver seus livros em negociação
 
 O teste foi executado com sucesso conforme demonstra as evidencias.
 
-<img src="/docs/img/ct_06_pagina_1" />
+<img src="/docs/img/ct_06_pagina_1.png" />
 
 ## CT-07 - Garantir que o usuário consiga filtrar seus livros em negociação
 
 O teste foi executado com sucesso conforme demonstra as evidencias.
 
-<img src="/docs/img/ct_07_pagina_1" />
+<img src="/docs/img/ct_07_pagina_1.png" />
 
-<img src="/docs/img/ct_07_pagina_2" />
+<img src="/docs/img/ct_07_pagina_2.png" />
 
 ## Avaliação
 
