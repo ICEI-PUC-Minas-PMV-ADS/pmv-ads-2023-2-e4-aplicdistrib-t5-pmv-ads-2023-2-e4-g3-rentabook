@@ -281,8 +281,8 @@ Esta página é responsável pelo processo de login de usuários existentes na a
         </tbody>
     </table>
 
-
-## CT-03 Listar os anúncios
+## Plano de Testes da listagem de anúncios.
+#### Responsável: João Lucas
 
 <table>
         <thead>
@@ -523,3 +523,144 @@ Está página é responsavel pelo envio de mensagens, listagem dos chats e Confi
 		</tr>
 	</tbody>
 </table>
+
+## Plano de Testes da listagem de anúncios.
+#### Responsável: João Lucas
+
+<table>
+        <thead>
+            <tr>
+                <th>Caso de Teste</th>
+                <th>Requisitos Associados</th>
+                <th>Objetivo do Teste</th>
+                <th>Passos</th>
+                <th>Critérios de Êxito</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>CT-11 - Permitir ao usuário pesquisar por anúncios de um livro em específico</td>
+                <td>RF-012 - Permitir ao usuário pesquisar por um livro específico</td>
+                <td>Verificar se os anúncios de troca, venda ou aluguel estão sendo exibidos corretamente com base no livro pesquisado e escolhido pelo usuário</td>
+                <td>
+                    <ol>
+                        <li>Acessar o aplicativo (dispositivos móveis) ou o site através de um navegador</li>
+                        <li>Visualizar a página principal</li>
+                        <li>Clicar na barra de pesquisa</li>
+                        <li>Digitar o livro desejado</li>
+                        <li>Clicar no livro desejado</li>
+                    </ol>
+                </td>
+                <td>
+                <ol>
+                        <li>Deve ser exibido apenas os anúncios do livro desejado</li>
+                        <li>Caso não houver anúncios daquele livro, deve haver um feedback para o usuário</li>
+                    </ol>
+                </td>
+            </tr>
+            <tr>
+                <td>CT-12 - Permitir ao usuário filtrar os anúncios em dispositivos desktop</td>
+                <td>RF-013 - Permitir ao usuário filtrar a lista de livros disponiveis para negociação</td>
+                <td>Verificar se os anúncios estão sendo exibidos corretamente com base nos filtros escolhidos pelo usuário nos dispositivos desktop</td>
+                <td>
+                    <ol>
+                        <li>Acessar o Navegador</li>
+                        <li>Informar o endereço do Site</li>
+                        <li>Visualizar a página principal</li>
+                        <li>Escolher os filtros desejados na barra lateral esquerda</li>
+                        <li>Escolher a ordenação desejada no menu drop-down que se encontra ao lado direito da barra de pesquisa</li>
+                    </ol>
+                </td>
+                <td>
+                    <li>Deve ser exibido os anúncios de acordo com a ordenação e filtros escolhidos pelo usuário
+                </td>
+            </tr>
+            <tr>
+                <td>CT-13 - Permitir ao usuário filtrar os anúncios em dispositivos móveis</td>
+                <td>RF-013 - Permitir ao usuário filtrar a lista de livros disponiveis para negociação</td>
+                <td>Verificar se os anúncios estão sendo exibidos corretamente com base nos filtros escolhidos pelo usuário nos dispositivos móveis</td>
+                <td>
+                    <ol>
+                        <li>Acessar o aplicativo ou o site através de um navegador</li>
+                        <li>Visualizar a página principal</li>
+                        <li>Clicar em "Filtros" que se encontra abaixo da barra de pesquisa</li>
+                        <li>Escolher os filtros e ordenação desejada</li>
+                    </ol>
+                </td>
+                <td>
+                    <li>Deve ser exibido os anúncios de acordo com a ordenação e filtros escolhidos pelo usuário
+                </td>
+            </tr>
+            </tbody>
+</table>   
+
+## Plano de Testes dos detalhes dos anúncios.
+#### Responsável: João Lucas
+
+<table>
+        <thead>
+            <tr>
+                <th>Caso de Teste</th>
+                <th>Requisitos Associados</th>
+                <th>Objetivo do Teste</th>
+                <th>Passos</th>
+                <th>Critérios de Êxito</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>CT-14 - Permitir ao usuário ver os detalhes de um anúncio em específico</td>
+                <td>RF-019 - Permitir ver detalhes sobre uma negociação em específico</td>
+                <td>Verificar se os detalhes do anúncio estão sendo exibidos corretamente</td>
+                <td>
+                    <ol>
+                        <li>Acessar o aplicativo (dispositivos móveis) ou o site através de um navegador</li>
+                        <li>Visualizar a página principal</li>
+                        <li>Clicar em um anúncio</li>
+                    </ol>
+                </td>
+                <td> Deve ser exibido o título do anúncio, fotos, descrição do anúncio, descrição do livro, localização do anúncio, avaliações e valores.</td>
+            </tr>
+            </tbody>
+</table>
+
+## Plano de Testes das avaliações dos anúncios.
+#### Responsável: João Lucas
+
+<table>
+        <thead>
+            <tr>
+                <th>Caso de Teste</th>
+                <th>Requisitos Associados</th>
+                <th>Objetivo do Teste</th>
+                <th>Passos</th>
+                <th>Critérios de Êxito</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>CT-15 - Permitir ao usuário avaliar as negociações realizadas</td>
+                <td>RF-020	Permitir aos usuários avaliar as negociações de livro realizadas</td>
+                <td>Verificar se ao terminar uma negociação, o usuário tem a possibilidade de realizar uma avaliação e verificar se a avaliação está sendo exibida corretamente no anúncio da negociação</td>
+                <td>
+                    <ol>
+                        <li>Acessar o aplicativo (dispositivos móveis) ou o site através de um navegador</li>
+                        <li>Visualizar a página principal</li>
+                        <li>Clicar em um anúncio</li>
+                        <li>Clicar em "Negociar"</li>
+                        <li>Realizar um pedido de negociação</li>
+                        <li>Aguardar o proprietário aceitar o pedido de negociação</li>
+                        <li>Realizar uma negociação</li>
+                        <li>Terminar uma negociação</li>
+                        <li>Navegar até o Chat através da barra de navegação</li>
+                        <li>Clicar nas mensagens da negociação finalizada</li>
+                        <li>Clicar em "Avalie essa negociação"</li>
+                        <li>Avalie a negociação</li>
+                    </ol>
+                </td>
+                <td> A avaliação deve ser realizada corretamente e exibida no anúncio da negociação realizada</td>
+            </tr>
+        </tbody>
+    </table>
+
+    
