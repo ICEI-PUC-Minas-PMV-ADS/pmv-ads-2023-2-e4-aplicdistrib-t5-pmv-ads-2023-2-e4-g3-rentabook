@@ -13,6 +13,7 @@ import AnnouncementsDetails from '../pages/AnnouncementDetails'
 import React from 'react';
 import SearchMobile from '../pages/Home/SearchMobile';
 import { CreateAnnouncement } from '../pages/CreateAnnouncement';
+import CreateRating from '../pages/CreateRating';
 
 
 const Stack = createNativeStackNavigator<AppParamsList>();
@@ -25,6 +26,7 @@ const profile = 'Meu Perfil'
 const chat = 'Chat'
 const signup = 'Criar Conta'
 const announcementsDetails = 'Detalhes do anúncio'
+const createRating = 'Avalie a negociação'
 
 export default function Router() {
   return (<>
@@ -37,6 +39,7 @@ export default function Router() {
         <Stack.Screen name={profile} component={Profile} />
         <Stack.Screen name={home} component={Home} />
         <Stack.Screen name={announcementsDetails} component={AnnouncementsDetails} />
+        <Stack.Screen name={createRating} component={CreateRating} />
         <Stack.Screen name={myAnnouncements}>
           {() => (
             <RequireAuth>

@@ -2,6 +2,7 @@ package br.puc.projeto.rentabook.service
 
 import br.puc.projeto.rentabook.dto.ChatMessageView
 import br.puc.projeto.rentabook.dto.CreateChatMessageForm
+import br.puc.projeto.rentabook.exception.NotFoundException
 import br.puc.projeto.rentabook.mapper.ChatMessageViewMapper
 import br.puc.projeto.rentabook.mapper.CreateChatMessageFormMapper
 import br.puc.projeto.rentabook.model.ChatMessage
@@ -28,7 +29,6 @@ class ChatMessageService(
         return AuthenticationUtils.authenticate(userRepository) {
             chatMessageRepository.save(createChatMessageFormMapper.map(createChatMessageForm)).run {
                 chat.latestMessageDate = LocalDateTime.now()
-                chat.messages.add(this)
                 chatRepository.save(chat)
                 chatMessageViewMapper.map(this)
             }

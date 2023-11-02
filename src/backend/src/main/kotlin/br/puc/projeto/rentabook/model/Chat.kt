@@ -13,8 +13,6 @@ data class Chat(
     val owner: User,
     @DBRef
     val lead: User,
-    @DBRef
-    val messages: ArrayList<ChatMessage> = arrayListOf(),
     var latestMessageDate: LocalDateTime = LocalDateTime.now(),
     var active: Boolean = true,
 )

@@ -6,7 +6,7 @@ export type RatingView = {
   "id": string,
   "owner": PublicUserView,
   "announcement": CleanAnnouncementView,
-  "negotiation": Negotiations,
+  "negotiation": "RENT" | "SALE" | "TRADE",
   "idNegotiation": string,
   "stars": number,
   "message": string | null
