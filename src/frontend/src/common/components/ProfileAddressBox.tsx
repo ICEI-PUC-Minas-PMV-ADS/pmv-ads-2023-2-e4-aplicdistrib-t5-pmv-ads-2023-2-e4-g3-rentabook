@@ -14,22 +14,24 @@ const style = StyleSheet.create({
         backgroundColor: WhiteColor,
         justifyContent: 'space-evenly',
         borderRadius: 8,
-        marginHorizontal: 25,
+        marginHorizontal: '5%',
         marginVertical: 10,
         padding: 10,
 
     },
-    input: {
-        marginHorizontal: 30,
+    input: {   
+        marginHorizontal: '7%',
         marginVerdical: 10,
-        maxWidthwidth: 450,
-        maxHeighteight: 80,
+        maxWidth: '80%',
+        maxHeight: 80,
         color: DarkGreen,
     },
     form: {
-        width: 400
+        width: '40%',
+        
     },
     address: {
+        width: '40%',
         alignSelf: "flex-start",
         margin: 20,
 
@@ -41,7 +43,7 @@ const style = StyleSheet.create({
         color: DarkGreen,
     },
     button: {
-        marginTop: 70,
+        marginTop: 30,
         alignSelf: "flex-end",
         color: GreenLight,
         backgroundColor: WhiteColor,
@@ -53,7 +55,7 @@ const style = StyleSheet.create({
         color:PrimaryGreenColor,
     },
     buttonDeletar: {
-        marginTop: 70,
+        marginTop: 30,
         alignSelf: "flex-end", 
         backgroundColor:'#DC143C',
         borderColor: '#800000',
@@ -71,10 +73,6 @@ const style = StyleSheet.create({
         fontWeight:"500",
         fontSize: 16,
     },
-    inputNumero: {
-        width: 60,
-
-    }
 });
 type ProfileAddressBoxProps = {
     enderecos?: PrivateAddress[] | null[],

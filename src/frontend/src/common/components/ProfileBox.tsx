@@ -9,10 +9,10 @@ import { API } from '@env'
 
 const style = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 1, 
         alignItems: "center",
         backgroundColor: WhiteColor,
-        justifyContent: 'space-evenly',
+        justifyContent: "space-evenly",
         borderRadius: 8,
         marginHorizontal: 25,
         marginVertical: 10,
@@ -27,10 +27,13 @@ const style = StyleSheet.create({
         textAlignVertical: "auto",
         borderRadius: 50,
     },
+    form: {
+        width:'80%',
+    },
     input: {
-        marginHorizontal: 30,
+        marginHorizontal: 20,
         marginVerdical: 10,
-        width: 330,
+        width: '100%',
         height: 80,
         color: DarkGreen,
 
@@ -59,7 +62,7 @@ const style = StyleSheet.create({
         marginBottom: 10,
         alignSelf:"center",
         backgroundColor: GreyColor,
-        width: 310
+        width: '90%'
     }
 });
 
@@ -111,8 +114,8 @@ export default function ProfileBox({ nome, email, imagem, fetchUserdata }: Profi
                 source={ imagem ? { uri: API + "/public/image/" + imagem } : require('../assets/notFound.jpg')}
                 alt="Foto de Perfil."
             />
-            <Text style={style.titulo} >Meu Perfil</Text>
-            <View> 
+            <View style={style.form}> 
+                <Text style={style.titulo} >Meu Perfil</Text>
 
                 <View style={style.file}>
                     <input

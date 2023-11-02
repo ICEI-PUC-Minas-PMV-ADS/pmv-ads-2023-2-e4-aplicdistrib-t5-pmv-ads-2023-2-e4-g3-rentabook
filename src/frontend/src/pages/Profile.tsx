@@ -12,8 +12,8 @@ import { PrivateAddress } from "../types/PrivateAddress";
 
 const style = StyleSheet.create({
   container: {
+    flex:1,
     flexDirection: "row",
-    flex: 1,
     backgroundColor: "#E1DCC5",
   },
 });
