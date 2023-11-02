@@ -12,7 +12,11 @@ O teste foi executado com sucesso conforme demonstra as evidencias.
 
 <img src="/docs/img/ct_04_pagina_2.png" />
 
+Apos prencher todas as informações necessarias, o botão "Criar" ficará ativo.
+
 <img src="/docs/img/ct_04_pagina_3.png" />
+
+O sistema irá confirmar a criação do anúncio.
 
 <img src="/docs/img/ct_04_pagina_4.png" />
 
@@ -24,7 +28,11 @@ O teste foi executado com sucesso conforme demonstra as evidencias.
 
 <img src="/docs/img/ct_05_pagina_1.png" />
 
+O sistema exibe a previa da foto.
+
 <img src="/docs/img/ct_05_pagina_2.png" />
+
+Após salvar, a foto estará registrada no livro.
 
 <img src="/docs/img/ct_05_pagina_3.png" />
 
