@@ -4,6 +4,44 @@
 
 Relatório com as evidências dos testes de software realizados no sistema pela equipe, baseado em um plano de testes pré-definido.
 
+## CT-04 - Garantir que o usuário consiga cadastrar um livro para negociação
+
+O teste foi executado com sucesso conforme demonstra as evidencias.
+
+<img src="/docs/img/ct_04_pagina_1" />
+
+<img src="/docs/img/ct_04_pagina_2" />
+
+<img src="/docs/img/ct_04_pagina_3" />
+
+<img src="/docs/img/ct_04_pagina_4" />
+
+<img src="/docs/img/ct_04_pagina_5" />
+
+## CT-05 - Garantir que o usuário consiga cadastrar uma foto de um livro
+
+O teste foi executado com sucesso conforme demonstra as evidencias.
+
+<img src="/docs/img/ct_05_pagina_1" />
+
+<img src="/docs/img/ct_05_pagina_2" />
+
+<img src="/docs/img/ct_05_pagina_3" />
+
+## CT-06 - Garantir que o usuário consiga ver seus livros em negociação
+
+O teste foi executado com sucesso conforme demonstra as evidencias.
+
+<img src="/docs/img/ct_06_pagina_1" />
+
+## CT-07 - Garantir que o usuário consiga filtrar seus livros em negociação
+
+O teste foi executado com sucesso conforme demonstra as evidencias.
+
+<img src="/docs/img/ct_07_pagina_1" />
+
+<img src="/docs/img/ct_07_pagina_2" />
+
 ## Avaliação
 
 Discorra sobre os resultados do teste. Ressaltando pontos fortes e fracos identificados na solução. Comente como o grupo pretende atacar esses pontos nas próximas iterações. Apresente as falhas detectadas e as melhorias geradas a partir dos resultados obtidos nos testes.
