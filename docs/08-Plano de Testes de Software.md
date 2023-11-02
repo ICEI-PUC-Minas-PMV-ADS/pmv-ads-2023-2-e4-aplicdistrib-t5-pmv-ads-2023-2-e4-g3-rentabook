@@ -450,3 +450,40 @@ Esta página é responsável pelo processo de login de usuários existentes na a
 		</tr>
 	</tbody>
 </table>
+
+## Plano de Testes do Chat.
+#### Responsável: Carlos Eduardo
+
+Está página é responsavel pelo envio de mensagens, listagem dos chats e Confirmação/cancelamento das negociações.
+
+<table>
+	<thead>
+		<tr>
+			<th>Casos de Teste</th>
+			<th>Requisitos Associados</th>
+			<th>Objetivo do Teste</th>
+			<th>Passos</th>
+			<th>Critérios de Êxito</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>CT-08</td>
+			<td>RF-018	Permitir aos usuários trocarem mensagens via chat.</td>
+			<td>Verificar se há êxito no envio de mensagens entre usuários.</td>
+			<td>
+				<ol>
+					<li>Acessar o navegador.</li>
+					<li>Informar o endereço do site.</li>
+					<li>Realizar o login.</li>
+					<li>No menu de navegação, acessar "Mensagens".</li>
+					<li>Escolher um dos chats, na lista de conversas.</li>
+					<li>Clicar na caixa de texto para enviar mensagens, digitar uma mensagem e envia-la
+
+critérios de êxito.</li>
+				</ol>
+			</td>
+			<td>A mensagem deve ser enviada com êxito e recebida pelo seu destinatário.</td>
+		</tr>
+	</tbody>
+</table>
