@@ -20,7 +20,6 @@ const Banner: React.FC<BannerProps> = ({ actionType, onAccept, onCancel }) => {
     async function checkAuthentication() {
       const token = await getToken();
       setIsAuthenticated(!!token);
-      console.log("Token de autenticação:", token);
     }
 
     checkAuthentication();

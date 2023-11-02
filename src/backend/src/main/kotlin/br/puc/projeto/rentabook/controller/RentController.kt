@@ -17,6 +17,7 @@ class RentController(private val rentService: RentService) {
     @SecurityRequirement(
         name = "bearerAuth"
     )
+    @CacheEvict("Announcements", allEntries = true)
     @PostMapping("/create")
     fun create(@RequestBody form: RentForm): RentView {
         return rentService.create(form)
@@ -49,6 +50,7 @@ class RentController(private val rentService: RentService) {
     @SecurityRequirement(
         name = "bearerAuth"
     )
+    @CacheEvict("Announcements", allEntries = true)
     @PutMapping("/{id}/cancel")
     fun cancel(@PathVariable id: String): RentView {
         return rentService.cancel(id)
@@ -57,6 +59,7 @@ class RentController(private val rentService: RentService) {
     @SecurityRequirement(
         name = "bearerAuth"
     )
+    @CacheEvict("Announcements", allEntries = true)
     @PutMapping("/{id}/complete")
     fun complete(@PathVariable id: String): RentView {
         return rentService.complete(id)

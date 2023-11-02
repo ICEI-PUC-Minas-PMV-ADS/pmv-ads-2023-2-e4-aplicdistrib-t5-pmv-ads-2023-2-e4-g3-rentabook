@@ -13,6 +13,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 @SpringBootApplication
+@EnableCaching
 class RentabookApplication {}
 
 @Configuration

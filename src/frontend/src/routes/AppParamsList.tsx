@@ -1,17 +1,23 @@
 import { CleanAnnouncementView } from "../types/CleanAnnouncementView";
+import { Negotiations } from "../types/Negotiations";
+import { RentView } from "../types/RentView";
+import { SaleView } from "../types/SaleView";
+import { TradeView } from "../types/TradeView";
 
 export type AppParamsList = {
 
-  'Anúncios': { searchBookId?: string | null, bookName?: string | null };
+  'Anúncios': {};
   'Profile': {};
   'Meus Anúncios': {};
   'Criar Anúncio': { announcementId?: string };
-  RequireAuth: {};
+  'RequireAuth': {};
   'Criar Conta': {};
   'Meu Perfil': {};
   'Entrar': {};
+  'Avalie a negociação': { negotiation: "RENT" | "SALE" | "TRADE", idNegotiation: string };
   'Detalhes do anúncio': { announcement: CleanAnnouncementView };
   'Pesquisar por livro': {};
-   "Chat": { chatId?: string };     
+  'Chat': { chatId?: string };
+
 }
 
