@@ -1,19 +1,282 @@
 # Plano de Testes de Software
 
-<span style="color:red">Pré-requisitos: <a href="2-Especificação do Projeto.md"> Especificação do Projeto</a></span>, <a href="3-Projeto de Interface.md"> Projeto de Interface</a>
+Este é o Plano de Testes do Rentabook. Aqui serão relatados os cenários de testes utilizados na realização dos testes da aplicação. Serão escolhidos cenários de testes que demonstrem os requisitos sendo satisfeitos. Aqui serão enumerados quais cenários de testes foram selecionados para teste. Neste tópico o grupo irá detalhar as funcionalidades avaliadas, o grupo de usuários que foi escolhido para participar do teste e as ferramentas utilizadas.
 
-Apresente os cenários de testes utilizados na realização dos testes da sua aplicação. Escolha cenários de testes que demonstrem os requisitos sendo satisfeitos.
+## Plano de Testes da página de Cadastro de Usuário
+#### Responsável: Alisson A. Carvalho
 
-Enumere quais cenários de testes foram selecionados para teste. Neste tópico o grupo deve detalhar quais funcionalidades avaliadas, o grupo de usuários que foi escolhido para participar do teste e as ferramentas utilizadas.
- 
-## Ferramentas de Testes (Opcional)
+Esta página é responsável pelo processo de cadastro de novos usuários na aplicação. Os usuários podem inserir seu nome, e-mail, senha e confirmação de senha para criar uma nova conta.
 
-Comente sobre as ferramentas de testes utilizadas.
- 
-> **Links Úteis**:
-> - [IBM - Criação e Geração de Planos de Teste](https://www.ibm.com/developerworks/br/local/rational/criacao_geracao_planos_testes_software/index.html)
-> - [Práticas e Técnicas de Testes Ágeis](http://assiste.serpro.gov.br/serproagil/Apresenta/slides.pdf)
-> -  [Teste de Software: Conceitos e tipos de testes](https://blog.onedaytesting.com.br/teste-de-software/)
-> - [Criação e Geração de Planos de Teste de Software](https://www.ibm.com/developerworks/br/local/rational/criacao_geracao_planos_testes_software/index.html)
-> - [Ferramentas de Test para Java Script](https://geekflare.com/javascript-unit-testing/)
-> - [UX Tools](https://uxdesign.cc/ux-user-research-and-user-testing-tools-2d339d379dc7)
+<table>
+        <thead>
+            <tr>
+                <th>Casos de Teste</th>
+                <th>Requisitos Associados</th>
+                <th>Objetivo do Teste</th>
+                <th>Passos</th>
+                <th>Critérios de Êxito</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1. Teste da função handleInputChange</td>
+                <td>RF-001</td>
+                <td>Garantir que a função handleInputChange atualize corretamente os campos e limpe as mensagens de erro.</td>
+                <td>
+                    <ol>
+                        <li>Chame handleInputChange para cada campo com valores válidos.</li>
+                        <li>Verifique se o campo é atualizado corretamente.</li>
+                        <li>Chame handleInputChange para cada campo com valores inválidos.</li>
+                        <li>Verifique se as mensagens de erro são limpas.</li>
+                    </ol>
+                </td>
+                <td>A função handleInputChange atualiza corretamente os campos e limpa as mensagens de erro.</td>
+            </tr>
+            <tr>
+                <td>2. Teste da função updateOrientation</td>
+                <td>RNF-001</td>
+                <td>Garantir que a função updateOrientation determine a orientação corretamente.</td>
+                <td>
+                    <ol>
+                        <li>Chame updateOrientation com uma orientação em modo paisagem.</li>
+                        <li>Verifique se a orientação é definida como "LANDSCAPE".</li>
+                        <li>Chame updateOrientation com uma orientação em modo retrato.</li>
+                        <li>Verifique se a orientação é definida como "PORTRAIT".</li>
+                    </ol>
+                </td>
+                <td>A função updateOrientation determina a orientação corretamente.</td>
+            </tr>
+            <tr>
+                <td>3. Teste de validação do campo "Nome"</td>
+                <td>RF-001</td>
+                <td>Verificar se a validação do campo "Nome" funciona conforme o esquema yup.</td>
+                <td>
+                    <ol>
+                        <li>Insira um nome válido.</li>
+                        <li>Insira um nome em branco.</li>
+                        <li>Insira um nome muito longo.</li>
+                    </ol>
+                </td>
+                <td>A validação do campo "Nome" funciona conforme o esquema yup.</td>
+            </tr>
+            <tr>
+                <td>4. Teste de validação do campo "Email"</td>
+                <td>RF-001</td>
+                <td>Verificar se a validação do campo "Email" funciona conforme o esquema yup.</td>
+                <td>
+                    <ol>
+                        <li>Insira um e-mail válido.</li>
+                        <li>Insira um e-mail inválido.</li>
+                        <li>Insira um e-mail em branco.</li>
+                    </ol>
+                </td>
+                <td>A validação do campo "Email" funciona conforme o esquema yup.</td>
+            </tr>
+            <tr>
+                <td>5. Teste de validação do campo "Senha"</td>
+                <td>RF-001</td>
+                <td>Verificar se a validação do campo "Senha" funciona conforme o esquema yup.</td>
+                <td>
+                    <ol>
+                        <li>Insira uma senha válida.</li>
+                        <li>Insira uma senha com menos de 8 caracteres.</li>
+                        <li>Insira uma senha sem maiúsculas.</li>
+                        <li>Insira uma senha sem minúsculas.</li>
+                        <li>Insira uma senha sem números.</li>
+                        <li>Insira uma senha sem caracteres especiais.</li>
+                    </ol>
+                </td>
+                <td>A validação do campo "Senha" funciona conforme o esquema yup.</td>
+            </tr>
+            <tr>
+                <td>6. Teste de validação do campo "Confirmação de Senha"</td>
+                <td>RF-001</td>
+                <td>Verificar se a validação do campo "Confirmação de Senha" funciona conforme o esquema yup.</td>
+                <td>
+                    <ol>
+                        <li>Insira uma confirmação de senha que corresponda à senha.</li>
+                        <li>Insira uma confirmação de senha que não corresponda à senha.</li>
+                    </ol>
+                </td>
+                <td>A validação do campo "Confirmação de Senha" funciona conforme o esquema yup.</td>
+            </tr>
+            <tr>
+                <td>7. Teste do fluxo de cadastro de usuário bem-sucedido</td>
+                <td>RF-001</td>
+                <td>Verificar se o fluxo de cadastro de usuário é concluído com sucesso.</td>
+                <td>
+                    <ol>
+                        <li>Preencha todos os campos corretamente.</li>
+                        <li>Clique no botão "Continuar".</li>
+                    </ol>
+                </td>
+                <td>O usuário é registrado com sucesso e os campos são limpos.</td>
+            </tr>
+            <tr>
+                <td>8. Teste do fluxo de cadastro de usuário com falha de validação</td>
+                <td>RF-001</td>
+                <td>Verificar se o tratamento de falha de validação é adequado.</td>
+                <td>
+                    <ol>
+                        <li>Preencha os campos com dados inválidos.</li>
+                        <li>Clique no botão "Continuar".</li>
+                    </ol>
+                </td>
+                <td>As mensagens de erro são exibidas corretamente.</td>
+            </tr>
+            <tr>
+                <td>9. Teste do tratamento de erro na submissão</td>
+                <td>RF-001</td>
+                <td>Verificar se o tratamento de erro ao falhar na submissão real é adequado.</td>
+                <td>
+                    <ol>
+                        <li>Preencha os campos corretamente, mas simule uma falha na submissão.</li>
+                        <li>Clique no botão "Continuar".</li>
+                    </ol>
+                </td>
+                <td>O tratamento de erro é adequado e fornece feedback ao usuário.</td>
+            </tr>
+            <tr>
+                <td>10. Teste da orientação da interface do usuário</td>
+                <td>RNF-001</td>
+                <td>Verificar se a interface do usuário se ajusta à orientação corretamente.</td>
+                <td>
+                    <ol>
+                        <li>Gire o dispositivo para a orientação paisagem.</li>
+                        <li>Verifique se a interface se ajusta corretamente.</li>
+                        <li>Gire o dispositivo para a orientação retrato.</li>
+                        <li>Verifique se a interface se ajusta corretamente.</li>
+                    </ol>
+                </td>
+                <td>A interface do usuário se ajusta à orientação corretamente.</td>
+            </tr>
+        </tbody>
+    </table>
+
+## Plano de Testes da página de Login de Usuário
+#### Responsável: Alisson A. Carvalho
+
+Esta página é responsável pelo processo de login de usuários existentes na aplicação. Os usuários podem inserir seu e-mail e senha para acessar suas contas.
+
+<table>
+        <thead>
+            <tr>
+                <th>Casos de Teste</th>
+                <th>Requisitos Associados</th>
+                <th>Objetivo do Teste</th>
+                <th>Passos</th>
+                <th>Critérios de Êxito</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1. Teste da função handleInputChange</td>
+                <td>RF-003</td>
+                <td>Garantir que a função handleInputChange atualize corretamente os campos e limpe as mensagens de erro.</td>
+                <td>
+                    <ol>
+                        <li>Chame handleInputChange para o campo "Email" com um valor válido.</li>
+                        <li>Verifique se o campo "Email" é atualizado corretamente.</li>
+                        <li>Chame handleInputChange para o campo "Senha" com um valor válido.</li>
+                        <li>Verifique se o campo "Senha" é atualizado corretamente.</li>
+                        <li>Chame handleInputChange para o campo "Email" com um valor inválido.</li>
+                        <li>Verifique se a mensagem de erro do campo "Email" é limpa.</li>
+                        <li>Chame handleInputChange para o campo "Senha" com um valor inválido.</li>
+                        <li>Verifique se a mensagem de erro do campo "Senha" é limpa.</li>
+                    </ol>
+                </td>
+                <td>A função handleInputChange atualiza corretamente os campos e limpa as mensagens de erro.</td>
+            </tr>
+            <tr>
+                <td>2. Teste da função updateOrientation</td>
+                <td>RNF-001</td>
+                <td>Garantir que a função updateOrientation determine a orientação corretamente.</td>
+                <td>
+                    <ol>
+                        <li>Chame updateOrientation com uma orientação em modo paisagem.</li>
+                        <li>Verifique se a orientação é definida como "LANDSCAPE".</li>
+                        <li>Chame updateOrientation com uma orientação em modo retrato.</li>
+                        <li>Verifique se a orientação é definida como "PORTRAIT".</li>
+                    </ol>
+                </td>
+                <td>A função updateOrientation determina a orientação corretamente.</td>
+            </tr>
+            <tr>
+                <td>3. Teste de validação do campo "Email"</td>
+                <td>RF-003</td>
+                <td>Verificar se a validação do campo "Email" funciona conforme o esquema yup.</td>
+                <td>
+                    <ol>
+                        <li>Insira um e-mail válido.</li>
+                        <li>Insira um e-mail inválido.</li>
+                        <li>Insira um e-mail em branco.</li>
+                    </ol>
+                </td>
+                <td>A validação do campo "Email" funciona conforme o esquema yup.</td>
+            </tr>
+            <tr>
+                <td>4. Teste de validação do campo "Senha"</td>
+                <td>RF-003</td>
+                <td>Verificar se a validação do campo "Senha" funciona conforme o esquema yup.</td>
+                <td>
+                    <ol>
+                        <li>Insira uma senha válida.</li>
+                        <li>Insira uma senha em branco.</li>
+                    </ol>
+                </td>
+                <td>A validação do campo "Senha" funciona conforme o esquema yup.</td>
+            </tr>
+            <tr>
+                <td>5. Teste do fluxo de login bem-sucedido</td>
+                <td>RF-003</td>
+                <td>Verificar se o fluxo de login é concluído com sucesso.</td>
+                <td>
+                    <ol>
+                        <li>Preencha o campo "Email" e o campo "Senha" com valores válidos.</li>
+                        <li>Clique no botão "Entrar".</li>
+                        <li>Verifique se a página de anúncios é navegada com sucesso.</li>
+                    </ol>
+                </td>
+                <td>O usuário é autenticado com sucesso e redirecionado para a página de anúncios.</td>
+            </tr>
+            <tr>
+                <td>6. Teste do fluxo de login com credenciais inválidas</td>
+                <td>RF-003</td>
+                <td>Verificar se o tratamento de login com credenciais inválidas é adequado.</td>
+                <td>
+                    <ol>
+                        <li>Preencha o campo "Email" e o campo "Senha" com valores inválidos.</li>
+                        <li>Clique no botão "Entrar".</li>
+                        <li>Verifique se as mensagens de erro são exibidas corretamente.</li>
+                    </ol>
+                </td>
+                <td>As mensagens de erro são exibidas corretamente.</td>
+            </tr>
+            <tr>
+                <td>7. Teste do tratamento de erro na submissão</td>
+                <td>RF-003</td>
+                <td>Verificar se o tratamento de erro ao falhar na submissão real é adequado.</td>
+                <td>
+                    <ol>
+                        <li>Preencha os campos corretamente, mas simule uma falha na submissão.</li>
+                        <li>Clique no botão "Entrar".</li>
+                    </ol>
+                </td>
+                <td>O tratamento de erro é adequado e fornece feedback ao usuário.</td>
+            </tr>
+            <tr>
+                <td>8. Teste da orientação da interface do usuário</td>
+                <td>RNF-001</td>
+                <td>Verificar se a interface do usuário se ajusta à orientação corretamente.</td>
+                <td>
+                    <ol>
+                        <li>Gire o dispositivo para a orientação paisagem.</li>
+                        <li>Verifique se a interface se ajusta corretamente.</li>
+                        <li>Gire o dispositivo para a orientação retrato.</li>
+                        <li>Verifique se a interface se ajusta corretamente.</li>
+                    </ol>
+                </td>
+                <td>A interface do usuário se ajusta à orientação corretamente.</td>
+            </tr>
+        </tbody>
+    </table>
