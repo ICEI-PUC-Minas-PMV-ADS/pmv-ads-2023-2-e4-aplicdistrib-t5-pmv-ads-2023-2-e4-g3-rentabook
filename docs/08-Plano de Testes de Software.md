@@ -280,3 +280,35 @@ Esta página é responsável pelo processo de login de usuários existentes na a
             </tr>
         </tbody>
     </table>
+
+
+## CT-03 Listar os anúncios
+
+<table>
+        <thead>
+            <tr>
+                <th>Caso de Teste</th>
+                <th>Requisitos Associados</th>
+                <th>Objetivo do Teste</th>
+                <th>Passos</th>
+                <th>Critérios de Êxito</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>CT-03 Listar os anúncios</td>
+                <td>RF-007 Exibir ao usuário uma lista de livros disponíveis para troca, venda ou aluguel</td>
+                <td>Verificar se os anúncios de troca, venda ou aluguel estão sendo exibidos corretamente</td>
+                <td>
+                    <ol>
+                        <li>Acessar o Navegador</li>
+                        <li>Informar o endereço do Site</li>
+                        <li>Visualizar a página principal</li>
+                    </ol>
+                </td>
+                <td>
+                Os anúncios devem ser listados, apresentando o título do livro, imagem de destaque, disponibilidade para venda, compra ou aluguel e valores.
+                </td>
+            </tr>
+        </tbody>
+    </table>
