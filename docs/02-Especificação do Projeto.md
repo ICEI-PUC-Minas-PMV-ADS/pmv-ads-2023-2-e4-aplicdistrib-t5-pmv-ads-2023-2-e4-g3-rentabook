@@ -14,10 +14,8 @@ Com base na análise das personas forma identificadas as seguintes histórias de
 |  Ana  |  alterar minhas informações de usuário  |  tornar minha experiencia de uso mais personalizada |
 |  Ana  |  ter acesso a uma lista com livros que possam ser negociados com outros usuários  |  ter acesso a outros livros sem gastar dinheiro | 		
 |  Luíza  |  ter acesso a um chat  |  me comunicar com outro usuário no momento da negociação |	 
-|  Luíza  |  ser notificada quando um livro for solicitado para aluguel ou compra  |  que a negociação seja rápida e satisfatória | 
 |  Luíza  |  solicitar o cancelamento de um processo de venda ou aluguel de um livro  |  impedir maiores contratempos quando a negociação não for possível |		 
 |  Luíza  |  possibilitar de trocar livros com outros usuários  |  ter acesso a outros livros sem gastar dinheiro | 
-|  Luíza  |  ser notificado quando alguma transação que me envolva sofrer atualização  |  me planejar minha rotina para algum evento que possa surgir | 
 |  Flávio  |  pesquisar por um livro específico  |  facilitar minha busca por livros do meu interesse |  
 |  Flávio  |  permitir que a lista com livros que estão disponíveis para negociação permita filtrar as informações  |  facilitar minha busca por livros do meu interesse |			 
 |  Rafael  |  cadastrar meu livro  |  poder disponibilizá-los para negociação(venda, emprestimo ou troca) e fazer um dinheiro extra | 
@@ -39,9 +37,8 @@ Com base na análise das personas forma identificadas as seguintes histórias de
 |RF-006| Permitir ao usuário modificar suas informações pessoais | MÉDIA |
 |RF-007| Exibir ao usuário uma lista de livros disponíveis para troca, venda ou aluguel | ALTA | 
 |RF-008| Permitir aos usuários trocarem mensagens via chat | MÉDIA |
-|RF-009| Notificar ao usuário quando um de seus livros forem solicitados para aluguel, compra ou troca | BAIXA | 
-|RF-010| Permitir ao usuário cancelar uma venda, aluguel ou troca de um livro | ALTA | 
-|RF-011| Notificar ao usuário quando suas negociações forem atualizadas | BAIXA | 
+|RF-009| Listar todas as conversas do usuário em uma lista | BAIXA | 
+|RF-010| Permitir ao usuário cancelar ou confirmar uma venda, aluguel ou troca de um livro | ALTA | 
 |RF-012| Permitir ao usuário pesquisar por um livro específico | MÉDIA |
 |RF-013| Permitir ao usuário filtrar a lista de livros disponiveis para negociação | MÉDIA |
 |RF-014| Permitir ao usuário cadastrar e disponibilizar seus livros para negociação (aluguel, troca e venda) | ALTA |
