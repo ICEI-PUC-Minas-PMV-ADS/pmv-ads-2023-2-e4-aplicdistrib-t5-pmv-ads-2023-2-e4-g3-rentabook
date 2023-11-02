@@ -506,4 +506,21 @@ critérios de êxito.</li>
 			<td>A venda deve ser cancelada ou confirmada e a conversa automaticamente é apagada.</td>
 		</tr>
 	</tbody>
+ <tbody>
+		<tr>
+			<td>CT-11</td>
+			<td>RF-09	Permitir ao usuário visualizar uma lista de todas as suas conversas com outros usuários.</td>
+			<td>Verificar se a listagem das conversas ocorrem corretamente.</td>
+			<td>
+				<ol>
+					<li>Acessar o navegador.</li>
+					<li>Informar o endereço do site.</li>
+					<li>Realizar o login.</li>
+					<li>No menu de navegação, acessar "Mensagens".</li>
+					<li>Clicar em "Mostrar Conversas.</li>
+				</ol>
+			</td>
+			<td>A listagem das converasas deve ocorrer sem erros.</td>
+		</tr>
+	</tbody>
 </table>
