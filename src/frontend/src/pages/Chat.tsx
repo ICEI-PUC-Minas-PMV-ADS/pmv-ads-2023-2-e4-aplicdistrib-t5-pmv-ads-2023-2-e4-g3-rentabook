@@ -11,15 +11,25 @@ import ConversationsList from "../common/components/ConversationList";
 import ChatComponent from "../common/components/ChatComponent";
 import Banner from "../common/components/Banner";
 import { getToken } from "../other/Storage";
+import { ownerID } from "../common/components/ConversationList";
 
 export default function Chat() {
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<string | null>(null);
   const [conversationsListHidden, setConversationsListHidden] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
 
   const handleConversationSelect = (chatId: string | null) => {
     setSelectedChatId(chatId);
-    setConversationsListHidden(true); // Automatically hide the ConversationsList
+    setConversationsListHidden(true);
+  };
+
+  const handleAccept = () => {
+    console.log("Anúncio aceito com sucesso.");
+  };
+
+  const handleCancel = () => {
+    console.log("Anúncio cancelado com sucesso.");
   };
 
   const toggleConversationsList = () => {
@@ -43,9 +53,18 @@ export default function Chat() {
           );
 
           if (response.ok) {
-            const data = await response.json();
-            const userName = data.name;
-            setCurrentUser(userName);
+            const userData = await response.json();
+            const userId = userData.id;
+            setCurrentUser(userId);
+            setUserId(userId);
+
+            if (
+              ownerID !== null &&
+              ownerID !== undefined &&
+              ownerID === userId
+            ) {
+              setSelectedChatId(userId);
+            }
           }
         }
       } catch (error) {
@@ -55,18 +74,6 @@ export default function Chat() {
     fetchTokenAndUserData();
   }, []);
 
-  const handleAccept = () => {
-    // Lógica de aceitação do anúncio
-    console.log("Anúncio aceito com sucesso.");
-    // Aqui você pode atualizar o estado ou fazer qualquer ação necessária após a aceitação
-  };
-
-  const handleCancel = () => {
-    // Lógica de cancelamento do anúncio
-    console.log("Anúncio cancelado com sucesso.");
-    // Aqui você pode atualizar o estado ou fazer qualquer ação necessária após o cancelamento
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <ResponsiveNavbar>
@@ -75,14 +82,18 @@ export default function Chat() {
             <View style={styles.chatContainer}>
               {selectedChatId && (
                 <>
-                  <Banner
-                    actionType="complete"
-                    onAccept={handleAccept}
-                    onCancel={handleCancel}
-                  />
+                  {ownerID !== null &&
+                    ownerID !== undefined &&
+                    ownerID === userId && (
+                      <Banner
+                        actionType="complete"
+                        onAccept={handleAccept}
+                        onCancel={handleCancel}
+                      />
+                    )}
                   <ChatComponent
                     chatId={selectedChatId}
-                    currentUser={currentUser ?? ""}
+                    currentUser={selectedChatId ?? ""}
                   />
                 </>
               )}
