@@ -208,7 +208,7 @@ export default function ConversationsList({
                     selectedItem === item.id && { color: "#F3EDD7" },
                   ]}
                 >
-                  Tipo de Transação: {selectedItemContent}
+                  Tipo de Transação: {selectedItemContentType}
                 </Text>
                 <Text
                   style={[

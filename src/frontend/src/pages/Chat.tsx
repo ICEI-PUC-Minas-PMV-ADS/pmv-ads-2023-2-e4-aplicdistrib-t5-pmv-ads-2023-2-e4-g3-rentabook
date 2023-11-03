@@ -93,7 +93,7 @@ export default function Chat() {
                     )}
                   <ChatComponent
                     chatId={selectedChatId}
-                    currentUser={selectedChatId ?? ""}
+                    currentUser={userId ?? ""}
                   />
                 </>
               )}
@@ -114,9 +114,7 @@ export default function Chat() {
             onPress={toggleConversationsList}
           >
             <Text style={styles.toggleButtonText}>
-              {conversationsListHidden
-                ? "Show Conversations"
-                : "Hide Conversations"}
+              {conversationsListHidden ? "Mostrar Conversas" : "Fechar Lista"}
             </Text>
           </TouchableOpacity>
         </React.Fragment>
