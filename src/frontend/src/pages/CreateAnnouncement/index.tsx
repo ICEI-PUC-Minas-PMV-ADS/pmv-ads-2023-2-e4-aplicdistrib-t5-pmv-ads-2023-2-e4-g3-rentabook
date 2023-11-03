@@ -235,7 +235,10 @@ function CreateAnnouncementImpl(props: CreateAnnouncementProps) {
                       <PrimaryButton
                         label='Buscar'
                         style={{ paddingHorizontal: 16, paddingVertical: 12 }}
-                        onPress={() => { handleSearch(0) }} />
+                        onPress={() => {
+                          dispatch({ type: 'clear_books' });
+                          handleSearch(0)
+                        }} />
                     </View>
 
                     <View style={{ height: 20 }} />
@@ -249,9 +252,12 @@ function CreateAnnouncementImpl(props: CreateAnnouncementProps) {
                           maxHeight={300}
                           onEndReached={handleEndReached}
                           onSelect={(bookView) => dispatch({ type: 'set_selected_book', payload: bookView })}
-                          getValue={(item) => item.title ?? ""}>
-                          {(item) => <View style={{ padding: 8, backgroundColor: WhiteColor }}><Text>{item.title}</Text></View>}
-                        </LazyDropdown>
+                          getItemLabel={(item) => item.title ?? ""}
+                          renderItem={(item) => (
+                            <View style={{ padding: 8, backgroundColor: WhiteColor }}>
+                              <Text>{item.title}</Text>
+                            </View>
+                          )} />
                       </View>
                     }
 

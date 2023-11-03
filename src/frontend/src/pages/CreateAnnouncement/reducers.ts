@@ -35,8 +35,8 @@ export type CreateAnnouncementAction = {
   'set_trade' | 'set_sale_value' | 'set_rent_value' |
   'set_search_term' | 'set_user_addresses' | 'set_selected_address' |
   'set_books' | 'set_selected_book' | 'set_validate_input' | 'set_description' |
-  'set_uploaded_files' | 'set_has_more_book_data',
-  payload: any,
+  'set_uploaded_files' | 'set_has_more_book_data' | 'clear_books',
+  payload?: any,
 };
 
 /**
@@ -148,6 +148,7 @@ export const CreateAnnouncementReducer = (
     case 'set_description': return { ...state, description: action.payload };
     case 'set_uploaded_files': return { ...state, uploadedFiles: [...action.payload] };
     case 'set_has_more_book_data': return { ...state, hasMoreBookData: action.payload };
+    case 'clear_books': return { ...state, books: [] };
   }
   return state;
 };
