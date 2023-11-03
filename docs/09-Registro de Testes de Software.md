@@ -4,6 +4,91 @@
 
 Relatório com as evidências dos testes de software realizados no sistema pela equipe, baseado em um plano de testes pré-definido.
 
+## Página de Cadastro
+
+#### Teste da função handleInputChange
+
+![image](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/assets/100442612/a51dff14-e478-4096-9dc0-e3019ce26259)
+![image](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/assets/100442612/1e8d8e68-bc1a-4c84-ad54-83aaf34c8e7d)
+
+Teste realizado!
+
+A função handleInputChange atualiza corretamente os campos e limpa as mensagens de erro caso elas existam.
+
+#### Teste da função updateOrientation
+
+![image](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/assets/100442612/4e0f2bbb-333a-452d-9ba7-c07c07e18fb2)
+![image](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/assets/100442612/06054822-c82e-422e-a934-92a2fc9443b2)
+
+Teste realizado!
+
+A função updateOrientation determina a orientação da tela corretamente.
+
+#### Teste de validação dos campos
+
+![image](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/assets/100442612/1c2c8a3d-61f8-4dcb-898e-b2df0891d5c0)
+![image](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/assets/100442612/4bba39d3-de70-4fed-9875-da1a39e205f3)
+
+Teste realizado!
+
+A validação dos campos do formulário funcionam conforme o esquema yup.
+
+#### Teste do fluxo de cadastro bem-sucedido
+
+![image](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/assets/100442612/fc3e1ed3-2088-4d09-932a-8be338245ca9)
+![image](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/assets/100442612/858c0937-db32-4f59-a2b3-ef611592a9e0)
+
+Teste realizado!
+
+O usuário é registrado, os campos são limpos e o usuário é redirecionado com sucesso para a página de anúncios.
+
+#### Teste do fluxo de cadastro com credenciais inválidas
+
+![image](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/assets/100442612/019ba246-3755-49fa-b780-5d7047352d80)
+
+Teste realizado!
+
+As mensagens de erro são exibidas corretamente.
+
+## Página de Login
+
+#### Teste da função handleInputChange
+
+![image](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/assets/100442612/109bc872-663c-4dc7-a37a-39aadadf1048)
+![image](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/assets/100442612/7d8094f4-3036-4c7c-8d8f-faae0f5eef96)
+
+Teste realizado!
+
+A função handleInputChange atualiza corretamente os campos e limpa as mensagens de erro.
+
+#### Teste da função updateOrientation
+
+![image](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/assets/100442612/4f810a8c-ef3d-4ea2-be59-7137b8d71efa)
+![image](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/assets/100442612/b0e71ed3-6cd7-46cc-8901-2a58852baed4)
+
+Teste realizado
+
+A função updateOrientation determina a orientação da página corretamente.
+
+#### Teste de validação dos campos
+
+![image](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/assets/100442612/83605045-4697-40dd-9082-545593086d7c)
+![image](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/assets/100442612/aee3bb04-a9b3-4f4c-94e0-d9be2ace286e)
+
+Teste realizado!
+
+A validação dos campos do formulário funciona conforme o esquema yup.
+
+#### Teste do fluxo de login bem-sucedido
+
+![image](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/assets/100442612/adcb371d-9ba0-4493-816a-abe4819484a7)
+![Captura de tela 2023-11-02 232941](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/assets/100442612/9f283a96-ec0f-4ef3-8cba-c1f5fade1475)
+
+Teste realizado
+
+O usuário é autenticado com sucesso e redirecionado para a página de anúncios.
+
+
 ## CT-03 Listar os anúncios
 
 O teste foi executado com sucesso conforme demonstra as evidencias.
