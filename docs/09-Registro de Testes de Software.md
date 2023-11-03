@@ -4,6 +4,12 @@
 
 Relatório com as evidências dos testes de software realizados no sistema pela equipe, baseado em um plano de testes pré-definido.
 
+## CT-03 Listar os anúncios
+
+O teste foi executado com sucesso conforme demonstra as evidencias.
+
+<img src="/docs/img/CT-03.png" />
+
 ## CT-04 - Garantir que o usuário consiga cadastrar um livro para negociação
 
 O teste foi executado com sucesso conforme demonstra as evidencias.
@@ -88,6 +94,38 @@ O teste foi executado com sucesso.
 O usuário deve conseguir visualizar uma lista de conversas e escolher uma delas.
 
 <img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/ssssssss.PNG" />
+
+## CT-11 - Permitir ao usuário pesquisar por anúncios de um livro em específico
+
+O teste foi executado com sucesso conforme demonstra as evidencias.
+
+<img src="/docs/img/CT-11.png" />
+
+## CT-12 - Permitir ao usuário filtrar os anúncios em dispositivos desktop
+
+O teste foi executado com sucesso conforme demonstra as evidencias.
+
+<img src="/docs/img/CT-12.png" />
+
+## CT-13 - Permitir ao usuário filtrar os anúncios em dispositivos móveis
+
+O teste foi executado com sucesso conforme demonstra as evidencias.
+
+<img src="/docs/img/CT-13.png" />
+
+<img src="/docs/img/CT-13(2).png" />
+
+## CT-14 - Permitir ao usuário ver os detalhes de um anúncio em específico
+
+O teste foi executado com sucesso conforme demonstra as evidencias.
+
+<img src="/docs/img/CT-14.png" />
+
+<img src="/docs/img/CT-14(2).png" />
+
+
+
+
 
 
 
