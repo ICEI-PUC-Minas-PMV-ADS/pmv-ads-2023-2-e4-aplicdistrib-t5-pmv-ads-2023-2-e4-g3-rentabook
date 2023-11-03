@@ -90,7 +90,6 @@ export default function ProfileBox({ nome, email, imagem, fetchUserdata }: Profi
           const formData = new FormData();
           formData.append('image', selectedFile);
             userService.updatePrivateUserImage(formData)
-            alert("DEU CERTO")
             window.location.reload()
         } else {
           alert('Selecione um arquivo antes de fazer o upload.');
@@ -129,7 +128,7 @@ export default function ProfileBox({ nome, email, imagem, fetchUserdata }: Profi
 
                 <Input
                     style={style.input}
-                    value={nome}
+                    value={pNome}
                     placeholder="Digite seu Nome"
                     label="Nome"
                     onChangeText={setPNome}
@@ -147,7 +146,7 @@ export default function ProfileBox({ nome, email, imagem, fetchUserdata }: Profi
             <PrimaryButton
                 style={style.button}
                 textStyle={style.textbtn}
-                label="Editar Perfil"
+                label="Salvar Alterações"
                 onPress={async () => {
                      updateUser(pNome ?? "");
                      uploadfile()

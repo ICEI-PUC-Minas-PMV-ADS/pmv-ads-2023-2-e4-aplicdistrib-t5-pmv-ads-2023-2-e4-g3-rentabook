@@ -281,8 +281,8 @@ Esta página é responsável pelo processo de login de usuários existentes na a
         </tbody>
     </table>
 
-
-## CT-03 Listar os anúncios
+## Plano de Testes da listagem de anúncios.
+#### Responsável: João Lucas
 
 <table>
         <thead>
@@ -350,6 +350,7 @@ Esta página é responsável pelo processo de login de usuários existentes na a
 		</tr>
 	</tbody>
 </table>
+
 
 ## Plano de Testes de cadastro de fotos dos livros.
 #### Responsável: Vitor Alexandre
@@ -478,13 +479,12 @@ Está página é responsavel pelo envio de mensagens, listagem dos chats e Confi
 					<li>Realizar o login.</li>
 					<li>No menu de navegação, acessar "Mensagens".</li>
 					<li>Escolher um dos chats, na lista de conversas.</li>
-					<li>Clicar na caixa de texto para enviar mensagens, digitar uma mensagem e envia-la
-
-critérios de êxito.</li>
+					<li>Clicar na caixa de texto para enviar mensagens, digitar uma mensagem e envia-la.</li>
 				</ol>
 			</td>
 			<td>A mensagem deve ser enviada com êxito e recebida pelo seu destinatário.</td>
 		</tr>
+  
   </tr>
 	</thead>
 	<tbody>
@@ -508,7 +508,7 @@ critérios de êxito.</li>
 	</tbody>
  <tbody>
 		<tr>
-			<td>CT-11</td>
+			<td>CT-10</td>
 			<td>RF-09	Permitir ao usuário visualizar uma lista de todas as suas conversas com outros usuários.</td>
 			<td>Verificar se a listagem das conversas ocorrem corretamente.</td>
 			<td>
@@ -524,3 +524,266 @@ critérios de êxito.</li>
 		</tr>
 	</tbody>
 </table>
+
+## Plano de Testes da listagem de anúncios.
+#### Responsável: João Lucas
+
+<table>
+        <thead>
+            <tr>
+                <th>Caso de Teste</th>
+                <th>Requisitos Associados</th>
+                <th>Objetivo do Teste</th>
+                <th>Passos</th>
+                <th>Critérios de Êxito</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>CT-11 - Permitir ao usuário pesquisar por anúncios de um livro em específico</td>
+                <td>RF-012 - Permitir ao usuário pesquisar por um livro específico</td>
+                <td>Verificar se os anúncios de troca, venda ou aluguel estão sendo exibidos corretamente com base no livro pesquisado e escolhido pelo usuário</td>
+                <td>
+                    <ol>
+                        <li>Acessar o aplicativo (dispositivos móveis) ou o site através de um navegador</li>
+                        <li>Visualizar a página principal</li>
+                        <li>Clicar na barra de pesquisa</li>
+                        <li>Digitar o livro desejado</li>
+                        <li>Clicar no livro desejado</li>
+                    </ol>
+                </td>
+                <td>
+                <ol>
+                        <li>Deve ser exibido apenas os anúncios do livro desejado</li>
+                        <li>Caso não houver anúncios daquele livro, deve haver um feedback para o usuário</li>
+                    </ol>
+                </td>
+            </tr>
+            <tr>
+                <td>CT-12 - Permitir ao usuário filtrar os anúncios em dispositivos desktop</td>
+                <td>RF-013 - Permitir ao usuário filtrar a lista de livros disponiveis para negociação</td>
+                <td>Verificar se os anúncios estão sendo exibidos corretamente com base nos filtros escolhidos pelo usuário nos dispositivos desktop</td>
+                <td>
+                    <ol>
+                        <li>Acessar o Navegador</li>
+                        <li>Informar o endereço do Site</li>
+                        <li>Visualizar a página principal</li>
+                        <li>Escolher os filtros desejados na barra lateral esquerda</li>
+                        <li>Escolher a ordenação desejada no menu drop-down que se encontra ao lado direito da barra de pesquisa</li>
+                    </ol>
+                </td>
+                <td>
+                    <li>Deve ser exibido os anúncios de acordo com a ordenação e filtros escolhidos pelo usuário
+                </td>
+            </tr>
+            <tr>
+                <td>CT-13 - Permitir ao usuário filtrar os anúncios em dispositivos móveis</td>
+                <td>RF-013 - Permitir ao usuário filtrar a lista de livros disponiveis para negociação</td>
+                <td>Verificar se os anúncios estão sendo exibidos corretamente com base nos filtros escolhidos pelo usuário nos dispositivos móveis</td>
+                <td>
+                    <ol>
+                        <li>Acessar o aplicativo ou o site através de um navegador</li>
+                        <li>Visualizar a página principal</li>
+                        <li>Clicar em "Filtros" que se encontra abaixo da barra de pesquisa</li>
+                        <li>Escolher os filtros e ordenação desejada</li>
+                    </ol>
+                </td>
+                <td>
+                    <li>Deve ser exibido os anúncios de acordo com a ordenação e filtros escolhidos pelo usuário
+                </td>
+            </tr>
+            </tbody>
+</table>   
+
+## Plano de Testes dos detalhes dos anúncios.
+#### Responsável: João Lucas
+
+<table>
+        <thead>
+            <tr>
+                <th>Caso de Teste</th>
+                <th>Requisitos Associados</th>
+                <th>Objetivo do Teste</th>
+                <th>Passos</th>
+                <th>Critérios de Êxito</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>CT-14 - Permitir ao usuário ver os detalhes de um anúncio em específico</td>
+                <td>RF-019 - Permitir ver detalhes sobre uma negociação em específico</td>
+                <td>Verificar se os detalhes do anúncio estão sendo exibidos corretamente</td>
+                <td>
+                    <ol>
+                        <li>Acessar o aplicativo (dispositivos móveis) ou o site através de um navegador</li>
+                        <li>Visualizar a página principal</li>
+                        <li>Clicar em um anúncio</li>
+                    </ol>
+                </td>
+                <td> Deve ser exibido o título do anúncio, fotos, descrição do anúncio, descrição do livro, localização do anúncio, avaliações e valores.</td>
+            </tr>
+            </tbody>
+</table>
+
+## Plano de Testes das avaliações dos anúncios.
+#### Responsável: João Lucas
+
+<table>
+        <thead>
+            <tr>
+                <th>Caso de Teste</th>
+                <th>Requisitos Associados</th>
+                <th>Objetivo do Teste</th>
+                <th>Passos</th>
+                <th>Critérios de Êxito</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>CT-15 - Permitir ao usuário avaliar as negociações realizadas</td>
+                <td>RF-020	Permitir aos usuários avaliar as negociações de livro realizadas</td>
+                <td>Verificar se ao terminar uma negociação, o usuário tem a possibilidade de realizar uma avaliação e verificar se a avaliação está sendo exibida corretamente no anúncio da negociação</td>
+                <td>
+                    <ol>
+                        <li>Acessar o aplicativo (dispositivos móveis) ou o site através de um navegador</li>
+                        <li>Visualizar a página principal</li>
+                        <li>Clicar em um anúncio</li>
+                        <li>Clicar em "Negociar"</li>
+                        <li>Realizar um pedido de negociação</li>
+                        <li>Aguardar o proprietário aceitar o pedido de negociação</li>
+                        <li>Realizar uma negociação</li>
+                        <li>Terminar uma negociação</li>
+                        <li>Navegar até o Chat através da barra de navegação</li>
+                        <li>Clicar nas mensagens da negociação finalizada</li>
+                        <li>Clicar em "Avalie essa negociação"</li>
+                        <li>Avalie a negociação</li>
+                    </ol>
+                </td>
+                <td> A avaliação deve ser realizada corretamente e exibida no anúncio da negociação realizada</td>
+            </tr>
+        </tbody>
+    </table>
+
+## Plano de Testes cadasdro da Página de Pérfil.
+#### Responsável: Henrique Alexandre
+
+Esta página é responsável pelo cadastro de endereços do usuário e alteração de nome e foto de perfil do usuário
+<table>
+	<thead>
+		<tr>
+			<th>Casos de Teste</th>
+			<th>Requisitos Associados</th>
+			<th>Objetivo do Teste</th>
+			<th>Passos</th>
+			<th>Critérios de Êxito</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>CT-16 - Cadastro de endereço </td>
+			<td>RF-002 - Permitir ao usuário que cadastre, altere ou delete seus endereços.</td>
+			<td>Garantir que o usuário consiga cadastrar novos endereços </td>
+			<td>
+				<ol>
+					<li>Considerando um usuário devidamente logado.</li>
+					<li>Na página de perfil do usuário preencher os campos relacionados ao endereço.</li>
+					<li>Após prencher corretamente os campos necessários clicar no botão de Salvar</li>
+					<li>Após Clicar no botão de salvar entrar novamente na página de perfil do usuário</li>
+					<li>Clicar no nome do endereço cadastrado e verificar se estão corretos.</li>
+				</ol>
+			</td>
+			<td>O sistema deve criar um endereço e exibi-lo na página de perfil do usuário.</td>
+		</tr>
+        <tr>
+           <td>CT-17 - Deletar um endereço cadastrado </td>
+			<td>RF-002 - Permitir ao usuário que cadastre, altere ou delete seus endereços.</td>
+			<td>Garantir que o usuário consiga deletar o endereços cadastrado </td>
+			<td>
+				<ol>
+					<li>Considerando um usuário devidamente logado.</li>
+					<li>Na página de perfil o usuário deve visualizar e clicar no nome do endereço do formuário de endereços. </li>
+					<li>Após clicar no nome do endereço cadastrado o sistema deve carregar as informações daquele endereço e substituir o botão salvar pelo botão de deletar.</li>
+					<li>Após Clicar no botão de deletar com o endereço selecionado, o sistema deve apagar aquele endereço do banco de dados.</li>
+				</ol>
+			</td>
+			<td>O sistema deve deletar um endereço selecionado do banco de dados.</td>
+        </tr>
+         <tr>
+           <td>CT-18 - Alterar um endereço cadastrado </td>
+			<td>RF-002 - Permitir ao usuário que cadastre ou altere ou delete seus endereços.</td>
+			<td>Garantir que o usuário consiga alterar o endereços cadastrado </td>
+			<td>
+				<ol>
+					<li>Considerando um usuário devidamente logado.</li>
+					<li>Na página de perfil o usuário deve visualizar e clicar no nome do endereço do formuário de endereços. </li>
+                    <li>O usuário deve alterar um campo do formulário de endereço que desejar.</li>
+					<li>Após clicar no nome do endereço cadastrado o sistema deve carregar as informações daquele endereço e substituir o botão salvar pelo botão de deletar e Alterar.</li>
+					<li>Após Clicar no botão de Alterar com o endereço selecionado, o sistema deve modificar aquele endereço do banco de dados com os novos dados preenchidos.</li>
+				</ol>
+			</td>
+			<td>O sistema deve modificar um endereço selecionado no banco de dados.</td>
+        </tr>
+        <tr>
+            <td>CT-19 - adicionar uma foto de perfil do usuário.</td>
+			<td>RF-004 Permitir ao usuário adicionar, alterar ou excluir uma foto de perfil do usuário.</td>
+			<td>Garantir que o usuário consiga adicionar uma foto de perfil</td>
+			<td>
+				<ol>
+					<li>Considerando um usuário devidamente logado.</li>
+					<li>Na página de perfil o usuário deve visualizar e clicar no botão de selecionar imagem </li>
+					<li>O usuário deve selecionar um arquivo no formato de imagem (png, jpg...)</li>
+					<li>Após selecionar a imagem o sistema deve preencher o campo de seleção de arquivo com o nome do arquivo selecionado, o usuário deve clicar em salvar.</li>
+                    <li>Após clicar em salvar o usuário deve retornar a página de perfil e visualizar a foto que foi adicionada</li>
+				</ol>
+			</td>
+			<td>O sistema deve adicionar um arquivo de imagem na foto de perfil do usuário.</td>
+        </tr>
+        <tr>
+            <td>CT-20 - Alterar a foto de perfil do usuário.</td>
+			<td>RF-004 Permitir ao usuário adicionar, alterar ou excluir uma foto de perfil do usuário.</td>
+			<td>Garantir que o usuário consiga trocar a foto de perfil</td>
+			<td>
+				<ol>
+					<li>Considerando um usuário devidamente logado.</li>
+					<li>Na página de perfil o usuário deve visualizar e clicar no botão de selecionar imagem </li>
+					<li>O usuário deve selecionar um arquivo no formato de imagem (png, jpg...)</li>
+					<li>Após selecionar a imagem o sistema deve preencher o campo de seleção de arquivo com o nome do arquivo selecionado, o usuário deve clicar em salvar.</li>
+                    <li>Após clicar em salvar o usuário deve retornar a página de perfil e visualizar a foto que foi alterada.</li>
+				</ol>
+			</td>
+			<td>O sistema deve alterar um arquivo de imagem na foto de perfil do usuário.</td>
+        </tr>
+        <tr>
+            <td>CT-21 - Deletar a foto de perfil do usuário.</td>
+			<td>RF-004 Permitir ao usuário adicionar, alterar ou excluir uma foto de perfil do usuário.</td>
+			<td>Garantir que o usuário consiga excluir a foto de perfil</td>
+			<td>
+				<ol>
+					<li>Considerando um usuário devidamente logado.</li>
+					<li>Na página de perfil o usuário deve visualizar e clicar no botão de deletar imagem. </li>
+					<li>O usuário deve clicar em sim na mensagem de confirmação para exclusão do arquivo.</li>
+					<li>Após clicar em sim o sistema deve deletar a foto atual de perfil do usuário.</li>
+                    <li>Após deletar a imagem o sistema deve exibir a mensagem 'image not found' no local da imagem.</li>
+				</ol>
+			</td>
+			<td>O sistema deve deletar a imagem na foto de perfil do usuário.</td>
+        </tr>
+        <tr>
+            <td>CT-22 - Alterar o nome do usuário.</td>
+			<td>RF-006 - Permitir ao usuário alterar sua informações pessoais</td>
+			<td>Garantir que o usuário consiga alterar o nome que foi cadastrado.</td>
+			<td>
+				<ol>
+					<li>Considerando um usuário devidamente logado.</li>
+					<li>Na página de perfil o usuário deve substituir o nome no formulário de perfil. </li>
+					<li>O usuário deve clicar em salvar alterações para salvar o novo nome que foi inserido</li>
+					<li>Após clicar o sistema deve mostrar o novo nome que foi escolhido.</li>            
+				</ol>
+			</td>
+			<td>O sistema deve alterar o nome do usuário.</td>
+        </tr>
+	</tbody>
+</table>
+
+
+    
