@@ -67,3 +67,31 @@ O destinatário recebeu a mensagem.
 
 <img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/fsss.PNG" />
 
+## CT-09 - Garantir que o usuário possa cancelar ou completar uma transação.
+
+O teste foi executado com sucesso.
+
+O usuário deve poder escolher entre cancelar ou completar a transação.
+
+<img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/sss.PNG" />
+
+
+Após selecionar uma das opções, a transação é finalizada, e o chat é encerrado, sendo removido da lista.
+
+<img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/sssff.PNG" />
+
+
+## CT-10 - Garantir que o usuário deve poder visualizar uma lista de conversas.
+
+O teste foi executado com sucesso.
+
+O usuário deve conseguir visualizar uma lista de conversas e escolher uma delas.
+
+<img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/ssssssss.PNG" />
+
+
+
+
+
+
+
