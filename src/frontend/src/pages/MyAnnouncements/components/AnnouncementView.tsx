@@ -2,10 +2,11 @@ import { View, Text, StyleSheet } from "react-native";
 import { CleanAnnouncementView } from "../../../types/CleanAnnouncementView";
 import { WhiteColor } from "../../../common/theme/colors";
 import { ImageLink } from "./ImageLink";
-import CheckedLabel from "../../../common/components/CheckedLabel";
-import SecondaryButton from "../../../common/components/SecondaryButton";
 import { useNavigation } from "@react-navigation/native";
 import { StackTypes } from "../../../routes/StackTypes";
+import { useMyAnnouncementsContext } from "../contexts";
+import CheckedLabel from "../../../common/components/CheckedLabel";
+import SecondaryButton from "../../../common/components/SecondaryButton";
 
 /**
  * AnnouncementViewProps
@@ -21,6 +22,7 @@ type AnnouncementViewProps = {
 
 export function AnnouncementView({ announcement }: AnnouncementViewProps) {
   const navigation = useNavigation<StackTypes>();
+  const { dispatch } = useMyAnnouncementsContext();
 
   const formatDate = (date: string | null) => {
     const dateArr = date?.split('-');
@@ -54,7 +56,10 @@ export function AnnouncementView({ announcement }: AnnouncementViewProps) {
           label="Editar"
           style={{ width: 100 }}
           fontSize={12}
-          onClick={() => { navigation.navigate("Criar Anúncio", { announcementId: announcement.id }) }} />
+          onClick={() => {
+            dispatch({ type: 'set_has_reseted', payload: false });
+            navigation.navigate("Criar Anúncio", { announcementId: announcement.id })
+          }} />
       </View>
     </View>
   );

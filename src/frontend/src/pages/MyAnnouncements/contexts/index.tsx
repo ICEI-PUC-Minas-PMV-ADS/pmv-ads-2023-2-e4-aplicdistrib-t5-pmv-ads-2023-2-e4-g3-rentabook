@@ -14,6 +14,7 @@ const initialState: MyAnnouncementsState = {
   term: '',
   sort: null,
   hasMoreData: true,
+  hasReseted: false,
   announcements: [],
 }
 

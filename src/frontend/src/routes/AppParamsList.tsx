@@ -8,7 +8,7 @@ export type AppParamsList = {
 
   'Anúncios': {};
   'Profile': {};
-  'Meus Anúncios': {};
+  'Meus Anúncios': { reset?: boolean };
   'Criar Anúncio': { announcementId?: string };
   'RequireAuth': {};
   'Criar Conta': {};

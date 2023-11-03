@@ -15,6 +15,7 @@ export type MyAnnouncementsState = {
   term: string,
   sort: number | null,
   hasMoreData: boolean,
+  hasReseted: boolean,
   announcements: CleanAnnouncementView[],
 };
 
@@ -30,7 +31,8 @@ type MyAnnouncementsActionType =
   'toggle_filter_sale' |
   'set_sort_filter' |
   'set_search_term' |
-  'load_announcements';
+  'load_announcements' |
+  'set_has_reseted';
 
 /**
  * MyAnnouncementsAction
@@ -75,6 +77,10 @@ export const MyAnnouncementsReducer = (
           sale: state.filter.sale,
         }),
       };
+
+    case 'set_has_reseted':
+      return { ...state, hasReseted: action.payload };
+
 
     case 'toggle_filter_sale':
       return {
@@ -139,7 +145,7 @@ export const MyAnnouncementsReducer = (
           }
         }
         return {
-          ...state, announcements: filterAnnouncements({
+          ...state, hasMoreData: true, announcements: filterAnnouncements({
             term: state.term,
             sort: state.sort,
             rent: state.filter.rent,

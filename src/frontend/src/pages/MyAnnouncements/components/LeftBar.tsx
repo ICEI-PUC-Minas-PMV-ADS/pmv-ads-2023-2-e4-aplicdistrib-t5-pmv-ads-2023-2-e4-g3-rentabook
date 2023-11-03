@@ -23,7 +23,10 @@ export const LeftBar = (props: LeftBarProps) => {
     <View style={styles.container}>
       <ComposedButton
         title="Cadastrar livro"
-        onClick={() => navigation.navigate('Criar Anúncio', {})} />
+        onClick={() => {
+          dispatch({ type: 'set_has_reseted', payload: false });
+          navigation.navigate('Criar Anúncio', {})
+        }} />
 
       <Text style={styles.filterTitle}>Filtrar por:</Text>
 

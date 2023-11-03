@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, ScrollView } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { MyAnnouncementsProvider } from "./contexts";
 import { LeftBar } from "./components/LeftBar";
 import { RightContent } from "./components/RightContent";
@@ -14,9 +14,7 @@ export default function MyAnnouncements() {
       <ResponsiveNavbar>
         <View style={styles.container}>
           <LeftBar />
-          <ScrollView>
-            <RightContent />
-          </ScrollView>
+          <RightContent />
         </View>
       </ResponsiveNavbar>
     </MyAnnouncementsProvider>

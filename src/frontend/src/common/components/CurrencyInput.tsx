@@ -52,22 +52,13 @@ export default function CurrencyInput({ style, value = "", label, placeholder, o
         .replaceAll(",", "");
 
       if (new RegExp(/[0-9]+$/).test(fixedInputValue)) {
-        setInputValue((parseFloat(fixedInputValue)).toString())
+        setInputValue((parseFloat(fixedInputValue) * 100).toString())
       } else {
         setInputValue("")
       }
     } else {
       setInputValue("");
     }
-
-    /*
-    if (inputValue.length > 0) {
-      const numberValue = parseFloat(inputValue) / 100
-      onChangeText?.(numberValue.toFixed(2));
-    } else {
-      onChangeText?.("");
-    }
-    */
   }, [value]);
 
   const formatCurrency = (val: string): string => {
@@ -93,7 +84,7 @@ export default function CurrencyInput({ style, value = "", label, placeholder, o
             if (new RegExp(/[0-9]+$/).test(fixedInputValue)) {
               if (parseInt(fixedInputValue) !== 0) {
                 setInputValue(fixedInputValue);
-                onChangeText?.(fixedInputValue);
+                onChangeText?.((parseInt(fixedInputValue) / 100).toString());
               } else {
                 setInputValue("");
                 onChangeText?.("");
