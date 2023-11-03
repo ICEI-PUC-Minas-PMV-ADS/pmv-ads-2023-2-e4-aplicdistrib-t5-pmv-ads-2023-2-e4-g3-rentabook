@@ -124,32 +124,6 @@ Esta página é responsável pelo processo de cadastro de novos usuários na apl
                 </td>
                 <td>As mensagens de erro são exibidas corretamente.</td>
             </tr>
-            <tr>
-                <td>9. Teste do tratamento de erro na submissão</td>
-                <td>RF-001</td>
-                <td>Verificar se o tratamento de erro ao falhar na submissão real é adequado.</td>
-                <td>
-                    <ol>
-                        <li>Preencha os campos corretamente, mas simule uma falha na submissão.</li>
-                        <li>Clique no botão "Continuar".</li>
-                    </ol>
-                </td>
-                <td>O tratamento de erro é adequado e fornece feedback ao usuário.</td>
-            </tr>
-            <tr>
-                <td>10. Teste da orientação da interface do usuário</td>
-                <td>RNF-001</td>
-                <td>Verificar se a interface do usuário se ajusta à orientação corretamente.</td>
-                <td>
-                    <ol>
-                        <li>Gire o dispositivo para a orientação paisagem.</li>
-                        <li>Verifique se a interface se ajusta corretamente.</li>
-                        <li>Gire o dispositivo para a orientação retrato.</li>
-                        <li>Verifique se a interface se ajusta corretamente.</li>
-                    </ol>
-                </td>
-                <td>A interface do usuário se ajusta à orientação corretamente.</td>
-            </tr>
         </tbody>
     </table>
 
@@ -251,32 +225,6 @@ Esta página é responsável pelo processo de login de usuários existentes na a
                     </ol>
                 </td>
                 <td>As mensagens de erro são exibidas corretamente.</td>
-            </tr>
-            <tr>
-                <td>7. Teste do tratamento de erro na submissão</td>
-                <td>RF-003</td>
-                <td>Verificar se o tratamento de erro ao falhar na submissão real é adequado.</td>
-                <td>
-                    <ol>
-                        <li>Preencha os campos corretamente, mas simule uma falha na submissão.</li>
-                        <li>Clique no botão "Entrar".</li>
-                    </ol>
-                </td>
-                <td>O tratamento de erro é adequado e fornece feedback ao usuário.</td>
-            </tr>
-            <tr>
-                <td>8. Teste da orientação da interface do usuário</td>
-                <td>RNF-001</td>
-                <td>Verificar se a interface do usuário se ajusta à orientação corretamente.</td>
-                <td>
-                    <ol>
-                        <li>Gire o dispositivo para a orientação paisagem.</li>
-                        <li>Verifique se a interface se ajusta corretamente.</li>
-                        <li>Gire o dispositivo para a orientação retrato.</li>
-                        <li>Verifique se a interface se ajusta corretamente.</li>
-                    </ol>
-                </td>
-                <td>A interface do usuário se ajusta à orientação corretamente.</td>
             </tr>
         </tbody>
     </table>
