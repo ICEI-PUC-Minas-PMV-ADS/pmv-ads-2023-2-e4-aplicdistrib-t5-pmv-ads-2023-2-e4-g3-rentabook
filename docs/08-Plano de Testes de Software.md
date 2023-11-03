@@ -351,6 +351,7 @@ Esta página é responsável pelo processo de login de usuários existentes na a
 	</tbody>
 </table>
 
+
 ## Plano de Testes de cadastro de fotos dos livros.
 #### Responsável: Vitor Alexandre
 
@@ -662,5 +663,127 @@ Está página é responsavel pelo envio de mensagens, listagem dos chats e Confi
             </tr>
         </tbody>
     </table>
+
+## Plano de Testes cadasdro da Página de Pérfil.
+#### Responsável: Henrique Alexandre
+
+Esta página é responsável pelo cadastro de endereços do usuário e alteração de nome e foto de perfil do usuário
+<table>
+	<thead>
+		<tr>
+			<th>Casos de Teste</th>
+			<th>Requisitos Associados</th>
+			<th>Objetivo do Teste</th>
+			<th>Passos</th>
+			<th>Critérios de Êxito</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>CT-16 - Cadastro de endereço </td>
+			<td>RF-002 - Permitir ao usuário que cadastre, altere ou delete seus endereços.</td>
+			<td>Garantir que o usuário consiga cadastrar novos endereços </td>
+			<td>
+				<ol>
+					<li>Considerando um usuário devidamente logado.</li>
+					<li>Na página de perfil do usuário preencher os campos relacionados ao endereço.</li>
+					<li>Após prencher corretamente os campos necessários clicar no botão de Salvar</li>
+					<li>Após Clicar no botão de salvar entrar novamente na página de perfil do usuário</li>
+					<li>Clicar no nome do endereço cadastrado e verificar se estão corretos.</li>
+				</ol>
+			</td>
+			<td>O sistema deve criar um endereço e exibi-lo na página de perfil do usuário.</td>
+		</tr>
+        <tr>
+           <td>CT-17 - Deletar um endereço cadastrado </td>
+			<td>RF-002 - Permitir ao usuário que cadastre, altere ou delete seus endereços.</td>
+			<td>Garantir que o usuário consiga deletar o endereços cadastrado </td>
+			<td>
+				<ol>
+					<li>Considerando um usuário devidamente logado.</li>
+					<li>Na página de perfil o usuário deve visualizar e clicar no nome do endereço do formuário de endereços. </li>
+					<li>Após clicar no nome do endereço cadastrado o sistema deve carregar as informações daquele endereço e substituir o botão salvar pelo botão de deletar.</li>
+					<li>Após Clicar no botão de deletar com o endereço selecionado, o sistema deve apagar aquele endereço do banco de dados.</li>
+				</ol>
+			</td>
+			<td>O sistema deve deletar um endereço selecionado do banco de dados.</td>
+        </tr>
+         <tr>
+           <td>CT-18 - Alterar um endereço cadastrado </td>
+			<td>RF-002 - Permitir ao usuário que cadastre ou altere ou delete seus endereços.</td>
+			<td>Garantir que o usuário consiga alterar o endereços cadastrado </td>
+			<td>
+				<ol>
+					<li>Considerando um usuário devidamente logado.</li>
+					<li>Na página de perfil o usuário deve visualizar e clicar no nome do endereço do formuário de endereços. </li>
+                    <li>O usuário deve alterar um campo do formulário de endereço que desejar.</li>
+					<li>Após clicar no nome do endereço cadastrado o sistema deve carregar as informações daquele endereço e substituir o botão salvar pelo botão de deletar e Alterar.</li>
+					<li>Após Clicar no botão de Alterar com o endereço selecionado, o sistema deve modificar aquele endereço do banco de dados com os novos dados preenchidos.</li>
+				</ol>
+			</td>
+			<td>O sistema deve modificar um endereço selecionado no banco de dados.</td>
+        </tr>
+        <tr>
+            <td>CT-19 - adicionar uma foto de perfil do usuário.</td>
+			<td>RF-004 Permitir ao usuário adicionar, alterar ou excluir uma foto de perfil do usuário.</td>
+			<td>Garantir que o usuário consiga adicionar uma foto de perfil</td>
+			<td>
+				<ol>
+					<li>Considerando um usuário devidamente logado.</li>
+					<li>Na página de perfil o usuário deve visualizar e clicar no botão de selecionar imagem </li>
+					<li>O usuário deve selecionar um arquivo no formato de imagem (png, jpg...)</li>
+					<li>Após selecionar a imagem o sistema deve preencher o campo de seleção de arquivo com o nome do arquivo selecionado, o usuário deve clicar em salvar.</li>
+                    <li>Após clicar em salvar o usuário deve retornar a página de perfil e visualizar a foto que foi adicionada</li>
+				</ol>
+			</td>
+			<td>O sistema deve adicionar um arquivo de imagem na foto de perfil do usuário.</td>
+        </tr>
+        <tr>
+            <td>CT-20 - Alterar a foto de perfil do usuário.</td>
+			<td>RF-004 Permitir ao usuário adicionar, alterar ou excluir uma foto de perfil do usuário.</td>
+			<td>Garantir que o usuário consiga trocar a foto de perfil</td>
+			<td>
+				<ol>
+					<li>Considerando um usuário devidamente logado.</li>
+					<li>Na página de perfil o usuário deve visualizar e clicar no botão de selecionar imagem </li>
+					<li>O usuário deve selecionar um arquivo no formato de imagem (png, jpg...)</li>
+					<li>Após selecionar a imagem o sistema deve preencher o campo de seleção de arquivo com o nome do arquivo selecionado, o usuário deve clicar em salvar.</li>
+                    <li>Após clicar em salvar o usuário deve retornar a página de perfil e visualizar a foto que foi alterada.</li>
+				</ol>
+			</td>
+			<td>O sistema deve alterar um arquivo de imagem na foto de perfil do usuário.</td>
+        </tr>
+        <tr>
+            <td>CT-21 - Deletar a foto de perfil do usuário.</td>
+			<td>RF-004 Permitir ao usuário adicionar, alterar ou excluir uma foto de perfil do usuário.</td>
+			<td>Garantir que o usuário consiga excluir a foto de perfil</td>
+			<td>
+				<ol>
+					<li>Considerando um usuário devidamente logado.</li>
+					<li>Na página de perfil o usuário deve visualizar e clicar no botão de deletar imagem. </li>
+					<li>O usuário deve clicar em sim na mensagem de confirmação para exclusão do arquivo.</li>
+					<li>Após clicar em sim o sistema deve deletar a foto atual de perfil do usuário.</li>
+                    <li>Após deletar a imagem o sistema deve exibir a mensagem 'image not found' no local da imagem.</li>
+				</ol>
+			</td>
+			<td>O sistema deve deletar a imagem na foto de perfil do usuário.</td>
+        </tr>
+        <tr>
+            <td>CT-22 - Alterar o nome do usuário.</td>
+			<td>RF-006 - Permitir ao usuário alterar sua informações pessoais</td>
+			<td>Garantir que o usuário consiga alterar o nome que foi cadastrado.</td>
+			<td>
+				<ol>
+					<li>Considerando um usuário devidamente logado.</li>
+					<li>Na página de perfil o usuário deve substituir o nome no formulário de perfil. </li>
+					<li>O usuário deve clicar em salvar alterações para salvar o novo nome que foi inserido</li>
+					<li>Após clicar o sistema deve mostrar o novo nome que foi escolhido.</li>            
+				</ol>
+			</td>
+			<td>O sistema deve alterar o nome do usuário.</td>
+        </tr>
+	</tbody>
+</table>
+
 
     

@@ -26,14 +26,6 @@ export default function Profile() {
   const [addressList, setAddressList] = useState<PrivateAddress[] | null[]>([])
   const auth = useContext(AuthContext)
 
-  const handleLogout = async () => {
-    if (auth.user) {
-      const logout = await auth.logout()
-      if (logout) {
-        navigation.navigate("Anúncios", {})
-      }
-    }
-  }
 
   const fetchUserData = async () => {
     // TODO: Carregar as informações do usuario
@@ -51,9 +43,12 @@ export default function Profile() {
   }, [])
 
   return (
+  
     <ResponsiveNavbar>
-      <ScrollView>
+            <ScrollView>
         <View style={style.container}>
+  
+
           <ProfileBox
             nome={nome}
             email={email}
@@ -65,9 +60,11 @@ export default function Profile() {
             onSaveAddress={() => { fetchUserData() }}
             onDeleteAddress={() => { fetchUserData() }}
           />
-        </View>
-      </ScrollView>
 
+
+        </View>
+
+      </ScrollView>
     </ResponsiveNavbar>
   );
 }
