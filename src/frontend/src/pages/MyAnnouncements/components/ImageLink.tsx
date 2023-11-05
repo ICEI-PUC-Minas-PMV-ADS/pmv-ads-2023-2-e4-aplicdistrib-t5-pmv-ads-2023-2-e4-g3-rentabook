@@ -1,10 +1,10 @@
-import { Image, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { Image } from 'expo-image';
+import { ImageLinksGoogleBooks } from "../../../types/ImageLinksGoogleBooks";
 
 /**
  * ImageLinkProps
  */
-
-import { ImageLinksGoogleBooks } from "../../../types/ImageLinksGoogleBooks";
 
 type ImageLinkProps = {
   imageLinks: ImageLinksGoogleBooks | null,
@@ -18,14 +18,16 @@ export function ImageLink({ imageLinks }: ImageLinkProps) {
   if (imageLinks?.thumbnail) {
     return (
       <Image
-        source={{ uri: imageLinks?.thumbnail }}
-        style={styles.thumbnail} />
+        source={imageLinks?.thumbnail}
+        style={styles.thumbnail}
+        contentFit='contain' />
     );
   }
   return (
     <Image
-      source={require('/src/common/assets/notFound.jpg')}
-      style={styles.placeholder} />
+      source={require('../../../common/assets/notFound.jpg')}
+      style={styles.placeholder}
+      contentFit='contain' />
   );
 }
 
@@ -37,12 +39,11 @@ const styles = StyleSheet.create({
   placeholder: {
     width: 100,
     height: 100,
+    alignSelf: 'center',
     textAlignVertical: "auto",
     borderRadius: 25,
   },
   thumbnail: {
-    width: 290,
-    height: 290,
-    resizeMode: 'contain',
+    flex: 1,
   }
 });

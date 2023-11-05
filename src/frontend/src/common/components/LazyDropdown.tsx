@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Modal, View, Text, Image, Pressable, StyleSheet, LayoutChangeEvent, Platform, FlatList, ScrollView } from "react-native";
+import { Modal, View, Text, Pressable, StyleSheet, LayoutChangeEvent, Platform, FlatList, ScrollView } from "react-native";
 import { WhiteColor } from '../theme/colors';
-import Assets from '../theme/assets';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 /**
  * Props
@@ -13,6 +13,7 @@ type LazyDropdownProps<T> = {
   items: T[],
   value?: T | null,
   maxHeight?: number,
+  keyExtractor?: (item: T) => any,
   renderItem: (item: T) => JSX.Element,
   getItemLabel?: (item: T) => string,
   onEndReached?: () => void,
@@ -55,20 +56,18 @@ const LazyDropdownStyle = StyleSheet.create({
  * https://www.figma.com/file/2lR8urPO212OkkhvDTmmgF/Untitled?type=design&node-id=32-279&mode=design&t=ZkwebBuGnnQ715v7-4
  */
 
-export default function LazyDropdown<T>({ placeholder, style, items, value, maxHeight = 500, renderItem, onEndReached, getItemLabel, onSelect }: LazyDropdownProps<T>) {
-  const [size, setSize] = React.useState<{ width?: number, height?: number }>({});
+export default function LazyDropdown<T>({ placeholder, style, items, value, maxHeight = 500, keyExtractor, renderItem, onEndReached, getItemLabel, onSelect }: LazyDropdownProps<T>) {
   const [selectedItem, setSelectedItem] = React.useState<T | undefined>();
   const [opened, setOpened] = React.useState<boolean>(false);
   const [layout, setLayout] = React.useState<LazyDropdownLayout>({});
   const [dropdownValue] = React.useState<string>(placeholder ?? "");
 
+  const dropdownRef = React.useRef<View>(null);
+
   const onLayout = (event: LayoutChangeEvent) => {
-    if (Platform.OS == "web") {
+    if (Platform.OS === "web") {
       const { width, height, x, y, top, left } = event.nativeEvent.layout as any;
       setLayout({ width, height, x: x + left, y: y + top + height + 2 });
-    } else {
-      const { width, height, x, y } = event.nativeEvent.layout;
-      setLayout({ width, height, x, y });
     }
   };
 
@@ -77,12 +76,6 @@ export default function LazyDropdown<T>({ placeholder, style, items, value, maxH
     setSelectedItem(item);
     setOpened(false);
   };
-
-  React.useEffect(() => {
-    Image.getSize(Assets.IcDropdownArrow, (w, h) => {
-      setSize({ width: w * 0.6, height: h * 0.6 })
-    });
-  }, []);
 
   React.useEffect(() => {
     if (value) { setSelectedItem(value); }
@@ -100,12 +93,17 @@ export default function LazyDropdown<T>({ placeholder, style, items, value, maxH
 
   return (
     <View style={[style]}>
-      <Pressable onPress={() => setOpened(opened => !opened)} onLayout={onLayout}>
-        <View style={LazyDropdownStyle.dropdownContainer}>
+      <Pressable onPress={() => {
+        if (Platform.OS === 'android') {
+          dropdownRef.current?.measureInWindow((x, y, width, height) => {
+            setLayout({ width, height, x, y: y + height });
+          });
+        }
+        setOpened(opened => !opened);
+      }} onLayout={onLayout}>
+        <View ref={dropdownRef} style={LazyDropdownStyle.dropdownContainer}>
           {renderValue(selectedItem)}
-          <Image
-            source={{ uri: Assets.IcDropdownArrow, width: size.width, height: size.height }}
-          />
+          <Ionicons name="chevron-down-outline" size={20} />
         </View>
       </Pressable>
 
@@ -115,6 +113,9 @@ export default function LazyDropdown<T>({ placeholder, style, items, value, maxH
             <ScrollView>
               <FlatList
                 data={items}
+                scrollEnabled={false}
+                nestedScrollEnabled={true}
+                keyExtractor={keyExtractor}
                 renderItem={({ item }) => (
                   <Pressable onPress={() => onHandleSelect(item)}>
                     {renderItem(item)}

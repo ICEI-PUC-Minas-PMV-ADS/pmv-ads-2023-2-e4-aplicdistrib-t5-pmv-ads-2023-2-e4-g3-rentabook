@@ -8,8 +8,11 @@ import { announcementsService } from "../../../services/announcementsService";
 
 import SearchInput from "../../../common/components/SearchInput";
 import Dropdown from "../../../common/components/Dropdown";
-import { RouteProp, useRoute } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { AppParamsList } from '../../../routes/AppParamsList';
+import { Desktop } from '../../../hooks/useResposive';
+import { useMediaQuery } from './../../../hooks/useResposive';
+import { StackTypes } from '../../../routes/StackTypes';
 
 /**
  * RightContentProps
@@ -35,34 +38,22 @@ const FilterOptions = [
  */
 
 export const RightContent = (props: RightContentProps) => {
+  const navigation = useNavigation<StackTypes>();
   const route = useRoute<RouteProp<AppParamsList, 'Meus Anúncios'>>();
-  const [page, setPage] = React.useState<number>(0);
   const [loading, setLoading] = React.useState(false);
   const { state, dispatch } = useMyAnnouncementsContext();
 
   React.useEffect(() => {
-    if (route.params.reset === true && !state.hasReseted) {
-      if (page === 0) {
-        setLoading(true);
-        announcementsService.getMyOwnAnnouncements(page)
-          .then((data) => {
-            dispatch({ type: 'load_announcements', payload: data.content });
-            setLoading(false);
-          })
-          .catch((err) => {
-            setLoading(false);
-          });
-      } else {
-        setPage(0);
-      }
-      dispatch({ type: 'set_has_reseted', payload: true });
+    if (route.params.reset && !state.hasReseted) {
+      dispatch({ type: 'reset' });
+      navigation.setParams({ reset: false });
     }
-  }, [state.hasReseted, page, route.params.reset]);
+  }, [route.params.reset, state.hasReseted]);
 
   React.useEffect(() => {
     if (state.hasMoreData && !loading) {
       setLoading(true);
-      announcementsService.getMyOwnAnnouncements(page)
+      announcementsService.getMyOwnAnnouncements(state.page)
         .then((data) => {
           dispatch({ type: 'load_announcements', payload: data.content });
           setLoading(false);
@@ -71,47 +62,70 @@ export const RightContent = (props: RightContentProps) => {
           setLoading(false);
         });
     }
-  }, [page]);
+  }, [state.page, state.hasMoreData, loading]);
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <View style={styles.searchBar}>
-          {/**
-          * Search bar
-          */}
+    <View style={styles.container}>
+      <View style={styles.searchBar}>
+        {
+          useMediaQuery(0, 1025) && (
+            <View style={{ width: '100%' }}>
+              <SearchInput
+                placeholder="Pesquisar por livro"
+                onChange={(value) => dispatch({ type: 'set_search_term', payload: value })} />
 
-          <SearchInput
-            style={{ width: 400 }}
-            placeholder="Pesquisar por livro"
-            onChange={(value) => dispatch({ type: 'set_search_term', payload: value })} />
+              <View style={{ height: 20 }} />
 
-          <Dropdown
-            items={FilterOptions}
-            style={{ width: 250 }}
-            placeholder="Ordenar por"
-            getValue={(item) => item.label}
-            onSelect={(item) => dispatch({ type: 'set_sort_filter', payload: item.id })}>
-            {(item) => (
-              <View style={{ backgroundColor: WhiteColor, paddingHorizontal: 20, paddingVertical: 10 }}>
-                <Text>{item.label}</Text>
-              </View>
-            )}
-          </Dropdown>
-        </View>
+              <Dropdown
+                items={FilterOptions}
+                placeholder="Ordenar por"
+                getValue={(item) => item.label}
+                onSelect={(item) => dispatch({ type: 'set_sort_filter', payload: item.id })}>
+                {(item) => (
+                  <View style={{ backgroundColor: WhiteColor, paddingHorizontal: 20, paddingVertical: 10 }}>
+                    <Text>{item.label}</Text>
+                  </View>
+                )}
+              </Dropdown>
+            </View>
+          )
+        }
+        {
+          useMediaQuery(1024, 10000) && (
+            <>
+              <SearchInput
+                style={{ width: 400 }}
+                placeholder="Pesquisar por livro"
+                onChange={(value) => dispatch({ type: 'set_search_term', payload: value })} />
 
-        {/**
+              <Dropdown
+                items={FilterOptions}
+                style={{ width: 250 }}
+                placeholder="Ordenar por"
+                getValue={(item) => item.label}
+                onSelect={(item) => dispatch({ type: 'set_sort_filter', payload: item.id })}>
+                {(item) => (
+                  <View style={{ backgroundColor: WhiteColor, paddingHorizontal: 20, paddingVertical: 10 }}>
+                    <Text>{item.label}</Text>
+                  </View>
+                )}
+              </Dropdown>
+            </>
+          )
+        }
+      </View>
+
+      {/**
         * Content
         */}
 
-        <View style={styles.container}>
-          <AnnouncementList
-            loading={loading}
-            loadMoreAnnouncements={() => { setPage((page) => page + 1); }}
-            announcements={state.announcements} />
-        </View>
+      <View style={styles.container}>
+        <AnnouncementList
+          loading={loading}
+          loadMoreAnnouncements={() => { dispatch({ type: 'set_page', payload: state.page + 1 }) }}
+          announcements={state.announcements} />
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -123,7 +137,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 20,
-    paddingHorizontal: 40,
   },
   searchBar: {
     justifyContent: 'space-between',

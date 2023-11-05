@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Modal, View, Text, Image, Pressable, StyleSheet, LayoutChangeEvent, Platform } from "react-native";
+import { Modal, View, Text, Pressable, StyleSheet, LayoutChangeEvent, Platform } from "react-native";
 import { WhiteColor } from '../theme/colors';
-import Assets from '../theme/assets';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 /**
  * Props
@@ -54,19 +54,19 @@ const DropdownStyle = StyleSheet.create({
  */
 
 export default function Dropdown<T>({ placeholder, style, items, value, getValue, onSelect, children }: DropdownProps<T>) {
-  const [size, setSize] = React.useState<{ width?: number, height?: number }>({});
   const [selectedItem, setSelectedItem] = React.useState<T | undefined>();
   const [opened, setOpened] = React.useState<boolean>(false);
   const [layout, setLayout] = React.useState<DropdownLayout>({});
   const [dropdownValue] = React.useState<string>(placeholder ?? "");
+
+  const dropdownRef = React.useRef<View>(null);
 
   const onLayout = (event: LayoutChangeEvent) => {
     if (Platform.OS == "web") {
       const { width, height, x, y, top, left } = event.nativeEvent.layout as any;
       setLayout({ width, height, x: x + left, y: y + top + height + 2 });
     } else {
-      const { width, height, x, y } = event.nativeEvent.layout;
-      setLayout({ width, height, x, y });
+
     }
   };
 
@@ -75,12 +75,6 @@ export default function Dropdown<T>({ placeholder, style, items, value, getValue
     setSelectedItem(item);
     setOpened(false);
   };
-
-  React.useEffect(() => {
-    Image.getSize(Assets.IcDropdownArrow, (w, h) => {
-      setSize({ width: w * 0.6, height: h * 0.6 })
-    });
-  }, []);
 
   React.useEffect(() => {
     if (value) { setSelectedItem(value); }
@@ -98,12 +92,17 @@ export default function Dropdown<T>({ placeholder, style, items, value, getValue
 
   return (
     <View style={[style]}>
-      <Pressable onPress={() => setOpened(opened => !opened)} onLayout={onLayout}>
-        <View style={DropdownStyle.dropdownContainer}>
+      <Pressable onPress={() => {
+        if (Platform.OS === 'android') {
+          dropdownRef.current?.measureInWindow((x, y, width, height) => {
+            setLayout({ width, height, x, y: y + height });
+          });
+        }
+        setOpened(opened => !opened)
+      }} onLayout={onLayout}>
+        <View ref={dropdownRef} onLayout={onLayout} style={DropdownStyle.dropdownContainer}>
           {renderValue(selectedItem)}
-          <Image
-            source={{ uri: Assets.IcDropdownArrow, width: size.width, height: size.height }}
-          />
+          <Ionicons name="chevron-down-outline" size={20} />
         </View>
       </Pressable>
 

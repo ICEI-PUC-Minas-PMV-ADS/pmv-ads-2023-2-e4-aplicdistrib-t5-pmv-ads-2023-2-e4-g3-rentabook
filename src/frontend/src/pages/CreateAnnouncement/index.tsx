@@ -14,6 +14,7 @@ import { CleanAnnouncementView } from '../../types/CleanAnnouncementView';
 import { AppParamsList } from '../../routes/AppParamsList';
 import { getImageLink } from '../../common/utils/annoucementsUtils';
 import { CreateAnnouncementProvider, useCreateAnnouncementContext } from './contexts';
+import { useMediaQuery } from '../../hooks/useResposive';
 
 import Dropdown from "../../common/components/Dropdown";
 import TextArea from "../../common/components/TextArea";
@@ -150,11 +151,26 @@ function CreateAnnouncementImpl(props: CreateAnnouncementProps) {
         sale: state.sale,
       });
     }
+
     if (Platform.OS === 'web') {
-      alert('Anuncio criado com sucesso!')
-      navigation.navigate("Meus Anúncios", { reset: true });
+      if (!state.announcement) {
+        alert('Anuncio criado com sucesso!')
+      } else {
+        alert('Anuncio editado com sucesso!')
+      }
+    } else {
+      /*
+      if (!state.announcement) {
+        const showToast = () => ToastAndroid.show("Anuncio criado com sucesso!", ToastAndroid.SHORT);
+        showToast();
+      } else {
+        const showToast = () => ToastAndroid.show("Anuncio editado com sucesso!", ToastAndroid.SHORT);
+        showToast();
+      }
+      */
     }
     dispatch({ type: 'set_uploaded_files', payload: [] });
+    navigation.navigate("Meus Anúncios", { reset: true });
   };
 
   /**
@@ -188,238 +204,478 @@ function CreateAnnouncementImpl(props: CreateAnnouncementProps) {
   return (
     <ResponsiveNavbar>
       <View style={styles.container}>
-        <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} >
-          <View style={styles.contentContainer}>
-            <View style={styles.form}>
-              <View style={styles.left}>
-                <View>
-                  <Text>Escolha o tipo:</Text>
-                  <View style={{ flexDirection: 'row', paddingVertical: 10 }}>
-                    <PrimaryButton
-                      label="Venda"
-                      style={{ paddingHorizontal: 10, paddingVertical: 5 }}
-                      activeStyle={state.sale}
-                      onPress={() => dispatch({ type: 'set_sale', payload: !state.sale })} />
+        {
+          useMediaQuery(0, 601) && (
+            <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} >
+              <View style={styles.contentContainerXs}>
+                <View style={styles.formXs}>
+                  <View>
+                    <View>
+                      <Text>Escolha o tipo:</Text>
+                      <View style={{ flexDirection: 'row', paddingVertical: 10 }}>
+                        <PrimaryButton
+                          label="Venda"
+                          style={{ paddingHorizontal: 10, paddingVertical: 5 }}
+                          activeStyle={state.sale}
+                          onPress={() => dispatch({ type: 'set_sale', payload: !state.sale })} />
 
-                    <View style={{ width: 10 }} />
+                        <View style={{ width: 10 }} />
 
-                    <PrimaryButton
-                      label="Troca"
-                      style={{ paddingHorizontal: 10, paddingVertical: 5 }}
-                      activeStyle={state.trade}
-                      onPress={() => dispatch({ type: 'set_trade', payload: !state.trade })} />
+                        <PrimaryButton
+                          label="Troca"
+                          style={{ paddingHorizontal: 10, paddingVertical: 5 }}
+                          activeStyle={state.trade}
+                          onPress={() => dispatch({ type: 'set_trade', payload: !state.trade })} />
 
-                    <View style={{ width: 10 }} />
+                        <View style={{ width: 10 }} />
 
-                    <PrimaryButton
-                      label="Aluguel"
-                      style={{ paddingHorizontal: 10, paddingVertical: 5 }}
-                      activeStyle={state.rent}
-                      onPress={() => dispatch({ type: 'set_rent', payload: !state.rent })} />
+                        <PrimaryButton
+                          label="Aluguel"
+                          style={{ paddingHorizontal: 10, paddingVertical: 5 }}
+                          activeStyle={state.rent}
+                          onPress={() => dispatch({ type: 'set_rent', payload: !state.rent })} />
+                      </View>
+                    </View>
+
+                    <View style={{ height: 10 }} />
+
+                    <View>
+                      <Text>Escolha o livro:</Text>
+                      <View style={styles.selectContainer}>
+                        <View >
+                          <SearchInput
+                            onChange={(value) => dispatch({ type: 'set_search_term', payload: value })}
+                            placeholder="Pesquisar por livro" />
+
+                          <View style={{ height: 10 }} />
+
+                          <PrimaryButton
+                            label='Buscar'
+                            style={{ paddingHorizontal: 16, paddingVertical: 12 }}
+                            onPress={() => {
+                              dispatch({ type: 'clear_books' });
+                              handleSearch(0)
+                            }} />
+                        </View>
+
+                        <View style={{ height: 20 }} />
+
+                        {state.books?.length > 0 &&
+                          <View style={{ width: '100%' }}>
+                            <LazyDropdown
+                              placeholder="Selecione seu livro"
+                              items={state.books}
+                              maxHeight={300}
+                              keyExtractor={(item) => item.id}
+                              onEndReached={handleEndReached}
+                              onSelect={(bookView) => dispatch({ type: 'set_selected_book', payload: bookView })}
+                              getItemLabel={(item) => item.title ?? ""}
+                              renderItem={(item) => (
+                                <View style={{ padding: 8, backgroundColor: WhiteColor }}>
+                                  <Text>{item.title}</Text>
+                                </View>
+                              )} />
+                          </View>
+                        }
+
+                        <View style={{ height: 20 }} />
+
+                        <View style={{ flexDirection: 'row' }}>
+                          <View
+                            style={{
+                              flex: 1,
+                              backgroundColor: PrimaryGreenColor,
+                              paddingVertical: 12,
+                              paddingHorizontal: 8,
+                              borderRadius: 8,
+                            }}>
+                            <Text>{state.selectedBook?.title ?? " "}</Text>
+                          </View>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+
+                  <View style={{ width: 20 }} />
+
+                  <View>
+                    <View>
+                      <Text>Endereço e valor:</Text>
+                      <View style={styles.buttonContainer}>
+
+                        <View style={{ width: '100%' }}>
+                          <Dropdown
+                            style={{ flex: 1 }}
+                            placeholder="Selecione seu endereço"
+                            items={state.userAddresses}
+                            value={state.selectedAddress}
+                            onSelect={(item) => dispatch({ type: 'set_selected_address', payload: item })}
+                            getValue={(item) => item.name ?? ""}>
+                            {(item) => <View style={{ padding: 8, backgroundColor: WhiteColor }}><Text>{item.name}</Text></View>}
+                          </Dropdown>
+                        </View>
+
+                        <View style={{ height: 20 }} />
+
+                        <View>
+                          <CurrencyInput
+                            style={{ flex: 1 }}
+                            placeholder="Digite o valor de venda"
+                            editable={state.sale}
+                            value={state.saleValue}
+                            onChangeText={(value) => { dispatch({ type: 'set_sale_value', payload: value }) }}
+                            label="Valor de venda"
+                          />
+
+                          <View style={{ height: 10 }} />
+
+                          <CurrencyInput
+                            style={{ flex: 1 }}
+                            placeholder="Digite o valor da diaria"
+                            editable={state.rent}
+                            value={state.rentValue}
+                            onChangeText={(value) => dispatch({ type: 'set_rent_value', payload: value })}
+                            label="Valor da aluguel(diaria)"
+                          />
+                        </View>
+                      </View>
+                    </View>
+
+                    <View>
+                      <Text>Descrição:</Text>
+                      <View style={styles.buttonContainer}>
+                        <TextArea
+                          style={{ height: 200 }}
+                          onChange={(value) => dispatch({ type: 'set_description', payload: value })}
+                          value={state.description}
+                          placeholder="Digite a descrição do produto" />
+                      </View>
+                    </View>
                   </View>
                 </View>
 
-                <View style={{ height: 30 }} />
+                <View style={{ paddingVertical: 20 }}>
+                  {state.announcement && state.announcement.images && state.announcement.images?.length > 0 && (
+                    <View style={{ width: '100%' }}>
+                      <Text>Imagens:</Text>
+                      <View style={{ flexDirection: 'row', width: '100%', height: 200, borderColor: '#a8a8a8', borderWidth: 1, marginTop: 20 }}>
+                        <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+                          <View style={{ flexDirection: 'row', height: 200, padding: 5 }}>
+                            {
+                              state.announcement.images.map((file, index) => {
+                                return (
+                                  <Image
+                                    key={index}
+                                    source={getImageLink(file)}
+                                    contentFit='contain'
+                                    style={{ width: 180, height: 180, margin: 5 }} />
+                                );
+                              })
+                            }
+                          </View>
+                        </ScrollView>
+                      </View>
+                      <View style={{ height: 20 }} />
+                    </View>
+                  )}
 
-                <View>
-                  <Text>Escolha o livro:</Text>
-                  <View style={styles.selectContainer}>
-                    <View style={{ flexDirection: 'row' }}>
-                      <SearchInput
-                        style={{ flex: 1 }}
-                        onChange={(value) => dispatch({ type: 'set_search_term', payload: value })}
-                        placeholder="Pesquisar por livro" />
-
-                      <View style={{ width: 10 }} />
-
+                  <Text>Upload imagem da capa:</Text>
+                  <View style={{ width: '100%', height: 200, justifyContent: 'center', alignItems: 'center', borderColor: '#a8a8a8', borderWidth: 1, marginTop: 20 }}>
+                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                      {UploadFileInput}
+                      <Text style={{ fontSize: 18 }}>Faça upload de suas imagens aqui</Text>
+                      <View style={{ height: 20 }} />
                       <PrimaryButton
-                        label='Buscar'
-                        style={{ paddingHorizontal: 16, paddingVertical: 12 }}
+                        label="Select file"
+                        style={{ width: 200 }}
                         onPress={() => {
-                          dispatch({ type: 'clear_books' });
-                          handleSearch(0)
+                          if (Platform.OS === "web") {
+                            const fileInput = document.getElementById("fileInput")
+                            fileInput!.click();
+                          }
                         }} />
                     </View>
-
-                    <View style={{ height: 20 }} />
-
-                    {state.books?.length > 0 &&
-                      <View style={{ width: '100%' }}>
-                        <LazyDropdown
-                          style={{ flex: 1 }}
-                          placeholder="Selecione seu livro"
-                          items={state.books}
-                          maxHeight={300}
-                          onEndReached={handleEndReached}
-                          onSelect={(bookView) => dispatch({ type: 'set_selected_book', payload: bookView })}
-                          getItemLabel={(item) => item.title ?? ""}
-                          renderItem={(item) => (
-                            <View style={{ padding: 8, backgroundColor: WhiteColor }}>
-                              <Text>{item.title}</Text>
-                            </View>
-                          )} />
-                      </View>
-                    }
-
-                    <View style={{ height: 20 }} />
-
-                    <View style={{ flexDirection: 'row' }}>
-                      <View
-                        style={{
-                          flex: 1,
-                          backgroundColor: PrimaryGreenColor,
-                          paddingVertical: 12,
-                          paddingHorizontal: 8,
-                          borderRadius: 8,
-                        }}>
-                        <Text>{state.selectedBook?.title ?? " "}</Text>
-                      </View>
-                    </View>
                   </View>
-                </View>
-              </View>
 
-              <View style={{ width: 20 }} />
-
-              <View style={styles.right}>
-                <View>
-                  <Text>Endereço e valor:</Text>
-                  <View style={styles.buttonContainer}>
-
+                  {state.uploadedFiles.length > 0 && (
                     <View style={{ width: '100%' }}>
-                      <Dropdown
-                        style={{ flex: 1 }}
-                        placeholder="Selecione seu endereço"
-                        items={state.userAddresses}
-                        value={state.selectedAddress}
-                        onSelect={(item) => dispatch({ type: 'set_selected_address', payload: item })}
-                        getValue={(item) => item.name ?? ""}>
-                        {(item) => <View style={{ padding: 8, backgroundColor: WhiteColor }}><Text>{item.name}</Text></View>}
-                      </Dropdown>
-                    </View>
-
-                    <View style={{ height: 20 }} />
-
-                    <View style={{ flexDirection: 'row', width: '100%' }}>
-                      <CurrencyInput
-                        style={{ flex: 1 }}
-                        placeholder="Digite o valor de venda"
-                        editable={state.sale}
-                        value={state.saleValue}
-                        onChangeText={(value) => { dispatch({ type: 'set_sale_value', payload: value }) }}
-                        label="Valor de venda"
-                      />
-
-                      <View style={{ width: 10 }} />
-
-                      <CurrencyInput
-                        style={{ flex: 1 }}
-                        placeholder="Digite o valor da diaria"
-                        editable={state.rent}
-                        value={state.rentValue}
-                        onChangeText={(value) => dispatch({ type: 'set_rent_value', payload: value })}
-                        label="Valor da aluguel(diaria)"
-                      />
-                    </View>
-                  </View>
-                </View>
-
-                <View>
-                  <Text>Descrição:</Text>
-                  <View style={styles.buttonContainer}>
-                    <TextArea
-                      style={{ height: 200 }}
-                      onChange={(value) => dispatch({ type: 'set_description', payload: value })}
-                      value={state.description}
-                      placeholder="Digite a descrição do produto" />
-                  </View>
-                </View>
-              </View>
-            </View>
-
-            <View style={{ paddingVertical: 20 }}>
-              {state.announcement && state.announcement.images && state.announcement.images?.length > 0 && (
-                <View style={{ width: '100%' }}>
-                  <Text>Imagens:</Text>
-                  <View style={{ flexDirection: 'row', width: '100%', height: 200, borderColor: '#a8a8a8', borderWidth: 1, marginTop: 20 }}>
-                    <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
-                      <View style={{ flexDirection: 'row', height: 200, padding: 5 }}>
-                        {
-                          state.announcement.images.map((file, index) => {
-                            return (
-                              <Image
-                                key={index}
-                                source={getImageLink(file)}
-                                style={{ width: 180, height: 180, margin: 5 }} />
-                            );
-                          })
-                        }
+                      <View style={{ height: 20 }} />
+                      <Text>Preview:</Text>
+                      <View style={{ flexDirection: 'row', width: '100%', height: 200, borderColor: '#a8a8a8', borderWidth: 1, marginTop: 20 }}>
+                        <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+                          <View style={{ flexDirection: 'row', height: 200, padding: 5 }}>
+                            {
+                              state.uploadedFiles.map((file, index) => {
+                                return (
+                                  <Image
+                                    key={index}
+                                    source={{ uri: URL.createObjectURL(file) }}
+                                    style={{ width: 180, height: 180, margin: 5 }} />
+                                );
+                              })
+                            }
+                          </View>
+                        </ScrollView>
                       </View>
-                    </ScrollView>
-                  </View>
-                  <View style={{ height: 20 }} />
+                    </View>
+                  )}
                 </View>
-              )}
 
-              <Text>Upload imagem da capa:</Text>
-              <View style={{ width: '100%', height: 200, justifyContent: 'center', alignItems: 'center', borderColor: '#a8a8a8', borderWidth: 1, marginTop: 20 }}>
-                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                  {UploadFileInput}
-                  <Text style={{ fontSize: 18 }}>Faça upload de suas imagens aqui</Text>
-                  <View style={{ height: 20 }} />
+                <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <DestructiveButton
+                    label="Voltar"
+                    onPress={() => { navigation.navigate("Meus Anúncios", {}) }} />
+
                   <PrimaryButton
-                    label="Select file"
-                    style={{ width: 200 }}
+                    label={state.announcement ? "Salvar" : "Criar"}
+                    style={{ paddingHorizontal: 16, paddingVertical: 12 }}
+                    activeStyle={state.validateInput}
                     onPress={() => {
-                      if (Platform.OS === "web") {
-                        const fileInput = document.getElementById("fileInput")
-                        fileInput!.click();
+                      if (state.validateInput) {
+                        handleSaveAnnouncement()
                       }
                     }} />
                 </View>
               </View>
+            </ScrollView>
+          )
+        }
 
-              {state.uploadedFiles.length > 0 && (
-                <View style={{ width: '100%' }}>
-                  <View style={{ height: 20 }} />
-                  <Text>Preview:</Text>
-                  <View style={{ flexDirection: 'row', width: '100%', height: 200, borderColor: '#a8a8a8', borderWidth: 1, marginTop: 20 }}>
-                    <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
-                      <View style={{ flexDirection: 'row', height: 200, padding: 5 }}>
-                        {
-                          state.uploadedFiles.map((file, index) => {
-                            return (
-                              <Image
-                                key={index}
-                                source={{ uri: URL.createObjectURL(file) }}
-                                style={{ width: 180, height: 180, margin: 5 }} />
-                            );
-                          })
-                        }
+        {useMediaQuery(600, 10000) && (
+          <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} >
+            <View style={styles.contentContainer}>
+              <View style={styles.form}>
+                <View style={styles.left}>
+                  <View>
+                    <Text>Escolha o tipo:</Text>
+                    <View style={{ flexDirection: 'row', paddingVertical: 10 }}>
+                      <PrimaryButton
+                        label="Venda"
+                        style={{ paddingHorizontal: 10, paddingVertical: 5 }}
+                        activeStyle={state.sale}
+                        onPress={() => dispatch({ type: 'set_sale', payload: !state.sale })} />
+
+                      <View style={{ width: 10 }} />
+
+                      <PrimaryButton
+                        label="Troca"
+                        style={{ paddingHorizontal: 10, paddingVertical: 5 }}
+                        activeStyle={state.trade}
+                        onPress={() => dispatch({ type: 'set_trade', payload: !state.trade })} />
+
+                      <View style={{ width: 10 }} />
+
+                      <PrimaryButton
+                        label="Aluguel"
+                        style={{ paddingHorizontal: 10, paddingVertical: 5 }}
+                        activeStyle={state.rent}
+                        onPress={() => dispatch({ type: 'set_rent', payload: !state.rent })} />
+                    </View>
+                  </View>
+
+                  <View style={{ height: 30 }} />
+
+                  <View>
+                    <Text>Escolha o livro:</Text>
+                    <View style={styles.selectContainer}>
+                      <View style={{ flexDirection: 'row' }}>
+                        <SearchInput
+                          style={{ flex: 1 }}
+                          onChange={(value) => dispatch({ type: 'set_search_term', payload: value })}
+                          placeholder="Pesquisar por livro" />
+
+                        <View style={{ width: 10 }} />
+
+                        <PrimaryButton
+                          label='Buscar'
+                          style={{ paddingHorizontal: 16, paddingVertical: 12 }}
+                          onPress={() => {
+                            dispatch({ type: 'clear_books' });
+                            handleSearch(0)
+                          }} />
                       </View>
-                    </ScrollView>
+
+                      <View style={{ height: 20 }} />
+
+                      {state.books?.length > 0 &&
+                        <View style={{ width: '100%' }}>
+                          <LazyDropdown
+                            style={{ flex: 1 }}
+                            placeholder="Selecione seu livro"
+                            items={state.books}
+                            maxHeight={300}
+                            onEndReached={handleEndReached}
+                            onSelect={(bookView) => dispatch({ type: 'set_selected_book', payload: bookView })}
+                            getItemLabel={(item) => item.title ?? ""}
+                            renderItem={(item) => (
+                              <View style={{ padding: 8, backgroundColor: WhiteColor }}>
+                                <Text>{item.title}</Text>
+                              </View>
+                            )} />
+                        </View>
+                      }
+
+                      <View style={{ height: 20 }} />
+
+                      <View style={{ flexDirection: 'row' }}>
+                        <View
+                          style={{
+                            flex: 1,
+                            backgroundColor: PrimaryGreenColor,
+                            paddingVertical: 12,
+                            paddingHorizontal: 8,
+                            borderRadius: 8,
+                          }}>
+                          <Text>{state.selectedBook?.title ?? " "}</Text>
+                        </View>
+                      </View>
+                    </View>
                   </View>
                 </View>
-              )}
-            </View>
 
-            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
-              <DestructiveButton
-                label="Voltar"
-                onPress={() => { navigation.navigate("Meus Anúncios", {}) }} />
+                <View style={{ width: 20 }} />
 
-              <PrimaryButton
-                label={state.announcement ? "Salvar" : "Criar"}
-                style={{ paddingHorizontal: 16, paddingVertical: 12 }}
-                activeStyle={state.validateInput}
-                onPress={() => {
-                  if (state.validateInput) {
-                    handleSaveAnnouncement()
-                  }
-                }} />
+                <View style={styles.right}>
+                  <View>
+                    <Text>Endereço e valor:</Text>
+                    <View style={styles.buttonContainer}>
+
+                      <View style={{ width: '100%' }}>
+                        <Dropdown
+                          style={{ flex: 1 }}
+                          placeholder="Selecione seu endereço"
+                          items={state.userAddresses}
+                          value={state.selectedAddress}
+                          onSelect={(item) => dispatch({ type: 'set_selected_address', payload: item })}
+                          getValue={(item) => item.name ?? ""}>
+                          {(item) => <View style={{ padding: 8, backgroundColor: WhiteColor }}><Text>{item.name}</Text></View>}
+                        </Dropdown>
+                      </View>
+
+                      <View style={{ height: 20 }} />
+
+                      <View style={{ flexDirection: 'row', width: '100%' }}>
+                        <CurrencyInput
+                          style={{ flex: 1 }}
+                          placeholder="Digite o valor de venda"
+                          editable={state.sale}
+                          value={state.saleValue}
+                          onChangeText={(value) => { dispatch({ type: 'set_sale_value', payload: value }) }}
+                          label="Valor de venda"
+                        />
+
+                        <View style={{ width: 10 }} />
+
+                        <CurrencyInput
+                          style={{ flex: 1 }}
+                          placeholder="Digite o valor da diaria"
+                          editable={state.rent}
+                          value={state.rentValue}
+                          onChangeText={(value) => dispatch({ type: 'set_rent_value', payload: value })}
+                          label="Valor da aluguel(diaria)"
+                        />
+                      </View>
+                    </View>
+                  </View>
+
+                  <View>
+                    <Text>Descrição:</Text>
+                    <View style={styles.buttonContainer}>
+                      <TextArea
+                        style={{ height: 200 }}
+                        onChange={(value) => dispatch({ type: 'set_description', payload: value })}
+                        value={state.description}
+                        placeholder="Digite a descrição do produto" />
+                    </View>
+                  </View>
+                </View>
+              </View>
+
+              <View style={{ paddingVertical: 20 }}>
+                {state.announcement && state.announcement.images && state.announcement.images?.length > 0 && (
+                  <View style={{ width: '100%' }}>
+                    <Text>Imagens:</Text>
+                    <View style={{ flexDirection: 'row', width: '100%', height: 200, borderColor: '#a8a8a8', borderWidth: 1, marginTop: 20 }}>
+                      <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+                        <View style={{ flexDirection: 'row', height: 200, padding: 5 }}>
+                          {
+                            state.announcement.images.map((file, index) => {
+                              return (
+                                <Image
+                                  key={index}
+                                  source={getImageLink(file)}
+                                  contentFit='contain'
+                                  style={{ width: 180, height: 180, margin: 5 }} />
+                              );
+                            })
+                          }
+                        </View>
+                      </ScrollView>
+                    </View>
+                    <View style={{ height: 20 }} />
+                  </View>
+                )}
+
+                <Text>Upload imagem da capa:</Text>
+                <View style={{ width: '100%', height: 200, justifyContent: 'center', alignItems: 'center', borderColor: '#a8a8a8', borderWidth: 1, marginTop: 20 }}>
+                  <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    {UploadFileInput}
+                    <Text style={{ fontSize: 18 }}>Faça upload de suas imagens aqui</Text>
+                    <View style={{ height: 20 }} />
+                    <PrimaryButton
+                      label="Select file"
+                      style={{ width: 200 }}
+                      onPress={() => {
+                        if (Platform.OS === "web") {
+                          const fileInput = document.getElementById("fileInput")
+                          fileInput!.click();
+                        }
+                      }} />
+                  </View>
+                </View>
+
+                {state.uploadedFiles.length > 0 && (
+                  <View style={{ width: '100%' }}>
+                    <View style={{ height: 20 }} />
+                    <Text>Preview:</Text>
+                    <View style={{ flexDirection: 'row', width: '100%', height: 200, borderColor: '#a8a8a8', borderWidth: 1, marginTop: 20 }}>
+                      <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+                        <View style={{ flexDirection: 'row', height: 200, padding: 5 }}>
+                          {
+                            state.uploadedFiles.map((file, index) => {
+                              return (
+                                <Image
+                                  key={index}
+                                  source={{ uri: URL.createObjectURL(file) }}
+                                  style={{ width: 180, height: 180, margin: 5 }} />
+                              );
+                            })
+                          }
+                        </View>
+                      </ScrollView>
+                    </View>
+                  </View>
+                )}
+              </View>
+
+              <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
+                <DestructiveButton
+                  label="Voltar"
+                  onPress={() => { navigation.navigate("Meus Anúncios", {}) }} />
+
+                <PrimaryButton
+                  label={state.announcement ? "Salvar" : "Criar"}
+                  style={{ paddingHorizontal: 16, paddingVertical: 12 }}
+                  activeStyle={state.validateInput}
+                  onPress={() => {
+                    if (state.validateInput) {
+                      handleSaveAnnouncement()
+                    }
+                  }} />
+              </View>
             </View>
-          </View>
-        </ScrollView>
+          </ScrollView>
+        )}
       </View>
     </ResponsiveNavbar>
   );
@@ -435,9 +691,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: "#E1DCC5",
   },
+  contentContainerXs: {
+    width: 320,
+    padding: 10,
+  },
   contentContainer: {
     width: 900,
     padding: 20,
+  },
+  formXs: {
+    flex: 1,
+    marginTop: 20,
   },
   form: {
     flexDirection: 'row',
@@ -452,7 +716,6 @@ const styles = StyleSheet.create({
   preview: {
     width: 200,
     height: 200,
-    resizeMode: 'contain',
   },
   buttonContainer: {
     flexDirection: 'column',

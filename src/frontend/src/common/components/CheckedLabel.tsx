@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { View, Image, Text, StyleSheet } from "react-native";
-import { BlackColor } from '../theme/colors';
-import Assets from '../theme/assets';
+import { View, Text, StyleSheet } from "react-native";
+import { BlackColor, PrimaryGreenColor } from '../theme/colors';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 /**
  * Props
@@ -38,18 +38,10 @@ const CheckedLabelStyle = StyleSheet.create({
  */
 
 export default function CheckedLabel({ label, style }: CheckedLabelProps) {
-  const [size, setSize] = React.useState<{ width?: number, height?: number }>({});
-
-  React.useEffect(() => {
-    Image.getSize(Assets.IcCheckbox, (w, h) => {
-      setSize({ width: w * .6, height: h * .6 })
-    });
-  }, []);
-
   return (
     <View style={style}>
       <View style={CheckedLabelStyle.container}>
-        <Image source={{ uri: Assets.IcCheckbox, width: size.width, height: size.height }} />
+        <Ionicons name="checkmark-circle" size={20} style={{ color: PrimaryGreenColor }} />
         <Text style={CheckedLabelStyle.label}>{label}</Text>
       </View>
     </View>

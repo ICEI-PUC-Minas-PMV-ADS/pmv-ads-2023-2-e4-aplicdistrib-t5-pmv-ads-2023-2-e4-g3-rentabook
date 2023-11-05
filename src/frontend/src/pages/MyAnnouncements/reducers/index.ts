@@ -16,8 +16,27 @@ export type MyAnnouncementsState = {
   sort: number | null,
   hasMoreData: boolean,
   hasReseted: boolean,
+  page: number,
   announcements: CleanAnnouncementView[],
 };
+
+/**
+ * MyAnnouncementsState
+ */
+
+export const initialState: MyAnnouncementsState = {
+  filter: {
+    rent: false,
+    trade: false,
+    sale: false,
+  },
+  term: '',
+  sort: null,
+  page: 0,
+  hasMoreData: true,
+  hasReseted: false,
+  announcements: [],
+}
 
 /**
  * MyAnnouncementsActionType
@@ -32,7 +51,9 @@ type MyAnnouncementsActionType =
   'set_sort_filter' |
   'set_search_term' |
   'load_announcements' |
-  'set_has_reseted';
+  'set_has_reseted' |
+  'set_page' |
+  'reset';
 
 /**
  * MyAnnouncementsAction
@@ -81,7 +102,6 @@ export const MyAnnouncementsReducer = (
     case 'set_has_reseted':
       return { ...state, hasReseted: action.payload };
 
-
     case 'toggle_filter_sale':
       return {
         ...state,
@@ -124,7 +144,7 @@ export const MyAnnouncementsReducer = (
     case 'load_announcements':
       if (action.payload.length == 0) {
         return {
-          ...state, hasMoreData: false, announcements: filterAnnouncements({
+          ...state, hasReseted: false, hasMoreData: false, announcements: filterAnnouncements({
             term: state.term,
             sort: state.sort,
             rent: state.filter.rent,
@@ -145,7 +165,7 @@ export const MyAnnouncementsReducer = (
           }
         }
         return {
-          ...state, hasMoreData: true, announcements: filterAnnouncements({
+          ...state, hasReseted: false, hasMoreData: true, announcements: filterAnnouncements({
             term: state.term,
             sort: state.sort,
             rent: state.filter.rent,
@@ -154,6 +174,21 @@ export const MyAnnouncementsReducer = (
           })
         };
       }
+
+    case 'set_page':
+      return { ...state, page: action.payload };
+
+    case 'reset':
+      announcementCache = [];
+      return {
+        ...state, hasReseted: true, hasMoreData: true, page: 0, announcements: filterAnnouncements({
+          term: state.term,
+          sort: state.sort,
+          rent: state.filter.rent,
+          trade: state.filter.trade,
+          sale: state.filter.sale,
+        })
+      };
   }
   return state;
 };
