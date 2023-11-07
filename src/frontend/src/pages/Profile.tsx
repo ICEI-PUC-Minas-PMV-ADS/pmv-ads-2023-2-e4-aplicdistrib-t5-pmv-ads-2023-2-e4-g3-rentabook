@@ -1,9 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
-import { View, StyleSheet, Text, Button, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
 import { AuthContext } from "../contexts/Auth/AuthContext";
-import { StackTypes } from "../routes/StackTypes";
 import React from "react";
 import ProfileBox from "../common/components/ProfileBox";
 import ProfileAddressBox from "../common/components/ProfileAddressBox";
@@ -19,7 +17,6 @@ const style = StyleSheet.create({
 });
 
 export default function Profile() {
-  const navigation = useNavigation<StackTypes>()
   const [image, setImage] = useState<string | null>(null)
   const [nome, setNome,] = useState('')
   const [email, setEmail] = useState('')
@@ -31,6 +28,8 @@ export default function Profile() {
     // TODO: Carregar as informações do usuario
     const userData = await auth.loadUserData();
     setAddressList(userData.addresses)
+    setNome(userData.name)
+    setImage(userData.userImage)
   };
 
   useEffect(() => {
@@ -40,7 +39,7 @@ export default function Profile() {
       setImage(auth.user.userImage)
     }
     fetchUserData();
-  }, [])
+  }, [nome])
 
   return (
   

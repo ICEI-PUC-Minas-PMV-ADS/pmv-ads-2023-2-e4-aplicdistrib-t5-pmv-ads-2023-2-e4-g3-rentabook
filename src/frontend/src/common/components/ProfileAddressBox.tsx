@@ -82,6 +82,7 @@ type ProfileAddressBoxProps = {
 }
 
 export default function ProfileAddressBox({ enderecos, onSaveAddress, onDeleteAddress }: ProfileAddressBoxProps) {
+    const [id, setId] = useState('')
     const [nome, setNome] = useState('')
     const [cep, setCep] = useState('')
     const [rua, setRua] = useState('')
@@ -131,11 +132,25 @@ export default function ProfileAddressBox({ enderecos, onSaveAddress, onDeleteAd
        
     }
 
-
-    useEffect(() => {
-
-    }, [enderecoSelecionado])
-
+    const alteraEndereco = () => {
+        const endereco: PrivateAddress = {
+            id: id,
+            name: nome,
+            cep: cep,
+            street: rua,
+            number: numero,
+            complement: complemento,
+            neighborhood: bairro,
+            city: cidade,
+            state: estado
+        };    
+        addressService.savePrivateAddress(endereco).then( (endereco) => {
+             if(endereco){
+                alert("O endereco foi salvo com sucesso")
+                location.reload()
+             }
+        })
+    }
 
     async function carregaEndereçoSelecionado(idSelecionado: string) {
         var endereco = await addressService.getPrivateAddress(idSelecionado)
@@ -143,6 +158,7 @@ export default function ProfileAddressBox({ enderecos, onSaveAddress, onDeleteAd
     }
 
     function preencheEndereco(endereco: PrivateAddress) {
+        setId(endereco.id ?? '')
         setNome(endereco.name ?? '')
         setCep(endereco.cep)
         setRua(endereco.street)
@@ -154,6 +170,7 @@ export default function ProfileAddressBox({ enderecos, onSaveAddress, onDeleteAd
     }
 
     const limparFormularioEndereco = () => {
+        setId('')
         setNome('')
         setCep('')
         setRua('')
@@ -234,12 +251,20 @@ export default function ProfileAddressBox({ enderecos, onSaveAddress, onDeleteAd
                 />
                 {
                     enderecoSelecionado == true
-                        ? (<PrimaryButton
-                            style={style.buttonDeletar}
-                            label="DELETAR."
-                            onPress={() => deletaEndereco(idEnderecoSelecionado)}
-
-                        />) : (<PrimaryButton
+                        ? (
+                        <>
+                            <PrimaryButton
+                                style={style.buttonDeletar}
+                                label="Alterar."
+                                onPress={() => alteraEndereco()}
+                            />
+                            <PrimaryButton
+                                style={style.buttonDeletar}
+                                label="DELETAR."
+                                onPress={() => deletaEndereco(idEnderecoSelecionado)}
+                            />                      
+                        </>
+                       ) : (<PrimaryButton
                             style={style.button}
                             textStyle={style.textbtn}
                             label="SALVAR."
@@ -251,23 +276,23 @@ export default function ProfileAddressBox({ enderecos, onSaveAddress, onDeleteAd
             </View>
             <View style={style.address}>
                 <Text style={style.titulo}> Meus Endereços: </Text>
-                <View style={style.lista} >
+                <ol style={style.lista} >
                     {
                         enderecos?.map((endereco, index) => (
                                       
-                            <Pressable style={style.itemLista} key={index} onPress={() => selecionaEndereco(endereco?.id ?? '')}>
+                            <li style={style.itemLista} key={index} onClick={() => selecionaEndereco(endereco?.id ?? '')}>
                                <Text style={style.itemText}>{endereco?.street} - {endereco?.number}</Text> 
-                            </Pressable>
+                            </li>
                         ))
                     }
-                    <Pressable 
+                    <li 
                         style={style.itemLista}
-                        onPress={() => {
+                        onClick={() => {
                         limparFormularioEndereco();
                         setEnderecoSelecionado(false);
                         setIdEnderecoSelecionado('');
-                    }}><Text style={style.itemText}>NOVO ENDEREÇO</Text> </Pressable>
-                </View>
+                    }}><Text style={style.itemText}>NOVO ENDEREÇO</Text> </li>
+                </ol>
             </View>
         </View>
     )

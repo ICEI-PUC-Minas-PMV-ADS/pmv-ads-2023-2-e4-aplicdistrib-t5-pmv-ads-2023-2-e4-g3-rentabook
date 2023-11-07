@@ -25,6 +25,18 @@ export const addressService = {
     return response.data
   },
 
+  updatePrivateAddress: async (form: PrivateAddress) => {
+    const token = await AsyncStorage.getItem('authToken')
+    const json = JSON.stringify(form)
+    const response =  await useApi.post("/address", json, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+    })
+    return response.data
+  },
+
   deletePrivateAddress: async (id: string) => {
     const token = await AsyncStorage.getItem('authToken')
     const response =  await useApi.delete(`/address/${id}`,{
