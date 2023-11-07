@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, Image, Text, Alert } from "react-native";
+import { View, StyleSheet, Image, Text, Alert, Platform } from "react-native";
 import "../theme/colors"
 import { DarkGreen, GreenLight, GreyColor, PrimaryGreenColor, WhiteColor } from "../theme/colors";
 import Input from "./Input";
@@ -7,6 +7,7 @@ import PrimaryButton from "./PrimaryButton";
 import { userService } from "../../services/userService";
 import { API } from '@env'
 import CloseInput from "./CloseInput";
+import { useMediaQuery } from "../../hooks/useResposive";
 
 const style = StyleSheet.create({
     container: {
@@ -78,6 +79,7 @@ export default function ProfileBox({ nome, email, imagem, fetchUserdata }: Profi
     const [selectedFile, setSelectedFile] = useState<File | null>(null)
     const [pNome, setPNome] = useState(nome)
     const [btnDeleteImage, setBtnDeleteImage] = useState<Boolean>(false)
+    const [pImage, setPImage ] = useState(imagem)
 
     const ImageFile = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -87,28 +89,34 @@ export default function ProfileBox({ nome, email, imagem, fetchUserdata }: Profi
     };
 
     useEffect( () => {
+        setPImage(imagem)
         if(imagem != null ){
             setBtnDeleteImage(true)
         }else{
             setBtnDeleteImage(false)
         }
-    },[btnDeleteImage])
+    },[imagem])
+
+    useEffect(() => {
+        setPNome(nome)
+    },[nome]) 
 
     const uploadfile = async (name: string) => {
         var x = await userService.updatePrivateUser(name)
         if (selectedFile) {
             const formData = new FormData();
             formData.append('image', selectedFile);
-            userService.updatePrivateUserImage(formData)
-        }
-        fetchUserdata()
+            await userService.updatePrivateUserImage(formData)
+        }        
         alert('Suas alterações foram salvas com sucesso')
+        fetchUserdata()
     }
 
     const deleteProfileImageFile = async () => {
         const conf = confirm('Deseja Realmente deletar a Imagem de Perfil?')
         if (conf)
-        {await userService.deletePrivateUserImage()}     
+        {await userService.deletePrivateUserImage()}   
+        fetchUserdata()  
     }
 
     console.log(imagem)
@@ -122,7 +130,7 @@ export default function ProfileBox({ nome, email, imagem, fetchUserdata }: Profi
 
             <Image
                 style={style.image}
-                source={ imagem ? { uri: API + "/public/image/" + imagem } : require('../assets/notFound.jpg')}
+                source={ pImage ? { uri: API + "/public/image/" + pImage } : require('../assets/notFound.jpg')}
                 alt="Foto de Perfil."
             />
          
@@ -135,13 +143,13 @@ export default function ProfileBox({ nome, email, imagem, fetchUserdata }: Profi
                         name='teste'
                         accept="image/*"
                         onChange={ImageFile}
-                    />               
+                    />
                 </View>
 
 
                 <Input
                     style={style.input}
-                    value={nome}
+                    value={pNome}
                     placeholder="Digite seu Nome"
                     label="Nome"
                     editable={true}

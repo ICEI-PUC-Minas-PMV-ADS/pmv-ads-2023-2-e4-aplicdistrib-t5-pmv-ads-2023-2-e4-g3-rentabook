@@ -12,7 +12,6 @@ const style = StyleSheet.create({
   container: {
     flex:1,
     flexDirection: "row",
-    backgroundColor: "#E1DCC5",
   },
 });
 
@@ -44,6 +43,7 @@ export default function Profile() {
   return (
   
     <ResponsiveNavbar>
+      <View style={{ flex:1, backgroundColor: "#E1DCC5" }}>
             <ScrollView>
         <View style={style.container}>
   
@@ -64,6 +64,7 @@ export default function Profile() {
         </View>
 
       </ScrollView>
+      </View>
     </ResponsiveNavbar>
   );
 }
