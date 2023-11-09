@@ -15,7 +15,7 @@ export const HomeProvider = ({ children }: { children: JSX.Element }) => {
   const authContext = useContext(AuthContext)
   const [loadingAnnouncements, setLoadingAnnouncements] = useState(true)
   const [loadingBooks, setLoadingBooks] = useState(false)
-  const [annoucementsInfiniteListIsLoading, setAnnoucementsInfiniteListIsLoading] = useState(false)
+  const [annoucementsInfiniteListIsLoading, setAnnoucementsInfiniteListIsLoading] = useState(true)
   const [inputCepValue, setInputCepValue] = useState("")
   const [inputCepError, setInputCepError] = useState(false)
   const [cepMessageError, setCepMessageError] = useState("error")
@@ -62,13 +62,14 @@ export const HomeProvider = ({ children }: { children: JSX.Element }) => {
       }
       else {
         if (announcementsResponse?.last == false) {
-          setAnnoucementsInfiniteListIsLoading(true)
           const adds: Page<CleanAnnouncementView> = await announcementsService.getAnnouncements(cityForSearch, bookIdForSearch, rentQueryOption, tradeQueryOption, saleQueryOption, querySort, page)
           setAnnouncementsResponse(adds)
           if (page != 0) {
             setAnnouncementsData([...announcementsData, ...adds.content])
           }
           setPage(page + 1)
+        }
+        else {
           setAnnoucementsInfiniteListIsLoading(false)
         }
       }

@@ -23,15 +23,12 @@ class CleanAnnouncementViewMapper(
             totalStars / ratings.size
         } else 0
 
-
         return CleanAnnouncementView(
             id = t.id,
             book = bookService.findById(t.bookId),
             createdDate = t.createdDate,
             description = t.description,
-            images = t.images.map { i ->
-                i.id
-            },
+            images = t.images.map { i -> i.id },
             isAvailable = t.isAvailable,
             location = publicAddressViewMapper.map(t.location),
             ownerUser = publicUserViewMapper.map(t.ownerUser),

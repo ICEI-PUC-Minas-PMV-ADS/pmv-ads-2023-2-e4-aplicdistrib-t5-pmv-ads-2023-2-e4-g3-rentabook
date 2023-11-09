@@ -14,22 +14,24 @@ const style = StyleSheet.create({
         backgroundColor: WhiteColor,
         justifyContent: 'space-evenly',
         borderRadius: 8,
-        marginHorizontal: 25,
+        marginHorizontal: '5%',
         marginVertical: 10,
         padding: 10,
 
     },
-    input: {
-        marginHorizontal: 30,
+    input: {   
+        marginHorizontal: '7%',
         marginVerdical: 10,
-        maxWidthwidth: 450,
-        maxHeighteight: 80,
+        maxWidth: '80%',
+        maxHeight: 80,
         color: DarkGreen,
     },
     form: {
-        width: 400
+        width: '40%',
+        
     },
     address: {
+        width: '40%',
         alignSelf: "flex-start",
         margin: 20,
 
@@ -41,7 +43,7 @@ const style = StyleSheet.create({
         color: DarkGreen,
     },
     button: {
-        marginTop: 70,
+        marginTop: 30,
         alignSelf: "flex-end",
         color: GreenLight,
         backgroundColor: WhiteColor,
@@ -53,7 +55,7 @@ const style = StyleSheet.create({
         color:PrimaryGreenColor,
     },
     buttonDeletar: {
-        marginTop: 70,
+        marginTop: 30,
         alignSelf: "flex-end", 
         backgroundColor:'#DC143C',
         borderColor: '#800000',
@@ -71,10 +73,6 @@ const style = StyleSheet.create({
         fontWeight:"500",
         fontSize: 16,
     },
-    inputNumero: {
-        width: 60,
-
-    }
 });
 type ProfileAddressBoxProps = {
     enderecos?: PrivateAddress[] | null[],
@@ -84,6 +82,7 @@ type ProfileAddressBoxProps = {
 }
 
 export default function ProfileAddressBox({ enderecos, onSaveAddress, onDeleteAddress }: ProfileAddressBoxProps) {
+    const [id, setId] = useState('')
     const [nome, setNome] = useState('')
     const [cep, setCep] = useState('')
     const [rua, setRua] = useState('')
@@ -133,11 +132,25 @@ export default function ProfileAddressBox({ enderecos, onSaveAddress, onDeleteAd
        
     }
 
-
-    useEffect(() => {
-
-    }, [enderecoSelecionado])
-
+    const alteraEndereco = () => {
+        const endereco: PrivateAddress = {
+            id: id,
+            name: nome,
+            cep: cep,
+            street: rua,
+            number: numero,
+            complement: complemento,
+            neighborhood: bairro,
+            city: cidade,
+            state: estado
+        };    
+        addressService.savePrivateAddress(endereco).then( (endereco) => {
+             if(endereco){
+                alert("O endereco foi salvo com sucesso")
+                location.reload()
+             }
+        })
+    }
 
     async function carregaEndereçoSelecionado(idSelecionado: string) {
         var endereco = await addressService.getPrivateAddress(idSelecionado)
@@ -145,6 +158,7 @@ export default function ProfileAddressBox({ enderecos, onSaveAddress, onDeleteAd
     }
 
     function preencheEndereco(endereco: PrivateAddress) {
+        setId(endereco.id ?? '')
         setNome(endereco.name ?? '')
         setCep(endereco.cep)
         setRua(endereco.street)
@@ -156,6 +170,7 @@ export default function ProfileAddressBox({ enderecos, onSaveAddress, onDeleteAd
     }
 
     const limparFormularioEndereco = () => {
+        setId('')
         setNome('')
         setCep('')
         setRua('')
@@ -236,12 +251,15 @@ export default function ProfileAddressBox({ enderecos, onSaveAddress, onDeleteAd
                 />
                 {
                     enderecoSelecionado == true
-                        ? (<PrimaryButton
-                            style={style.buttonDeletar}
-                            label="DELETAR."
-                            onPress={() => deletaEndereco(idEnderecoSelecionado)}
-
-                        />) : (<PrimaryButton
+                        ? (
+                        <>                        
+                            <PrimaryButton
+                                style={style.buttonDeletar}
+                                label="DELETAR."
+                                onPress={() => deletaEndereco(idEnderecoSelecionado)}
+                            />                      
+                        </>
+                       ) : (<PrimaryButton
                             style={style.button}
                             textStyle={style.textbtn}
                             label="SALVAR."
@@ -253,23 +271,23 @@ export default function ProfileAddressBox({ enderecos, onSaveAddress, onDeleteAd
             </View>
             <View style={style.address}>
                 <Text style={style.titulo}> Meus Endereços: </Text>
-                <View style={style.lista} >
+                <ol style={style.lista} >
                     {
                         enderecos?.map((endereco, index) => (
                                       
-                            <Pressable style={style.itemLista} key={index} onPress={() => selecionaEndereco(endereco?.id ?? '')}>
+                            <li style={style.itemLista} key={index} onClick={() => selecionaEndereco(endereco?.id ?? '')}>
                                <Text style={style.itemText}>{endereco?.street} - {endereco?.number}</Text> 
-                            </Pressable>
+                            </li>
                         ))
                     }
-                    <Pressable 
+                    <li 
                         style={style.itemLista}
-                        onPress={() => {
+                        onClick={() => {
                         limparFormularioEndereco();
                         setEnderecoSelecionado(false);
                         setIdEnderecoSelecionado('');
-                    }}><Text style={style.itemText}>NOVO ENDEREÇO</Text> </Pressable>
-                </View>
+                    }}><Text style={style.itemText}>NOVO ENDEREÇO</Text> </li>
+                </ol>
             </View>
         </View>
     )

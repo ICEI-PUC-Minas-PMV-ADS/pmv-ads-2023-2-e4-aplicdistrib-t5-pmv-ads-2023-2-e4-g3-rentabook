@@ -1,11 +1,13 @@
 package br.puc.projeto.rentabook.controller
 
+import br.puc.projeto.rentabook.dto.PrivateUserView
+import br.puc.projeto.rentabook.model.Image
 import br.puc.projeto.rentabook.service.ImageService
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 import java.io.File
 import java.nio.file.Files
 
@@ -36,5 +38,13 @@ class ImageController(
             }
 
         }
+    }
+
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
+    @PostMapping("/image/upload")
+    fun uploadImage(@RequestBody image: MultipartFile): Image {
+        return imageService.uploadImage(image, false)
     }
 }

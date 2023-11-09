@@ -63,6 +63,15 @@ export const userService = {
     return response.data
   },
 
+  deletePrivateUserImage : async () => {
+    const token = await AsyncStorage.getItem('authToken')
+    const response = await useApi.delete("/user/image",{
+      headers: {
+        'Authorization':`Bearer ${token}`
+      }
+    })
+    return response.data
+  },
 
 
   logout: async () => {

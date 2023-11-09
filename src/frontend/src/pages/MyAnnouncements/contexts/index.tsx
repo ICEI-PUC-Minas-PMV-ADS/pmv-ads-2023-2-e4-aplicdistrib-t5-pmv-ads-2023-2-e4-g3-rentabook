@@ -1,21 +1,7 @@
 import * as React from 'react';
-import { MyAnnouncementsAction, MyAnnouncementsReducer, MyAnnouncementsState } from '../reducers';
+import { MyAnnouncementsAction, MyAnnouncementsReducer, MyAnnouncementsState, initialState } from '../reducers';
 
-/**
- * MyAnnouncementsState
- */
 
-const initialState: MyAnnouncementsState = {
-  filter: {
-    rent: false,
-    trade: false,
-    sale: false,
-  },
-  term: '',
-  sort: null,
-  hasMoreData: true,
-  announcements: [],
-}
 
 /**
  * MyAnnouncementsContext

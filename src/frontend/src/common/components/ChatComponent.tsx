@@ -80,7 +80,7 @@ const ChatComponent = ({ chatId, currentUser }: ChatComponentProps) => {
           const chatMessages: Message[] = data.content.map((item: any) => ({
             id: item.id,
             text: item.message,
-            sender: item.sender.name,
+            sender: item.sender.id,
             timestamp: item.latestMessageDate,
           }));
 
@@ -146,27 +146,32 @@ const ChatComponent = ({ chatId, currentUser }: ChatComponentProps) => {
       <FlatList
         data={messages}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent:
-                item.sender === currentUser ? "flex-end" : "flex-start",
-            }}
-          >
+        renderItem={({ item }) => {
+          console.log("Item Sender:", item.sender);
+          console.log("Current User:", currentUser);
+
+          return (
             <View
-              style={[
-                styles.messageContainer,
-                {
-                  alignSelf:
-                    item.sender === currentUser ? "flex-end" : "flex-start",
-                },
-              ]}
+              style={{
+                flexDirection: "row",
+                justifyContent:
+                  item.sender === currentUser ? "flex-end" : "flex-start",
+              }}
             >
-              <Text style={styles.messageText}>{item.text}</Text>
+              <View
+                style={[
+                  styles.messageContainer,
+                  {
+                    alignSelf:
+                      item.sender === currentUser ? "flex-end" : "flex-start",
+                  },
+                ]}
+              >
+                <Text style={styles.messageText}>{item.text}</Text>
+              </View>
             </View>
-          </View>
-        )}
+          );
+        }}
         inverted
         contentContainerStyle={{ paddingBottom: 20, marginTop: 20 }}
         ref={(ref) => (flatListRef.current = ref)}

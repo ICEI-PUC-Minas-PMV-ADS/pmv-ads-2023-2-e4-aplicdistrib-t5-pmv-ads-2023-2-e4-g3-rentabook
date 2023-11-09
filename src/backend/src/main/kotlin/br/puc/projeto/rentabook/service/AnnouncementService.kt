@@ -7,6 +7,7 @@ import br.puc.projeto.rentabook.exception.NotFoundException
 import br.puc.projeto.rentabook.mapper.*
 import br.puc.projeto.rentabook.model.Address
 import br.puc.projeto.rentabook.model.Announcement
+import br.puc.projeto.rentabook.model.Image
 import br.puc.projeto.rentabook.repository.*
 import br.puc.projeto.rentabook.utils.TextUtils
 import org.springframework.data.domain.Page
@@ -39,7 +40,8 @@ class AnnouncementService(
     private val imageService: ImageService,
     private val mongoTemplate: MongoTemplate,
     private val cleanAnnouncementViewMapper: CleanAnnouncementViewMapper,
-    private val addressRepository: AddressRepository
+    private val addressRepository: AddressRepository,
+    private val imageRepository: ImageRepository
 ) {
 
     fun findAll(pageable: Pageable): Page<AnnouncementView> {
@@ -52,6 +54,34 @@ class AnnouncementService(
                 announcementViewMapper.map(this)
             }
         }
+    }
+    
+    fun updateAnnouncement(id: String, createAnnouncementForm: CreateAnnouncementForm): AnnouncementView {
+        return AuthenticationUtils.authenticate(userRepository) {
+            announcementRepository.findById(id).run {
+                val originalAnnouncement = orElseThrow { throw Exception("Anuncio não localizado!") }
+                val announcement = Announcement(
+                    id = id,
+                    ownerUser = originalAnnouncement.ownerUser,
+                    bookId = createAnnouncementForm.bookId,
+                    images = createAnnouncementForm.images.map { imageIdToImage(it) }.toMutableList(),
+                    description = createAnnouncementForm.description,
+                    location = addressRepository.findById(createAnnouncementForm.locationId).orElseThrow { throw Exception("Endereço não encontrado!") },
+                    rent = createAnnouncementForm.rent ?: false,
+                    sale = createAnnouncementForm.sale ?: false,
+                    trade = createAnnouncementForm.trade ?: false,
+                    valueForRent = createAnnouncementForm.valueForRent,
+                    valueForSale = createAnnouncementForm.valueForSale,
+                )
+                announcementRepository.save(announcement).run {
+                    announcementViewMapper.map(this)
+                }
+            }
+        }
+    }
+
+    private fun imageIdToImage(imageId: String): Image {
+        return imageRepository.findById(imageId).orElseThrow { throw Exception("Imagem não encontrada!") }
     }
 
     fun findAllBooksAvailableToRent(pageable: Pageable): Page<AnnouncementView> {
@@ -249,5 +279,6 @@ class AnnouncementService(
     fun getPublicAnnouncementsDetail(id: String): CleanAnnouncementView {
         return cleanAnnouncementViewMapper.map(findById(id))
     }
+
 
 }

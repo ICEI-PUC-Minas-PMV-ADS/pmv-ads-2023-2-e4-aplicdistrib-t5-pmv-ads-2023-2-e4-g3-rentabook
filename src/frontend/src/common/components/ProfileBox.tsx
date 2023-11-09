@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Image, Text, Alert } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { View, StyleSheet, Image, Text, Alert, Platform } from "react-native";
 import "../theme/colors"
 import { DarkGreen, GreenLight, GreyColor, PrimaryGreenColor, WhiteColor } from "../theme/colors";
 import Input from "./Input";
 import PrimaryButton from "./PrimaryButton";
 import { userService } from "../../services/userService";
 import { API } from '@env'
+import CloseInput from "./CloseInput";
+import { useMediaQuery } from "../../hooks/useResposive";
 
 const style = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 1, 
         alignItems: "center",
         backgroundColor: WhiteColor,
-        justifyContent: 'space-evenly',
+        justifyContent: "space-evenly",
         borderRadius: 8,
         marginHorizontal: 25,
         marginVertical: 10,
@@ -27,10 +29,13 @@ const style = StyleSheet.create({
         textAlignVertical: "auto",
         borderRadius: 50,
     },
+    form: {
+        width:'80%',
+    },
     input: {
-        marginHorizontal: 30,
+        marginHorizontal: 20,
         marginVerdical: 10,
-        width: 330,
+        width: '100%',
         height: 80,
         color: DarkGreen,
 
@@ -59,7 +64,7 @@ const style = StyleSheet.create({
         marginBottom: 10,
         alignSelf:"center",
         backgroundColor: GreyColor,
-        width: 310
+        width: '90%'
     }
 });
 
@@ -71,48 +76,66 @@ type ProfileBoxProps = {
 
 }
 export default function ProfileBox({ nome, email, imagem, fetchUserdata }: ProfileBoxProps) {
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [pEmail] = useState(email)
+    const [selectedFile, setSelectedFile] = useState<File | null>(null)
     const [pNome, setPNome] = useState(nome)
+    const [btnDeleteImage, setBtnDeleteImage] = useState<Boolean>(false)
+    const [pImage, setPImage ] = useState(imagem)
 
     const ImageFile = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
-          setSelectedFile(file);
+            setSelectedFile(file);
         }
-      };
+    };
 
-      const uploadfile = async () => {
-        if (selectedFile) {
-          const formData = new FormData();
-          formData.append('image', selectedFile);
-            userService.updatePrivateUserImage(formData)
-            alert("DEU CERTO")
-            window.location.reload()
-        } else {
-          alert('Selecione um arquivo antes de fazer o upload.');
+    useEffect( () => {
+        setPImage(imagem)
+        if(imagem != null ){
+            setBtnDeleteImage(true)
+        }else{
+            setBtnDeleteImage(false)
         }
-      };
+    },[imagem])
 
     useEffect(() => {
+        setPNome(nome)
+    },[nome]) 
 
-    }, [pEmail, pNome,])
-
-    const updateUser = async (name: string) => {
+    const uploadfile = async (name: string) => {
         var x = await userService.updatePrivateUser(name)
-
+        if (selectedFile) {
+            const formData = new FormData();
+            formData.append('image', selectedFile);
+            await userService.updatePrivateUserImage(formData)
+        }        
+        alert('Suas alterações foram salvas com sucesso')
+        fetchUserdata()
     }
 
-    console.log(API + "/public/image/" + imagem)
+    const deleteProfileImageFile = async () => {
+        const conf = confirm('Deseja Realmente deletar a Imagem de Perfil?')
+        if (conf)
+        {await userService.deletePrivateUserImage()}   
+        fetchUserdata()  
+    }
+
+    console.log(imagem)
     return (
         <View style={style.container}>
+            {
+               btnDeleteImage === true ?
+            (<CloseInput deletaImage={deleteProfileImageFile} />) : ("") 
+            }
+            
+
             <Image
                 style={style.image}
-                source={ imagem ? { uri: API + "/public/image/" + imagem } : require('../assets/notFound.jpg')}
+                source={ pImage ? { uri: API + "/public/image/" + pImage } : require('../assets/notFound.jpg')}
                 alt="Foto de Perfil."
             />
-            <Text style={style.titulo} >Meu Perfil</Text>
-            <View> 
+         
+            <View style={style.form}> 
+                <Text style={style.titulo} >Meu Perfil</Text>
 
                 <View style={style.file}>
                     <input
@@ -126,16 +149,16 @@ export default function ProfileBox({ nome, email, imagem, fetchUserdata }: Profi
 
                 <Input
                     style={style.input}
-                    value={nome}
+                    value={pNome}
                     placeholder="Digite seu Nome"
                     label="Nome"
-                    onChangeText={setPNome}
-
+                    editable={true}
+                    onChangeText={setPNome}                    
                 />
                 <Input
                     style={style.input}
                     value={email}
-                    placeholder="Digite seu e-mail"
+                    placeholder="E-mail"
                     label="Email"
                     editable={false}
                 />
@@ -144,14 +167,11 @@ export default function ProfileBox({ nome, email, imagem, fetchUserdata }: Profi
             <PrimaryButton
                 style={style.button}
                 textStyle={style.textbtn}
-                label="Editar Perfil"
+                label="Salvar Alterações"
                 onPress={async () => {
-                     updateUser(pNome ?? "");
-                     uploadfile()
+                     uploadfile(pNome ?? "")
                     }}
             />
-
-
         </View>
     )
 }

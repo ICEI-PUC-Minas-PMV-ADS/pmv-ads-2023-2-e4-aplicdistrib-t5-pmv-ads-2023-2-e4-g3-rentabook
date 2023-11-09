@@ -1,9 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
-import { View, StyleSheet, Text, Button, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
 import { AuthContext } from "../contexts/Auth/AuthContext";
-import { StackTypes } from "../routes/StackTypes";
 import React from "react";
 import ProfileBox from "../common/components/ProfileBox";
 import ProfileAddressBox from "../common/components/ProfileAddressBox";
@@ -12,33 +10,25 @@ import { PrivateAddress } from "../types/PrivateAddress";
 
 const style = StyleSheet.create({
   container: {
+    flex:1,
     flexDirection: "row",
-    flex: 1,
-    backgroundColor: "#E1DCC5",
   },
 });
 
 export default function Profile() {
-  const navigation = useNavigation<StackTypes>()
   const [image, setImage] = useState<string | null>(null)
   const [nome, setNome,] = useState('')
   const [email, setEmail] = useState('')
   const [addressList, setAddressList] = useState<PrivateAddress[] | null[]>([])
   const auth = useContext(AuthContext)
 
-  const handleLogout = async () => {
-    if (auth.user) {
-      const logout = await auth.logout()
-      if (logout) {
-        navigation.navigate("Anúncios", {})
-      }
-    }
-  }
 
   const fetchUserData = async () => {
     // TODO: Carregar as informações do usuario
     const userData = await auth.loadUserData();
     setAddressList(userData.addresses)
+    setNome(userData.name)
+    setImage(userData.userImage)
   };
 
   useEffect(() => {
@@ -48,12 +38,16 @@ export default function Profile() {
       setImage(auth.user.userImage)
     }
     fetchUserData();
-  }, [])
+  }, [nome])
 
   return (
+  
     <ResponsiveNavbar>
-      <ScrollView>
+      <View style={{ flex:1, backgroundColor: "#E1DCC5" }}>
+            <ScrollView>
         <View style={style.container}>
+  
+
           <ProfileBox
             nome={nome}
             email={email}
@@ -65,9 +59,12 @@ export default function Profile() {
             onSaveAddress={() => { fetchUserData() }}
             onDeleteAddress={() => { fetchUserData() }}
           />
-        </View>
-      </ScrollView>
 
+
+        </View>
+
+      </ScrollView>
+      </View>
     </ResponsiveNavbar>
   );
 }

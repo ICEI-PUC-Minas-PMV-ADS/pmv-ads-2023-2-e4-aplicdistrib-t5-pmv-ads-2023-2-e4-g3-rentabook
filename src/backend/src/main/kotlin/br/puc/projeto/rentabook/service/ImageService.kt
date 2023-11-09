@@ -9,6 +9,8 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
+import java.io.FileNotFoundException
+import java.nio.file.Path
 
 
 @Service
@@ -35,11 +37,20 @@ class ImageService(
                 )
                 val extension = contentTypeToExtension[imageType]
 
-                val filePath = File(uploadDir, id + extension)
-                image.transferTo(filePath)
-                type = imageType
-                path = filePath.path
-                imageRepository.save(this)
+                val returnImage: Image = try {
+                    val filePath = File(uploadDir, id + extension)
+                    image.transferTo(filePath)
+                    type = imageType
+                    path = filePath.path
+                    imageRepository.save(this)
+                } catch (_: Exception) {
+                    val filePath = File(uploadDir.absolutePath, id + extension)
+                    image.transferTo(filePath)
+                    type = imageType
+                    path = filePath.path
+                    imageRepository.save(this)
+                }
+                returnImage
             }
         }
 
