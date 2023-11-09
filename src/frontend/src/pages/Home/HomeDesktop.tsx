@@ -79,12 +79,16 @@ export default function HomeDesktop() {
     )
   }
 
-  const loaderFooter = () => {
-    if (annoucementsInfiniteListIsLoading == false) return <></>
+  const LoaderFooter = () => {
     return (
-      <View style={{ padding: 20 }}>
-        <ActivityIndicator size="large" color={PrimaryGreenColor} />
-      </View>
+      <>
+        {annoucementsInfiniteListIsLoading &&
+          <View style={{ padding: 20 }}>
+            <ActivityIndicator size="large" color={PrimaryGreenColor} />
+          </View>
+        }
+      </>
+
     )
   }
 
@@ -380,7 +384,7 @@ export default function HomeDesktop() {
                     renderItem={({ item }) => renderItem(item)}
                     onEndReached={loadAnnouncements}
                     onEndReachedThreshold={0.1}
-                    ListFooterComponent={() => loaderFooter()} />
+                    ListFooterComponent={() => LoaderFooter()} />
                 }
                 {
                   !useMediaQuery(1025, 1300) &&
@@ -390,7 +394,7 @@ export default function HomeDesktop() {
                     renderItem={({ item }) => renderItem(item)}
                     onEndReached={loadAnnouncements}
                     onEndReachedThreshold={0.1}
-                    ListFooterComponent={() => loaderFooter()} />
+                    ListFooterComponent={() => LoaderFooter()} />
                 }
               </View>
             </>
