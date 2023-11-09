@@ -252,12 +252,7 @@ export default function ProfileAddressBox({ enderecos, onSaveAddress, onDeleteAd
                 {
                     enderecoSelecionado == true
                         ? (
-                        <>
-                            <PrimaryButton
-                                style={style.buttonDeletar}
-                                label="Alterar."
-                                onPress={() => alteraEndereco()}
-                            />
+                        <>                        
                             <PrimaryButton
                                 style={style.buttonDeletar}
                                 label="DELETAR."

@@ -209,11 +209,40 @@ O teste foi executado com sucesso conforme demonstra as evidencias.
 <img src="/docs/img/CT-14(2).png" />
 
 
+## CT-16 - Permitir ao usuário cadastrar um endereço
 
+O teste foi executado preenchendo os dados do endereço e clicando no botão de salvar, para realizar o salvamento do endereço.
 
+<img src="/docs/img/CT-16.png" />
 
+## CT-17 - Permitir ao usuário deletar um endereço cadastrado.
 
+O teste foi executado conforme a imagem, primeiramente deve se selecionar o endereço que se deseja a exclusão, após seleciona-lo com um click, as informações do endereço seram inseridas no formulário, para efetuar a exlcusão deve se clicar no botão deletar.
 
+<img src="/docs/img/CT-17.png" />
+<img src="/docs/img/CT-17b.png" />
+
+## CT-19 - Adicionar foto de perfil do usuário
+
+O teste foi executado conforme a imagem, abaixo do titulo "Meu Perfil" clicar no botão escolher arquivo e selecionar o arquivo de imagem e depois clicar em salvar alterações.
+
+<img src="/docs/img/CT-19.png" />
+
+## CT-20 - Alterar foto de perfil do usuário
+
+O teste foi executado conforme a imagem, o processo de alteração e o mesmo de adicionar a foto.
+
+## CT-21 - Permitir ao usuário Deletar a foto de perfil
+
+O teste foi executado conforme a imagem, para deletar a foto de perfil o usuário deve clicar no botão de x que fica no canto superior a direita da imagem, após confirmar a imagem será deletada.
+
+<img src="/docs/img/CT-21.png" />
+
+## CT-22 - Permitir ao usuário alterar o nome do perfil
+
+O teste foi executado conforme a imagem, para alterar o nome de perfil do usuário, deve se preencher o campo nome conforme a imagem e em seguida clicar no botão de salvar alterações.
+
+<img src="/docs/img/CT-22.png" />
 
 
 
