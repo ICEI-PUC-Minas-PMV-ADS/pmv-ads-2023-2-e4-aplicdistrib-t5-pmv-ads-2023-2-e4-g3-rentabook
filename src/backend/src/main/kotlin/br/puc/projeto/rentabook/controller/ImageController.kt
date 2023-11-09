@@ -19,7 +19,8 @@ class ImageController(
     fun getImagem(@PathVariable id: String, response: HttpServletResponse): ResponseEntity<ByteArray> {
         return imageService.getImage(id).run {
             if (this == null) {
-                val image = File("/images/defaultImages/notFoundImage.jpg")
+                val currentDirectory = System.getProperty("user.dir")
+                val image = File("$currentDirectory/src/main/kotlin/br/puc/projeto/rentabook/images/defaultImages/notFoundImage.jpg")
                 val imageBytes = Files.readAllBytes(image.toPath())
                 response.contentType = "image/jpeg"
                 val output = response.outputStream
