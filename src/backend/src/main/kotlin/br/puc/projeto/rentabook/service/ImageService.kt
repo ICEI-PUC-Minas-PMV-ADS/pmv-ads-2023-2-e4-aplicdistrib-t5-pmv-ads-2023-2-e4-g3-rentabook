@@ -24,7 +24,8 @@ class ImageService(
                     false to "announcements"
                 )
                 val categoryPath = category[userPhoto]
-                val uploadDir = File("/images/$categoryPath")
+                val currentDirectory = System.getProperty("user.dir")
+                val uploadDir = File("$currentDirectory/src/main/kotlin/br/puc/projeto/rentabook/images/$categoryPath")
                 if (!uploadDir.exists()) {
                     uploadDir.mkdirs()
                 }
