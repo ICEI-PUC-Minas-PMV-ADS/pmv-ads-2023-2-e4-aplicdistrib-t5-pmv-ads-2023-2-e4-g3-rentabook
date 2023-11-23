@@ -11,15 +11,14 @@ import { useMediaQuery } from "../../hooks/useResposive";
 
 const style = StyleSheet.create({
     container: {
-        flex: 1, 
+        flex: 1,
+        minHeight: 700,
         alignItems: "center",
         backgroundColor: WhiteColor,
         justifyContent: "space-evenly",
         borderRadius: 8,
-        marginHorizontal: 25,
-        marginVertical: 10,
-        width: 550,
-        padding: 10,
+        marginHorizontal: '3%',
+        marginVertical: '3%',
 
     },
     image: {
@@ -117,9 +116,8 @@ export default function ProfileBox({ nome, email, imagem, fetchUserdata }: Profi
         if (conf)
         {await userService.deletePrivateUserImage()}   
         fetchUserdata()  
-    }
-
-    console.log(imagem)
+    } 
+    
     return (
         <View style={style.container}>
             {

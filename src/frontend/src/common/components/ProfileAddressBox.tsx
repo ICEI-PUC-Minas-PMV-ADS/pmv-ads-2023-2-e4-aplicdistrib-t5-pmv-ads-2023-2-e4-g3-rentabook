@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, Pressable, Alert } from "react-native";
-import { DarkGreen, GreenLight, PrimaryGreenColor, WhiteColor } from "../theme/colors";
+import { View, StyleSheet, Text, Pressable, Alert, Button } from "react-native";
+import { BlackColor, DarkGreen, GreenLight, PrimaryGreenColor, WhiteColor } from "../theme/colors";
 import Input from "./Input";
 import PrimaryButton from "./PrimaryButton";
 import { PrivateAddress } from "../../types/PrivateAddress";
 import { addressService } from "../../services/addressService";
+import { useViaCep } from "../../hooks/useViaCep";
+import { set } from "date-fns";
 
 const style = StyleSheet.create({
+
     container: {
         flex: 2,
         flexDirection: "row",
@@ -14,20 +17,20 @@ const style = StyleSheet.create({
         backgroundColor: WhiteColor,
         justifyContent: 'space-evenly',
         borderRadius: 8,
-        marginHorizontal: '5%',
-        marginVertical: 10,
+        marginHorizontal: '3%',
+        marginVertical: '3%',
         padding: 10,
 
     },
     input: {   
-        marginHorizontal: '7%',
-        marginVerdical: 10,
+        marginHorizontal: '10%',
+        marginVerdical: 100,
         maxWidth: '80%',
         maxHeight: 80,
-        color: DarkGreen,
+        color: BlackColor,
     },
     form: {
-        width: '40%',
+        width: '60%',
         
     },
     address: {
@@ -39,7 +42,7 @@ const style = StyleSheet.create({
     titulo: {
         alignSelf: "flex-start",
         marginLeft: 20,
-        fontSize: 35,
+        fontSize: 30,
         color: DarkGreen,
     },
     button: {
@@ -73,6 +76,10 @@ const style = StyleSheet.create({
         fontWeight:"500",
         fontSize: 16,
     },
+    btnBuscar: {
+        width: 60,
+        height: 40,
+    }
 });
 type ProfileAddressBoxProps = {
     enderecos?: PrivateAddress[] | null[],
@@ -81,7 +88,7 @@ type ProfileAddressBoxProps = {
 
 }
 
-export default function ProfileAddressBox({ enderecos, onSaveAddress, onDeleteAddress }: ProfileAddressBoxProps) {
+export default function ProfileAddressBox({ enderecos, onDeleteAddress }: ProfileAddressBoxProps) {
     const [id, setId] = useState('')
     const [nome, setNome] = useState('')
     const [cep, setCep] = useState('')
@@ -186,25 +193,46 @@ export default function ProfileAddressBox({ enderecos, onSaveAddress, onDeleteAd
         setIdEnderecoSelecionado(id)
         carregaEndereçoSelecionado(id)
     }
+
+    const addressCepPicker = async (cep: string) => {
+        try {
+            var endereco = await useViaCep(cep)          
+            setBairro(endereco.bairro)
+            setCidade(endereco.localidade)
+            setEstado(endereco.uf)
+            setComplemento(endereco.complemento)
+        } catch (error) {
+            console.error("Erro ao buscar endereço:", error);
+        }
+    }
+
     return (
         <View style={style.container}>
             <View style={style.form}>
-                <Text style={style.titulo}> Meus Endereços: </Text>
+                <Text style={style.titulo}>Dados do Endereço: </Text>
+                <View style={{ flex:1, flexDirection:"row", alignItems:"flex-end" }}>
+                    <Input
+                        style={style.input}
+                        value={cep}
+                        placeholder="Digite o CEP"
+                        label="CEP"
+                        onChangeText={setCep}
+                    />
+                    <PrimaryButton
+                            label='Buscar'
+                            style={style.btnBuscar}
+                            onPress={() => {
+                              addressCepPicker(cep)
+                            }} />
+                </View>
+
                 <Input
                     style={style.input}
                     value={nome}
                     placeholder="Descrição do Endereço."
                     label="Descrição:"
                     onChangeText={setNome}
-                />
-                <Input
-                    style={style.input}
-                    value={cep}
-                    placeholder="Digite o CEP"
-                    label="CEP"
-                    onChangeText={setCep}
-                />
-
+                />              
                 <Input
                     style={style.input}
                     value={rua}
@@ -270,7 +298,7 @@ export default function ProfileAddressBox({ enderecos, onSaveAddress, onDeleteAd
 
             </View>
             <View style={style.address}>
-                <Text style={style.titulo}> Meus Endereços: </Text>
+                <Text style={style.titulo}>Meus Endereços: </Text>
                 <ol style={style.lista} >
                     {
                         enderecos?.map((endereco, index) => (

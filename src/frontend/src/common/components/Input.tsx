@@ -29,15 +29,16 @@ const InputStyle = StyleSheet.create({
   label: {
     borderRadius: 12,
     color: InputLabelGreenColor,
-    fontSize: 14,
-    marginBottom: 4,
+    fontSize: 16,
+    marginTop: 6,
+    marginBottom: 6,
   },
   inputContainer: {
-    backgroundColor: GreyColor,
+    backgroundColor: GreyColor,  
   },
   input: {
     paddingHorizontal: 8,
-    paddingVertical: 10,
+    paddingVertical: 10,   
   },
 });
 

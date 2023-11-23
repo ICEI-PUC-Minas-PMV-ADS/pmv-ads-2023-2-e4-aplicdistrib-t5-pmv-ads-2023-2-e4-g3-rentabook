@@ -6,13 +6,20 @@ import React from "react";
 import ProfileBox from "../common/components/ProfileBox";
 import ProfileAddressBox from "../common/components/ProfileAddressBox";
 import { PrivateAddress } from "../types/PrivateAddress";
+import { useMediaQuery } from "../hooks/useResposive";
+
+
 
 
 const style = StyleSheet.create({
   container: {
-    flex:1,
+    flex: 1,
     flexDirection: "row",
   },
+  mobile: {
+    flex: 1,
+    flexDirection: "column",
+  }
 });
 
 export default function Profile() {
@@ -41,29 +48,47 @@ export default function Profile() {
   }, [nome])
 
   return (
-  
+
     <ResponsiveNavbar>
-      <View style={{ flex:1, backgroundColor: "#E1DCC5" }}>
-            <ScrollView>
-        <View style={style.container}>
-  
 
-          <ProfileBox
-            nome={nome}
-            email={email}
-            imagem={image}
-            fetchUserdata={() => fetchUserData()}
-          />
-          <ProfileAddressBox
-            enderecos={addressList}
-            onSaveAddress={() => { fetchUserData() }}
-            onDeleteAddress={() => { fetchUserData() }}
-          />
+      <View style={{ flex: 1, backgroundColor: "#E1DCC5" }}>
+        <ScrollView>
+          {
+            useMediaQuery(0,1025) && (
+              <View style={style.mobile}>
+              <ProfileBox
+                nome={nome}
+                email={email}
+                imagem={image}
+                fetchUserdata={() => fetchUserData()}
+              />
+              <ProfileAddressBox
+                enderecos={addressList}
+                onSaveAddress={() => { fetchUserData() }}
+                onDeleteAddress={() => { fetchUserData() }}
+              />
+            </View>
+            )
+          }
+          {
+            useMediaQuery(1024, 10000) && (
+              <View style={style.container}>
+              <ProfileBox
+                nome={nome}
+                email={email}
+                imagem={image}
+                fetchUserdata={() => fetchUserData()}
+              />
+              <ProfileAddressBox
+                enderecos={addressList}
+                onSaveAddress={() => { fetchUserData() }}
+                onDeleteAddress={() => { fetchUserData() }}
+              />
+            </View>
+            )
+          }      
 
-
-        </View>
-
-      </ScrollView>
+        </ScrollView>
       </View>
     </ResponsiveNavbar>
   );
