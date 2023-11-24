@@ -318,7 +318,7 @@ Esta página é responsável pelo processo de login de usuários existentes na a
 	<tbody>
 		<tr>
 			<td>CT-05</td>
-			<td>RF-016 - Listar ao usuário seus livros em negociação</td>
+			<td>RF-016 - Permitir ao usuário anexar fotos do livro ao seu anúncio</td>
 			<td>Garantir que o usuário consiga cadastrar uma foto de um livro</td>
 			<td>
 				<ol>
