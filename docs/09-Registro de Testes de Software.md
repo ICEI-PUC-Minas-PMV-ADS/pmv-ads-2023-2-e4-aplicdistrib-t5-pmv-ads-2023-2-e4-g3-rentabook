@@ -103,26 +103,27 @@ Web
 <img src="/docs/img/ct_04_pagina_1.png" />
 
 Mobile
-<img src="/docs/img/mob_ct_04_pagina_1_1.png" />
+<img src="/docs/img/mobx_ct_04_pagina_1_1.png" />
 
 Mobile
-<img src="/docs/img/mob_ct_04_pagina_1_2.png" />
+<img src="/docs/img/mobx_ct_04_pagina_1_2.png" />
 
 Web
 <img src="/docs/img/ct_04_pagina_2.png" />
 
 Mobile
-<img src="/docs/img/mob_ct_04_pagina_2.png" />
+<img src="/docs/img/mobx_ct_04_pagina_2.png" />
+
 Apos prencher todas as informações necessarias, o botão "Criar" ficará ativo.
 
 Web
 <img src="/docs/img/ct_04_pagina_3.png" />
 
 Mobile
-<img src="/docs/img/mob_ct_04_pagina_3_1.png" />
+<img src="/docs/img/mobx_ct_04_pagina_3_1.png" />
 
 Mobile
-<img src="/docs/img/mob_ct_04_pagina_3_2.png" />
+<img src="/docs/img/mobx_ct_04_pagina_3_2.png" />
 
 O sistema irá confirmar a criação do anúncio.
 
@@ -130,13 +131,13 @@ Web
 <img src="/docs/img/ct_04_pagina_4.png" />
 
 Mobile
-<img src="/docs/img/mob_ct_04_pagina_4.png" />
+<img src="/docs/img/mobx_ct_04_pagina_4.png" />
 
 Web
 <img src="/docs/img/ct_04_pagina_5.png" />
 
 Mobile
-<img src="/docs/img/mob_ct_04_pagina_5.png" />
+<img src="/docs/img/mobx_ct_04_pagina_5.png" />
 
 ## CT-05 - Garantir que o usuário consiga cadastrar uma foto de um livro
 
