@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.repository.Query
 
 interface TradeRepository : MongoRepository<Trade, String> {
     fun findByChatId(id: String): Trade?
+    fun findAllByLeadId(leadId: String): List<Trade>
 }
 
 

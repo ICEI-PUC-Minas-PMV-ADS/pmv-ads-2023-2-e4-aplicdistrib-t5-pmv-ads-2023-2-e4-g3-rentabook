@@ -14,18 +14,18 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.data.mongodb.core.MongoTemplate
-import org.springframework.data.mongodb.core.query.Criteria
-import org.springframework.data.mongodb.core.query.Query
-import org.springframework.data.mongodb.core.query.TextCriteria
+import org.springframework.data.mongodb.core.query.*
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.data.support.PageableExecutionUtils
 import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.multipart.MultipartFile
 import java.text.Normalizer
+import java.util.*
 import java.util.function.LongSupplier
 import java.util.function.Supplier
 import kotlin.Exception
+import kotlin.reflect.jvm.internal.impl.resolve.constants.TypedArrayValue
 
 @Service
 class AnnouncementService(
@@ -33,7 +33,6 @@ class AnnouncementService(
     private val userRepository: UserRepository,
     private val createAnnouncementFormMapper: CreateAnnouncementFormMapper,
     private val announcementViewMapper: AnnouncementViewMapper,
-    private val rentRepository: RentRepository,
     private val createRentFormMapper: RentFormMapper,
     private val rentViewMapper: RentViewMapper,
     private val ratingRepository: RatingRepository,
@@ -41,7 +40,11 @@ class AnnouncementService(
     private val mongoTemplate: MongoTemplate,
     private val cleanAnnouncementViewMapper: CleanAnnouncementViewMapper,
     private val addressRepository: AddressRepository,
-    private val imageRepository: ImageRepository
+    private val imageRepository: ImageRepository,
+    private val bookRepository: BookRepository,
+    private val saleRepository: SaleRepository,
+    private val tradeRepository: TradeRepository,
+    private val rentRepository: RentRepository,
 ) {
 
     fun findAll(pageable: Pageable): Page<AnnouncementView> {
@@ -64,6 +67,7 @@ class AnnouncementService(
                     id = id,
                     ownerUser = originalAnnouncement.ownerUser,
                     bookId = createAnnouncementForm.bookId,
+                    book = bookRepository.findById(createAnnouncementForm.bookId),
                     images = createAnnouncementForm.images.map { imageIdToImage(it) }.toMutableList(),
                     description = createAnnouncementForm.description,
                     location = addressRepository.findById(createAnnouncementForm.locationId).orElseThrow { throw Exception("Endereço não encontrado!") },
@@ -72,6 +76,8 @@ class AnnouncementService(
                     trade = createAnnouncementForm.trade ?: false,
                     valueForRent = createAnnouncementForm.valueForRent,
                     valueForSale = createAnnouncementForm.valueForSale,
+                    status = Announcement.initial,
+                    wasReturn = false,
                 )
                 announcementRepository.save(announcement).run {
                     announcementViewMapper.map(this)
@@ -152,23 +158,6 @@ class AnnouncementService(
             PageImpl(announcementList, pageable, announcementList.size.toLong())
         }
     }
-
-//    fun giveBackRent(giveBackForm: GiveBackForm) {
-//        return AuthenticationUtils.authenticate(userRepository) {
-//            val rent =
-//                rentRepository.findById(giveBackForm.id).orElseThrow { throw Exception("Id de aluguel invalido!") }
-//            rent.rating = ratingRepository.save(
-//                Rating(
-//                    ownerUser = it,
-//                    message = giveBackForm.ratingMessage,
-//                    feedback = giveBackForm.ratingFeedback,
-//                )
-//            )
-//            rent.announcement.isAvailable = true
-//            announcementRepository.save(rent.announcement)
-//            rentRepository.save(rent)
-//        }
-//    }
 
     fun uploadImage(image: MultipartFile, announcementId: String): AnnouncementView {
         return AuthenticationUtils.authenticate(userRepository) { user ->
@@ -267,6 +256,62 @@ class AnnouncementService(
         }
     }
 
+    fun setAnnouncementStatus(id: String, status: String): CleanAnnouncementView {
+        return AuthenticationUtils.authenticate(userRepository) {
+            val announcement = announcementRepository.findById(id).orElseThrow()
+            when (status.trim()) {
+                Announcement.initial,
+                Announcement.waitingSend,
+                Announcement.sended,
+                Announcement.awaitingDelivery,
+                Announcement.delivered,
+                Announcement.awaitingReturn,
+                Announcement.returned,
+                Announcement.complete -> {
+                    announcement.status = status
+                }
+                else -> throw Exception("Status de anuncio invalido!")
+            }
+            cleanAnnouncementViewMapper.map(announcementRepository.save(announcement))
+        }
+    }
+
+    fun getMyRequestedAnnouncements(filterBy: String?): List<CleanAnnouncementView> {
+        return AuthenticationUtils.authenticate(userRepository) {
+            val leadId = it.id!!
+            val sales = saleRepository.findAllByLeadId(leadId)
+            val rents = rentRepository.findAllByLeadId(leadId)
+            val trades = tradeRepository.findAllByLeadId(leadId)
+            val queryIds = mutableListOf<String>()
+
+            sales.forEach { sale -> queryIds.add(sale.announcement.id!!) }
+            rents.forEach { rent -> queryIds.add(rent.announcement.id!!) }
+            trades.forEach { trade -> queryIds.add(trade.announcement.id!!) }
+
+            val annonucements = mongoTemplate
+                .find(Query().addCriteria(
+                    Criteria.where("id").`in`(queryIds)
+                ), Announcement::class.java
+            )
+
+            return@authenticate when(filterBy?.lowercase()) {
+                "pending" -> annonucements
+                    .filter { filterByStr -> filterByStr.isAvailable }
+                    .map { announcement -> cleanAnnouncementViewMapper.map(
+                        announcement
+                    )}
+                "complete" -> annonucements
+                    .filter { filterByStr -> !filterByStr.isAvailable }
+                    .map { announcement -> cleanAnnouncementViewMapper.map(
+                        announcement
+                    )}
+                else -> annonucements.map { announcement -> cleanAnnouncementViewMapper.map(
+                    announcement
+                )}
+            }
+        }
+    }
+
     fun <R> getCustomPage(list: List<R>, pageable: Pageable): Page<R> {
         val startIndex = pageable.pageNumber * pageable.pageSize
         val endIndex = (startIndex + pageable.pageSize).coerceAtMost(list.size)
@@ -279,6 +324,5 @@ class AnnouncementService(
     fun getPublicAnnouncementsDetail(id: String): CleanAnnouncementView {
         return cleanAnnouncementViewMapper.map(findById(id))
     }
-
 
 }

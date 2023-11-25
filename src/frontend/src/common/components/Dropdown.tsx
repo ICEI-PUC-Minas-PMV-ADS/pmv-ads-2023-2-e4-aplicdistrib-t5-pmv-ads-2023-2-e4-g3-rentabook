@@ -65,8 +65,6 @@ export default function Dropdown<T>({ placeholder, style, items, value, getValue
     if (Platform.OS == "web") {
       const { width, height, x, y, top, left } = event.nativeEvent.layout as any;
       setLayout({ width, height, x: x + left, y: y + top + height + 2 });
-    } else {
-
     }
   };
 
@@ -93,14 +91,12 @@ export default function Dropdown<T>({ placeholder, style, items, value, getValue
   return (
     <View style={[style]}>
       <Pressable onPress={() => {
-        if (Platform.OS === 'android') {
-          dropdownRef.current?.measureInWindow((x, y, width, height) => {
-            setLayout({ width, height, x, y: y + height });
-          });
-        }
+        dropdownRef.current?.measureInWindow((x, y, width, height) => {
+          setLayout({ width, height, x, y: y + height });
+        });
         setOpened(opened => !opened)
       }} onLayout={onLayout}>
-        <View ref={dropdownRef} onLayout={onLayout} style={DropdownStyle.dropdownContainer}>
+        <View ref={dropdownRef} style={DropdownStyle.dropdownContainer}>
           {renderValue(selectedItem)}
           <Ionicons name="chevron-down-outline" size={20} />
         </View>

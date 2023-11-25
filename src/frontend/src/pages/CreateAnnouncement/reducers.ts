@@ -2,6 +2,7 @@ import React from "react";
 import { CleanAnnouncementView } from "../../types/CleanAnnouncementView";
 import { PrivateAddress } from "../../types/PrivateAddress";
 import { BookView } from "../../types/BookView";
+import { ImagePickerAsset } from "expo-image-picker";
 
 /**
  * CreateAnnouncementState
@@ -22,6 +23,7 @@ export type CreateAnnouncementState = {
   validateInput: boolean,
   description: string,
   uploadedFiles: File[],
+  uploadedFilesMobile: ImagePickerAsset[],
   hasMoreBookData: boolean,
   nextBooksPage: number,
 };
@@ -35,7 +37,7 @@ export type CreateAnnouncementAction = {
   'set_trade' | 'set_sale_value' | 'set_rent_value' |
   'set_search_term' | 'set_user_addresses' | 'set_selected_address' |
   'set_books' | 'set_selected_book' | 'set_validate_input' | 'set_description' |
-  'set_uploaded_files' | 'set_has_more_book_data' | 'clear_books',
+  'set_uploaded_files' | 'set_has_more_book_data' | 'clear_books' | 'set_uploaded_files_mobile',
   payload?: any,
 };
 
@@ -58,6 +60,7 @@ export const initialCreateAnnouncementState: CreateAnnouncementState = {
   validateInput: false,
   description: '',
   uploadedFiles: [],
+  uploadedFilesMobile: [],
   hasMoreBookData: false,
   nextBooksPage: 0,
 };
@@ -147,6 +150,7 @@ export const CreateAnnouncementReducer = (
     case 'set_validate_input': return { ...state, validateInput: action.payload };
     case 'set_description': return { ...state, description: action.payload };
     case 'set_uploaded_files': return { ...state, uploadedFiles: [...action.payload] };
+    case 'set_uploaded_files_mobile': return { ...state, uploadedFilesMobile: [...action.payload] };
     case 'set_has_more_book_data': return { ...state, hasMoreBookData: action.payload };
     case 'clear_books': return { ...state, books: [] };
   }

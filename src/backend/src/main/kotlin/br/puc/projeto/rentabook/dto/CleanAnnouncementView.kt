@@ -18,5 +18,7 @@ data class CleanAnnouncementView(
     val valueForRent: Double?,
     val location: PublicAddressView,
     val averageStars: Int,
-    val totalRatings: Int
+    val totalRatings: Int,
+    val status: String,
+    val wasReturn: Boolean,
 )

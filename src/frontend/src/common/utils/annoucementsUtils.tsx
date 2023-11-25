@@ -1,3 +1,4 @@
+import { Platform } from "react-native";
 import { CleanAnnouncementView } from "../../types/CleanAnnouncementView"
 import { API } from "@env";
 
@@ -33,9 +34,9 @@ export const getValueSale = (item: CleanAnnouncementView) => (item.valueForSale 
 
 export const getFirstImageLink = (item: CleanAnnouncementView) => {
   const imageId = item.images[0] == null ? "noimage" : item.images[0]
-  return API + '/public/image/' + imageId
+  return (Platform.OS === 'web' ? API : "http://10.0.2.2:8080") + '/public/image/' + imageId
 }
 
 export const getImageLink = (id: string) => {
-  return API + '/public/image/' + id
+  return (Platform.OS === 'web' ? API : "http://10.0.2.2:8080") + '/public/image/' + id
 }

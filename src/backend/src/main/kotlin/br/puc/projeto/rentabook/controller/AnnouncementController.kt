@@ -90,6 +90,16 @@ class AnnouncementController(
     @SecurityRequirement(
         name = "bearerAuth"
     )
+    @GetMapping("/requested")
+    fun getMyRequestedAnnouncements(
+        @RequestParam filterBy: String?,
+    ): List<CleanAnnouncementView> {
+        return announcementService.getMyRequestedAnnouncements(filterBy)
+    }
+
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
     @GetMapping("/available")
     fun getAnnouncementsAvailable(
         @PageableDefault(size = 5) pageable: Pageable
@@ -123,17 +133,6 @@ class AnnouncementController(
     fun getRentAnnouncements(pageable: Pageable): Page<AnnouncementView> {
         return announcementService.findAllBooksAvailableToRent(pageable)
     }
-
-    /**
-     * Faz a devolução de um livro alugado.
-     */
-    @SecurityRequirement(
-        name = "bearerAuth"
-    )
-//    @PostMapping("/give_back")
-//    fun giveBackRent(@RequestBody giveBackForm: GiveBackForm) {
-//        return announcementService.giveBackRent(giveBackForm)
-//    }
 
     @SecurityRequirement(
         name = "bearerAuth"
@@ -177,6 +176,17 @@ class AnnouncementController(
         @RequestParam id: String
     ): AnnouncementView {
         return announcementService.detailService(id)
+    }
+
+    @SecurityRequirement(
+        name = "bearerAuth"
+    )
+    @PostMapping("/{id}/status")
+    fun setAnnouncementStatus(
+        @PathVariable id: String,
+        @RequestBody form: UpdateAnnouncementStatusForm,
+    ): CleanAnnouncementView {
+        return announcementService.setAnnouncementStatus(id, form.status)
     }
 
     @GetMapping("public/{id}")

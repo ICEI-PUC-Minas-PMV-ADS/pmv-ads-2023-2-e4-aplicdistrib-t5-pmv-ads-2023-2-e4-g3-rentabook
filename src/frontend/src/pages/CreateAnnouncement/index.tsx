@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ImagePicker from "expo-image-picker";
 
 import { View, Text, Platform, ScrollView, StyleSheet } from "react-native";
 import { Image } from 'expo-image';
@@ -15,6 +16,7 @@ import { AppParamsList } from '../../routes/AppParamsList';
 import { getImageLink } from '../../common/utils/annoucementsUtils';
 import { CreateAnnouncementProvider, useCreateAnnouncementContext } from './contexts';
 import { useMediaQuery } from '../../hooks/useResposive';
+import { useAlertMessage } from '../../contexts/Message';
 
 import Dropdown from "../../common/components/Dropdown";
 import TextArea from "../../common/components/TextArea";
@@ -52,6 +54,7 @@ function CreateAnnouncementImpl(props: CreateAnnouncementProps) {
   const route = useRoute<RouteProp<AppParamsList, 'Criar Anúncio'>>();
   const announcementId = route.params?.announcementId;
   const auth = React.useContext(AuthContext);
+  const { showAlert } = useAlertMessage();
   const { state, dispatch } = useCreateAnnouncementContext();
 
   React.useEffect(() => {
@@ -115,11 +118,18 @@ function CreateAnnouncementImpl(props: CreateAnnouncementProps) {
      */
 
     const uploadedImagesResponse: string[] = [];
-    for (let i = 0; i < state.uploadedFiles.length; i++) {
-      const formData = new FormData();
-      formData.append("image", state.uploadedFiles[i])
-      const response = await announcementsService.uploadImage(formData);
-      uploadedImagesResponse.push(response.id);
+    if (Platform.OS === 'web') {
+      for (let i = 0; i < state.uploadedFiles.length; i++) {
+        const formData = new FormData();
+        formData.append("image", state.uploadedFiles[i])
+        const response = await announcementsService.uploadImage(formData);
+        uploadedImagesResponse.push(response.id);
+      }
+    } else if (Platform.OS === 'android') {
+      for (let i = 0; i < state.uploadedFilesMobile.length; i++) {
+        const response = await announcementsService.uploadImageMobile(state.uploadedFilesMobile[i]);
+        uploadedImagesResponse.push(response.id);
+      }
     }
 
     /**
@@ -152,23 +162,12 @@ function CreateAnnouncementImpl(props: CreateAnnouncementProps) {
       });
     }
 
-    if (Platform.OS === 'web') {
-      if (!state.announcement) {
-        alert('Anuncio criado com sucesso!')
-      } else {
-        alert('Anuncio editado com sucesso!')
-      }
+    if (!state.announcement) {
+      showAlert('Anuncio criado com sucesso!')
     } else {
-      /*
-      if (!state.announcement) {
-        const showToast = () => ToastAndroid.show("Anuncio criado com sucesso!", ToastAndroid.SHORT);
-        showToast();
-      } else {
-        const showToast = () => ToastAndroid.show("Anuncio editado com sucesso!", ToastAndroid.SHORT);
-        showToast();
-      }
-      */
+      showAlert('Anuncio editado com sucesso!')
     }
+
     dispatch({ type: 'set_uploaded_files', payload: [] });
     navigation.navigate("Meus Anúncios", { reset: true });
   };
@@ -185,6 +184,35 @@ function CreateAnnouncementImpl(props: CreateAnnouncementProps) {
       }
       dispatch({ type: 'set_uploaded_files', payload: _uploadedFiles });
     }
+  };
+
+  /**
+   * Upload file mobile
+   */
+
+  const uploadFileMobile = async () => {
+    const pickImage = async () => {
+      const { status } = await ImagePicker.
+        requestMediaLibraryPermissionsAsync();
+
+      if (status !== "granted") {
+        showAlert('O aplicativo não tem permissão para usar a camera.');
+      } else {
+        const result = await ImagePicker.launchImageLibraryAsync({
+          allowsMultipleSelection: true,
+        });
+
+        if (!result.canceled) {
+          const _uploadedFiles: ImagePicker.ImagePickerAsset[] = [];
+          for (let i = 0; i < result.assets.length; i++) {
+            _uploadedFiles.push(result.assets[i]);
+          }
+          dispatch({ type: 'set_uploaded_files_mobile', payload: _uploadedFiles });
+        }
+      }
+    };
+
+    pickImage();
   };
 
   const UploadFileInput = React.useMemo(() => {
@@ -359,15 +387,14 @@ function CreateAnnouncementImpl(props: CreateAnnouncementProps) {
                     <View style={{ width: '100%' }}>
                       <Text>Imagens:</Text>
                       <View style={{ flexDirection: 'row', width: '100%', height: 200, borderColor: '#a8a8a8', borderWidth: 1, marginTop: 20 }}>
-                        <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+                        <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} horizontal>
                           <View style={{ flexDirection: 'row', height: 200, padding: 5 }}>
                             {
                               state.announcement.images.map((file, index) => {
                                 return (
                                   <Image
                                     key={index}
-                                    source={getImageLink(file)}
-                                    contentFit='contain'
+                                    source={{ uri: getImageLink(file) }}
                                     style={{ width: 180, height: 180, margin: 5 }} />
                                 );
                               })
@@ -392,17 +419,21 @@ function CreateAnnouncementImpl(props: CreateAnnouncementProps) {
                           if (Platform.OS === "web") {
                             const fileInput = document.getElementById("fileInput")
                             fileInput!.click();
+                          } else if (Platform.OS === 'android') {
+                            uploadFileMobile();
                           }
                         }} />
                     </View>
                   </View>
+
+                  {/* Preview Web */}
 
                   {state.uploadedFiles.length > 0 && (
                     <View style={{ width: '100%' }}>
                       <View style={{ height: 20 }} />
                       <Text>Preview:</Text>
                       <View style={{ flexDirection: 'row', width: '100%', height: 200, borderColor: '#a8a8a8', borderWidth: 1, marginTop: 20 }}>
-                        <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+                        <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} horizontal>
                           <View style={{ flexDirection: 'row', height: 200, padding: 5 }}>
                             {
                               state.uploadedFiles.map((file, index) => {
@@ -410,6 +441,31 @@ function CreateAnnouncementImpl(props: CreateAnnouncementProps) {
                                   <Image
                                     key={index}
                                     source={{ uri: URL.createObjectURL(file) }}
+                                    style={{ width: 180, height: 180, margin: 5 }} />
+                                );
+                              })
+                            }
+                          </View>
+                        </ScrollView>
+                      </View>
+                    </View>
+                  )}
+
+                  {/* Preview Mobile */}
+
+                  {state.uploadedFilesMobile.length > 0 && (
+                    <View style={{ width: '100%' }}>
+                      <View style={{ height: 20 }} />
+                      <Text>Preview:</Text>
+                      <View style={{ flexDirection: 'row', width: '100%', height: 200, borderColor: '#a8a8a8', borderWidth: 1, marginTop: 20 }}>
+                        <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} horizontal>
+                          <View style={{ flexDirection: 'row', height: 200, padding: 5 }}>
+                            {
+                              state.uploadedFilesMobile.map((file, index) => {
+                                return (
+                                  <Image
+                                    key={index}
+                                    source={{ uri: file.uri }}
                                     style={{ width: 180, height: 180, margin: 5 }} />
                                 );
                               })
@@ -604,7 +660,6 @@ function CreateAnnouncementImpl(props: CreateAnnouncementProps) {
                                 <Image
                                   key={index}
                                   source={getImageLink(file)}
-                                  contentFit='contain'
                                   style={{ width: 180, height: 180, margin: 5 }} />
                               );
                             })
@@ -629,6 +684,8 @@ function CreateAnnouncementImpl(props: CreateAnnouncementProps) {
                         if (Platform.OS === "web") {
                           const fileInput = document.getElementById("fileInput")
                           fileInput!.click();
+                        } else if (Platform.OS === 'android') {
+                          uploadFileMobile();
                         }
                       }} />
                   </View>
@@ -647,6 +704,31 @@ function CreateAnnouncementImpl(props: CreateAnnouncementProps) {
                                 <Image
                                   key={index}
                                   source={{ uri: URL.createObjectURL(file) }}
+                                  style={{ width: 180, height: 180, margin: 5 }} />
+                              );
+                            })
+                          }
+                        </View>
+                      </ScrollView>
+                    </View>
+                  </View>
+                )}
+
+                {/* Preview Mobile */}
+
+                {state.uploadedFilesMobile.length > 0 && (
+                  <View style={{ width: '100%' }}>
+                    <View style={{ height: 20 }} />
+                    <Text>Preview:</Text>
+                    <View style={{ flexDirection: 'row', width: '100%', height: 200, borderColor: '#a8a8a8', borderWidth: 1, marginTop: 20 }}>
+                      <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} horizontal>
+                        <View style={{ flexDirection: 'row', height: 200, padding: 5 }}>
+                          {
+                            state.uploadedFilesMobile.map((file, index) => {
+                              return (
+                                <Image
+                                  key={index}
+                                  source={{ uri: file.uri }}
                                   style={{ width: 180, height: 180, margin: 5 }} />
                               );
                             })

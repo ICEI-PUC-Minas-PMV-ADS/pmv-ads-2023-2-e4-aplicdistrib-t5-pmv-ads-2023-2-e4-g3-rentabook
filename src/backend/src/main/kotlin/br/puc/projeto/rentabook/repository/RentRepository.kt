@@ -9,4 +9,5 @@ import org.springframework.data.mongodb.repository.Query
 
 interface RentRepository : MongoRepository<Rent, String> {
     fun findByChatId(id: String): Rent?
+    fun findAllByLeadId(id: String): List<Rent>
 }

@@ -4,6 +4,7 @@ import br.puc.projeto.rentabook.dto.BookView
 import br.puc.projeto.rentabook.dto.EspecificVolumeGoogleBooksDTO
 import br.puc.projeto.rentabook.dto.SearchVolumeGoogleBooksDTO
 import br.puc.projeto.rentabook.service.BookService
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
@@ -25,10 +26,10 @@ class BookController(
     }
 
     @GetMapping("/find")
-    fun findAll(@RequestParam search: String,
-                @PageableDefault(
-                    size = 5
-                )pageable: Pageable): Page<BookView> {
+    fun findAll(
+        @RequestParam search: String,
+        @PageableDefault(size = 5) pageable: Pageable
+    ): Page<BookView> {
         return bookService.findAll(search, pageable)
     }
 }

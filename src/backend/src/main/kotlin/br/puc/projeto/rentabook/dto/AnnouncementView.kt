@@ -16,4 +16,6 @@ data class AnnouncementView(
     val valueForSale: Double?,
     val valueForRent: Double?,
     val location: PrivateAddressView,
+    val status: String,
+    val wasReturn: Boolean,
 )

@@ -5,6 +5,7 @@ import br.puc.projeto.rentabook.dto.RentView
 import br.puc.projeto.rentabook.exception.NotFoundException
 import br.puc.projeto.rentabook.mapper.RentFormMapper
 import br.puc.projeto.rentabook.mapper.RentViewMapper
+import br.puc.projeto.rentabook.model.Announcement
 import br.puc.projeto.rentabook.model.Rent
 import br.puc.projeto.rentabook.repository.AnnouncementRepository
 import br.puc.projeto.rentabook.repository.ChatRepository
@@ -42,7 +43,6 @@ class RentService(
                 if (!announcement.rent || !announcement.isAvailable) {
                     throw Exception("Este livro não esta disponivel para aluguel")
                 }
-                announcement.isAvailable = false
                 announcementRepository.save(announcement)
                 rentViewMapper.map(this)
             }
@@ -93,6 +93,7 @@ class RentService(
                 throw IllegalStateException("Este aluguel não foi cancelada e não pode ser desfeita")
             }
             rent.announcement.isAvailable = true
+            rent.announcement.status = ""
             announcementRepository.save(rent.announcement)
             rent.cancelled = true
             rentViewMapper.map(rentRepository.save(rent))
@@ -112,6 +113,8 @@ class RentService(
             rent.chat.active = false
             chatRepository.save(rent.chat)
             rent.announcement.isAvailable = true
+            rent.announcement.status = Announcement.waitingSend
+            rent.announcement.wasReturn = true
             announcementRepository.save(rent.announcement)
             rent.accepted = true
             rentViewMapper.map(rentRepository.save(rent))

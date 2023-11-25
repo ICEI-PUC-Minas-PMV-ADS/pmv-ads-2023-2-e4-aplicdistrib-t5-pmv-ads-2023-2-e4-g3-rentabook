@@ -10,6 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 import { getToken } from "../../other/Storage";
 import { format, parseISO } from "date-fns";
 import { useMediaQuery, Mobile, Desktop } from "../../hooks/useResposive";
+import { API } from "@env";
 
 export let typeId: string | null = null;
 export let selectedItemContent: string | null = null;
@@ -57,7 +58,7 @@ export default function ConversationsList({
       }
 
       const response = await fetch(
-        "https://rentabookapi.azurewebsites.net/chat",
+        `${API}/chat`,
         {
           method: "GET",
           headers: {

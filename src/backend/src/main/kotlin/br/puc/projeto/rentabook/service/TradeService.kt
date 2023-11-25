@@ -6,6 +6,7 @@ import br.puc.projeto.rentabook.mapper.SaleFormMapper
 import br.puc.projeto.rentabook.mapper.SaleViewMapper
 import br.puc.projeto.rentabook.mapper.TradeFormMapper
 import br.puc.projeto.rentabook.mapper.TradeViewMapper
+import br.puc.projeto.rentabook.model.Announcement
 import br.puc.projeto.rentabook.model.Sale
 import br.puc.projeto.rentabook.model.Trade
 import br.puc.projeto.rentabook.repository.*
@@ -42,7 +43,6 @@ class TradeService(
                 if (!announcement.trade || !announcement.isAvailable) {
                     throw Exception("Este livro não esta disponivel para troca")
                 }
-                announcement.isAvailable = false
                 announcementRepository.save(announcement)
                 tradeViewMapper.map(this)
             }
@@ -95,6 +95,7 @@ class TradeService(
             trade.chat.active = false
             chatRepository.save(trade.chat)
             trade.announcement.isAvailable = true
+            trade.announcement.status = ""
             announcementRepository.save(trade.announcement)
             trade.cancelled = true
             tradeViewMapper.map(tradeRepository.save(trade))
@@ -114,6 +115,7 @@ class TradeService(
             trade.chat.active = false
             chatRepository.save(trade.chat)
             trade.announcement.isAvailable = false
+            trade.announcement.status = Announcement.waitingSend
             announcementRepository.save(trade.announcement)
             trade.accepted = true
             tradeViewMapper.map(tradeRepository.save(trade))

@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { getToken } from "../../other/Storage";
+import { API } from "@env";
 
 type ChatComponentProps = {
   chatId: string | null;
@@ -65,7 +66,7 @@ const ChatComponent = ({ chatId, currentUser }: ChatComponentProps) => {
       }
 
       const response = await fetch(
-        `https://rentabookapi.azurewebsites.net/chat/${chatId}/recent_messages`,
+        `${API}/chat/${chatId}/recent_messages`,
         {
           method: "GET",
           headers: {
@@ -113,7 +114,7 @@ const ChatComponent = ({ chatId, currentUser }: ChatComponentProps) => {
       }
 
       const response = await fetch(
-        `https://rentabookapi.azurewebsites.net/chat/messages/new`,
+        `${API}/chat/messages/new`,
         {
           method: "POST",
           headers: {

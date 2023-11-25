@@ -5,6 +5,8 @@ import PrimaryButton from "../../../common/components/PrimaryButton";
 import { useNavigation } from "@react-navigation/native";
 import { StackTypes } from "../../../routes/StackTypes";
 import { useMediaQuery } from './../../../hooks/useResposive';
+import Dropdown from "../../../common/components/Dropdown";
+import { WhiteColor } from "../../../common/theme/colors";
 
 /**
  * LeftBarProps
@@ -34,32 +36,104 @@ export const LeftBar = (props: LeftBarProps) => {
 
             <Text style={styles.filterTitle}>Filtrar por:</Text>
 
+            <Dropdown
+              value={'Todos'}
+              onSelect={(item) => dispatch({ type: 'set_general_filter', payload: item.toLowerCase() })}
+              getValue={(item) => item}
+              items={['Todos', 'Disponiveis', 'Negociados']}
+            >
+              {(item) => (
+                <View style={{
+                  backgroundColor: WhiteColor,
+                  paddingHorizontal: 5,
+                  paddingVertical: 8,
+                }}>
+                  <Text>{item}</Text>
+                </View>
+              )}
+            </Dropdown>
+
+            <View style={{ height: 20 }} />
+
             <MyAnnouncementsComsumer>
-              {({ state: { filter } }) => {
+              {({ state: { generalFilter, filter } }) => {
                 return (
-                  <>
-                    <PrimaryButton
-                      label="Disponível para venda"
-                      style={{ paddingVertical: 15 }}
-                      activeStyle={filter.sale}
-                      onPress={() => { dispatch({ type: 'toggle_filter_sale' }) }} />
+                  ((generalFilter === 'todos' || generalFilter === 'disponiveis') &&
+                    <>
+                      <PrimaryButton
+                        label="Disponível para venda"
+                        style={{ paddingVertical: 15 }}
+                        activeStyle={filter.sale}
+                        onPress={() => { dispatch({ type: 'toggle_filter_sale' }) }} />
 
-                    <View style={{ height: 20 }} />
+                      <View style={{ height: 20 }} />
 
-                    <PrimaryButton
-                      label="Disponível para aluguel"
-                      style={{ paddingVertical: 15 }}
-                      activeStyle={filter.rent}
-                      onPress={() => { dispatch({ type: 'toggle_filter_rent' }) }} />
+                      <PrimaryButton
+                        label="Disponível para aluguel"
+                        style={{ paddingVertical: 15 }}
+                        activeStyle={filter.rent}
+                        onPress={() => { dispatch({ type: 'toggle_filter_rent' }) }} />
 
-                    <View style={{ height: 20 }} />
+                      <View style={{ height: 20 }} />
 
-                    <PrimaryButton
-                      label="Disponível para troca"
-                      style={{ paddingVertical: 15 }}
-                      activeStyle={filter.trade}
-                      onPress={() => { dispatch({ type: 'toggle_filter_trade' }) }} />
-                  </>
+                      <PrimaryButton
+                        label="Disponível para troca"
+                        style={{ paddingVertical: 15 }}
+                        activeStyle={filter.trade}
+                        onPress={() => { dispatch({ type: 'toggle_filter_trade' }) }} />
+                    </>
+                  )
+                );
+              }}
+            </MyAnnouncementsComsumer>
+
+            <MyAnnouncementsComsumer>
+              {
+                ({ state: { generalFilter } }) => {
+                  return (
+                    <>
+                      {generalFilter === 'todos' && <View style={{ height: 20 }} />}
+                    </>
+                  );
+                }}
+            </MyAnnouncementsComsumer>
+
+            <MyAnnouncementsComsumer>
+              {({ state: { generalFilter, filter } }) => {
+                return (
+                  ((generalFilter === 'todos' || generalFilter === 'negociados') &&
+                    <>
+                      <PrimaryButton
+                        label="Aguardando de envio"
+                        style={{ paddingVertical: 15 }}
+                        activeStyle={filter.waitingSend}
+                        onPress={() => { dispatch({ type: 'toggle_filter_waiting_send' }) }} />
+
+                      <View style={{ height: 20 }} />
+
+                      <PrimaryButton
+                        label="Aguardando entrega"
+                        style={{ paddingVertical: 15 }}
+                        activeStyle={filter.waitingDelivery}
+                        onPress={() => { dispatch({ type: 'toggle_filter_waiting_delivery' }) }} />
+
+                      <View style={{ height: 20 }} />
+
+                      <PrimaryButton
+                        label="Aguardando devolução"
+                        style={{ paddingVertical: 15 }}
+                        activeStyle={filter.waitingReturn}
+                        onPress={() => { dispatch({ type: 'toggle_filter_waiting_return' }) }} />
+
+                      <View style={{ height: 20 }} />
+
+                      <PrimaryButton
+                        label="Finalizados"
+                        style={{ paddingVertical: 15 }}
+                        activeStyle={filter.complete}
+                        onPress={() => { dispatch({ type: 'toggle_filter_complete' }) }} />
+                    </>
+                  )
                 );
               }}
             </MyAnnouncementsComsumer>
@@ -78,32 +152,104 @@ export const LeftBar = (props: LeftBarProps) => {
 
             <Text style={styles.filterTitle}>Filtrar por:</Text>
 
+            <Dropdown
+              value={'Todos'}
+              onSelect={(item) => dispatch({ type: 'set_general_filter', payload: item.toLowerCase() })}
+              getValue={(item) => item}
+              items={['Todos', 'Disponiveis', 'Negociados']}
+            >
+              {(item) => (
+                <View style={{
+                  backgroundColor: WhiteColor,
+                  paddingHorizontal: 5,
+                  paddingVertical: 8,
+                }}>
+                  <Text>{item}</Text>
+                </View>
+              )}
+            </Dropdown>
+
+            <View style={{ height: 20 }} />
+
             <MyAnnouncementsComsumer>
-              {({ state: { filter } }) => {
+              {({ state: { generalFilter, filter } }) => {
                 return (
-                  <>
-                    <PrimaryButton
-                      label="Disponível para venda"
-                      style={{ paddingVertical: 15 }}
-                      activeStyle={filter.sale}
-                      onPress={() => { dispatch({ type: 'toggle_filter_sale' }) }} />
+                  ((generalFilter === 'todos' || generalFilter === 'disponiveis') &&
+                    <>
+                      <PrimaryButton
+                        label="Disponível para venda"
+                        style={{ paddingVertical: 15 }}
+                        activeStyle={filter.sale}
+                        onPress={() => { dispatch({ type: 'toggle_filter_sale' }) }} />
 
-                    <View style={{ height: 20 }} />
+                      <View style={{ height: 20 }} />
 
-                    <PrimaryButton
-                      label="Disponível para aluguel"
-                      style={{ paddingVertical: 15 }}
-                      activeStyle={filter.rent}
-                      onPress={() => { dispatch({ type: 'toggle_filter_rent' }) }} />
+                      <PrimaryButton
+                        label="Disponível para aluguel"
+                        style={{ paddingVertical: 15 }}
+                        activeStyle={filter.rent}
+                        onPress={() => { dispatch({ type: 'toggle_filter_rent' }) }} />
 
-                    <View style={{ height: 20 }} />
+                      <View style={{ height: 20 }} />
 
-                    <PrimaryButton
-                      label="Disponível para troca"
-                      style={{ paddingVertical: 15 }}
-                      activeStyle={filter.trade}
-                      onPress={() => { dispatch({ type: 'toggle_filter_trade' }) }} />
-                  </>
+                      <PrimaryButton
+                        label="Disponível para troca"
+                        style={{ paddingVertical: 15 }}
+                        activeStyle={filter.trade}
+                        onPress={() => { dispatch({ type: 'toggle_filter_trade' }) }} />
+                    </>
+                  )
+                );
+              }}
+            </MyAnnouncementsComsumer>
+
+            <MyAnnouncementsComsumer>
+              {
+                ({ state: { generalFilter } }) => {
+                  return (
+                    <>
+                      {generalFilter === 'todos' && <View style={{ height: 20 }} />}
+                    </>
+                  );
+                }}
+            </MyAnnouncementsComsumer>
+
+            <MyAnnouncementsComsumer>
+              {({ state: { generalFilter, filter } }) => {
+                return (
+                  ((generalFilter === 'todos' || generalFilter === 'negociados') &&
+                    <>
+                      <PrimaryButton
+                        label="Aguardando de envio"
+                        style={{ paddingVertical: 15 }}
+                        activeStyle={filter.waitingSend}
+                        onPress={() => { dispatch({ type: 'toggle_filter_waiting_send' }) }} />
+
+                      <View style={{ height: 20 }} />
+
+                      <PrimaryButton
+                        label="Aguardando entrega"
+                        style={{ paddingVertical: 15 }}
+                        activeStyle={filter.waitingDelivery}
+                        onPress={() => { dispatch({ type: 'toggle_filter_waiting_delivery' }) }} />
+
+                      <View style={{ height: 20 }} />
+
+                      <PrimaryButton
+                        label="Aguardando devolução"
+                        style={{ paddingVertical: 15 }}
+                        activeStyle={filter.waitingReturn}
+                        onPress={() => { dispatch({ type: 'toggle_filter_waiting_return' }) }} />
+
+                      <View style={{ height: 20 }} />
+
+                      <PrimaryButton
+                        label="Finalizados"
+                        style={{ paddingVertical: 15 }}
+                        activeStyle={filter.complete}
+                        onPress={() => { dispatch({ type: 'toggle_filter_complete' }) }} />
+                    </>
+                  )
                 );
               }}
             </MyAnnouncementsComsumer>

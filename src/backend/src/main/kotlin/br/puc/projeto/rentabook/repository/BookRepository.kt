@@ -3,12 +3,13 @@ package br.puc.projeto.rentabook.repository
 import br.puc.projeto.rentabook.dto.EspecificVolumeGoogleBooksDTO
 import br.puc.projeto.rentabook.dto.SearchVolumeGoogleBooksDTO
 import br.puc.projeto.rentabook.exception.NotFoundException
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Repository
 import org.springframework.web.reactive.function.client.WebClient
 
 @Repository
 class BookRepository {
-    private val token = "AIzaSyAdsxhRY_5VYrACcoCBccxw4zn5JpZlC5k"
+    private val token = "AIzaSyB5kZQ6a8hecJccc-KMuM58evAY3N8xFLw"
     private val message = "Houve um erro ao comunicar com o GoogleBooks"
 
     fun findById(id: String): EspecificVolumeGoogleBooksDTO {

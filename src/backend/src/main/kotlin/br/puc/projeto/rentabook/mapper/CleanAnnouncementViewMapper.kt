@@ -11,7 +11,8 @@ class CleanAnnouncementViewMapper(
     private val bookService: BookService,
     private val publicUserViewMapper: PublicUserViewMapper,
     private val publicAddressViewMapper: PublicAddressViewMapper,
-    private val ratingRepository: RatingRepository
+    private val ratingRepository: RatingRepository,
+    private val bookViewMapper: BookViewMapper,
 ) : Mapper<Announcement, CleanAnnouncementView> {
     override fun map(t: Announcement): CleanAnnouncementView {
         val ratings = ratingRepository.findByAnnouncementId(t.id!!)
@@ -25,7 +26,7 @@ class CleanAnnouncementViewMapper(
 
         return CleanAnnouncementView(
             id = t.id,
-            book = bookService.findById(t.bookId),
+            book = bookViewMapper.map(t.book),
             createdDate = t.createdDate,
             description = t.description,
             images = t.images.map { i -> i.id },
@@ -38,7 +39,9 @@ class CleanAnnouncementViewMapper(
             valueForSale = t.valueForSale,
             valueForRent = t.valueForRent,
             averageStars = averageStars,
-            totalRatings = ratings.size
+            totalRatings = ratings.size,
+            status = t.status,
+            wasReturn = t.wasReturn,
         )
     }
 

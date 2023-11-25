@@ -44,20 +44,20 @@ export function AnnouncementList({ loading, loadMoreAnnouncements, announcements
   const renderItem = (item: CleanAnnouncementView, index: number, columnCount: number) => {
     if (index % columnCount === 0) {
       return (
-        <View style={{ marginEnd: 10 }}>
+        <View style={{ marginEnd: 20 }}>
           <AnnouncementView announcement={item} />
         </View>
       );
     }
     if (index % columnCount === columnCount - 1) {
       return (
-        <View style={{ marginStart: 10 }}>
+        <View style={{ marginStart: 20 }}>
           <AnnouncementView announcement={item} />
         </View>
       );
     }
     return (
-      <View style={{ marginHorizontal: 10 }}>
+      <View style={{ marginHorizontal: 20 }}>
         <AnnouncementView announcement={item} />
       </View>
     );
@@ -86,6 +86,8 @@ export function AnnouncementList({ loading, loadMoreAnnouncements, announcements
             <FlatList
               data={announcements}
               numColumns={1}
+              nestedScrollEnabled
+              scrollEnabled={false}
               contentContainerStyle={{ justifyContent: 'center' }}
               ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
               onEndReached={() => { setFetchMoreData(true) }}
@@ -99,7 +101,9 @@ export function AnnouncementList({ loading, loadMoreAnnouncements, announcements
             <FlatList
               data={announcements}
               numColumns={2}
-              ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+              nestedScrollEnabled
+              scrollEnabled={false}
+              ItemSeparatorComponent={() => <View style={{ height: 40 }} />}
               onEndReached={() => { setFetchMoreData(true) }}
               onEndReachedThreshold={0.1}
               renderItem={({ item, index }) => renderItem(item, index, 2)}
@@ -111,7 +115,9 @@ export function AnnouncementList({ loading, loadMoreAnnouncements, announcements
             <FlatList
               data={announcements}
               numColumns={3}
-              ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+              nestedScrollEnabled
+              scrollEnabled={false}
+              ItemSeparatorComponent={() => <View style={{ height: 40 }} />}
               onEndReached={() => { setFetchMoreData(true) }}
               onEndReachedThreshold={0.1}
               renderItem={({ item, index }) => renderItem(item, index, 3)}

@@ -62,7 +62,7 @@ export default function Login() {
     Dimensions.addEventListener("change", changeOrientation);
 
     return () => {
-      Dimensions.removeEventListener("change", changeOrientation);
+      //Dimensions.removeEventListener("change", changeOrientation);
     };
   }, []);
 

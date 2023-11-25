@@ -5,6 +5,7 @@ import {
   selectedItemContent,
   selectedItemContentType,
 } from "../components/ConversationList";
+import { API } from "@env";
 
 type BannerProps = {
   actionType: "complete" | "cancel";
@@ -60,7 +61,7 @@ const Banner: React.FC<BannerProps> = ({ actionType, onAccept, onCancel }) => {
     const token = await getToken();
     console.log("Token de autenticação:", token);
 
-    const apiUrl = `https://rentabookapi.azurewebsites.net/${announcementType}s/${announcementId}/complete`;
+    const apiUrl = `${API}/${announcementType}s/${announcementId}/complete`;
     console.log("URL da API:", apiUrl);
 
     fetch(apiUrl, {
@@ -112,7 +113,7 @@ const Banner: React.FC<BannerProps> = ({ actionType, onAccept, onCancel }) => {
     const token = await getToken();
     console.log("Token de autenticação:", token);
 
-    const apiUrl = `https://rentabookapi.azurewebsites.net/${announcementType}s/${announcementId}/cancel`;
+    const apiUrl = `${API}/${announcementType}s/${announcementId}/cancel`;
     console.log("URL da API:", apiUrl);
 
     fetch(apiUrl, {

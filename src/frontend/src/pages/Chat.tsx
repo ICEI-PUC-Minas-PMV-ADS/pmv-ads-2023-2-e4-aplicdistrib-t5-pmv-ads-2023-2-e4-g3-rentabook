@@ -12,6 +12,7 @@ import ChatComponent from "../common/components/ChatComponent";
 import Banner from "../common/components/Banner";
 import { getToken } from "../other/Storage";
 import { ownerID } from "../common/components/ConversationList";
+import { API } from "@env";
 
 export default function Chat() {
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
@@ -43,7 +44,7 @@ export default function Chat() {
 
         if (token) {
           const response = await fetch(
-            "https://rentabookapi.azurewebsites.net/user",
+            `${API}/user`,
             {
               method: "GET",
               headers: {

@@ -1,23 +1,27 @@
 import { CleanAnnouncementView } from "../../../types/CleanAnnouncementView";
 
 /**
- * announcementCache
- */
-
-let announcementCache: CleanAnnouncementView[] = [];
-
-/**
  * MyAnnouncementsState
  */
 
 export type MyAnnouncementsState = {
-  filter: { rent: boolean, trade: boolean, sale: boolean };
-  term: string,
-  sort: number | null,
-  hasMoreData: boolean,
-  hasReseted: boolean,
-  page: number,
-  announcements: CleanAnnouncementView[],
+  announcementCache: CleanAnnouncementView[],
+  filter: {
+    rent: boolean,
+    trade: boolean,
+    sale: boolean,
+    waitingSend: boolean,
+    waitingDelivery: boolean,
+    waitingReturn: boolean,
+    complete: boolean,
+  };
+  generalFilter: string;
+  term: string;
+  sort: number | null;
+  hasMoreData: boolean;
+  hasReseted: boolean;
+  page: number;
+  announcements: CleanAnnouncementView[];
 };
 
 /**
@@ -25,11 +29,17 @@ export type MyAnnouncementsState = {
  */
 
 export const initialState: MyAnnouncementsState = {
+  announcementCache: [],
   filter: {
     rent: false,
     trade: false,
     sale: false,
+    waitingSend: false,
+    waitingDelivery: false,
+    waitingReturn: false,
+    complete: false,
   },
+  generalFilter: 'todos',
   term: '',
   sort: null,
   page: 0,
@@ -43,6 +53,7 @@ export const initialState: MyAnnouncementsState = {
  */
 
 type MyAnnouncementsActionType =
+  'initialize' |
   'select_location' |
   'register_book' |
   'toggle_filter_rent' |
@@ -53,6 +64,11 @@ type MyAnnouncementsActionType =
   'load_announcements' |
   'set_has_reseted' |
   'set_page' |
+  'set_general_filter' |
+  'toggle_filter_waiting_send' |
+  'toggle_filter_waiting_delivery' |
+  'toggle_filter_waiting_return' |
+  'toggle_filter_complete' |
   'reset';
 
 /**
@@ -73,16 +89,43 @@ export const MyAnnouncementsReducer = (
   action: MyAnnouncementsAction,
 ): MyAnnouncementsState => {
   switch (action.type) {
+    case 'initialize':
+      return {
+        announcementCache: [],
+        filter: {
+          rent: false,
+          trade: false,
+          sale: false,
+          waitingSend: false,
+          waitingDelivery: false,
+          waitingReturn: false,
+          complete: false,
+        },
+        generalFilter: 'todos',
+        term: '',
+        sort: null,
+        page: 0,
+        hasMoreData: true,
+        hasReseted: false,
+        announcements: [],
+      };
+
     case 'toggle_filter_rent':
       return {
         ...state,
         filter: { ...state.filter, rent: !state.filter.rent },
         announcements: filterAnnouncements({
+          announcementCache: state.announcementCache,
+          generalFilter: state.generalFilter,
           term: state.term,
           sort: state.sort,
           rent: !state.filter.rent,
           trade: state.filter.trade,
           sale: state.filter.sale,
+          waitingSend: state.filter.waitingSend,
+          waitingDelivery: state.filter.waitingDelivery,
+          waitingReturn: state.filter.waitingReturn,
+          complete: state.filter.complete,
         }),
       };
 
@@ -91,11 +134,17 @@ export const MyAnnouncementsReducer = (
         ...state,
         filter: { ...state.filter, trade: !state.filter.trade },
         announcements: filterAnnouncements({
+          announcementCache: state.announcementCache,
+          generalFilter: state.generalFilter,
           term: state.term,
           sort: state.sort,
           rent: state.filter.rent,
           trade: !state.filter.trade,
           sale: state.filter.sale,
+          waitingSend: state.filter.waitingSend,
+          waitingDelivery: state.filter.waitingDelivery,
+          waitingReturn: state.filter.waitingReturn,
+          complete: state.filter.complete,
         }),
       };
 
@@ -107,11 +156,17 @@ export const MyAnnouncementsReducer = (
         ...state,
         filter: { ...state.filter, sale: !state.filter.sale },
         announcements: filterAnnouncements({
+          announcementCache: state.announcementCache,
+          generalFilter: state.generalFilter,
           term: state.term,
           sort: state.sort,
           rent: state.filter.rent,
           trade: state.filter.trade,
           sale: !state.filter.sale,
+          waitingSend: state.filter.waitingSend,
+          waitingDelivery: state.filter.waitingDelivery,
+          waitingReturn: state.filter.waitingReturn,
+          complete: state.filter.complete,
         })
       };
 
@@ -120,11 +175,17 @@ export const MyAnnouncementsReducer = (
         ...state,
         sort: action.payload,
         announcements: filterAnnouncements({
+          announcementCache: state.announcementCache,
+          generalFilter: state.generalFilter,
           term: state.term,
           sort: action.payload,
           rent: state.filter.rent,
           trade: state.filter.trade,
           sale: state.filter.sale,
+          waitingSend: state.filter.waitingSend,
+          waitingDelivery: state.filter.waitingDelivery,
+          waitingReturn: state.filter.waitingReturn,
+          complete: state.filter.complete,
         })
       };
 
@@ -133,11 +194,17 @@ export const MyAnnouncementsReducer = (
         ...state,
         term: action.payload,
         announcements: filterAnnouncements({
+          announcementCache: state.announcementCache,
+          generalFilter: state.generalFilter,
           term: action.payload,
           sort: state.sort,
           rent: state.filter.rent,
           trade: state.filter.trade,
           sale: state.filter.sale,
+          waitingSend: state.filter.waitingSend,
+          waitingDelivery: state.filter.waitingDelivery,
+          waitingReturn: state.filter.waitingReturn,
+          complete: state.filter.complete,
         })
       };
 
@@ -145,32 +212,44 @@ export const MyAnnouncementsReducer = (
       if (action.payload.length == 0) {
         return {
           ...state, hasReseted: false, hasMoreData: false, announcements: filterAnnouncements({
+            announcementCache: state.announcementCache,
+            generalFilter: state.generalFilter,
             term: state.term,
             sort: state.sort,
             rent: state.filter.rent,
             trade: state.filter.trade,
             sale: state.filter.sale,
+            waitingSend: state.filter.waitingSend,
+            waitingDelivery: state.filter.waitingDelivery,
+            waitingReturn: state.filter.waitingReturn,
+            complete: state.filter.complete,
           })
         };
       } else {
-        if (announcementCache.length === 0) {
-          announcementCache = [...action.payload];
+        if (state.announcementCache.length === 0) {
+          state.announcementCache = [...action.payload];
         } else {
           const payload = action.payload as CleanAnnouncementView[];
           for (let i = 0; i < payload.length; i++) {
-            const foundedAnnouncement = announcementCache.find((x) => x.id === payload[i].id);
+            const foundedAnnouncement = state.announcementCache.find((x) => x.id === payload[i].id);
             if (foundedAnnouncement === undefined) {
-              announcementCache.push(payload[i]);
+              state.announcementCache.push(payload[i]);
             }
           }
         }
         return {
           ...state, hasReseted: false, hasMoreData: true, announcements: filterAnnouncements({
+            announcementCache: state.announcementCache,
+            generalFilter: state.generalFilter,
             term: state.term,
             sort: state.sort,
             rent: state.filter.rent,
             trade: state.filter.trade,
             sale: state.filter.sale,
+            waitingSend: state.filter.waitingSend,
+            waitingDelivery: state.filter.waitingDelivery,
+            waitingReturn: state.filter.waitingReturn,
+            complete: state.filter.complete,
           })
         };
       }
@@ -178,16 +257,114 @@ export const MyAnnouncementsReducer = (
     case 'set_page':
       return { ...state, page: action.payload };
 
-    case 'reset':
-      announcementCache = [];
+    case 'set_general_filter':
+      const newState = {
+        ...state, generalFilter: action.payload, filter: {
+          rent: false,
+          trade: false,
+          sale: false,
+          waitingSend: false,
+          waitingDelivery: false,
+          waitingReturn: false,
+          complete: false,
+        }
+      };
+
       return {
-        ...state, hasReseted: true, hasMoreData: true, page: 0, announcements: filterAnnouncements({
+        ...newState, announcements: filterAnnouncements({
+          announcementCache: state.announcementCache,
+          generalFilter: action.payload as string,
+          term: newState.term,
+          sort: newState.sort,
+          rent: newState.filter.rent,
+          trade: newState.filter.trade,
+          sale: newState.filter.sale,
+          waitingSend: newState.filter.waitingSend,
+          waitingDelivery: newState.filter.waitingDelivery,
+          waitingReturn: newState.filter.waitingReturn,
+          complete: newState.filter.complete,
+        })
+      };
+
+    case 'toggle_filter_waiting_send':
+      return {
+        ...state,
+        filter: { ...state.filter, waitingSend: !state.filter.waitingSend },
+        announcements: filterAnnouncements({
+          announcementCache: state.announcementCache,
+          generalFilter: state.generalFilter,
           term: state.term,
           sort: state.sort,
           rent: state.filter.rent,
           trade: state.filter.trade,
           sale: state.filter.sale,
+          waitingSend: !state.filter.waitingSend,
+          waitingDelivery: state.filter.waitingDelivery,
+          waitingReturn: state.filter.waitingReturn,
+          complete: state.filter.complete,
         })
+      };
+
+    case 'toggle_filter_waiting_delivery':
+      return {
+        ...state,
+        filter: { ...state.filter, waitingDelivery: !state.filter.waitingDelivery },
+        announcements: filterAnnouncements({
+          announcementCache: state.announcementCache,
+          generalFilter: state.generalFilter,
+          term: state.term,
+          sort: state.sort,
+          rent: state.filter.rent,
+          trade: state.filter.trade,
+          sale: state.filter.sale,
+          waitingSend: state.filter.waitingSend,
+          waitingDelivery: !state.filter.waitingDelivery,
+          waitingReturn: state.filter.waitingReturn,
+          complete: state.filter.complete,
+        })
+      };
+
+    case 'toggle_filter_waiting_return':
+      return {
+        ...state,
+        filter: { ...state.filter, waitingReturn: !state.filter.waitingReturn },
+        announcements: filterAnnouncements({
+          announcementCache: state.announcementCache,
+          generalFilter: state.generalFilter,
+          term: state.term,
+          sort: state.sort,
+          rent: state.filter.rent,
+          trade: state.filter.trade,
+          sale: state.filter.sale,
+          waitingSend: state.filter.waitingSend,
+          waitingDelivery: state.filter.waitingDelivery,
+          waitingReturn: !state.filter.waitingReturn,
+          complete: state.filter.complete,
+        })
+      };
+
+    case 'toggle_filter_complete':
+      return {
+        ...state,
+        filter: { ...state.filter, complete: !state.filter.complete },
+        announcements: filterAnnouncements({
+          announcementCache: state.announcementCache,
+          generalFilter: state.generalFilter,
+          term: state.term,
+          sort: state.sort,
+          rent: state.filter.rent,
+          trade: state.filter.trade,
+          sale: state.filter.sale,
+          waitingSend: state.filter.waitingSend,
+          waitingDelivery: state.filter.waitingDelivery,
+          waitingReturn: state.filter.waitingReturn,
+          complete: !state.filter.complete,
+        })
+      };
+
+    case 'reset':
+      return {
+        ...state, announcementCache: [], hasReseted: true, hasMoreData: true, page: 0, announcements: [],
       };
   }
   return state;
@@ -198,19 +375,39 @@ export const MyAnnouncementsReducer = (
  */
 
 const filterAnnouncements = ({
+  announcementCache,
+  generalFilter,
   term,
   sort,
   rent,
   trade,
-  sale
+  sale,
+  waitingSend,
+  waitingDelivery,
+  waitingReturn,
+  complete,
 }: {
+  announcementCache: CleanAnnouncementView[],
+  generalFilter: string,
   term: string,
   sort: number | null,
   rent: boolean,
   trade: boolean,
   sale: boolean,
+  waitingSend: boolean,
+  waitingDelivery: boolean,
+  waitingReturn: boolean,
+  complete: boolean,
 }): CleanAnnouncementView[] => {
   let filteredAnnouncements: CleanAnnouncementView[] = announcementCache;
+  if (generalFilter.length > 0) {
+    if (generalFilter === 'disponiveis') {
+      filteredAnnouncements = filteredAnnouncements.filter((x) => x.isAvailable);
+    }
+    if (generalFilter === 'negociados') {
+      filteredAnnouncements = filteredAnnouncements.filter((x) => !x.isAvailable);
+    }
+  }
   if (term.length > 0) {
     filteredAnnouncements = filteredAnnouncements.filter((x) => (
       x.book.title?.toLowerCase().includes(term.toLowerCase()) ||
@@ -269,6 +466,30 @@ const filterAnnouncements = ({
   }
   if (sale) {
     filteredAnnouncements = filteredAnnouncements.filter((x) => x.sale);
+  }
+  if (waitingSend) {
+    filteredAnnouncements = filteredAnnouncements.filter((x) => {
+      const status = x.status ?? "";
+      return status.toLowerCase() === 'aguardando envio'
+    });
+  }
+  if (waitingDelivery) {
+    filteredAnnouncements = filteredAnnouncements.filter((x) => {
+      const status = x.status ?? "";
+      return status.toLowerCase() === 'aguadando entrega'
+    });
+  }
+  if (waitingReturn) {
+    filteredAnnouncements = filteredAnnouncements.filter((x) => {
+      const status = x.status ?? "";
+      return status.toLowerCase() === 'aguardando retorno'
+    });
+  }
+  if (complete) {
+    filteredAnnouncements = filteredAnnouncements.filter((x) => {
+      const status = x.status ?? "";
+      return status.toLowerCase() === 'finalizado'
+    });
   }
   return filteredAnnouncements;
 }

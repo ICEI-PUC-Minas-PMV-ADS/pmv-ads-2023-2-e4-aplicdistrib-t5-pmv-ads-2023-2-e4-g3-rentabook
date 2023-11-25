@@ -1,6 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useApi } from "../hooks/useApi";
-import { AnnouncementView } from './../pages/MyAnnouncements/components/AnnouncementView';
+import * as FileSystem from 'expo-file-system';
+import { ImagePickerAsset } from "expo-image-picker";
+import { API } from "@env";
 
 export const announcementsService = {
 
@@ -150,6 +152,31 @@ export const announcementsService = {
       headers: {
         'Authorization': `Bearer ${token}`,
         "Content-Type": "multipart/form-data; chatset=utf-8",
+      }
+    });
+    return response.data;
+  },
+
+  uploadImageMobile: async (file: ImagePickerAsset) => {
+    const token = await AsyncStorage.getItem('authToken');
+    const response = await FileSystem.uploadAsync(API + "/image/upload", file.uri, {
+      uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+      httpMethod: 'POST',
+      fieldName: 'image',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    });
+    return JSON.parse(response.body);
+  },
+
+  updateStatus: async (announcementId: string, status: string) => {
+    const json = JSON.stringify({ status });
+    const token = await AsyncStorage.getItem('authToken');
+    const response = await useApi.post(`/announcements/${announcementId}/status`, json, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json; chatset=utf-8",
       }
     });
     return response.data;

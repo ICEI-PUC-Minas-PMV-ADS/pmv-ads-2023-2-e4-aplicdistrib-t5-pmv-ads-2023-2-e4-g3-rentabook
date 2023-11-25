@@ -1,24 +1,16 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text, ScrollView } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { WhiteColor } from '../../../common/theme/colors';
-import { useMyAnnouncementsContext } from "../contexts";
+import { MyAnnouncementsComsumer, useMyAnnouncementsContext } from "../contexts";
 import { AnnouncementList } from "./AnnouncementList";
 import { announcementsService } from "../../../services/announcementsService";
-
-import SearchInput from "../../../common/components/SearchInput";
-import Dropdown from "../../../common/components/Dropdown";
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { AppParamsList } from '../../../routes/AppParamsList';
-import { Desktop } from '../../../hooks/useResposive';
 import { useMediaQuery } from './../../../hooks/useResposive';
 import { StackTypes } from '../../../routes/StackTypes';
-
-/**
- * RightContentProps
- */
-
-type RightContentProps = {};
+import SearchInput from "../../../common/components/SearchInput";
+import Dropdown from "../../../common/components/Dropdown";
 
 /**
  * Filter options
@@ -37,11 +29,28 @@ const FilterOptions = [
  * LeftBar
  */
 
-export const RightContent = (props: RightContentProps) => {
+export const RightContent = () => {
   const navigation = useNavigation<StackTypes>();
   const route = useRoute<RouteProp<AppParamsList, 'Meus Anúncios'>>();
   const [loading, setLoading] = React.useState(false);
   const { state, dispatch } = useMyAnnouncementsContext();
+
+  const fetchOwnBookData = (page: number) => {
+    setLoading(true);
+    announcementsService.getMyOwnAnnouncements(page)
+      .then((data) => {
+        dispatch({ type: 'load_announcements', payload: data.content });
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+  };
+
+  React.useEffect(() => {
+    setLoading(true);
+    dispatch({ type: 'initialize' });
+  }, []);
 
   React.useEffect(() => {
     if (route.params.reset && !state.hasReseted) {
@@ -52,15 +61,7 @@ export const RightContent = (props: RightContentProps) => {
 
   React.useEffect(() => {
     if (state.hasMoreData && !loading) {
-      setLoading(true);
-      announcementsService.getMyOwnAnnouncements(state.page)
-        .then((data) => {
-          dispatch({ type: 'load_announcements', payload: data.content });
-          setLoading(false);
-        })
-        .catch((err) => {
-          setLoading(false);
-        });
+      fetchOwnBookData(state.page);
     }
   }, [state.page, state.hasMoreData, loading]);
 
@@ -120,10 +121,12 @@ export const RightContent = (props: RightContentProps) => {
         */}
 
       <View style={styles.container}>
-        <AnnouncementList
-          loading={loading}
-          loadMoreAnnouncements={() => { dispatch({ type: 'set_page', payload: state.page + 1 }) }}
-          announcements={state.announcements} />
+        <MyAnnouncementsComsumer>
+          {({ state }) => <AnnouncementList
+            loading={loading}
+            loadMoreAnnouncements={() => { dispatch({ type: 'set_page', payload: state.page + 1 }) }}
+            announcements={state.announcements} />}
+        </MyAnnouncementsComsumer>
       </View>
     </View>
   );

@@ -9,6 +9,7 @@ import br.puc.projeto.rentabook.mapper.RentFormMapper
 import br.puc.projeto.rentabook.mapper.RentViewMapper
 import br.puc.projeto.rentabook.mapper.SaleFormMapper
 import br.puc.projeto.rentabook.mapper.SaleViewMapper
+import br.puc.projeto.rentabook.model.Announcement
 import br.puc.projeto.rentabook.model.Rent
 import br.puc.projeto.rentabook.model.Sale
 import br.puc.projeto.rentabook.repository.*
@@ -46,7 +47,6 @@ class SaleService(
                 if (!announcement.sale || !announcement.isAvailable) {
                     throw Exception("Este livro não esta disponivel para venda")
                 }
-                announcement.isAvailable = false
                 announcementRepository.save(announcement)
                 saleViewMapper.map(this)
             }
@@ -99,6 +99,7 @@ class SaleService(
             sale.chat.active = false
             chatRepository.save(sale.chat)
             sale.announcement.isAvailable = true
+            sale.announcement.status = ""
             announcementRepository.save(sale.announcement)
             sale.cancelled = true
             saleViewMapper.map(saleRepository.save(sale))
@@ -118,6 +119,7 @@ class SaleService(
             sale.chat.active = false
             chatRepository.save(sale.chat)
             sale.announcement.isAvailable = false
+            sale.announcement.status = Announcement.waitingSend
             announcementRepository.save(sale.announcement)
             sale.accepted = true
             saleViewMapper.map(saleRepository.save(sale))

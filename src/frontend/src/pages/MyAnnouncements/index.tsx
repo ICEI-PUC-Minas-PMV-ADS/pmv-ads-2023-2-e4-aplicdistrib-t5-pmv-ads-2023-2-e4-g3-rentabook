@@ -14,40 +14,42 @@ export default function MyAnnouncements() {
     <MyAnnouncementsProvider>
       <ResponsiveNavbar>
         <View style={{ flex: 1, backgroundColor: "#E1DCC5", alignItems: 'center' }}>
-          {
-            useMediaQuery(0, 601) && (
-              <ScrollView>
-                <View style={styles.desktopContainerXs}>
-                  <LeftBar />
-                  <RightContent />
-                </View>
-              </ScrollView>
-            )
-          }
-          {
-            useMediaQuery(600, 1024) && (
-              <View style={styles.desktopContainerSm}>
-                <LeftBar />
-                <RightContent />
-              </View>
-            )
-          }
-          {
-            useMediaQuery(1024, 1301) && (
-              <View style={styles.desktopContainerMd}>
-                <LeftBar />
-                <RightContent />
-              </View>
-            )
-          }
-          {
-            useMediaQuery(1301, 10000) && (
-              <View style={styles.desktopContainerLg}>
-                <LeftBar />
-                <RightContent />
-              </View>
-            )
-          }
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={{ flex: 1, paddingHorizontal: 10 }}>
+              {
+                useMediaQuery(0, 601) && (
+                  <View style={styles.desktopContainerXs}>
+                    <LeftBar />
+                    <RightContent />
+                  </View>
+                )
+              }
+              {
+                useMediaQuery(600, 1024) && (
+                  <View style={styles.desktopContainerSm}>
+                    <LeftBar />
+                    <RightContent />
+                  </View>
+                )
+              }
+              {
+                useMediaQuery(1024, 1301) && (
+                  <View style={styles.desktopContainerMd}>
+                    <LeftBar />
+                    <RightContent />
+                  </View>
+                )
+              }
+              {
+                useMediaQuery(1301, 10000) && (
+                  <View style={styles.desktopContainerLg}>
+                    <LeftBar />
+                    <RightContent />
+                  </View>
+                )
+              }
+            </View>
+          </ScrollView>
         </View>
       </ResponsiveNavbar>
     </MyAnnouncementsProvider>

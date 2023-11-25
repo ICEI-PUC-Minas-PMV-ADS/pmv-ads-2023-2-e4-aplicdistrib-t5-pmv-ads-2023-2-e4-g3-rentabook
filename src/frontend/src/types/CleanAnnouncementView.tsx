@@ -18,4 +18,6 @@ export type CleanAnnouncementView = {
     "location": PublicAddressView
     "averageStars": number,
     "totalRatings": number
+    "status": string,
+    "wasReturn": string,
 }

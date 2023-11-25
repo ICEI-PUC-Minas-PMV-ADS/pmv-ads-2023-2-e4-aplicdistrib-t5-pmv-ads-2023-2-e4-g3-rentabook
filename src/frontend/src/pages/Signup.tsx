@@ -72,7 +72,7 @@ export default function Signup() {
     Dimensions.addEventListener("change", changeOrientation);
 
     return () => {
-      Dimensions.removeEventListener("change", changeOrientation);
+      //Dimensions.removeEventListener("change", changeOrientation);
     };
   }, []);
 
@@ -165,7 +165,7 @@ export default function Signup() {
       textAlign: 'center',
       margin: 20,
     },
-    button:{
+    button: {
       height: 45,
       width: 340,
       marginTop: 20
