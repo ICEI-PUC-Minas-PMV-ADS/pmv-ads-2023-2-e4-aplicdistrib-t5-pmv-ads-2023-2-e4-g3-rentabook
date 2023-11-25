@@ -102,10 +102,10 @@ O teste foi executado com sucesso conforme demonstra as evidencias.
 <p>Web</p>
 <img src="/docs/img/ct_04_pagina_1.png" />
 
-<p>Mobile</p>
+<p>Mobile(Parte da tela 1)</p>
 <img src="/docs/img/mobx_ct_04_pagina_1_1.png" />
 
-<p>Mobile</p>
+<p>Mobile(Parte da tela 2)</p>
 <img src="/docs/img/mobx_ct_04_pagina_1_2.png" />
 
 <p>Web</p>
@@ -119,10 +119,10 @@ Apos prencher todas as informações necessarias, o botão "Criar" ficará ativo
 <p>Web</p>
 <img src="/docs/img/ct_04_pagina_3.png" />
 
-<p>Mobile</p>
+<p>Mobile(Parte da tela 1)</p>
 <img src="/docs/img/mobx_ct_04_pagina_3_1.png" />
 
-<p>Mobile</p>
+<p>Mobile(Parte da tela 2)</p>
 <img src="/docs/img/mobx_ct_04_pagina_3_2.png" />
 
 O sistema irá confirmar a criação do anúncio.
