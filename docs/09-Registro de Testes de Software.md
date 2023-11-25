@@ -100,8 +100,19 @@ O teste foi executado com sucesso conforme demonstra as evidencias.
 O teste foi executado com sucesso conforme demonstra as evidencias.
 
 <img src="/docs/img/ct_04_pagina_1.png" />
+Desktop
+
+<img src="/docs/img/mob_ct_04_pagina_1_1.png" />
+Mobile
+
+<img src="/docs/img/mob_ct_04_pagina_1_2.png" />
+Mobile
 
 <img src="/docs/img/ct_04_pagina_2.png" />
+Desktop
+
+<img src="/docs/img/mob_ct_04_pagina_2.png" />
+Mobile
 
 Apos prencher todas as informações necessarias, o botão "Criar" ficará ativo.
 
