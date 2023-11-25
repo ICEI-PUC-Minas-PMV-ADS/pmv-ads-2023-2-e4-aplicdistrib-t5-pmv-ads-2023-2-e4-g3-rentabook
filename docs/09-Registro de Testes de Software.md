@@ -99,7 +99,7 @@ O teste foi executado com sucesso conforme demonstra as evidencias.
 
 O teste foi executado com sucesso conforme demonstra as evidencias.
 
-Web
+<p>Web</p>
 <img src="/docs/img/ct_04_pagina_1.png" />
 
 <p>Mobile</p>
@@ -108,7 +108,7 @@ Web
 <p>Mobile</p>
 <img src="/docs/img/mobx_ct_04_pagina_1_2.png" />
 
-Web
+<p>Web</p>
 <img src="/docs/img/ct_04_pagina_2.png" />
 
 <p>Mobile</p>
@@ -116,7 +116,7 @@ Web
 
 Apos prencher todas as informações necessarias, o botão "Criar" ficará ativo.
 
-Web
+<p>Web</p>
 <img src="/docs/img/ct_04_pagina_3.png" />
 
 <p>Mobile</p>
@@ -127,13 +127,13 @@ Web
 
 O sistema irá confirmar a criação do anúncio.
 
-Web
+<p>Web</p>
 <img src="/docs/img/ct_04_pagina_4.png" />
 
 <p>Mobile</p>
 <img src="/docs/img/mobx_ct_04_pagina_4.png" />
 
-Web
+<p>Web</p>
 <img src="/docs/img/ct_04_pagina_5.png" />
 
 <p>Mobile</p>
@@ -143,28 +143,52 @@ Web
 
 O teste foi executado com sucesso conforme demonstra as evidencias.
 
+<p>Web</p>
 <img src="/docs/img/ct_05_pagina_1.png" />
+
+<p>Mobile</p>
+<img src="/docs/img/mobx_ct_05_pagina_1.png" />
 
 O sistema exibe a previa da foto.
 
+<p>Web</p>
 <img src="/docs/img/ct_05_pagina_2.png" />
+
+<p>Mobile</p>
+<img src="/docs/img/mobx_ct_05_pagina_2.png" />
 
 Após salvar, a foto estará registrada no livro.
 
+<p>Web</p>
 <img src="/docs/img/ct_05_pagina_3.png" />
+
+<p>Mobile</p>
+<img src="/docs/img/mobx_ct_05_pagina_3.png" />
 
 ## CT-06 - Garantir que o usuário consiga ver seus livros em negociação
 
 O teste foi executado com sucesso conforme demonstra as evidencias.
 
+<p>Web</p>
+<img src="/docs/img/ct_06_pagina_1.png" />
+
+<p>Mobile</p>
 <img src="/docs/img/ct_06_pagina_1.png" />
 
 ## CT-07 - Garantir que o usuário consiga filtrar seus livros em negociação
 
 O teste foi executado com sucesso conforme demonstra as evidencias.
 
+<p>Web</p>
 <img src="/docs/img/ct_07_pagina_1.png" />
 
+<p>Mobile</p>
+<img src="/docs/img/ct_07_pagina_1.png" />
+
+<p>Web</p>
+<img src="/docs/img/ct_07_pagina_2.png" />
+
+<p>Mobile</p>
 <img src="/docs/img/ct_07_pagina_2.png" />
 
 ## CT-08 - Garantir que o usuário envie mensagens.
