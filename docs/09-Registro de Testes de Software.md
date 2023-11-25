@@ -294,6 +294,32 @@ O teste foi executado conforme a imagem, para alterar o nome de perfil do usuár
 
 <img src="/docs/img/CT-22.png" />
 
+# Registro de Testes de Sistema
 
+## Plano de Testes de Seguraça em Transações.
+#### Responsável: Vitor Alexandre
+
+Este teste consiste em verificar se o sistema tem a capacidade de garantir a integridade de uma transação.
+
+<p>Deve se realizar o cadastro do proprietário</p>
+<img src="/docs/img/ctu_01_pagina_1.png" />
+
+<p>Deve se realizar o cadastro do comprador</p>
+<img src="/docs/img/ctu_01_pagina_2.png" />
+
+<p>O proprietario deve cadastrar o endereço</p>
+<img src="/docs/img/ctu_01_pagina_3.png" />
+
+<p>O proprietario deve cadastrar o livro a ser negociado</p>
+<img src="/docs/img/ctu_01_pagina_4.png" />
+
+<p>O comprador deve solicitar o inicio da transação</p>
+<img src="/docs/img/ctu_01_pagina_5.png" />
+
+<p>Apos o comprador tentar finalizar a transação o sistema emitirá um erro</p>
+<img src="/docs/img/ctu_01_pagina_6.png" />
+
+<p>A transação será concluida quando o proprietário finaliza-la</p>
+<img src="/docs/img/ctu_01_pagina_7.png" />
 
 
