@@ -311,15 +311,15 @@ Este teste consiste em verificar se o sistema tem a capacidade de garantir a int
 <img src="/docs/img/ctu_01_pagina_3.png" />
 
 <p>O proprietario deve cadastrar o livro a ser negociado</p>
-<img src="/docs/img/ctu_01_pagina_4.png" />
-
-<p>O comprador deve solicitar o inicio da transação</p>
 <img src="/docs/img/ctu_01_pagina_5.png" />
 
-<p>Apos o comprador tentar finalizar a transação o sistema emitirá um erro</p>
+<p>O comprador deve solicitar o inicio da transação</p>
 <img src="/docs/img/ctu_01_pagina_6.png" />
 
-<p>A transação será concluida quando o proprietário finaliza-la</p>
+<p>Apos o comprador tentar finalizar a transação o sistema emitirá um erro</p>
 <img src="/docs/img/ctu_01_pagina_7.png" />
+
+<p>A transação será concluida quando o proprietário finaliza-la</p>
+<img src="/docs/img/ctu_01_pagina_8.png" />
 
 
