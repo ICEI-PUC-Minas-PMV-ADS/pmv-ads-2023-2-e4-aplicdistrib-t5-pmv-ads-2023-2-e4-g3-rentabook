@@ -733,5 +733,41 @@ Esta página é responsável pelo cadastro de endereços do usuário e alteraç�
 	</tbody>
 </table>
 
+# Plano de Testes de Sistema
 
+## Plano de Testes de Seguraça em Transações.
+#### Responsável: Vitor Alexandre
+
+Este teste consiste em verificar se o sistema tem a capacidade de garantir a integridade de uma transação.
+
+<table>
+	<thead>
+		<tr>
+			<th>Casos de Teste</th>
+			<th>Requisitos Associados</th>
+			<th>Objetivo do Teste</th>
+			<th>Passos</th>
+			<th>Critérios de Êxito</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>CTU-01</td>
+			<td>RNF-006 - O sistema deve garantir a segurança das transações permitindo apenas ao dono do produto a confirmação do processo</td>
+			<td>Garantir que o apenas o usuário dono do livro consiga finalizar a transação</td>
+			<td>
+				<ol>
+					<li>Deve se realizar o cadastro do proprietário</li>
+					<li>Deve se realizar o cadastro do comprador</li>
+					<li>O proprietario deve cadastrar o endereço</li>
+					<li>O proprietario deve cadastrar o livro a ser negociado</li>
+					<li>O comprador deve solicitar o inicio da transação</li>
+					<li>Apos o comprador tentar finalizar a transação o sistema emitirá um erro</li>
+					<li>A transação será concluida quando o proprietário finaliza-la</li>
+				</ol>
+			</td>
+			<td>O sistema deve emitir uma mensagem confirmando o procedimento.</td>
+		</tr>
+	</tbody>
+</table>
     
