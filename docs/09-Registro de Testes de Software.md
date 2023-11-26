@@ -301,11 +301,17 @@ O teste foi executado conforme a imagem, primeiramente deve se selecionar o ende
 <img src="/docs/img/CT-17.png" />
 <img src="/docs/img/CT-17b.png" />
 
+ ### Mobile
+<img src="/docs/img/CT-17M.png"  width="400px"/>
+
 ## CT-19 - Adicionar foto de perfil do usuário
 
 O teste foi executado conforme a imagem, abaixo do titulo "Meu Perfil" clicar no botão escolher arquivo e selecionar o arquivo de imagem e depois clicar em salvar alterações.
 
 <img src="/docs/img/CT-19.png" />
+
+### Mobile
+<img src="/docs/img/CT-19M.png" width="400px" />
 
 ## CT-20 - Alterar foto de perfil do usuário
 
@@ -316,6 +322,10 @@ O teste foi executado conforme a imagem, o processo de alteração e o mesmo de 
 O teste foi executado conforme a imagem, para deletar a foto de perfil o usuário deve clicar no botão de x que fica no canto superior a direita da imagem, após confirmar a imagem será deletada.
 
 <img src="/docs/img/CT-21.png" />
+
+### Mobile
+<img src="/docs/img/CT-21M.png" width="400px"/>
+
 
 ## CT-22 - Permitir ao usuário alterar o nome do perfil
 

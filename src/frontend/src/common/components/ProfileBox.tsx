@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, Image, Text, Alert, Platform } from "react-native";
+import { View, StyleSheet, Image, Text } from "react-native";
 import "../theme/colors"
 import { DarkGreen, GreenLight, GreyColor, PrimaryGreenColor, WhiteColor } from "../theme/colors";
 import Input from "./Input";
@@ -7,7 +7,6 @@ import PrimaryButton from "./PrimaryButton";
 import { userService } from "../../services/userService";
 import { API } from '@env'
 import CloseInput from "./CloseInput";
-import { useMediaQuery } from "../../hooks/useResposive";
 
 const style = StyleSheet.create({
     container: {
@@ -117,7 +116,7 @@ export default function ProfileBox({ nome, email, imagem, fetchUserdata }: Profi
         {await userService.deletePrivateUserImage()}   
         fetchUserdata()  
     } 
-    
+
     return (
         <View style={style.container}>
             {
@@ -136,6 +135,7 @@ export default function ProfileBox({ nome, email, imagem, fetchUserdata }: Profi
                 <Text style={style.titulo} >Meu Perfil</Text>
 
                 <View style={style.file}>
+                    {/* <Image source={require('../../common/assets/notFound.jpg')} /> */}
                     <input
                         type="file"
                         name='teste'
