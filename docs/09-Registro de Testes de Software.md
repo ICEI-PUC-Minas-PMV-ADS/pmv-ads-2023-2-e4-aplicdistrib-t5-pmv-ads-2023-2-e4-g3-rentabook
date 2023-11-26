@@ -50,6 +50,13 @@ Teste realizado!
 
 As mensagens de erro são exibidas corretamente.
 
+#### Teste de responsividade mobile
+
+![Imagem do WhatsApp de 2023-11-26 à(s) 18 17 57_f8514caa](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/assets/100442612/fbbe6722-c7e3-41d0-9056-3fc64abd153f)
+![Imagem do WhatsApp de 2023-11-26 à(s) 18 18 32_6fe0b731](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/assets/100442612/4408fa34-e567-452f-85c1-409bf6878981)
+
+A página é exibida corretamente e de forma responsiva em dispositivos móveis.
+
 ## Página de Login
 
 #### Teste da função handleInputChange
@@ -88,6 +95,12 @@ Teste realizado
 
 O usuário é autenticado com sucesso e redirecionado para a página de anúncios.
 
+#### Teste de responsividade mobile
+
+![Imagem do WhatsApp de 2023-11-26 à(s) 18 16 55_e9cb51a8](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/assets/100442612/5e25c386-3a03-4865-b2b9-61adb794eb53)
+![Imagem do WhatsApp de 2023-11-26 à(s) 18 17 38_1189127f](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/assets/100442612/c3276505-92cf-46a4-a8ca-04516575bfbd)
+
+A página é exibida corretamente e de forma responsiva em dispositivos móveis.
 
 ## CT-03 Listar os anúncios
 
