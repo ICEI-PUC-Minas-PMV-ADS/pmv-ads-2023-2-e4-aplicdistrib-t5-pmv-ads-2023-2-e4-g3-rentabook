@@ -238,6 +238,9 @@ Após selecionar uma das opções, a transação é finalizada, e o chat é ence
 
 <img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/sssff.PNG" />
 
+### Mobile
+<img src="https://raw.githubusercontent.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/main/docs/img/Nova%20pasta/Imagem%20do%20WhatsApp%20de%202023-11-26%20%C3%A0(s)%2018.19.37_7b7228d5.jpg"/>
+<img src="https://raw.githubusercontent.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/main/docs/img/Nova%20pasta/Imagem%20do%20WhatsApp%20de%202023-11-26%20%C3%A0(s)%2018.21.20_fb5447cf.jpg"/>
 
 ## CT-10 - Garantir que o usuário deve poder visualizar uma lista de conversas.
 
@@ -246,6 +249,9 @@ O teste foi executado com sucesso.
 O usuário deve conseguir visualizar uma lista de conversas e escolher uma delas.
 
 <img src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/blob/main/docs/img/Nova%20pasta/ssssssss.PNG" />
+
+### Mobile
+<img src="https://raw.githubusercontent.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook/main/docs/img/Nova%20pasta/Imagem%20do%20WhatsApp%20de%202023-11-26%20%C3%A0(s)%2018.31.26_130e4302.jpg"/>
 
 ## CT-11 - Permitir ao usuário pesquisar por anúncios de um livro em específico
 
