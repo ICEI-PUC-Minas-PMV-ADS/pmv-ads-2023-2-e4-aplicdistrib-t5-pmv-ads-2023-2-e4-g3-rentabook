@@ -6,6 +6,7 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import { getToken } from "../../other/Storage";
 import { API } from "@env";
@@ -66,7 +67,9 @@ const ChatComponent = ({ chatId, currentUser }: ChatComponentProps) => {
       }
 
       const response = await fetch(
-        `${API}/chat/${chatId}/recent_messages`,
+        `${
+          Platform.OS === "web" ? API : "http://10.0.2.2:8080"
+        }/chat/${chatId}/recent_messages`,
         {
           method: "GET",
           headers: {
@@ -114,7 +117,9 @@ const ChatComponent = ({ chatId, currentUser }: ChatComponentProps) => {
       }
 
       const response = await fetch(
-        `${API}/chat/messages/new`,
+        `${
+          Platform.OS === "web" ? API : "http://10.0.2.2:8080"
+        }/chat/messages/new`,
         {
           method: "POST",
           headers: {

@@ -5,6 +5,7 @@ import {
   FlatList,
   StyleSheet,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { getToken } from "../../other/Storage";
@@ -58,7 +59,7 @@ export default function ConversationsList({
       }
 
       const response = await fetch(
-        `${API}/chat`,
+        `${Platform.OS === "web" ? API : "http://10.0.2.2:8080"}/chat`,
         {
           method: "GET",
           headers: {

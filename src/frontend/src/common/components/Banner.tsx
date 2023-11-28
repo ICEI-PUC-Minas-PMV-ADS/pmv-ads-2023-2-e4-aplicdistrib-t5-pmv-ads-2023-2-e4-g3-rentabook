@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Platform,
+} from "react-native";
 import { getToken } from "../../other/Storage";
 import {
   selectedItemContent,
@@ -61,7 +67,9 @@ const Banner: React.FC<BannerProps> = ({ actionType, onAccept, onCancel }) => {
     const token = await getToken();
     console.log("Token de autenticação:", token);
 
-    const apiUrl = `${API}/${announcementType}s/${announcementId}/complete`;
+    const apiUrl = `${
+      Platform.OS === "web" ? API : "http://10.0.2.2:8080"
+    }/${announcementType}s/${announcementId}/complete`;
     console.log("URL da API:", apiUrl);
 
     fetch(apiUrl, {
@@ -113,7 +121,9 @@ const Banner: React.FC<BannerProps> = ({ actionType, onAccept, onCancel }) => {
     const token = await getToken();
     console.log("Token de autenticação:", token);
 
-    const apiUrl = `${API}/${announcementType}s/${announcementId}/cancel`;
+    const apiUrl = `${
+      Platform.OS === "web" ? API : "http://10.0.2.2:8080"
+    }/${announcementType}s/${announcementId}/cancel`;
     console.log("URL da API:", apiUrl);
 
     fetch(apiUrl, {

@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Text,
+  Platform,
 } from "react-native";
 import ResponsiveNavbar from "../common/components/ResponsiveNavbar";
 import ConversationsList from "../common/components/ConversationList";
@@ -44,7 +45,7 @@ export default function Chat() {
 
         if (token) {
           const response = await fetch(
-            `${API}/user`,
+            `${Platform.OS === "web" ? API : "http://10.0.2.2:8080"}/user`,
             {
               method: "GET",
               headers: {
