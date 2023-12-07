@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, Pressable, Alert, Button } from "react-native";
+import { View, StyleSheet, Text, Pressable, Alert, Button, TouchableOpacity } from "react-native";
 import { BlackColor, DarkGreen, GreenLight, PrimaryGreenColor, WhiteColor } from "../theme/colors";
 import Input from "./Input";
 import PrimaryButton from "./PrimaryButton";
 import { PrivateAddress } from "../../types/PrivateAddress";
 import { addressService } from "../../services/addressService";
 import { useViaCep } from "../../hooks/useViaCep";
-import { set } from "date-fns";
 
 const style = StyleSheet.create({
 
@@ -298,24 +297,23 @@ export default function ProfileAddressBox({ enderecos, onDeleteAddress }: Profil
 
             </View>
             <View style={style.address}>
-                <Text style={style.titulo}>Meus Endereços: </Text>
-                <ol style={style.lista} >
+                <Text style={style.titulo}> Meus Endereços: </Text>
+                <View style={style.lista} >
                     {
                         enderecos?.map((endereco, index) => (
-                                      
-                            <li style={style.itemLista} key={index} onClick={() => selecionaEndereco(endereco?.id ?? '')}>
-                               <Text style={style.itemText}>{endereco?.street} - {endereco?.number}</Text> 
-                            </li>
+                            <Pressable key={index} onPress={() => { selecionaEndereco(endereco?.id ?? '') }}>
+                                <View><Text>{endereco?.street} - {endereco?.number}</Text></View>
+                            </Pressable>
                         ))
                     }
-                    <li 
+                    <Pressable
                         style={style.itemLista}
-                        onClick={() => {
+                        onPress={() => {
                         limparFormularioEndereco();
                         setEnderecoSelecionado(false);
                         setIdEnderecoSelecionado('');
-                    }}><Text style={style.itemText}>NOVO ENDEREÇO</Text> </li>
-                </ol>
+                    }}><View><Text style={style.itemText}> NOVO ENDEREÇO </Text></View></Pressable>
+                </View>
             </View>
         </View>
     )

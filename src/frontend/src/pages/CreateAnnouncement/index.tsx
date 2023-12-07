@@ -126,6 +126,7 @@ function CreateAnnouncementImpl(props: CreateAnnouncementProps) {
         uploadedImagesResponse.push(response.id);
       }
     } else if (Platform.OS === 'android') {
+      // Envia as fotos para o servidor.
       for (let i = 0; i < state.uploadedFilesMobile.length; i++) {
         const response = await announcementsService.uploadImageMobile(state.uploadedFilesMobile[i]);
         uploadedImagesResponse.push(response.id);
@@ -188,6 +189,7 @@ function CreateAnnouncementImpl(props: CreateAnnouncementProps) {
 
   /**
    * Upload file mobile
+   * Salva as fotos no reducer para ser carregada na página.
    */
 
   const uploadFileMobile = async () => {

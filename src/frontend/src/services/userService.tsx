@@ -1,7 +1,11 @@
+import { ImagePickerAsset } from "expo-image-picker";
 import { useApi } from "../hooks/useApi";
 import { LoginForm } from "../types/LoginForm";
 import { RegisterForm } from "../types/RegisterForm";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as FileSystem from 'expo-file-system';
+import { Platform } from "react-native";
+import { API } from "@env";
 
 
 export const userService = {
@@ -72,6 +76,20 @@ export const userService = {
     })
     return response.data
   },
+
+  uploadImageMobile: async (file: ImagePickerAsset) => {
+    const token = await AsyncStorage.getItem('authToken');
+    const response = await FileSystem.uploadAsync((Platform.OS === 'web' ? API : "http://10.0.2.2:8080") + "/user/image", file.uri, {
+      uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+      httpMethod: 'POST',
+      fieldName: 'image',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    });
+    return JSON.parse(response.body);
+  },
+
 
 
   logout: async () => {

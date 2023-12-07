@@ -67,9 +67,8 @@ const Banner: React.FC<BannerProps> = ({ actionType, onAccept, onCancel }) => {
     const token = await getToken();
     console.log("Token de autenticação:", token);
 
-    const apiUrl = `${
-      Platform.OS === "web" ? API : "http://10.0.2.2:8080"
-    }/${announcementType}s/${announcementId}/complete`;
+    const apiUrl = `${Platform.OS === "web" ? API : "https://rentabookapi.azurewebsites.net"
+      }/${announcementType}s/${announcementId}/complete`;
     console.log("URL da API:", apiUrl);
 
     fetch(apiUrl, {
@@ -121,9 +120,8 @@ const Banner: React.FC<BannerProps> = ({ actionType, onAccept, onCancel }) => {
     const token = await getToken();
     console.log("Token de autenticação:", token);
 
-    const apiUrl = `${
-      Platform.OS === "web" ? API : "http://10.0.2.2:8080"
-    }/${announcementType}s/${announcementId}/cancel`;
+    const apiUrl = `${Platform.OS === "web" ? API : "https://rentabookapi.azurewebsites.net"
+      }/${announcementType}s/${announcementId}/cancel`;
     console.log("URL da API:", apiUrl);
 
     fetch(apiUrl, {

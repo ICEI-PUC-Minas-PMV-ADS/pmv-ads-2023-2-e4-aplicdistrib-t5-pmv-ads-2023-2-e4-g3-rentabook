@@ -59,7 +59,7 @@ export default function ConversationsList({
       }
 
       const response = await fetch(
-        `${Platform.OS === "web" ? API : "http://10.0.2.2:8080"}/chat`,
+        `${Platform.OS === "web" ? API : "https://rentabookapi.azurewebsites.net"}/chat`,
         {
           method: "GET",
           headers: {

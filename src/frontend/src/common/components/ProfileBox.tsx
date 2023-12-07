@@ -24,7 +24,7 @@ const style = StyleSheet.create({
         width: 200,
         height: 200,
         alignSelf: "center",
-        textAlignVertical: "auto",
+        //textAlignVertical: "auto",
         borderRadius: 50,
     },
     form: {
@@ -124,7 +124,6 @@ export default function ProfileBox({ nome, email, imagem, fetchUserdata }: Profi
             (<CloseInput deletaImage={deleteProfileImageFile} />) : ("") 
             }
             
-
             <Image
                 style={style.image}
                 source={ pImage ? { uri: API + "/public/image/" + pImage } : require('../assets/notFound.jpg')}

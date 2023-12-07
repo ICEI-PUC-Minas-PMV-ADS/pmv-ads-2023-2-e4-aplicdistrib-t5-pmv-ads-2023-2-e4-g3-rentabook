@@ -7,6 +7,7 @@ import ProfileBox from "../common/components/ProfileBox";
 import ProfileAddressBox from "../common/components/ProfileAddressBox";
 import { PrivateAddress } from "../types/PrivateAddress";
 import { useMediaQuery } from "../hooks/useResposive";
+import { ProfileAndroid } from "../common/components/ProfileAndroid";
 
 
 
@@ -16,7 +17,7 @@ const style = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
   },
-  mobile: {
+  smallContainer: {
     flex: 1,
     flexDirection: "column",
   }
@@ -54,8 +55,26 @@ export default function Profile() {
       <View style={{ flex: 1, backgroundColor: "#E1DCC5" }}>
         <ScrollView>
           {
-            useMediaQuery(0,1025) && (
-              <View style={style.mobile}>
+            useMediaQuery(0,505) && (
+              <View>
+                <ProfileAndroid
+                  nome={nome}
+                  email={email}
+                  imagem={image}
+                  fetchUserdata={() => fetchUserData()}
+                />
+                <ProfileAddressBox
+                  enderecos={addressList}
+                  onSaveAddress={() => { fetchUserData() }}
+                  onDeleteAddress={() => { fetchUserData() }}
+                />
+              </View>
+              
+            )
+          }
+          {
+            useMediaQuery(506,1023) && (
+              <View style={style.smallContainer}>
               <ProfileBox
                 nome={nome}
                 email={email}

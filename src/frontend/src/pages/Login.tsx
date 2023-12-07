@@ -185,7 +185,7 @@ export default function Login() {
         </View>
         <View style={styles.welcomeSection}>
           <Image
-            source={require('/assets/auth-background.png')}
+            source={require('../../assets/auth-background.png')}
             style={styles.backgroundImage}
           />
           <Text style={styles.welcomeText}>Bem-vindo de volta! Faça o login na sua conta</Text>

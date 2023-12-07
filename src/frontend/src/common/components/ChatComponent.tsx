@@ -67,8 +67,7 @@ const ChatComponent = ({ chatId, currentUser }: ChatComponentProps) => {
       }
 
       const response = await fetch(
-        `${
-          Platform.OS === "web" ? API : "http://10.0.2.2:8080"
+        `${Platform.OS === "web" ? API : "https://rentabookapi.azurewebsites.net"
         }/chat/${chatId}/recent_messages`,
         {
           method: "GET",
@@ -117,8 +116,7 @@ const ChatComponent = ({ chatId, currentUser }: ChatComponentProps) => {
       }
 
       const response = await fetch(
-        `${
-          Platform.OS === "web" ? API : "http://10.0.2.2:8080"
+        `${Platform.OS === "web" ? API : "https://rentabookapi.azurewebsites.net"
         }/chat/messages/new`,
         {
           method: "POST",
