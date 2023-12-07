@@ -45,7 +45,7 @@ export default function Chat() {
 
         if (token) {
           const response = await fetch(
-            `${Platform.OS === "web" ? API : "http://10.0.2.2:8080"}/user`,
+            `${Platform.OS === "web" ? API : "https://rentabookapi.azurewebsites.net"}/user`,
             {
               method: "GET",
               headers: {

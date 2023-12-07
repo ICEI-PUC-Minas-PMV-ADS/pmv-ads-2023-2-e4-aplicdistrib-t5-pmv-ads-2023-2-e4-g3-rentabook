@@ -230,12 +230,12 @@ export default function Signup() {
           />
         </View>
         <View style={styles.welcomeSection}>
-                  <Image
-                    source={require('/assets/auth-background.png')}
-                    style={styles.backgroundImage}
-                  />
-                  <Text style={styles.welcomeText}>Bem-vindo de volta! Faça o login na sua conta</Text>
-                </View>
+          <Image
+            source={require('../../assets/auth-background.png')}
+            style={styles.backgroundImage}
+          />
+          <Text style={styles.welcomeText}>Bem-vindo de volta! Faça o login na sua conta</Text>
+        </View>
       </View>
     </ResponsiveNavbar>
   );

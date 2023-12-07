@@ -3,6 +3,7 @@ import { useApi } from "../hooks/useApi";
 import * as FileSystem from 'expo-file-system';
 import { ImagePickerAsset } from "expo-image-picker";
 import { API } from "@env";
+import { Platform } from "react-native";
 
 export const announcementsService = {
 
@@ -159,7 +160,7 @@ export const announcementsService = {
 
   uploadImageMobile: async (file: ImagePickerAsset) => {
     const token = await AsyncStorage.getItem('authToken');
-    const response = await FileSystem.uploadAsync(API + "/image/upload", file.uri, {
+    const response = await FileSystem.uploadAsync((Platform.OS === 'web' ? API : "https://rentabookapi.azurewebsites.net") + "/image/upload", file.uri, {
       uploadType: FileSystem.FileSystemUploadType.MULTIPART,
       httpMethod: 'POST',
       fieldName: 'image',
