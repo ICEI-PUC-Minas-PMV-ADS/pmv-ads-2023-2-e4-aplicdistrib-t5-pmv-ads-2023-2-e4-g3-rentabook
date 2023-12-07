@@ -8,6 +8,7 @@ import ProfileAddressBox from "../common/components/ProfileAddressBox";
 import { PrivateAddress } from "../types/PrivateAddress";
 import { useMediaQuery } from "../hooks/useResposive";
 import { ProfileAndroid } from "../common/components/ProfileAndroid";
+import ProfileAddressBoxAndroid from "../common/components/ProfileAddressBoxAndroid";
 
 
 
@@ -55,7 +56,7 @@ export default function Profile() {
       <View style={{ flex: 1, backgroundColor: "#E1DCC5" }}>
         <ScrollView>
           {
-            useMediaQuery(0,505) && (
+            useMediaQuery(0,599) && (
               <View>
                 <ProfileAndroid
                   nome={nome}
@@ -63,7 +64,7 @@ export default function Profile() {
                   imagem={image}
                   fetchUserdata={() => fetchUserData()}
                 />
-                <ProfileAddressBox
+                <ProfileAddressBoxAndroid
                   enderecos={addressList}
                   onSaveAddress={() => { fetchUserData() }}
                   onDeleteAddress={() => { fetchUserData() }}
@@ -73,7 +74,7 @@ export default function Profile() {
             )
           }
           {
-            useMediaQuery(506,1023) && (
+            useMediaQuery(600,1023) && (
               <View style={style.smallContainer}>
               <ProfileBox
                 nome={nome}

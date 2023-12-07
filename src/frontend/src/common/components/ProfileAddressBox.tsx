@@ -6,10 +6,12 @@ import PrimaryButton from "./PrimaryButton";
 import { PrivateAddress } from "../../types/PrivateAddress";
 import { addressService } from "../../services/addressService";
 import { useViaCep } from "../../hooks/useViaCep";
+import { useMediaQuery } from "../../hooks/useResposive";
+import { Picker } from "@react-native-picker/picker";
 
 const style = StyleSheet.create({
-
     container: {
+        
         flex: 2,
         flexDirection: "row",
         alignItems: "center",
@@ -21,7 +23,7 @@ const style = StyleSheet.create({
         padding: 10,
 
     },
-    input: {   
+    input: {
         marginHorizontal: '10%',
         marginVerdical: 100,
         maxWidth: '80%',
@@ -29,13 +31,22 @@ const style = StyleSheet.create({
         color: BlackColor,
     },
     form: {
+       
         width: '60%',
-        
+
+    },
+    formAndroid: {
+        width: '60%',
+        flex: 1,
+        flexDirection: "column",
     },
     address: {
         width: '40%',
         alignSelf: "flex-start",
         margin: 20,
+
+    },
+    addressAndroid: {
 
     },
     titulo: {
@@ -53,26 +64,26 @@ const style = StyleSheet.create({
         height: 50,
 
     },
-    textbtn:{
-        color:PrimaryGreenColor,
+    textbtn: {
+        color: PrimaryGreenColor,
     },
     buttonDeletar: {
         marginTop: 30,
-        alignSelf: "flex-end", 
-        backgroundColor:'#DC143C',
+        alignSelf: "flex-end",
+        backgroundColor: '#DC143C',
         borderColor: '#800000',
         width: 180,
         height: 50,
 
     },
-    lista:{
+    lista: {
         paddingTop: 45,
     },
     itemLista: {
         padding: 8,
     },
     itemText: {
-        fontWeight:"500",
+        fontWeight: "500",
         fontSize: 16,
     },
     btnBuscar: {
@@ -113,7 +124,7 @@ export default function ProfileAddressBox({ enderecos, onDeleteAddress }: Profil
 
         } else {
             alert("Erro, não foi possivel deletar o endereço!!")
-    
+
         }
 
     }
@@ -128,14 +139,14 @@ export default function ProfileAddressBox({ enderecos, onDeleteAddress }: Profil
             neighborhood: bairro,
             city: cidade,
             state: estado
-        };    
-        addressService.savePrivateAddress(endereco).then( (endereco) => {
-             if(endereco){
+        };
+        addressService.savePrivateAddress(endereco).then((endereco) => {
+            if (endereco) {
                 alert("O endereco foi salvo com sucesso")
                 location.reload()
-             }
+            }
         })
-       
+
     }
 
     const alteraEndereco = () => {
@@ -149,12 +160,12 @@ export default function ProfileAddressBox({ enderecos, onDeleteAddress }: Profil
             neighborhood: bairro,
             city: cidade,
             state: estado
-        };    
-        addressService.savePrivateAddress(endereco).then( (endereco) => {
-             if(endereco){
+        };
+        addressService.savePrivateAddress(endereco).then((endereco) => {
+            if (endereco) {
                 alert("O endereco foi salvo com sucesso")
                 location.reload()
-             }
+            }
         })
     }
 
@@ -195,7 +206,7 @@ export default function ProfileAddressBox({ enderecos, onDeleteAddress }: Profil
 
     const addressCepPicker = async (cep: string) => {
         try {
-            var endereco = await useViaCep(cep)          
+            var endereco = await useViaCep(cep)
             setBairro(endereco.bairro)
             setCidade(endereco.localidade)
             setEstado(endereco.uf)
@@ -206,115 +217,238 @@ export default function ProfileAddressBox({ enderecos, onDeleteAddress }: Profil
     }
 
     return (
-        <View style={style.container}>
-            <View style={style.form}>
-                <Text style={style.titulo}>Dados do Endereço: </Text>
-                <View style={{ flex:1, flexDirection:"row", alignItems:"flex-end" }}>
-                    <Input
-                        style={style.input}
-                        value={cep}
-                        placeholder="Digite o CEP"
-                        label="CEP"
-                        onChangeText={setCep}
-                    />
-                    <PrimaryButton
+        <View style={ style.container}>
+            { useMediaQuery(0, 601) && (
+                <View style={style.formAndroid}>
+                    <Text style={style.titulo}>Dados do Endereço: </Text>
+                    <View style={{ flex: 1, flexDirection: "row", alignItems: "flex-end" }}>
+                        <Input
+                            style={style.input}
+                            value={cep}
+                            placeholder="Digite o CEP"
+                            label="CEP"
+                            onChangeText={setCep}
+                        />
+                        <PrimaryButton
                             label='Buscar'
                             style={style.btnBuscar}
                             onPress={() => {
-                              addressCepPicker(cep)
+                                addressCepPicker(cep)
                             }} />
-                </View>
+                    </View>
 
-                <Input
-                    style={style.input}
-                    value={nome}
-                    placeholder="Descrição do Endereço."
-                    label="Descrição:"
-                    onChangeText={setNome}
-                />              
-                <Input
-                    style={style.input}
-                    value={rua}
-                    placeholder="Rua"
-                    label="Rua"
-                    onChangeText={setRua}
-                />
-                <Input
-                    style={style.input}
-                    value={numero}
-                    placeholder="N°"
-                    label="Número"
-                    onChangeText={setNumero}
-                />
-
-
-                <Input
-                    style={style.input}
-                    value={complemento}
-                    placeholder="Complemento"
-                    label="Complemento"
-                    onChangeText={setComplemento}
-                />
-                <Input
-                    style={style.input}
-                    value={bairro}
-                    placeholder="Bairro"
-                    label="Bairro"
-                    onChangeText={setBairro}
-                />
-                <Input
-                    style={style.input}
-                    value={cidade}
-                    placeholder="Cidade"
-                    label="cidade"
-                    onChangeText={setCidade}
-                />
-                <Input
-                    style={style.input}
-                    value={estado}
-                    placeholder="Estado"
-                    label="Estado"
-                    onChangeText={setEstado}
-                />
-                {
-                    enderecoSelecionado == true
-                        ? (
-                        <>                        
-                            <PrimaryButton
-                                style={style.buttonDeletar}
-                                label="DELETAR."
-                                onPress={() => deletaEndereco(idEnderecoSelecionado)}
-                            />                      
-                        </>
-                       ) : (<PrimaryButton
-                            style={style.button}
-                            textStyle={style.textbtn}
-                            label="SALVAR."
-                            onPress={ () => saveAdrress()}
-                        />)
-                }
-
-
-            </View>
-            <View style={style.address}>
-                <Text style={style.titulo}> Meus Endereços: </Text>
-                <View style={style.lista} >
+                    <Input
+                        style={style.input}
+                        value={nome}
+                        placeholder="Descrição do Endereço."
+                        label="Descrição:"
+                        onChangeText={setNome}
+                    />
+                    <Input
+                        style={style.input}
+                        value={rua}
+                        placeholder="Rua"
+                        label="Rua"
+                        onChangeText={setRua}
+                    />
+                    <Input
+                        style={style.input}
+                        value={numero}
+                        placeholder="N°"
+                        label="Número"
+                        onChangeText={setNumero}
+                    />
+                    <Input
+                        style={style.input}
+                        value={complemento}
+                        placeholder="Complemento"
+                        label="Complemento"
+                        onChangeText={setComplemento}
+                    />
+                    <Input
+                        style={style.input}
+                        value={bairro}
+                        placeholder="Bairro"
+                        label="Bairro"
+                        onChangeText={setBairro}
+                    />
+                    <Input
+                        style={style.input}
+                        value={cidade}
+                        placeholder="Cidade"
+                        label="cidade"
+                        onChangeText={setCidade}
+                    />
+                    <Input
+                        style={style.input}
+                        value={estado}
+                        placeholder="Estado"
+                        label="Estado"
+                        onChangeText={setEstado}
+                    />
                     {
-                        enderecos?.map((endereco, index) => (
-                            <Pressable key={index} onPress={() => { selecionaEndereco(endereco?.id ?? '') }}>
-                                <View><Text>{endereco?.street} - {endereco?.number}</Text></View>
-                            </Pressable>
-                        ))
+                        enderecoSelecionado == true
+                            ? (
+                                <>
+                                    <PrimaryButton
+                                        style={style.buttonDeletar}
+                                        label="DELETAR."
+                                        onPress={() => deletaEndereco(idEnderecoSelecionado)}
+                                    />
+                                </>
+                            ) : (<PrimaryButton
+                                style={style.button}
+                                textStyle={style.textbtn}
+                                label="SALVAR."
+                                onPress={() => saveAdrress()}
+                            />)
                     }
-                    <Pressable
-                        style={style.itemLista}
-                        onPress={() => {
-                        limparFormularioEndereco();
-                        setEnderecoSelecionado(false);
-                        setIdEnderecoSelecionado('');
-                    }}><View><Text style={style.itemText}> NOVO ENDEREÇO </Text></View></Pressable>
                 </View>
-            </View>
+            )}
+            {useMediaQuery(602, 5000) && (
+                <View style={style.form}>
+                    <Text style={style.titulo}>Dados do Endereço: </Text>
+                    <View style={{ flex: 1, flexDirection: "row", alignItems: "flex-end" }}>
+                        <Input
+                            style={style.input}
+                            value={cep}
+                            placeholder="Digite o CEP"
+                            label="CEP"
+                            onChangeText={setCep}
+                        />
+                        <PrimaryButton
+                            label='Buscar'
+                            style={style.btnBuscar}
+                            onPress={() => {
+                                addressCepPicker(cep)
+                            }} />
+                    </View>
+
+                    <Input
+                        style={style.input}
+                        value={nome}
+                        placeholder="Descrição do Endereço."
+                        label="Descrição:"
+                        onChangeText={setNome}
+                    />
+                    <Input
+                        style={style.input}
+                        value={rua}
+                        placeholder="Rua"
+                        label="Rua"
+                        onChangeText={setRua}
+                    />
+                    <Input
+                        style={style.input}
+                        value={numero}
+                        placeholder="N°"
+                        label="Número"
+                        onChangeText={setNumero}
+                    />
+                    <Input
+                        style={style.input}
+                        value={complemento}
+                        placeholder="Complemento"
+                        label="Complemento"
+                        onChangeText={setComplemento}
+                    />
+                    <Input
+                        style={style.input}
+                        value={bairro}
+                        placeholder="Bairro"
+                        label="Bairro"
+                        onChangeText={setBairro}
+                    />
+                    <Input
+                        style={style.input}
+                        value={cidade}
+                        placeholder="Cidade"
+                        label="cidade"
+                        onChangeText={setCidade}
+                    />
+                    <Input
+                        style={style.input}
+                        value={estado}
+                        placeholder="Estado"
+                        label="Estado"
+                        onChangeText={setEstado}
+                    />
+                    {
+                        enderecoSelecionado == true
+                            ? (
+                                <>
+                                    <PrimaryButton
+                                        style={style.buttonDeletar}
+                                        label="DELETAR."
+                                        onPress={() => deletaEndereco(idEnderecoSelecionado)}
+                                    />
+                                </>
+                            ) : (<PrimaryButton
+                                style={style.button}
+                                textStyle={style.textbtn}
+                                label="SALVAR."
+                                onPress={() => saveAdrress()}
+                            />)
+                    }
+                </View>
+
+            )}
+
+
+
+            {
+                useMediaQuery(0, 600) && (
+                    <View style={style.address}>
+                        <Text style={style.titulo}> Meus Endereços: </Text>
+                        <View style={style.lista} >
+                            <Picker
+                                selectedValue={idEnderecoSelecionado}
+                                onValueChange={(itemValue, itemIndex) => {
+                                    if (itemValue === "new") {
+                                        limparFormularioEndereco();
+                                        setEnderecoSelecionado(false);
+                                        setIdEnderecoSelecionado('');
+                                    } else {
+                                        selecionaEndereco(itemValue)
+                                    }
+
+                                }}
+                            >
+                                <Picker.Item label="NOVO ENDERECO" value="new" />
+                                {
+                                    enderecos?.map((endereco, index) => (
+                                        <Picker.Item
+                                            key={index}
+                                            label={endereco?.name}
+                                            value={endereco?.id}
+                                        />
+                                    ))}
+                            </Picker>
+                        </View>
+                    </View>
+                )
+            }
+            {useMediaQuery(601, 5000) && (
+                <View style={style.address}>
+                    <Text style={style.titulo}> Meus Endereços: </Text>
+                    <View style={style.lista} >
+                        {
+                            enderecos?.map((endereco, index) => (
+                                <Pressable key={index} onPress={() => { selecionaEndereco(endereco?.id ?? '') }}>
+                                    <View><Text>{endereco?.street} - {endereco?.number}</Text></View>
+                                </Pressable>
+                            ))
+                        }
+                        <Pressable
+                            style={style.itemLista}
+                            onPress={() => {
+                                limparFormularioEndereco();
+                                setEnderecoSelecionado(false);
+                                setIdEnderecoSelecionado('');
+                            }}><View><Text style={style.itemText}> NOVO ENDEREÇO </Text></View></Pressable>
+                    </View>
+                </View>
+            )}
         </View>
     )
 }
