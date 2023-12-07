@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import * as yup from 'yup';
 import { AuthContext } from '../contexts/Auth/AuthContext';
@@ -116,15 +116,29 @@ export default function Login() {
       justifyContent: 'center',
     },
     inputSection: {
-      flexBasis: orientation === 'LANDSCAPE' ? '60%' : '75%',
+      flexBasis: orientation === 'LANDSCAPE' ? '50%' : '70%',
       padding: 20,
       maxWidth: 400,
+      justifyContent: 'center',
       alignItems: 'center',
     },
     welcomeSection: {
-      flexBasis: orientation === 'LANDSCAPE' ? '40%' : '25%',
+      flexBasis: orientation === 'LANDSCAPE' ? '50%' : '30%',
       justifyContent: 'center',
       alignItems: 'center',
+      height: '100%',
+    },
+    welcomeText: {
+      fontSize: 24,
+      textAlign: 'center',
+      margin: 20,
+      color: '#FFFFFF',
+    },
+    backgroundImage: {
+      flex: 1,
+      width: '100%',
+      height: '100%',
+      position: 'absolute',
     },
     input: {
       marginVertical: 10,
@@ -133,16 +147,11 @@ export default function Login() {
       width: '100%',
       paddingHorizontal: 10,
     },
-    welcomeText: {
-      fontSize: 24,
-      textAlign: 'center',
-      margin: 20,
-    },
     button: {
       height: 45,
       width: 340,
-      marginTop: 20
-    }
+      marginTop: 20,
+    },
   });
 
   return (
@@ -175,6 +184,10 @@ export default function Login() {
           />
         </View>
         <View style={styles.welcomeSection}>
+          <Image
+            source={require('/assets/auth-background.png')}
+            style={styles.backgroundImage}
+          />
           <Text style={styles.welcomeText}>Bem-vindo de volta! Faça o login na sua conta</Text>
         </View>
       </View>
