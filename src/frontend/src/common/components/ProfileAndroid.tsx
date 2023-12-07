@@ -14,6 +14,7 @@ import { userService } from "../../services/userService";
 
 const style = StyleSheet.create({
   container: {
+    marginTop: 50,
     flex: 1,
     minHeight: 600,
     alignItems: "center",
@@ -138,7 +139,7 @@ export const ProfileAndroid = ({ email, nome, imagem, fetchUserdata }: ProfileAn
             alt="Foto de Perfil."
           />
       
-          <Text>Salvar Foto</Text>
+          <Text> Salvar Foto</Text>
           <PrimaryButton
             label="Select file"
             style={{ width: 200 }}

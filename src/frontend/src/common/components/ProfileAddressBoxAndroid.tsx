@@ -11,7 +11,6 @@ import { useAlertMessage } from "../../contexts/Message";
 
 const style = StyleSheet.create({
     container: {
-
         flex: 2,
         flexDirection: "column",
         alignItems: "center",
@@ -205,7 +204,7 @@ export default function ProfileAddressBoxAndroid({ enderecos, onDeleteAddress }:
             setEstado(endereco.uf)
             setComplemento(endereco.complemento)
         } catch (error) {
-            console.error("Erro ao buscar endereço:", error);
+            showAlert('O cep Não foi encontrado!!' + error)
         }
     }
 
