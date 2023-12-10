@@ -46,11 +46,11 @@ export const userService = {
 
   updatePrivateUser: async (nome: string) => {
     const token = await AsyncStorage.getItem('authToken')
-    const json = JSON.stringify({'name': nome})
-    const response = await useApi.post("/user/updateProfile",json, {
+    const json = JSON.stringify({ 'name': nome })
+    const response = await useApi.post("/user/updateProfile", json, {
       headers: {
-        'Authorization':`Bearer ${token}`,
-        'Content-Type': 'application/json' 
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
       }
     })
     return response.data
@@ -58,20 +58,20 @@ export const userService = {
 
   updatePrivateUserImage: async (image: FormData) => {
     const token = await AsyncStorage.getItem('authToken')
-    const response = await useApi.post("/user/image",image, {
+    const response = await useApi.post("/user/image", image, {
       headers: {
-        'Authorization':`Bearer ${token}`,
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'multipart/form-data'
       }
     })
     return response.data
   },
 
-  deletePrivateUserImage : async () => {
+  deletePrivateUserImage: async () => {
     const token = await AsyncStorage.getItem('authToken')
-    const response = await useApi.delete("/user/image",{
+    const response = await useApi.delete("/user/image", {
       headers: {
-        'Authorization':`Bearer ${token}`
+        'Authorization': `Bearer ${token}`
       }
     })
     return response.data
@@ -79,7 +79,7 @@ export const userService = {
 
   uploadImageMobile: async (file: ImagePickerAsset) => {
     const token = await AsyncStorage.getItem('authToken');
-    const response = await FileSystem.uploadAsync((Platform.OS === 'web' ? API : "http://10.0.2.2:8080") + "/user/image", file.uri, {
+    const response = await FileSystem.uploadAsync((Platform.OS === 'web' ? API : "https://rentabookapi.azurewebsites.net") + "/user/image", file.uri, {
       uploadType: FileSystem.FileSystemUploadType.MULTIPART,
       httpMethod: 'POST',
       fieldName: 'image',

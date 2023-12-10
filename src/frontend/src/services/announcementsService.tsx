@@ -160,7 +160,7 @@ export const announcementsService = {
 
   uploadImageMobile: async (file: ImagePickerAsset) => {
     const token = await AsyncStorage.getItem('authToken');
-    const response = await FileSystem.uploadAsync((Platform.OS === 'web' ? API : "http://10.0.2.2:8080") + "/image/upload", file.uri, {
+    const response = await FileSystem.uploadAsync((Platform.OS === 'web' ? API : "https://rentabookapi.azurewebsites.net") + "/image/upload", file.uri, {
       uploadType: FileSystem.FileSystemUploadType.MULTIPART,
       httpMethod: 'POST',
       fieldName: 'image',

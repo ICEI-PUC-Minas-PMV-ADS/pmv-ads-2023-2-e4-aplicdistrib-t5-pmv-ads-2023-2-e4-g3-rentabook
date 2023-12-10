@@ -87,10 +87,10 @@ export const ProfileAndroid = ({ email, nome, imagem, fetchUserdata }: ProfileAn
 
   const uploadProfile = async (name: string) => {
     var x = await userService.updatePrivateUser(name)
-    await  sendFileMobile(pImagem)
+    await sendFileMobile(pImagem)
     showAlert('Imagem salva com sucesso!!!!!')
     fetchUserdata()
-}
+  }
 
   const uploadFileMobile = async () => {
     const pickImage = async () => {
@@ -101,31 +101,31 @@ export const ProfileAndroid = ({ email, nome, imagem, fetchUserdata }: ProfileAn
         showAlert('O aplicativo não tem permissão para usar a camera.');
       } else {
         // const result = await ImagePicker.launchImageLibraryAsync();
-        const result = await ImagePicker.launchImageLibraryAsync({allowsMultipleSelection: false})
+        const result = await ImagePicker.launchImageLibraryAsync({ allowsMultipleSelection: false })
         if (!result.canceled) {
-          for(let i=0; i < result.assets.length;i++){
+          for (let i = 0; i < result.assets.length; i++) {
             setPImagem(result.assets[i])
-          }        
+          }
         }
       }
     };
 
     pickImage();
   };
-  
-    useEffect(() => {
-      setPNome(nome)
-    },[nome]) 
 
-  const sendFileMobile = async (image: ImagePicker.ImagePickerAsset |undefined) => {
+  useEffect(() => {
+    setPNome(nome)
+  }, [nome])
+
+  const sendFileMobile = async (image: ImagePicker.ImagePickerAsset | undefined) => {
     console.log(API)
     try {
-      if (image !== undefined)  {
-              const response = await userService.uploadImageMobile(image)
+      if (image !== undefined) {
+        const response = await userService.uploadImageMobile(image)
         const uploadedImagesResponse: string[] = [];
-            uploadedImagesResponse.push(response.id)
+        uploadedImagesResponse.push(response.id)
       }
-    } catch(e) {
+    } catch (e) {
       console.log(e);
       console.error("Erro ao enviar Imagem ao servidor!!");
     }
@@ -143,28 +143,28 @@ export const ProfileAndroid = ({ email, nome, imagem, fetchUserdata }: ProfileAn
   return (
     <View>
       <View style={style.container}>
-        
-          <Image
-            style={style.image}
-            source={imagem ? { uri: (Platform.OS === 'web' ? API : "http://10.0.2.2:8080") + "/public/image/" + imagem } : require('../assets/notFound.jpg')}
-            alt="Foto de Perfil."
-          />
-      
-          <Text> Salvar Foto</Text>
-          <PrimaryButton
-            label="Select file"
-            style={{ width: 200 }}
-            onPress={() => {
-              uploadFileMobile()
-            }} />
-            <PrimaryButton
-            label="Logout"
-            style={{ width: 200 }}
-            onPress={() => {
-              handleLogout()
-            }} />
-     
-        <View style={{width:'90%'}} >
+
+        <Image
+          style={style.image}
+          source={imagem ? { uri: (Platform.OS === 'web' ? API : "https://rentabookapi.azurewebsites.net") + "/public/image/" + imagem } : require('../assets/notFound.jpg')}
+          alt="Foto de Perfil."
+        />
+
+        <Text> Salvar Foto</Text>
+        <PrimaryButton
+          label="Select file"
+          style={{ width: 200 }}
+          onPress={() => {
+            uploadFileMobile()
+          }} />
+        <PrimaryButton
+          label="Logout"
+          style={{ width: 200 }}
+          onPress={() => {
+            handleLogout()
+          }} />
+
+        <View style={{ width: '90%' }} >
           <Input
             style={style.input}
             value={pNome}
@@ -186,11 +186,11 @@ export const ProfileAndroid = ({ email, nome, imagem, fetchUserdata }: ProfileAn
           style={style.button}
           textStyle={style.textbtn}
           label="Salvar Alterações"
-          onPress={ async () => {
-              uploadProfile(pNome ?? "")
+          onPress={async () => {
+            uploadProfile(pNome ?? "")
           }}
         />
       </View>
-    </View>        
+    </View>
   )
 } 

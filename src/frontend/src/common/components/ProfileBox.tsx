@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Image, Text } from "react-native";
+import { View, StyleSheet, Image, Text, Platform } from "react-native";
 import "../theme/colors"
 import { DarkGreen, GreenLight, GreyColor, PrimaryGreenColor, WhiteColor } from "../theme/colors";
 import Input from "./Input";
@@ -28,7 +28,7 @@ const style = StyleSheet.create({
         borderRadius: 50,
     },
     form: {
-        width:'80%',
+        width: '80%',
     },
     input: {
         marginHorizontal: 20,
@@ -55,12 +55,12 @@ const style = StyleSheet.create({
         height: 50,
 
     },
-    textbtn:{
+    textbtn: {
         color: PrimaryGreenColor,
     },
     file: {
         marginBottom: 10,
-        alignSelf:"center",
+        alignSelf: "center",
         backgroundColor: GreyColor,
         width: '90%'
     }
@@ -77,7 +77,7 @@ export default function ProfileBox({ nome, email, imagem, fetchUserdata }: Profi
     const [selectedFile, setSelectedFile] = useState<File | null>(null)
     const [pNome, setPNome] = useState(nome)
     const [btnDeleteImage, setBtnDeleteImage] = useState<Boolean>(false)
-    const [pImage, setPImage ] = useState(imagem)
+    const [pImage, setPImage] = useState(imagem)
 
     const ImageFile = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -86,18 +86,18 @@ export default function ProfileBox({ nome, email, imagem, fetchUserdata }: Profi
         }
     };
 
-    useEffect( () => {
+    useEffect(() => {
         setPImage(imagem)
-        if(imagem != null ){
+        if (imagem != null) {
             setBtnDeleteImage(true)
-        }else{
+        } else {
             setBtnDeleteImage(false)
         }
-    },[imagem])
+    }, [imagem])
 
     useEffect(() => {
         setPNome(nome)
-    },[nome]) 
+    }, [nome])
 
     const uploadfile = async (name: string) => {
         var x = await userService.updatePrivateUser(name)
@@ -105,32 +105,31 @@ export default function ProfileBox({ nome, email, imagem, fetchUserdata }: Profi
             const formData = new FormData();
             formData.append('image', selectedFile);
             await userService.updatePrivateUserImage(formData)
-        }        
+        }
         alert('Suas alterações foram salvas com sucesso')
         fetchUserdata()
     }
 
     const deleteProfileImageFile = async () => {
         const conf = confirm('Deseja Realmente deletar a Imagem de Perfil?')
-        if (conf)
-        {await userService.deletePrivateUserImage()}   
-        fetchUserdata()  
-    } 
+        if (conf) { await userService.deletePrivateUserImage() }
+        fetchUserdata()
+    }
 
     return (
         <View style={style.container}>
             {
-               btnDeleteImage === true ?
-            (<CloseInput deletaImage={deleteProfileImageFile} />) : ("") 
+                btnDeleteImage === true ?
+                    (<CloseInput deletaImage={deleteProfileImageFile} />) : ("")
             }
-            
+
             <Image
                 style={style.image}
-                source={ pImage ? { uri: API + "/public/image/" + pImage } : require('../assets/notFound.jpg')}
+                source={pImage ? { uri: (Platform.OS === 'web' ? API : 'https://rentabookapi.azurewebsites.net') + "/public/image/" + pImage } : require('../assets/notFound.jpg')}
                 alt="Foto de Perfil."
             />
-         
-            <View style={style.form}> 
+
+            <View style={style.form}>
                 <Text style={style.titulo} >Meu Perfil</Text>
 
                 <View style={style.file}>
@@ -150,7 +149,7 @@ export default function ProfileBox({ nome, email, imagem, fetchUserdata }: Profi
                     placeholder="Digite seu Nome"
                     label="Nome"
                     editable={true}
-                    onChangeText={setPNome}                    
+                    onChangeText={setPNome}
                 />
                 <Input
                     style={style.input}
@@ -166,8 +165,8 @@ export default function ProfileBox({ nome, email, imagem, fetchUserdata }: Profi
                 textStyle={style.textbtn}
                 label="Salvar Alterações"
                 onPress={async () => {
-                     uploadfile(pNome ?? "")
-                    }}
+                    uploadfile(pNome ?? "")
+                }}
             />
         </View>
     )
