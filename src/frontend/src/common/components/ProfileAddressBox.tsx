@@ -212,7 +212,7 @@ export default function ProfileAddressBox({ enderecos, onDeleteAddress }: Profil
             setEstado(endereco.uf)
             setComplemento(endereco.complemento)
         } catch (error) {
-            console.error("Erro ao buscar endereço:", error);
+             alert("Erro ao buscar endereço Cep não encontrado.");
         }
     }
 

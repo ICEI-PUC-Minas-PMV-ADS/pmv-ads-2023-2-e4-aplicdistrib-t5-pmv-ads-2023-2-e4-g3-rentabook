@@ -88,7 +88,7 @@ type ProfileAddressBoxAndroidProps = {
 
 }
 
-export default function ProfileAddressBoxAndroid({ enderecos, onDeleteAddress }: ProfileAddressBoxAndroidProps) {
+export default function ProfileAddressBoxAndroid({ enderecos, onDeleteAddress, onSaveAddress }: ProfileAddressBoxAndroidProps) {
     const [id, setId] = useState('')
     const [nome, setNome] = useState('')
     const [cep, setCep] = useState('')
@@ -135,7 +135,10 @@ export default function ProfileAddressBoxAndroid({ enderecos, onDeleteAddress }:
         addressService.savePrivateAddress(endereco).then((endereco) => {
             if (endereco) {
                 showAlert("O endereco foi salvo com sucesso!")
-                location.reload()
+                setIdEnderecoSelecionado('')
+                setEnderecoSelecionado(false)
+                limparFormularioEndereco()
+                onSaveAddress()
             }
         })
 

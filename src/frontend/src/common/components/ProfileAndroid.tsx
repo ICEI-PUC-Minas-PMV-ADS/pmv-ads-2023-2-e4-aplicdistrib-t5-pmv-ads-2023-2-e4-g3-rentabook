@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 
-
+import { AuthContext } from "../../contexts/Auth/AuthContext";
 import PrimaryButton from "./PrimaryButton"
-import { useCreateAnnouncementContext } from "../../pages/CreateAnnouncement/contexts"
 import { View, Image, StyleSheet, Text, Platform } from "react-native"
 import { useAlertMessage } from "../../contexts/Message";
 import Input from "./Input";
 import { API } from '@env'
 import { DarkGreen, GreenLight, GreyColor, PrimaryGreenColor, WhiteColor } from "../theme/colors";
 import { userService } from "../../services/userService";
+import { useNavigation } from "@react-navigation/native";
+import { StackTypes } from "../../routes/StackTypes";
 
 
 const style = StyleSheet.create({
@@ -80,8 +81,9 @@ type ProfileAndroidProps = {
 export const ProfileAndroid = ({ email, nome, imagem, fetchUserdata }: ProfileAndroidProps) => {
   const [pNome, setPNome] = useState(nome)
   const [pImagem, setPImagem] = useState<ImagePicker.ImagePickerAsset | undefined>()
-  const { state, dispatch } = useCreateAnnouncementContext();
   const { showAlert } = useAlertMessage();
+  const auth = React.useContext(AuthContext)
+  const navigation = useNavigation<StackTypes>()
 
   const uploadProfile = async (name: string) => {
     var x = await userService.updatePrivateUser(name)
@@ -129,6 +131,15 @@ export const ProfileAndroid = ({ email, nome, imagem, fetchUserdata }: ProfileAn
     }
   };
 
+  const handleLogout = async () => {
+    if (auth.user) {
+      const logout = await auth.logout()
+      if (logout) {
+        navigation.navigate("Anúncios", {})
+      }
+    }
+  }
+
   return (
     <View>
       <View style={style.container}>
@@ -145,6 +156,12 @@ export const ProfileAndroid = ({ email, nome, imagem, fetchUserdata }: ProfileAn
             style={{ width: 200 }}
             onPress={() => {
               uploadFileMobile()
+            }} />
+            <PrimaryButton
+            label="Logout"
+            style={{ width: 200 }}
+            onPress={() => {
+              handleLogout()
             }} />
      
         <View style={{width:'90%'}} >
