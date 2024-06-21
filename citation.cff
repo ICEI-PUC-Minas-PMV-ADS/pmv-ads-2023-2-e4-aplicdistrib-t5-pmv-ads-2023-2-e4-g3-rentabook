@@ -1,0 +1,29 @@
+message: Please cite this software using these metadata.
+title:
+authors:
+  - family-names: Samapaio de Andrade
+    given-names: Aleykson Micael 
+  - family-names: Anderson de Carvalho
+    given-names: Alisson
+  - family-names: Gomes Pinto
+    given-names: Henrique Alexandre
+  - family-names: Gomes Pinto
+    given-names: Vitor Alexandre 
+  - family-names: Pinheiro Torres
+    given-names: João Lucas
+  - family-names: Favilla Lobo
+    given-names: Carlos Eduardo
+  - name-suffix: Professor
+    affiliation: PUC Minas
+    family-names: Cipriano da Silva
+    given-names: Wagner
+   
+keywords:
+  - Livro
+  - Aluguel 
+  - Emprestimo
+  - Venda
+
+repository-code: https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2023-2-e4-aplicdistrib-t5-pmv-ads-2023-2-e4-g3-rentabook
+version: 1.0.0
+date-released: 2023-10-31
